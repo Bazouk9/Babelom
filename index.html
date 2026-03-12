@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <style>
 :root {
@@ -1811,6 +1812,9 @@ document.getElementById('modale-reset').addEventListener('click', function(e) {
   if (e.target === this) fermerResetMdp();
 });
 
+// ── CLIENT SUPABASE AUTH ──
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
 // ── COMPTE ──
 async function creerCompte() {
   const nom    = document.getElementById('ins-nom').value.trim();
@@ -1831,35 +1835,25 @@ async function creerCompte() {
   msg.style.color = '#7a9a72';
   msg.textContent = 'Création du compte…';
 
-  try {
-    // Vérifier si email déjà utilisé
-    const existants = await sb.select('utilisateurs', {
-      select: 'id',
-      filters: [`email=eq.${encodeURIComponent(email)}`]
-    });
-    if (existants.length > 0) {
-      msg.style.color = '#c04040';
-      msg.textContent = 'Cette adresse email est déjà utilisée.'; return;
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: mdp,
+    options: {
+      data: { prenom, nom },
+      emailRedirectTo: window.location.origin + '/confirmation.html'
     }
+  });
 
-    const mdpHash = await sb.hashMdp(mdp);
-    const result  = await sb.insert('utilisateurs', {
-      prenom, nom, email, mot_de_passe: mdpHash, role: 'membre'
-    });
-
-    const user = result[0];
-    sessionStorage.setItem('babelom-user', JSON.stringify({
-      id: user.id, prenom, nom, email, role: 'membre'
-    }));
-    msg.style.color = '#4a7a52';
-    msg.textContent = '✓ Compte créé. Bienvenue, ' + prenom + ' !';
-    mettreAJourNav();
-    setTimeout(() => { window.location.href = 'etape1.html'; }, 1200);
-
-  } catch(e) {
-    msg.style.color  = '#c04040';
-    msg.textContent  = 'Erreur : ' + e.message;
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = error.message === 'User already registered'
+      ? 'Cette adresse email est déjà utilisée.'
+      : 'Erreur : ' + error.message;
+    return;
   }
+
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Un email de confirmation vous a été envoyé. Vérifiez votre boîte mail pour activer votre compte.';
 }
 
 async function seConnecter() {
@@ -1875,40 +1869,30 @@ async function seConnecter() {
   msg.style.color = '#7a9a72';
   msg.textContent = 'Connexion…';
 
-  try {
-    const mdpHash  = await sb.hashMdp(mdp);
-    const results  = await sb.select('utilisateurs', {
-      select: 'id,prenom,nom,email,role,actif',
-      filters: [
-        `email=eq.${encodeURIComponent(email)}`,
-        `mot_de_passe=eq.${mdpHash}`,
-      ]
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: mdp });
 
-    if (!results.length) {
-      msg.style.color = '#c04040';
-      msg.textContent = 'Email ou mot de passe incorrect.'; return;
-    }
-
-    const user = results[0];
-    if (!user.actif) {
-      msg.style.color = '#c04040';
-      msg.textContent = 'Ce compte a été désactivé.'; return;
-    }
-
-    sessionStorage.setItem('babelom-user', JSON.stringify({
-      id: user.id, prenom: user.prenom, nom: user.nom,
-      email: user.email, role: user.role
-    }));
-    msg.style.color = '#4a7a52';
-    msg.textContent = '✓ Connexion réussie. Bon retour, ' + user.prenom + ' !';
-    mettreAJourNav();
-    setTimeout(() => { window.location.href = 'etape1.html'; }, 1200);
-
-  } catch(e) {
-    msg.style.color  = '#c04040';
-    msg.textContent  = 'Erreur : ' + e.message;
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = error.message === 'Email not confirmed'
+      ? 'Veuillez confirmer votre email avant de vous connecter.'
+      : error.message === 'Invalid login credentials'
+      ? 'Email ou mot de passe incorrect.'
+      : 'Erreur : ' + error.message;
+    return;
   }
+
+  const user   = data.user;
+  const prenom = user.user_metadata?.prenom || email.split('@')[0];
+  const nom    = user.user_metadata?.nom || '';
+
+  sessionStorage.setItem('babelom-user', JSON.stringify({
+    id: user.id, prenom, nom, email: user.email, role: 'membre'
+  }));
+
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Connexion réussie. Bon retour, ' + prenom + ' !';
+  mettreAJourNav();
+  setTimeout(() => { window.location.href = 'etape1.html'; }, 1200);
 }
 
 function mettreAJourNav() {

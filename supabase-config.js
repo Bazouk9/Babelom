@@ -4,8 +4,8 @@
 // clés trouvées dans : Supabase > Settings > API
 // ═══════════════════════════════════════════════
 
-const SUPABASE_URL  = 'https://VOTRE_ID.supabase.co';   // ← à remplacer
-const SUPABASE_ANON = 'VOTRE_ANON_KEY';                 // ← à remplacer
+const SUPABASE_URL  = 'https://qbxshawdxqochjsmoodl.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFieHNoYXdkeHFvY2hqc21vb2RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQxMTIsImV4cCI6MjA4ODgzMDExMn0.SuCjjsBKOeuPyg8m1ZUb2h9XLtxZ5O5rf48GUolo3zM';
 
 // ── Client Supabase léger (sans SDK) ──
 const sb = {

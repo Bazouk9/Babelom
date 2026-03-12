@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Confirmation de votre compte</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<style>
+:root {
+  --terre:    #1e3a28;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --creme:    #f5f2e8;
+  --muted:    #7a9a72;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.carte {
+  background: white;
+  border: 1.5px solid var(--sable);
+  border-radius: 4px;
+  padding: 52px 48px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(30,58,40,0.08);
+}
+.icone {
+  font-size: 3rem;
+  margin-bottom: 24px;
+  display: block;
+}
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+h1 em { color: var(--ocre); font-style: italic; }
+p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.btn {
+  display: inline-block;
+  margin-top: 28px;
+  background: var(--terre);
+  color: var(--creme);
+  text-decoration: none;
+  padding: 12px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+.btn:hover { background: #2e5a38; }
+.btn-ocre {
+  background: var(--ocre);
+  margin-left: 12px;
+}
+.btn-ocre:hover { background: #b8720a; }
+.erreur { color: #c04040; font-size: 0.88rem; margin-top: 16px; }
+#etat-chargement { color: var(--muted); font-size: 0.88rem; }
+</style>
+</head>
+<body>
+
+<div class="carte" id="carte-chargement">
+  <span class="icone">⏳</span>
+  <h1>Vérification en cours…</h1>
+  <p id="etat-chargement">Confirmation de votre adresse email.</p>
+</div>
+
+<div class="carte" id="carte-succes" style="display:none">
+  <span class="icone">✉️</span>
+  <h1>Compte <em>confirmé</em></h1>
+  <p>Votre adresse email a bien été vérifiée.</p>
+  <p>Vous pouvez maintenant vous connecter et déposer votre témoignage.</p>
+  <a href="index.html#compte" class="btn-ocre btn">Se connecter →</a>
+</div>
+
+<div class="carte" id="carte-erreur" style="display:none">
+  <span class="icone">⚠️</span>
+  <h1>Lien <em>expiré</em></h1>
+  <p>Ce lien de confirmation n'est plus valide ou a déjà été utilisé.</p>
+  <p>Essayez de vous connecter directement — si votre compte est déjà actif, vous pourrez accéder au site normalement.</p>
+  <a href="index.html#compte" class="btn">Retour à l'accueil →</a>
+</div>
+
+<script>
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function confirmer() {
+  // Supabase envoie le token dans le hash de l'URL
+  const hash   = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const token  = params.get('access_token');
+  const type   = params.get('type');
+
+  if (!token) {
+    // Pas de token — peut-être déjà confirmé
+    document.getElementById('carte-chargement').style.display = 'none';
+    document.getElementById('carte-erreur').style.display = 'block';
+    return;
+  }
+
+  if (type === 'signup' || type === 'email_change') {
+    const { data, error } = await supabase.auth.getUser(token);
+    if (error) {
+      document.getElementById('carte-chargement').style.display = 'none';
+      document.getElementById('carte-erreur').style.display = 'block';
+    } else {
+      document.getElementById('carte-chargement').style.display = 'none';
+      document.getElementById('carte-succes').style.display = 'block';
+    }
+  } else {
+    document.getElementById('carte-chargement').style.display = 'none';
+    document.getElementById('carte-succes').style.display = 'block';
+  }
+}
+
+confirmer();
+</script>
+</body>
+</html>
