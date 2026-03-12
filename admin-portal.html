@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Babelom — Portail Admin</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #0f1e14; color: #c8d8b0; height: 100vh; display: flex; flex-direction: column; }
+
+.toolbar {
+  background: #1e3a28;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #d4880a;
+  flex-shrink: 0;
+}
+
+.toolbar-title {
+  font-size: 0.8rem;
+  color: #d4880a;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-right: 16px;
+  font-weight: 600;
+}
+
+.btn-page {
+  background: #2e5a38;
+  border: 1px solid #4a7a52;
+  color: #c8d8b0;
+  padding: 7px 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.btn-page:hover { background: #3a6a44; color: white; }
+.btn-page.active { background: #d4880a; border-color: #d4880a; color: white; }
+
+.frame-wrap {
+  flex: 1;
+  position: relative;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="toolbar-title">🏠 Babelom Admin</span>
+  <button class="btn-page active" onclick="charger('index.html', this)">Accueil</button>
+  <button class="btn-page" onclick="charger('etape1.html', this)">01 · Carte</button>
+  <button class="btn-page" onclick="charger('etape2.html?admin=1', this)">02 · Racontez</button>
+  <button class="btn-page" onclick="charger('temoignages.html?admin=1', this)">03 · Transmettez</button>
+  <button class="btn-page" onclick="charger('messagerie.html?admin=1', this)">04 · Messagerie</button>
+</div>
+
+<div class="frame-wrap">
+  <iframe id="frame" src="index.html"></iframe>
+</div>
+
+<script>
+function charger(url, btn) {
+  document.getElementById('frame').src = url;
+  document.querySelectorAll('.btn-page').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>

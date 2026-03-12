@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Témoignages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="supabase-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
+  --ombre:    rgba(0,0,40,0.25);
+  --muted:    #7a9a72;
+  --sauge:    #d4880a;
+  --sauge-clair: #b0c898;
+  --ardoise:  #4a7a52;
+  --ardoise-clair: #c8dab0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
+  overflow-x: hidden;
+}
+
+/* grain */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 52px;
+  background: rgba(22,50,32,0.98);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #2e5a38;
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--terre);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--ocre); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #c8dab0;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.nav-links a:hover { color: white; }
+.nav-links a .nav-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+}
+.nav-links a:hover .nav-num { color: #e8a030; }
+.nav-links a.active { color: var(--ocre); border-bottom: 1px solid var(--ocre); padding-bottom: 2px; }
+
+.nav-cta {
+  background: #d4880a !important;
+  color: #1e3a28 !important;
+  padding: 10px 22px !important;
+  letter-spacing: 0.1em !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: #b8720a !important; color: #1e3a28 !important; }
+
+/* ── HERO TÉMOIGNAGES ── */
+.page-hero {
+  padding: 140px 52px 80px;
+  border-bottom: 1px solid #2e5a38;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: end;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-hero-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sauge);
+  line-height: 1.1;
+}
+
+.page-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--terre);
+  margin-bottom: 16px;
+}
+
+.page-hero-sub {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── GRILLE TÉMOIGNAGES ── */
+.temoignages-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 52px;
+}
+
+.temoignages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--sable);
+}
+
+.temoignage {
+  background: var(--creme);
+  padding: 26px 24px;
+  transition: background 0.3s;
+}
+.temoignage:hover { background: var(--parchemin); }
+
+/* grande carte */
+.temoignage:first-child {
+  grid-row: span 2;
+  background: var(--creme);
+  color: var(--terre);
+  border-left: 4px solid var(--sauge);
+}
+.temoignage:first-child:hover { background: var(--parchemin); }
+
+.temoignage:nth-child(2) { border-top: 3px solid var(--ocre); }
+.temoignage:nth-child(3) { border-top: 3px solid var(--ardoise); }
+
+/* guillemet décoratif */
+.temoignage-quote-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  line-height: 0.6;
+  color: var(--ocre);
+  opacity: 0.3;
+  display: block;
+  margin-bottom: 10px;
+}
+.temoignage:first-child .temoignage-quote-mark { color: var(--ocre); opacity: 0.3; }
+
+.temoignage-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.temoignage:first-child .temoignage-text {
+  font-size: 1.1rem;
+  color: var(--terre);
+}
+
+.temoignage-author {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ocre);
+  font-weight: 500;
+}
+.temoignage:first-child .temoignage-author { color: var(--ocre); }
+
+.temoignage-lieu {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 4px;
+  font-style: italic;
+}
+.temoignage:first-child .temoignage-lieu { color: var(--muted); }
+
+/* ── CTA FINAL ── */
+#cta-final {
+  background: var(--terre);
+  padding: 28px 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.cta-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #5a90aa;
+}
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  font-weight: 300;
+  color: var(--parchemin);
+  line-height: 1.2;
+  margin: 4px 0 0;
+}
+.cta-title em { color: var(--ocre); font-style: italic; }
+
+.btn-primary {
+  background: var(--ocre);
+  color: white;
+  border: none;
+  padding: 18px 48px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: #c07820; transform: translateY(-1px); }
+
+/* ── FOOTER ── */
+footer {
+  background: #1e3a28;
+  color: #c8d8b0;
+  padding: 8px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sable);
+}
+.footer-logo span { color: var(--ocre); }
+.footer-text { font-size: 0.88rem; color: #c8d8b0; }
+
+/* animations */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.temoignage {
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+}
+.temoignage:nth-child(1) { animation-delay: 0.1s; }
+.temoignage:nth-child(2) { animation-delay: 0.25s; }
+.temoignage:nth-child(3) { animation-delay: 0.4s; }
+</style>
+<script>
+// ── GARDE D'ACCÈS ──
+(function() {
+  if (!sessionStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
+    window.location.replace('index.html#compte');
+  }
+})();
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo" style="display:flex;align-items:center;line-height:1;">
+    <svg width="120" height="36" viewBox="0 0 148 44" style="overflow:visible;">
+      <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.15"/>
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#f5f2e8" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#f5f2e8" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </a>
+    <ul class="nav-links">
+    <li><a href="etape1.html"><span class="nav-num">01</span> La Carte</a></li>
+    <li><a href="etape2.html"><span class="nav-num">02</span> Racontez</a></li>
+    <li><a href="temoignages.html"><span class="nav-num">03</span> Transmettez</a></li>
+    <li><a href="messagerie.html"><span class="nav-num">04</span> La Messagerie</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header" style="background:#1e3a28;padding:52px 52px 48px;border-bottom:1px solid #2e5a38;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:700;color:#d4880a;line-height:1;opacity:0.9;">03</div>
+  <div style="flex:1;">
+    <div style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.22em;color:#7a9a72;margin-bottom:12px;">Étape 3 · Transmettre</div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:#f5f2e8;line-height:1.2;margin-bottom:16px;">Ils ont déposé<br><em style="color:#d4880a;font-style:italic;">un souvenir</em></h1>
+    <p style="font-size:1rem;color:#7a9a72;line-height:1.7;max-width:500px;">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
+  </div>
+  <div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+      <div style="width:32px;height:4px;border-radius:2px;background:#d4880a;"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:#d4880a;"></div>
+      <div style="width:32px;height:4px;border-radius:2px;background:#d4880a;"></div>
+    </div>
+    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+  </div>
+</div>
+
+<!-- TÉMOIGNAGES -->
+<div class="temoignages-wrap">
+  <div class="temoignages-grid">
+
+    <div class="temoignage">
+      <span class="temoignage-quote-mark">"</span>
+      <div class="temoignage-text">Ma mère avait 8 ans quand elle a quitté l'Algérie. Elle n'y est jamais retournée. Grâce à Babelom, j'ai pu placer sur la carte la maison de Tlemcen qu'elle me décrivait depuis toujours. Elle a pleuré en voyant le point.</div>
+      <div class="temoignage-author">Nadia B.</div>
+      <div class="temoignage-lieu">Lyon, France</div>
+    </div>
+
+    <div class="temoignage">
+      <span class="temoignage-quote-mark">"</span>
+      <div class="temoignage-text">J'ai habité 11 logements en 20 ans. Pour la première fois, je vois ma vie entière tracée sur une carte.</div>
+      <div class="temoignage-author">Marc T.</div>
+      <div class="temoignage-lieu">Nomade, 11 pays</div>
+    </div>
+
+    <div class="temoignage">
+      <span class="temoignage-quote-mark">"</span>
+      <div class="temoignage-text">Je l'utilise avec mes élèves en histoire-géographie. Ils interviewent leurs grands-parents et ajoutent leurs lieux. Un pont entre les générations.</div>
+      <div class="temoignage-author">Sophie M.</div>
+      <div class="temoignage-lieu">Professeure, Rennes</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<section id="cta-final">
+  <div>
+    <div class="cta-label">Rejoignez l'archive</div>
+    <h2 class="cta-title">Quel lieu vous a <em>fait</em> ce que vous êtes ?</h2>
+  </div>
+  <button class="btn-primary" onclick="ouvrirZoneSaisie()" style="flex-shrink:0;">Déposez votre souvenir</button>
+</section>
+
+<!-- ZONE DE SAISIE TÉMOIGNAGE -->
+<div id="zone-saisie" style="display:none; background:var(--parchemin); padding:20px 52px; border-top:2px solid var(--sable);">
+  <div style="max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+    <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);white-space:nowrap;flex-shrink:0;">Votre souvenir</span>
+    <input type="text" id="t-auteur" placeholder="Prénom, initiale" style="width:150px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+    <input type="text" id="t-lieu" placeholder="Lieu, pays" style="width:190px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+    <input type="text" id="t-texte" placeholder="Votre souvenir en quelques mots…" style="flex:1;min-width:200px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Cormorant Garamond',serif;font-size:0.98rem;padding:9px 14px;outline:none;border-radius:2px;">
+    <button onclick="soumettreTemoignage()" style="background:var(--ocre);color:white;border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;flex-shrink:0;">Soumettre →</button>
+    <button onclick="fermerZoneSaisie()" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;">✕</button>
+  </div>
+</div>
+
+<!-- CONFIRMATION TÉMOIGNAGE -->
+<div id="confirm-temoignage" style="display:none;background:var(--terre);padding:48px 52px;text-align:center;">
+  <div style="font-size:2rem;margin-bottom:16px;">✉️</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--parchemin);font-weight:300;margin-bottom:12px;">Merci pour votre témoignage</div>
+  <div style="font-size:0.9rem;color:var(--muted);line-height:1.7;">Il sera relu et ajouté à l'archive Babelom prochainement.</div>
+</div>
+
+<!-- FOOTER -->
+<div style="height:24px;background:var(--creme);"></div>
+<footer>
+  <div class="footer-logo">
+    <svg width="130" height="38" viewBox="0 0 148 44" style="overflow:visible;">
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#e8d5b0" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#e8d5b0" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </div>
+  <div class="footer-text">La mémoire des lieux habités · Tous droits réservés</div>
+</footer>
+
+</body>
+<script>
+function ouvrirZoneSaisie() {
+  const zone = document.getElementById('zone-saisie');
+  zone.style.display = 'block';
+  zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelector('#zone-saisie input').focus();
+}
+
+function fermerZoneSaisie() {
+  document.getElementById('zone-saisie').style.display = 'none';
+  ['t-auteur','t-lieu','t-texte'].forEach(id => document.getElementById(id).value = '');
+}
+
+function soumettreTemoignage() {
+  const texte = document.getElementById('t-texte').value.trim();
+  if (!texte) { alert('Veuillez écrire votre souvenir avant de soumettre.'); return; }
+  document.getElementById('zone-saisie').style.display = 'none';
+  const confirm = document.getElementById('confirm-temoignage');
+  confirm.style.display = 'block';
+  confirm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</html>

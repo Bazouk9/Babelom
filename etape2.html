@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Racontez votre lieu</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="supabase-config.js"></script>
+<style>
+:root {
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
+  --muted:    #7a9a72;
+  --sauge:    #d4880a;
+  --ardoise:  #4a7a52;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NAV ── */
+nav {
+  background: #1e3a28;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 52px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #c8dab0;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.nav-links a:hover { color: white; }
+.nav-links a .nav-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+}
+.nav-links a:hover .nav-num { color: #e8a030; }
+.nav-links a.active { color: #d4880a; }
+
+/* ── HEADER ── */
+.page-header {
+  background: #1e3a28;
+  padding: 52px 52px 48px;
+  border-bottom: 1px solid #2e5a38;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.step-badge {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 6rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.header-content { flex: 1; }
+
+.header-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #7a9a72;
+  margin-bottom: 12px;
+}
+
+.header-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  color: #f5f2e8;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.header-title em { color: #d4880a; font-style: italic; }
+
+.header-sub {
+  font-size: 1rem;
+  color: #7a9a72;
+  line-height: 1.7;
+  max-width: 500px;
+}
+
+.header-steps {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.step-pip {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: #2e5a38;
+}
+.step-pip.active { background: #d4880a; }
+
+/* ── RÉCAP LIEU ── */
+.recap-lieu {
+  background: var(--parchemin);
+  border-left: 4px solid var(--ocre);
+  padding: 20px 28px;
+  margin: 40px 52px 0;
+  max-width: 860px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.recap-pin {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.recap-info {
+  font-size: 0.92rem;
+  color: var(--terre);
+  line-height: 1.6;
+}
+
+.recap-info strong {
+  font-weight: 500;
+}
+
+.recap-info .recap-edit {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 16px;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--sable);
+  transition: color 0.2s;
+}
+.recap-edit:hover { color: var(--ocre); }
+
+/* ── CONTENU PRINCIPAL ── */
+.main-content {
+  flex: 1;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 52px 80px;
+  width: 100%;
+}
+
+.form-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--terre);
+  margin-bottom: 8px;
+}
+
+.form-section-sub {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 40px;
+}
+
+/* ── CHAMPS ── */
+.champ {
+  margin-bottom: 32px;
+}
+
+.champ-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── COMPTEURS FAMILLE ── */
+/* ── FAMILLE ICÔNES ── */
+.famille-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.famille-item {
+  background: white;
+  border: 1.5px solid var(--sable);
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+  min-width: 120px;
+}
+.famille-item:hover { border-color: var(--ocre); background: var(--parchemin); }
+.famille-item.actif { border-color: var(--ocre); background: #fff8ee; }
+
+.famille-ico {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.famille-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.famille-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.famille-qte {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.famille-qte button {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--sable);
+  background: var(--creme);
+  color: var(--terre);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.15s;
+  padding: 0;
+}
+.famille-qte button:hover { background: var(--ocre); border-color: var(--ocre); color: white; }
+
+.famille-qte span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--terre);
+  min-width: 16px;
+  text-align: center;
+}
+.famille-item.actif .famille-qte span { color: var(--ocre); }
+
+.champ input {
+  width: 100%;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+}
+.champ input:focus { border-color: var(--ocre); }
+
+.champ label {
+  display: block;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-weight: 400;
+}
+
+.champ textarea {
+  width: 100%;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  padding: 20px 22px;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+  line-height: 1.75;
+  resize: vertical;
+}
+
+.champ textarea:focus { border-color: var(--ocre); }
+
+#f-texte { min-height: 180px; }
+#f-texte-2 { min-height: 120px; }
+
+.char-count {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: right;
+  margin-top: 6px;
+}
+
+/* ── UPLOAD PHOTOS ── */
+.upload-zone {
+  border: 2px dashed var(--sable);
+  padding: 40px 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  border-radius: 2px;
+  background: white;
+}
+.upload-zone:hover { border-color: var(--ocre); background: var(--creme); }
+
+.upload-icon { font-size: 2.4rem; margin-bottom: 12px; }
+
+.upload-zone h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--terre);
+  margin-bottom: 8px;
+}
+
+.upload-zone p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.photos-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+}
+
+.photo-item button {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(30,58,40,0.75);
+  color: white;
+  border: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.photo-item button:hover { background: rgba(30,58,40,1); }
+
+.photo-compressing, .photo-size {
+  position: absolute;
+  bottom: 4px; left: 4px;
+  background: rgba(0,0,0,0.55);
+  color: white;
+  font-size: 0.58rem;
+  font-family: 'Jost', sans-serif;
+  padding: 2px 6px;
+  border-radius: 2px;
+  letter-spacing: 0.05em;
+}
+.photo-size { color: #c8d8b0; }
+
+/* ── FOOTER FORMULAIRE ── */
+.form-footer {
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid var(--sable);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-retour {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.btn-retour:hover { color: var(--terre); }
+
+.btn-valider {
+  background: var(--ocre);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  border-radius: 2px;
+}
+.btn-valider:hover { background: #b87008; transform: translateY(-1px); }
+
+/* ── CONFIRMATION ── */
+#confirmation {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30,58,40,0.85);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+#confirmation.visible { display: flex; }
+
+.confirm-card {
+  background: var(--creme);
+  padding: 64px 56px;
+  max-width: 520px;
+  text-align: center;
+  animation: fadeUp 0.5s ease forwards;
+}
+.confirm-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
+.confirm-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--terre);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.confirm-title em { color: var(--ocre); font-style: italic; }
+.confirm-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-nouveau {
+  background: var(--terre);
+  color: var(--creme);
+  border: none;
+  padding: 13px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 2px;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-nouveau:hover { background: var(--brun); }
+.btn-accueil {
+  background: none;
+  color: var(--muted);
+  border: 1.5px solid var(--sable);
+  padding: 12px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+  border-radius: 2px;
+}
+.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #1e3a28;
+  color: #c8d8b0;
+  padding: 8px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-text { font-size: 0.88rem; color: #c8d8b0; }
+</style>
+<script>
+// ── GARDE D'ACCÈS ──
+(function() {
+  if (!sessionStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
+    window.location.replace('index.html#compte');
+  }
+})();
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
+    <svg width="120" height="36" viewBox="0 0 148 44" style="overflow:visible;">
+      <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.15"/>
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#f5f2e8" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#f5f2e8" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </a>
+    <ul class="nav-links">
+    <li><a href="etape1.html"><span class="nav-num">01</span> La Carte</a></li>
+    <li><a href="etape2.html"><span class="nav-num">02</span> Racontez</a></li>
+    <li><a href="temoignages.html"><span class="nav-num">03</span> Transmettez</a></li>
+    <li><a href="messagerie.html"><span class="nav-num">04</span> La Messagerie</a></li>
+  </ul>
+</nav>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="step-badge">02</div>
+  <div class="header-content">
+    <div class="header-label">Étape 2 sur 3 · Déposer un souvenir</div>
+    <h1 class="header-title">Racontez<br><em>ce lieu</em></h1>
+    <p class="header-sub">Les anecdotes, les odeurs, les visages — tout ce que l'adresse ne dit pas. Et quelques photos si vous en avez.</p>
+  </div>
+  <div>
+    <div class="header-steps" style="margin-bottom:8px;">
+      <div class="step-pip active"></div>
+      <div class="step-pip active"></div>
+      <div class="step-pip"></div>
+    </div>
+    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+  </div>
+</div>
+
+<!-- RÉCAP LIEU -->
+<div class="recap-lieu" id="recap-lieu">
+  <div class="recap-pin">📍</div>
+  <div class="recap-info" id="recap-info">
+    <strong id="recap-adresse">—</strong>
+    <span id="recap-dates" style="color:var(--muted);margin-left:12px;"></span>
+    <button onclick="effacerTout()" class="recap-edit" style="background:none;border:none;cursor:pointer;padding:0;">✕ Effacer tout</button>
+  </div>
+</div>
+
+<!-- CONTENU PRINCIPAL -->
+<div class="main-content">
+
+  <!-- SECTION IDENTITÉ -->
+  <div class="form-section-title" style="margin-bottom:8px;">Votre identité</div>
+  <p class="form-section-sub">Ces informations permettent de relier votre témoignage à votre histoire personnelle.</p>
+
+  <div class="champ champ-row">
+    <div>
+      <label>Nom *</label>
+      <input type="text" id="f-identite-nom" placeholder="Ex : DUPONT" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <div>
+      <label>Prénom *</label>
+      <input type="text" id="f-identite-prenom" placeholder="Ex : Marie">
+    </div>
+  </div>
+
+  <div class="champ">
+    <label>Date de naissance</label>
+    <input type="date" id="f-identite-naissance" style="max-width:240px;">
+  </div>
+
+  <!-- TÉMOIGNAGE POSTHUME -->
+  <div class="champ" style="background:var(--parchemin);border:1.5px solid var(--sable);border-left:3px solid var(--ocre);padding:20px 22px;border-radius:2px;">
+    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;">
+      Témoignage au nom d'une personne décédée <span style="font-size:0.72rem;letter-spacing:0.06em;text-transform:none;font-style:italic;">(optionnel)</span>
+    </label>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+      <div>
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Nom</label>
+        <input type="text" id="f-defunt-nom" placeholder="Ex : Benali" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Prénom</label>
+        <input type="text" id="f-defunt-prenom" placeholder="Ex : Fatima" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Décédé(e) le</label>
+        <input type="date" id="f-defunt-deces" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+      </div>
+    </div>
+    <div>
+      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Lien de parenté ou d'amitié</label>
+      <input type="text" id="f-defunt-lien" placeholder="Ex : Ma grand-mère, mon père, ma tante…" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+    </div>
+  </div>
+
+  <!-- COMPOSITION DU FOYER -->
+  <div class="champ">
+    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;">Composition du foyer à cette époque</label>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">
+
+      <div onclick="toggleCelibataire()" id="fi-celibataire" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">🧍</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Célibataire</span>
+          <span id="celibataire-check" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#c8d8b0;">—</span>
+        </div>
+      </div>
+        <span style="font-size:1.5rem;line-height:1;">💑</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Conjoint·e</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('conjoint',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-conjoint" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('conjoint',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('pere')" id="fi-pere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">👨</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Père</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('pere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-pere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('pere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('mere')" id="fi-mere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">👩</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Mère</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('mere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-mere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('mere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('frere')" id="fi-frere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">👦</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Frère(s)</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('frere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-frere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('frere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('soeur')" id="fi-soeur" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">👧</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Sœur(s)</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('soeur',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-soeur" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('soeur',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('gp')" id="fi-gp" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">👴</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Grands-parents</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('gp',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-gp" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('gp',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('pe')" id="fi-pe" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">🧒</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Petits-enfants</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('pe',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-pe" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('pe',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div onclick="toggleFamille('autres')" id="fi-autres" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
+        <span style="font-size:1.5rem;line-height:1;">🧑</span>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Autres</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" onclick="event.stopPropagation();changerFamille('autres',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
+            <span id="famille-autres" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
+            <button type="button" onclick="event.stopPropagation();changerFamille('autres',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--sable);margin:12px 0 36px;">
+
+  <!-- SECTION SOUVENIRS -->
+
+  <div class="form-section-title">Vos souvenirs de ce lieu</div>
+  <p class="form-section-sub">Prenez le temps d'écrire librement. Ce texte sera transmis tel quel à vos proches et aux générations futures.</p>
+
+  <div class="champ">
+    <label>Anecdotes & souvenirs *</label>
+    <textarea id="f-texte" placeholder="Les odeurs, les voisins, la lumière par la fenêtre, un souvenir d'enfance, une fête, un déménagement, ce que vous aimeriez ne jamais oublier…" oninput="majCompteur()"></textarea>
+    <div class="char-count"><span id="compteur">0</span> caractères</div>
+  </div>
+
+  <div class="champ">
+    <label>Contexte (optionnel)</label>
+    <textarea id="f-texte-2" placeholder="Le quartier à cette époque, le contexte familial ou historique, pourquoi vous étiez là…"></textarea>
+  </div>
+
+  <div class="champ">
+    <label>Photos <span style="font-weight:300;font-size:0.78rem;color:var(--muted);">(optionnel · 4 max)</span></label>
+    <div class="upload-zone" onclick="document.getElementById('f-photos').click()">
+      <div class="upload-icon">📷</div>
+      <h3>Ajouter des photos</h3>
+      <p>Façade, intérieur, rue, portraits — tout ce qui évoque ce lieu.<br>Formats acceptés : JPG, PNG, HEIC · Maximum 4 photos</p>
+    </div>
+    <input type="file" id="f-photos" multiple accept="image/*" style="display:none" onchange="ajouterPhotos(this)">
+    <div class="photos-preview" id="photos-preview"></div>
+  </div>
+
+  <!-- RÈGLEMENT -->
+  <div class="champ" style="margin-top:8px;">
+    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:10px;">
+      Règlement · À lire avant de valider *
+    </label>
+
+    <div id="reglement-scroll" onscroll="verifierScroll(this)" style="
+      height:180px;
+      overflow-y:scroll;
+      background:white;
+      border:1.5px solid var(--sable);
+      border-radius:2px;
+      padding:20px 22px;
+      font-size:0.9rem;
+      line-height:1.85;
+      color:var(--terre);
+      font-family:'Jost',sans-serif;
+    ">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:16px;color:var(--terre);">Charte d'utilisation Babelom</p>
+
+      <p style="margin-bottom:14px;"><strong>1. Identité et authenticité</strong><br>
+      Seule votre propre identité peut être enregistrée. Il est strictement interdit de déposer un témoignage au nom d'une personne vivante sans son consentement explicite. L'usurpation d'identité entraîne la suppression immédiate du compte et peut faire l'objet de poursuites.</p>
+
+      <p style="margin-bottom:14px;"><strong>2. Témoignages posthumes</strong><br>
+      Il est possible de déposer un témoignage au nom d'une personne décédée, à condition de le mentionner clairement et de préciser votre lien de parenté ou d'amitié. Ces témoignages contribuent à la mémoire collective de façon respectueuse.</p>
+
+      <p style="margin-bottom:14px;"><strong>3. Interdiction de délation</strong><br>
+      Babelom est un espace de mémoire, non de dénonciation. Tout témoignage à caractère délateur — visant à nuire à une personne identifiable — entraîne l'annulation définitive de l'inscription et le signalement aux autorités compétentes.</p>
+
+      <p style="margin-bottom:14px;"><strong>4. Pseudonymes interdits</strong><br>
+      L'utilisation d'un pseudonyme est interdite. Babelom repose sur l'authenticité des témoignages. Votre prénom et nom de famille sont requis.</p>
+
+      <p style="margin-bottom:14px;"><strong>5. Protection des tiers</strong><br>
+      Ne citez pas les noms complets d'autres personnes vivantes dans vos témoignages. Vous pouvez évoquer des prénoms ou des initiales, mais veillez à ne pas porter atteinte à la vie privée ou à la réputation d'autrui.</p>
+
+      <p style="margin-bottom:4px;"><strong>6. Visibilité publique</strong><br>
+      En soumettant un témoignage, vous acceptez qu'il soit visible par l'ensemble des utilisateurs de Babelom et, le cas échéant, par des chercheurs ou institutions partenaires dans le cadre de projets de mémoire collective.</p>
+    </div>
+
+    <div id="reglement-hint" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:6px;text-align:right;">
+      ↓ Faites défiler jusqu'en bas pour pouvoir accepter
+    </div>
+
+    <div id="accepter-wrap" style="margin-top:14px;display:flex;align-items:center;gap:12px;opacity:0.35;pointer-events:none;transition:opacity 0.4s;" id="accepter-wrap">
+      <input type="checkbox" id="cb-reglement" style="width:18px;height:18px;accent-color:var(--ocre);cursor:pointer;">
+      <label for="cb-reglement" style="font-size:0.9rem;color:var(--terre);cursor:pointer;line-height:1.5;">
+        J'ai lu et j'accepte la charte d'utilisation de Babelom
+      </label>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <a href="etape1.html" class="btn-retour">← Étape précédente</a>
+    <button class="btn-valider" id="btn-valider" onclick="valider()" disabled style="opacity:0.4;cursor:not-allowed;">J'accepte &amp; Enregistrer →</button>
+  </div>
+
+</div>
+
+<!-- MODALE SIGNALEMENT -->
+<div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:var(--creme);padding:36px 34px;max-width:460px;width:90%;animation:fadeUp 0.3s ease;">
+    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:#a04040;margin-bottom:8px;">Signalement</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--terre);margin-bottom:6px;">Signaler <em style="color:#c04040;font-style:italic;">ce témoignage</em></h3>
+    <p style="font-size:0.84rem;color:var(--muted);line-height:1.65;margin-bottom:20px;">Indiquez la raison de votre signalement. Notre équipe examinera le témoignage dans les plus brefs délais.</p>
+
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:8px;">Motif *</label>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--terre);cursor:pointer;">
+          <input type="radio" name="motif" value="delation" style="accent-color:#c04040;"> Contenu à caractère délateur
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--terre);cursor:pointer;">
+          <input type="radio" name="motif" value="identite"> Usurpation d'identité
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--terre);cursor:pointer;">
+          <input type="radio" name="motif" value="tiers"> Citation de noms de tiers sans consentement
+        </label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--terre);cursor:pointer;">
+          <input type="radio" name="motif" value="autre"> Autre motif
+        </label>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Précisions (optionnel)</label>
+      <textarea id="signalement-detail" placeholder="Décrivez brièvement le problème…" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:2px;resize:none;height:80px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#c04040'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+    </div>
+
+    <div id="signalement-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--sable);">
+      <button onclick="fermerSignalement()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;">Annuler</button>
+      <button onclick="envoyerSignalement()" style="background:#c04040;color:white;border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#a03030'" onmouseout="this.style.background='#c04040'">Envoyer le signalement →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div id="confirmation">
+  <div class="confirm-card">
+    <span class="confirm-icon">🏠</span>
+    <h2 class="confirm-title">Votre souvenir<br>est <em>enregistré</em></h2>
+    <p class="confirm-sub">Il rejoint l'archive de Babelom. Un point de plus sur la carte du monde — une vie derrière ce point.</p>
+    <div class="confirm-actions">
+      <a href="etape1.html" class="btn-nouveau">Ajouter un autre lieu</a>
+      <a href="index.html" class="btn-accueil">Retour à l'accueil</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <svg width="120" height="34" viewBox="0 0 148 44" style="overflow:visible;">
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#c8d8b0" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#c8d8b0" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#c8d8b0" font-size="26" font-weight="700">B</tspan><tspan fill="#c8d8b0">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </div>
+  <button onclick="ouvrirSignalement()" style="background:none;border:1px solid rgba(200,216,176,0.4);color:#c8d8b0;padding:7px 16px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.borderColor='#e08080';this.style.color='#e08080'" onmouseout="this.style.borderColor='rgba(200,216,176,0.4)';this.style.color='#c8d8b0'">⚑ Signaler ce témoignage</button>
+  <div class="footer-text">La mémoire des lieux habités · Tous droits réservés</div>
+</footer>
+
+<script>
+// ── SIGNALEMENT ──
+function ouvrirSignalement() {
+  document.getElementById('modale-signalement').style.display = 'flex';
+}
+function fermerSignalement() {
+  document.getElementById('modale-signalement').style.display = 'none';
+  document.querySelectorAll('input[name="motif"]').forEach(r => r.checked = false);
+  document.getElementById('signalement-detail').value = '';
+  document.getElementById('signalement-msg').textContent = '';
+}
+function envoyerSignalement() {
+  const motif = document.querySelector('input[name="motif"]:checked');
+  const msg = document.getElementById('signalement-msg');
+  if (!motif) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Veuillez sélectionner un motif.';
+    return;
+  }
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Signalement envoyé. Notre équipe va examiner ce témoignage.';
+  setTimeout(fermerSignalement, 2500);
+}
+document.getElementById('modale-signalement').addEventListener('click', function(e) {
+  if (e.target === this) fermerSignalement();
+});
+
+// ── RÈGLEMENT ──
+function verifierScroll(el) {
+  const luJusquEnBas = el.scrollTop + el.clientHeight >= el.scrollHeight - 10;
+  if (luJusquEnBas) {
+    const wrap = document.getElementById('accepter-wrap');
+    wrap.style.opacity = '1';
+    wrap.style.pointerEvents = 'auto';
+    document.getElementById('reglement-hint').style.display = 'none';
+  }
+}
+
+document.getElementById('cb-reglement').addEventListener('change', function() {
+  const btn = document.getElementById('btn-valider');
+  if (this.checked) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.4';
+    btn.style.cursor = 'not-allowed';
+  }
+});
+
+// ── COMPTEURS FAMILLE ──
+const familleData = { conjoint:0, pere:0, mere:0, frere:0, soeur:0, gp:0, pe:0, autres:0 };
+var celibataire = false;
+
+function toggleCelibataire() {
+  celibataire = !celibataire;
+  var card  = document.getElementById('fi-celibataire');
+  var check = document.getElementById('celibataire-check');
+  if (celibataire) {
+    card.style.borderColor  = '#d4880a';
+    card.style.background   = '#fff8ee';
+    check.textContent       = '✓';
+    check.style.color       = '#d4880a';
+  } else {
+    card.style.borderColor  = '#c8d8b0';
+    card.style.background   = 'white';
+    check.textContent       = '—';
+    check.style.color       = '#c8d8b0';
+  }
+}
+
+function toggleFamille(id) {
+  const el = document.getElementById('fi-' + id);
+  const valEl = document.getElementById('famille-' + id);
+  const val = parseInt(valEl.textContent);
+  if (val === 0) {
+    changerFamille(id, 1);
+  }
+  el.classList.toggle('actif');
+}
+
+const familleMax = { conjoint:10, pere:2, mere:2, frere:10, soeur:10, gp:4, pe:10, autres:10 };
+
+function changerFamille(membre, delta) {
+  const max = familleMax[membre] || 10;
+  familleData[membre] = Math.min(max, Math.max(0, familleData[membre] + delta));
+  document.getElementById('famille-' + membre).textContent = familleData[membre];
+  const card = document.getElementById('fi-' + membre);
+  if (card) {
+    if (familleData[membre] > 0) card.classList.add('actif');
+    else card.classList.remove('actif');
+  }
+}
+
+// ── RÉCAP depuis étape 1 ──
+const data1 = JSON.parse(sessionStorage.getItem('babelom-etape1') || '{}');
+
+if (data1.ville || data1.pays) {
+  const parties = [data1.lieudit, data1.nom, data1.ville, data1.pays].filter(Boolean);
+  document.getElementById('recap-adresse').textContent = parties.join(', ') || '—';
+  if (data1.de && data1.a) {
+    document.getElementById('recap-dates').textContent = data1.de + ' – ' + data1.a
+      + (data1.type ? ' · ' + data1.type : '');
+  }
+}
+
+// ── COMPTEUR ──
+function majCompteur() {
+  document.getElementById('compteur').textContent = document.getElementById('f-texte').value.length;
+}
+
+// ── PHOTOS avec compression ──
+const MAX_PX   = 1200;   // largeur/hauteur max en pixels
+const MAX_KB   = 200;    // poids max par photo en Ko
+const QUALITE  = 0.82;   // qualité JPEG initiale
+
+let photosFichiers = []; // stocke les File compressés
+
+function compresserPhoto(file) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.width, h = img.height;
+
+      // Redimensionner si trop grand
+      if (w > MAX_PX || h > MAX_PX) {
+        if (w > h) { h = Math.round(h * MAX_PX / w); w = MAX_PX; }
+        else       { w = Math.round(w * MAX_PX / h); h = MAX_PX; }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+
+      // Ajuster la qualité pour respecter MAX_KB
+      let q = QUALITE;
+      const tryBlob = (qualite) => {
+        canvas.toBlob(blob => {
+          if (blob.size > MAX_KB * 1024 && qualite > 0.4) {
+            tryBlob(qualite - 0.08);
+          } else {
+            resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
+          }
+        }, 'image/jpeg', qualite);
+      };
+      tryBlob(q);
+    };
+    img.src = url;
+  });
+}
+
+function ajouterPhotos(input) {
+  const preview = document.getElementById('photos-preview');
+  const deja    = photosFichiers.filter(Boolean).length;
+  const restant = 4 - deja;
+
+  if (restant <= 0) {
+    alert('Maximum 4 photos par témoignage.'); input.value = ''; return;
+  }
+
+  const fichiers = [...input.files].slice(0, restant);
+  if ([...input.files].length > restant) {
+    alert(`Limite de 4 photos atteinte — seules ${restant} photo${restant > 1 ? 's' : ''} ont été ajoutée${restant > 1 ? 's' : ''}.`);
+  }
+  fichiers.forEach(async (file) => {
+    const urlTemp = URL.createObjectURL(file);
+    const idx  = photosFichiers.length;
+    const item = document.createElement('div');
+    item.className = 'photo-item';
+    item.id = 'photo-item-' + idx;
+    item.innerHTML = `<img src="${urlTemp}"><button onclick="supprimerPhoto(${idx}, this)">✕</button><div class="photo-compressing">⏳</div>`;
+    preview.appendChild(item);
+    photosFichiers.push(null); // placeholder
+
+    // Compresser en arrière-plan
+    const compressed = await compresserPhoto(file);
+    photosFichiers[idx] = compressed;
+    URL.revokeObjectURL(urlTemp);
+
+    // Mettre à jour l'aperçu avec la version compressée + afficher le poids
+    const urlComp = URL.createObjectURL(compressed);
+    const imgEl   = item.querySelector('img');
+    if (imgEl) imgEl.src = urlComp;
+    const poids = (compressed.size / 1024).toFixed(0);
+    const tag   = item.querySelector('.photo-compressing');
+    if (tag) { tag.textContent = `${poids} Ko`; tag.className = 'photo-size'; }
+  });
+  // Réinitialiser l'input pour permettre de re-sélectionner le même fichier
+  input.value = '';
+}
+
+function supprimerPhoto(idx, btn) {
+  photosFichiers[idx] = null;
+  btn.closest('.photo-item').remove();
+}
+
+// ── VALIDATION & ENVOI SUPABASE ──
+async function valider() {
+  const texte = document.getElementById('f-texte').value.trim();
+  if (!texte) { alert('Veuillez écrire au moins quelques mots sur ce lieu.'); return; }
+
+  const btn = document.querySelector('button[onclick="valider()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Envoi en cours…'; }
+
+  try {
+    const user  = JSON.parse(sessionStorage.getItem('babelom-user') || '{}');
+    const data1 = JSON.parse(sessionStorage.getItem('babelom-etape1') || '{}');
+
+    // ── Upload des photos compressées vers Supabase Storage ──
+    const photosUrls = [];
+    const fichiersPhotos = photosFichiers.filter(Boolean);
+    for (const file of fichiersPhotos) {
+      const chemin = `${user.id || 'anon'}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g,'_')}`;
+      try {
+        const url = await sb.uploadPhoto(file, chemin);
+        photosUrls.push(url);
+      } catch(e) {
+        console.warn('Photo ignorée :', e.message);
+      }
+    }
+
+    // ── Construire l'objet témoignage ──
+    const temoignage = {
+      utilisateur_id:      user.id || null,
+
+      // Étape 1
+      pays:                data1.pays    || null,
+      ville:               data1.ville   || null,
+      lieudit:             data1.lieudit || null,
+      adresse:             data1.adresse || null,
+      ancien_nom:          data1.ancienNom || null,
+      annee_de:            data1.de ? parseInt(data1.de) : null,
+      annee_a:             data1.a  ? parseInt(data1.a)  : null,
+      type_logement:       data1.typeLogement || null,
+      etage:               data1.etage || null,
+      voisinage:           data1.voisinage || null,
+      lat:                 data1.lat  ? parseFloat(data1.lat)  : null,
+      lng:                 data1.lng  ? parseFloat(data1.lng)  : null,
+
+      // Étape 2 — Identité
+      identite_nom:        document.getElementById('f-identite-nom')?.value.trim() || null,
+      identite_prenom:     document.getElementById('f-identite-prenom')?.value.trim() || null,
+      identite_naissance:  document.getElementById('f-identite-naissance')?.value || null,
+
+      // Foyer
+      foyer_celibataire:   celibataire,
+      foyer_conjoint:      familleData.conjoint,
+      foyer_pere:          familleData.pere,
+      foyer_mere:          familleData.mere,
+      foyer_frere:         familleData.frere,
+      foyer_soeur:         familleData.soeur,
+      foyer_gp:            familleData.gp,
+      foyer_pe:            familleData.pe,
+      foyer_autres:        familleData.autres,
+
+      // Témoignage
+      texte,
+      photos:              photosUrls.length ? photosUrls : null,
+
+      // Défunt (optionnel)
+      defunt_nom:          document.getElementById('f-defunt-nom')?.value.trim() || null,
+      defunt_prenom:       document.getElementById('f-defunt-prenom')?.value.trim() || null,
+      defunt_lien:         document.getElementById('f-defunt-lien')?.value.trim() || null,
+
+      statut:              'en_attente',
+    };
+
+    await sb.insert('temoignages', temoignage);
+
+    // ── Succès ──
+    document.getElementById('confirmation').classList.add('visible');
+
+  } catch(e) {
+    alert('Une erreur est survenue lors de l\'envoi : ' + e.message);
+    if (btn) { btn.disabled = false; btn.textContent = 'Soumettre mon témoignage →'; }
+  }
+}
+
+function effacerTout() {
+  if (!confirm('Effacer tous les champs du formulaire ?')) return;
+  // Champs texte et date
+  document.querySelectorAll('input[type="text"], input[type="date"], input[type="email"], textarea').forEach(function(el) {
+    el.value = '';
+  });
+  // Radios et checkboxes
+  document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function(el) {
+    el.checked = false;
+  });
+  // Compteurs famille + célibataire
+  Object.keys(familleData).forEach(function(k) { familleData[k] = 0; });
+  document.querySelectorAll('.famille-count').forEach(function(el) { el.textContent = '0'; });
+  celibataire = true; toggleCelibataire(); // remet à false + visuel neutre
+  // Photos
+  photosSelectionnees = [];
+  document.getElementById('photos-preview').innerHTML = '';
+  majCompteur();
+  // Témoignage posthume
+  const posthume = document.getElementById('defunt-fields');
+  if (posthume) posthume.style.display = 'none';
+  // Règlement
+  const reglScroll = document.getElementById('regl-check-wrap');
+  if (reglScroll) reglScroll.style.display = 'none';
+  document.getElementById('f-texte').dispatchEvent(new Event('input'));
+  // Remonter en haut
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
