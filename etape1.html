@@ -845,12 +845,8 @@ var inscrits = [
 // Seuil de zoom : en dessous → un seul point par ville ; au-dessus → tous les points
 var ZOOM_DETAIL = 10;
 
-// Icône point individuel
-var iconInscrit = L.divIcon({
-  className: '',
-  html: '<div style="width:12px;height:12px;border-radius:50%;background:#4a7a52;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;"></div>',
-  iconSize:[12,12], iconAnchor:[6,6]
-});
+// Icône point individuel — initialisée après chargement Leaflet
+var iconInscrit = null;
 
 // Icône cluster (plusieurs inscrits dans la ville)
 function makeClusterIcon(count) {
@@ -872,7 +868,6 @@ function groupByVille(list) {
   return groups;
 }
 
-// Couches actives
 function makeIcon() {
   return L.divIcon({
     className: '',
@@ -884,6 +879,13 @@ function makeIcon() {
 var markersLayer = null;
 
 window.addEventListener('load', function() {
+  // Initialiser les icônes Leaflet ici (après chargement de la lib)
+  iconInscrit = L.divIcon({
+    className: '',
+    html: '<div style="width:12px;height:12px;border-radius:50%;background:#4a7a52;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;"></div>',
+    iconSize:[12,12], iconAnchor:[6,6]
+  });
+
   map = L.map('map', { preferCanvas: true }).setView([46, 10], 4);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
