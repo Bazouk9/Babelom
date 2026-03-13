@@ -939,6 +939,7 @@ async function chargerTemoignages() {
 }
 
 
+function buildPopup(p, isCluster, membres) {
   var user = null;
   try { user = JSON.parse(sessionStorage.getItem('babelom-user')); } catch(e) {}
 
