@@ -1777,15 +1777,12 @@ window.addEventListener('load', () => {
   setTimeout(animateLogo, 800);
 });
 
-
 function ouvrirResetMdp(e) {
   e.preventDefault();
-  // Pré-remplir avec l'email saisi dans le champ connexion si disponible
   const emailConnexion = document.getElementById('con-email').value.trim();
   if (emailConnexion) document.getElementById('reset-email').value = emailConnexion;
   document.getElementById('reset-msg').textContent = '';
-  const modale = document.getElementById('modale-reset');
-  modale.style.display = 'flex';
+  document.getElementById('modale-reset').style.display = 'flex';
 }
 
 function fermerResetMdp() {
@@ -1794,7 +1791,7 @@ function fermerResetMdp() {
   document.getElementById('reset-msg').textContent = '';
 }
 
-function envoyerReset() {
+async function envoyerReset() {
   const email = document.getElementById('reset-email').value.trim();
   const msg   = document.getElementById('reset-msg');
   if (!email || !email.includes('@')) {
@@ -1802,12 +1799,19 @@ function envoyerReset() {
     msg.textContent = 'Veuillez saisir une adresse e-mail valide.';
     return;
   }
-  msg.style.color = '#4a7a52';
-  msg.textContent = '✓ Un lien de réinitialisation a été envoyé à ' + email;
-  setTimeout(fermerResetMdp, 3000);
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/confirmation.html'
+  });
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Erreur : ' + error.message;
+  } else {
+    msg.style.color = '#4a7a52';
+    msg.textContent = '✓ Un lien de réinitialisation a été envoyé à ' + email;
+    setTimeout(fermerResetMdp, 3000);
+  }
 }
 
-// Fermer en cliquant en dehors
 document.getElementById('modale-reset').addEventListener('click', function(e) {
   if (e.target === this) fermerResetMdp();
 });
@@ -1977,6 +1981,7 @@ window.addEventListener('load', () => {
     });
     L.marker([l.lat, l.lng], { icon }).addTo(heroMap);
   });
+  setTimeout(() => { heroMap.invalidateSize(); }, 400);
 });
 
 // ── CARTE PRINCIPALE ──
