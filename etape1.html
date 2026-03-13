@@ -894,6 +894,9 @@ window.addEventListener('load', function() {
   setTimeout(function() { map.invalidateSize(); }, 400);
   renderMarkers();
   map.on('zoomend', renderMarkers);
+
+  // Charger les vrais témoignages publiés depuis Supabase
+  chargerTemoignages();
   map.on('click', function(e) {
     latLng = e.latlng;
     if (marqueur) map.removeLayer(marqueur);
@@ -905,7 +908,37 @@ window.addEventListener('load', function() {
   });
 });
 
-function buildPopup(p, isCluster, membres) {
+// Charger les témoignages réels depuis Supabase et les ajouter à la carte
+async function chargerTemoignages() {
+  try {
+    const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sbClient
+      .from('temoignages')
+      .select('lat, lng, ville, adresse, identite_prenom, identite_nom, annee_de, annee_a, type_logement, statut')
+      .not('lat', 'is', null)
+      .not('lng', 'is', null);
+
+    if (error || !data || !data.length) return;
+
+    data.forEach(function(t) {
+      var nom = (t.identite_prenom || '') + ' ' + (t.identite_nom ? t.identite_nom[0] + '.' : '');
+      var lieu = (t.adresse || '') + (t.ville ? ', ' + t.ville : '');
+      inscrits.push({
+        lat:   parseFloat(t.lat),
+        lng:   parseFloat(t.lng),
+        nom:   nom.trim() || 'Anonyme',
+        lieu:  lieu.trim() || 'Lieu inconnu',
+        ville: t.ville || 'Autre',
+        reel:  true
+      });
+    });
+    renderMarkers();
+  } catch(e) {
+    console.warn('Impossible de charger les témoignages:', e.message);
+  }
+}
+
+
   var user = null;
   try { user = JSON.parse(sessionStorage.getItem('babelom-user')); } catch(e) {}
 
