@@ -1800,7 +1800,7 @@ async function envoyerReset() {
     return;
   }
   const { error } = await sbAuth.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/confirmation.html'
+    redirectTo: 'https://bazouk9.github.io/Babelom/confirmation.html'
   });
   if (error) {
     msg.style.color = '#c04040';
@@ -1844,7 +1844,7 @@ async function creerCompte() {
     password: mdp,
     options: {
       data: { prenom, nom },
-      emailRedirectTo: window.location.origin + '/confirmation.html'
+      emailRedirectTo: 'https://bazouk9.github.io/Babelom/confirmation.html'
     }
   });
 
