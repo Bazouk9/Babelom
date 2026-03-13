@@ -1799,7 +1799,7 @@ async function envoyerReset() {
     msg.textContent = 'Veuillez saisir une adresse e-mail valide.';
     return;
   }
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { error } = await sbAuth.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + '/confirmation.html'
   });
   if (error) {
@@ -1817,7 +1817,7 @@ document.getElementById('modale-reset').addEventListener('click', function(e) {
 });
 
 // ── CLIENT SUPABASE AUTH ──
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 // ── COMPTE ──
 async function creerCompte() {
@@ -1839,7 +1839,7 @@ async function creerCompte() {
   msg.style.color = '#7a9a72';
   msg.textContent = 'Création du compte…';
 
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error } = await sbAuth.auth.signUp({
     email,
     password: mdp,
     options: {
@@ -1873,7 +1873,7 @@ async function seConnecter() {
   msg.style.color = '#7a9a72';
   msg.textContent = 'Connexion…';
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password: mdp });
+  const { data, error } = await sbAuth.auth.signInWithPassword({ email, password: mdp });
 
   if (error) {
     msg.style.color = '#c04040';

@@ -105,7 +105,7 @@ p {
 </div>
 
 <script>
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 async function confirmer() {
   // Supabase envoie le token dans le hash de l'URL
@@ -122,7 +122,7 @@ async function confirmer() {
   }
 
   if (type === 'signup' || type === 'email_change') {
-    const { data, error } = await supabase.auth.getUser(token);
+    const { data, error } = await sbAuth.auth.getUser(token);
     if (error) {
       document.getElementById('carte-chargement').style.display = 'none';
       document.getElementById('carte-erreur').style.display = 'block';
