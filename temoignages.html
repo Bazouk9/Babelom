@@ -6,6 +6,7 @@
 <title>Babelom — Témoignages</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -346,31 +347,11 @@ footer {
 
 <!-- TÉMOIGNAGES -->
 <div class="temoignages-wrap">
-  <div class="temoignages-grid">
-
-    <div class="temoignage">
-      <span class="temoignage-quote-mark">"</span>
-      <div class="temoignage-text">Ma mère avait 8 ans quand elle a quitté l'Algérie. Elle n'y est jamais retournée. Grâce à Babelom, j'ai pu placer sur la carte la maison de Tlemcen qu'elle me décrivait depuis toujours. Elle a pleuré en voyant le point.</div>
-      <div class="temoignage-author">Nadia B.</div>
-      <div class="temoignage-lieu">Lyon, France</div>
+  <div class="temoignages-grid" id="temoignages-grid">
+    <div style="text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">
+      Chargement des témoignages…
     </div>
-
-    <div class="temoignage">
-      <span class="temoignage-quote-mark">"</span>
-      <div class="temoignage-text">J'ai habité 11 logements en 20 ans. Pour la première fois, je vois ma vie entière tracée sur une carte.</div>
-      <div class="temoignage-author">Marc T.</div>
-      <div class="temoignage-lieu">Nomade, 11 pays</div>
-    </div>
-
-    <div class="temoignage">
-      <span class="temoignage-quote-mark">"</span>
-      <div class="temoignage-text">Je l'utilise avec mes élèves en histoire-géographie. Ils interviewent leurs grands-parents et ajoutent leurs lieux. Un pont entre les générations.</div>
-      <div class="temoignage-author">Sophie M.</div>
-      <div class="temoignage-lieu">Professeure, Rennes</div>
-    </div>
-
   </div>
-</div>
 
 <!-- CTA -->
 <section id="cta-final">
@@ -439,5 +420,59 @@ function soumettreTemoignage() {
   confirm.style.display = 'block';
   confirm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+// ── CHARGEMENT TÉMOIGNAGES DEPUIS SUPABASE ──
+const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function chargerTemoignages() {
+  const grid = document.getElementById('temoignages-grid');
+
+  const { data, error } = await sbClient
+    .from('temoignages')
+    .select('id, identite_prenom, identite_nom, ville, pays, texte, annee_de, annee_a, type_logement, cree_le')
+    .order('cree_le', { ascending: false });
+
+  if (error || !data || !data.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">Aucun témoignage pour le moment — soyez le premier !</div>';
+    return;
+  }
+
+  // Vérifier si un ID spécifique est demandé (depuis la carte)
+  const params  = new URLSearchParams(window.location.search);
+  const idCible = params.get('id');
+
+  grid.innerHTML = '';
+  data.forEach(function(t, idx) {
+    const prenom = t.identite_prenom || '';
+    const nom    = t.identite_nom ? t.identite_nom[0] + '.' : '';
+    const auteur = (prenom + ' ' + nom).trim() || 'Anonyme';
+    const lieu   = [t.ville, t.pays].filter(Boolean).join(', ') || 'Lieu inconnu';
+    const annees = t.annee_de && t.annee_a ? t.annee_de + ' – ' + t.annee_a : '';
+    const texte  = t.texte || '';
+    const estCible = t.id === idCible;
+
+    const div = document.createElement('div');
+    div.className = 'temoignage';
+    div.id = 'tem-' + t.id;
+    if (estCible) div.style.borderTop = '3px solid var(--ocre)';
+
+    div.innerHTML =
+      '<span class="temoignage-quote-mark">"</span>' +
+      '<div class="temoignage-text">' + texte + '</div>' +
+      '<div class="temoignage-author">' + auteur + '</div>' +
+      '<div class="temoignage-lieu">📍 ' + lieu + (annees ? ' · ' + annees : '') + '</div>';
+
+    grid.appendChild(div);
+
+    // Scroller vers le témoignage ciblé
+    if (estCible) {
+      setTimeout(function() {
+        div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
+    }
+  });
+}
+
+window.addEventListener('load', chargerTemoignages);
 </script>
 </html>

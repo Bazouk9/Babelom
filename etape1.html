@@ -915,7 +915,7 @@ async function chargerTemoignages() {
     const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     const { data, error } = await sbClient
       .from('temoignages')
-      .select('lat, lng, ville, adresse, identite_prenom, identite_nom, annee_de, annee_a, type_logement, statut')
+      .select('id, lat, lng, ville, adresse, identite_prenom, identite_nom, annee_de, annee_a, type_logement, texte, statut')
       .not('lat', 'is', null)
       .not('lng', 'is', null);
 
@@ -925,12 +925,17 @@ async function chargerTemoignages() {
       var nom = (t.identite_prenom || '') + ' ' + (t.identite_nom ? t.identite_nom[0] + '.' : '');
       var lieu = (t.adresse || '') + (t.ville ? ', ' + t.ville : '');
       inscrits.push({
-        lat:   parseFloat(t.lat),
-        lng:   parseFloat(t.lng),
-        nom:   nom.trim() || 'Anonyme',
-        lieu:  lieu.trim() || 'Lieu inconnu',
-        ville: t.ville || 'Autre',
-        reel:  true
+        id:            t.id,
+        lat:           parseFloat(t.lat),
+        lng:           parseFloat(t.lng),
+        nom:           nom.trim() || 'Anonyme',
+        lieu:          lieu.trim() || 'Lieu inconnu',
+        ville:         t.ville || 'Autre',
+        type_logement: t.type_logement || '',
+        annee_de:      t.annee_de || '',
+        annee_a:       t.annee_a || '',
+        texte:         t.texte || '',
+        reel:          true
       });
     });
     renderMarkers();
@@ -957,14 +962,17 @@ function buildPopup(p, isCluster, membres) {
   }
 
   if (user) {
+    const lienTem = p.id ? 'temoignages.html?id=' + p.id : 'temoignages.html';
+    const type    = p.type_logement ? '🏠 <strong>Type :</strong> ' + p.type_logement + '<br>' : '';
+    const annees  = (p.annee_de && p.annee_a) ? '📅 <strong>Années :</strong> ' + p.annee_de + ' – ' + p.annee_a + '<br>' : '';
+    const extrait = p.texte ? '« ' + p.texte.substring(0, 80) + (p.texte.length > 80 ? '…' : '') + ' »' : '';
     return '<div style="font-family:\'Jost\',sans-serif;min-width:220px;padding:4px 2px;">' +
       '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
       '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
-      '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.6;margin-bottom:8px;">🏠 <strong>Type :</strong> Appartement</div>' +
-      '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.6;margin-bottom:8px;">📅 <strong>Années :</strong> 1998 – 2011</div>' +
-      '<div style="font-size:0.82rem;color:#4a7a52;line-height:1.6;margin-bottom:12px;font-style:italic;">« Un souvenir impérissable de cette maison… »</div>' +
-      '<a href="temoignages.html" style="display:block;text-align:center;background:#1e3a28;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
+      '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.8;margin-bottom:8px;">' + type + annees + '</div>' +
+      (extrait ? '<div style="font-size:0.82rem;color:#4a7a52;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
+      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#1e3a28;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
       '</div>';
   } else {
     return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
