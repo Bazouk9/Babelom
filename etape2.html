@@ -555,7 +555,7 @@ footer {
 <!-- NAV -->
 <nav>
   <a href="index.html" style="display:flex;align-items:center;text-decoration:none;">
-    <svg width="120" height="36" viewBox="0 0 148 44" style="overflow:visible;">
+    <svg width="150" height="45" viewBox="0 0 148 44" style="overflow:visible;">
       <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.15"/>
       <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
       <polyline points="8,19 16,9 24,19" fill="none" stroke="#f5f2e8" stroke-width="1.5" stroke-linejoin="round"/>
@@ -653,107 +653,112 @@ footer {
   <!-- COMPOSITION DU FOYER -->
   <div class="champ">
     <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;">Composition du foyer à cette époque</label>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">
 
-      <div onclick="toggleCelibataire()" id="fi-celibataire" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">🧍</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Célibataire</span>
-          <span id="celibataire-check" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#c8d8b0;">—</span>
-        </div>
-      </div>
-        <span style="font-size:1.5rem;line-height:1;">💑</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Conjoint·e</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('conjoint',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-conjoint" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('conjoint',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
-        </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:8px;">
+
+      <!-- Célibataire -->
+      <div onclick="toggleCelibataire()" id="fi-celibataire" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">🧍</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Célibataire</span>
+        <span id="celibataire-check" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#c8d8b0;">—</span>
       </div>
 
-      <div onclick="toggleFamille('pere')" id="fi-pere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">👨</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Père</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('pere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-pere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('pere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Conjoint·e -->
+      <div id="fi-conjoint" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">💑</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Conjoint·e</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('conjoint',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-conjoint" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('conjoint',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('mere')" id="fi-mere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">👩</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Mère</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('mere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-mere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('mere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Père -->
+      <div id="fi-pere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👨</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Père</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('pere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-pere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('pere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('frere')" id="fi-frere" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">👦</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Frère(s)</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('frere',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-frere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('frere',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Mère -->
+      <div id="fi-mere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👩</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Mère</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('mere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-mere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('mere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('soeur')" id="fi-soeur" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">👧</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Sœur(s)</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('soeur',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-soeur" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('soeur',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Enfants -->
+      <div id="fi-enfants" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👶</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Enfant(s)</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('enfants',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-enfants" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('enfants',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('gp')" id="fi-gp" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">👴</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Grands-parents</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('gp',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-gp" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('gp',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Frère(s) -->
+      <div id="fi-frere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👦</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Frère(s)</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('frere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-frere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('frere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('pe')" id="fi-pe" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">🧒</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Petits-enfants</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('pe',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-pe" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('pe',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Sœur(s) -->
+      <div id="fi-soeur" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👧</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Sœur(s)</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('soeur',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-soeur" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('soeur',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
-      <div onclick="toggleFamille('autres')" id="fi-autres" style="background:white;border:1.5px solid #c8d8b0;border-radius:6px;padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:130px;">
-        <span style="font-size:1.5rem;line-height:1;">🧑</span>
-        <div style="display:flex;flex-direction:column;gap:2px;">
-          <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Autres</span>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <button type="button" onclick="event.stopPropagation();changerFamille('autres',-1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">−</button>
-            <span id="famille-autres" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:16px;text-align:center;">0</span>
-            <button type="button" onclick="event.stopPropagation();changerFamille('autres',1)" style="width:20px;height:20px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">+</button>
-          </div>
+      <!-- Grands-parents -->
+      <div id="fi-gp" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">👴</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Gds-parents</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('gp',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-gp" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('gp',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+        </div>
+      </div>
+
+      <!-- Petits-enfants -->
+      <div id="fi-pe" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">🧒</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Petits-enf.</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('pe',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-pe" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('pe',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+        </div>
+      </div>
+
+      <!-- Autres -->
+      <div id="fi-autres" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+        <span style="font-size:1.3rem;line-height:1;">🧑</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Autres</span>
+        <div style="display:flex;align-items:center;gap:5px;">
+          <button type="button" onclick="changerFamille('autres',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-autres" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('autres',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
@@ -968,7 +973,7 @@ document.getElementById('cb-reglement').addEventListener('change', function() {
 });
 
 // ── COMPTEURS FAMILLE ──
-const familleData = { conjoint:0, pere:0, mere:0, frere:0, soeur:0, gp:0, pe:0, autres:0 };
+const familleData = { conjoint:0, pere:0, mere:0, enfants:0, frere:0, soeur:0, gp:0, pe:0, autres:0 };
 var celibataire = false;
 
 function toggleCelibataire() {
@@ -998,7 +1003,7 @@ function toggleFamille(id) {
   el.classList.toggle('actif');
 }
 
-const familleMax = { conjoint:10, pere:2, mere:2, frere:10, soeur:10, gp:4, pe:10, autres:10 };
+const familleMax = { conjoint:10, pere:2, mere:2, enfants:20, frere:10, soeur:10, gp:4, pe:10, autres:10 };
 
 function changerFamille(membre, delta) {
   const max = familleMax[membre] || 10;
@@ -1006,8 +1011,8 @@ function changerFamille(membre, delta) {
   document.getElementById('famille-' + membre).textContent = familleData[membre];
   const card = document.getElementById('fi-' + membre);
   if (card) {
-    if (familleData[membre] > 0) card.classList.add('actif');
-    else card.classList.remove('actif');
+    if (familleData[membre] > 0) { card.style.borderColor = 'var(--ocre)'; card.style.background = '#fff8ee'; }
+    else { card.style.borderColor = '#c8d8b0'; card.style.background = 'white'; }
   }
 }
 
@@ -1168,6 +1173,7 @@ async function valider() {
       foyer_conjoint:      familleData.conjoint,
       foyer_pere:          familleData.pere,
       foyer_mere:          familleData.mere,
+      foyer_enfants:       familleData.enfants,
       foyer_frere:         familleData.frere,
       foyer_soeur:         familleData.soeur,
       foyer_gp:            familleData.gp,
