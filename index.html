@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — La mémoire des lieux habités</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="player.js" defer></script>
+<script src="i18n.js?v=2"></script>
+<style>
+:root {
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
+  --ombre:    rgba(0,0,40,0.25);
+  --muted:    #7a9a72;
+  --sauge:    #d4880a;
+  --sauge-clair: #b0c898;
+  --ardoise:  #4a7a52;
+  --ardoise-clair: #c8dab0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════
+   GRAIN OVERLAY
+══════════════════════════════════ */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:9999;
+  opacity:0.4;
+}
+
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 52px;
+  background: #1e3a28;
+  transition: background 0.4s, padding 0.4s;
+}
+nav.scrolled {
+  background: rgba(22,50,32,0.98);
+  backdrop-filter: blur(8px);
+  padding: 8px 52px;
+  border-bottom: 1px solid #2e5a38;
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--terre);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--ocre); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #c8dab0;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.nav-links a:hover { color: white; }
+.nav-links a .nav-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+}
+.nav-links a:hover .nav-num { color: #e8a030; }
+
+.nav-cta {
+  background: #d4880a !important;
+  color: #1e3a28 !important;
+  padding: 10px 22px !important;
+  letter-spacing: 0.1em !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: #b8720a !important; color: #1e3a28 !important; }
+
+/* ══════════════════════════════════
+   HERO
+══════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 160px 52px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-eyebrow {
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ocre);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.2s forwards;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3.5vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.18;
+  color: var(--terre);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.4s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--ocre);
+  font-weight: 300;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 440px;
+  font-weight: 300;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.6s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  opacity: 0;
+  animation: fadeUp 0.9s 0.8s forwards;
+}
+
+.btn-primary {
+  background: var(--terre);
+  color: var(--creme);
+  border: none;
+  padding: 14px 32px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.25s, transform 0.2s;
+}
+.btn-primary:hover { background: var(--brun); transform: translateY(-1px); }
+
+.btn-ghost {
+  background: none;
+  color: var(--brun);
+  border: 1.5px solid var(--sable);
+  padding: 13px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.25s;
+}
+.btn-ghost:hover { border-color: var(--brun); }
+
+.hero-quote {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sable);
+  border-left: 3px solid var(--sauge);
+  padding-left: 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.45rem;
+  color: var(--muted);
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.9s 1s forwards;
+}
+.hero-quote cite { display:block; font-style:normal; font-size:0.95rem; margin-top:8px; letter-spacing:0.1em; color: var(--sauge); font-family:'Jost',sans-serif; text-transform:uppercase; }
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Carte décorative dans le hero */
+#hero-map-preview {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: fadeIn 1.4s 0.6s forwards;
+}
+
+.hero-map-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--creme) 0%, transparent 30%, transparent 70%, var(--creme) 100%),
+              linear-gradient(to bottom, var(--creme) 0%, transparent 15%, transparent 85%, var(--creme) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Points animés sur la carte hero */
+.map-dot {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--ocre);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(196,133,74,0.5);
+  z-index: 3;
+  opacity: 0;
+}
+.map-dot:nth-child(1) { top:30%; left:62%; animation: dotAppear 0.5s 1.5s forwards; } /* Lublin */
+.map-dot:nth-child(2) { top:72%; left:48%; animation: dotAppear 0.5s 1.9s forwards; } /* Batna */
+.map-dot:nth-child(3) { top:50%; left:38%; animation: dotAppear 0.5s 2.3s forwards; } /* Falguière */
+.map-dot:nth-child(4) { top:38%; left:40%; animation: dotAppear 0.5s 2.7s forwards; } /* Paris */
+
+@keyframes dotAppear {
+  from { opacity:0; transform:rotate(-45deg) scale(0); }
+  to   { opacity:1; transform:rotate(-45deg) scale(1); }
+}
+
+/* ══════════════════════════════════
+   SECTION CHIFFRES / INTRO
+══════════════════════════════════ */
+#intro {
+  background: #e8f0e0;
+  color: #e8e0ff;
+  padding: 80px 52px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background-color: var(--brun);
+}
+
+.intro-stat {
+  background: var(--terre);
+  padding: 48px 40px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.intro-stat:nth-child(1) .stat-number { color: #b5512a; }
+.intro-stat:nth-child(2) .stat-number { color: #6daa76; }
+.intro-stat:nth-child(3) .stat-number { color: #5a90aa; }
+
+.stat-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--sable);
+  opacity: 0.7;
+}
+
+/* ══════════════════════════════════
+   SECTION MANIFESTE
+══════════════════════════════════ */
+#manifeste {
+  padding: 36px 52px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.manifeste-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sauge);
+  position: sticky;
+  top: 100px;
+  line-height: 1.1;
+}
+
+.manifeste-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--terre);
+}
+.manifeste-text p { margin-bottom: 0.8em; }
+.manifeste-text em { color: var(--sauge); font-style: italic; }
+.manifeste-text em.ardoise { color: var(--ardoise); font-style: italic; }
+.manifeste-text strong { font-weight: 600; }
+
+/* ══════════════════════════════════
+   SECTION COMMENT ÇA MARCHE
+══════════════════════════════════ */
+#comment {
+  background: #eef4e4;
+  padding: 36px 52px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.section-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--sauge);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.step {
+  background: var(--parchemin);
+  padding: 32px 30px;
+  position: relative;
+  border: 2px solid var(--sable);
+  border-bottom: 3px solid transparent;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.step:hover { background: var(--creme); box-shadow: 0 4px 20px rgba(30,58,40,0.08); }
+.step:nth-child(1):hover { border-color: var(--sauge); }
+.step:nth-child(2):hover { border-color: var(--ardoise); }
+.step:nth-child(3):hover { border-color: var(--ocre); }
+
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 10px;
+  display: block;
+}
+.step:nth-child(1) .step-num { color: var(--ocre); }
+.step:nth-child(2) .step-num { color: var(--sauge); }
+.step:nth-child(3) .step-num { color: var(--ardoise); }
+
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--terre);
+}
+
+.step-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* ══════════════════════════════════
+   SECTION TEMOIGNAGES
+══════════════════════════════════ */
+#temoignages {
+  padding: 56px 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.temoignages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--sable);
+}
+
+.temoignage {
+  background: var(--creme);
+  padding: 28px 30px;
+  transition: background 0.3s;
+}
+.temoignage:hover { background: var(--parchemin); }
+.temoignage:nth-child(2) { border-top: 3px solid var(--sauge); }
+.temoignage:nth-child(3) { border-top: 3px solid var(--ardoise); }
+.temoignage:first-child { grid-row: span 2; background: var(--terre); color: var(--parchemin); border-left: 4px solid var(--sauge); }
+.temoignage:first-child:hover { background: var(--brun); }
+
+.temoignage-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+.temoignage:first-child .temoignage-text { font-size: 1.5rem; color: var(--parchemin); }
+
+.temoignage-author {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ocre);
+}
+.temoignage:first-child .temoignage-author { color: var(--sable); }
+
+.temoignage-lieu {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.temoignage:first-child .temoignage-lieu { color: rgba(232,213,176,0.5); }
+
+/* ══════════════════════════════════
+   CTA FINAL
+══════════════════════════════════ */
+#cta-final {
+  background: var(--terre);
+  padding: 48px 52px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#cta-final::before {
+  content: 'BABELOM';
+  position: absolute;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22vw;
+  font-weight: 600;
+  color: rgba(255,255,255,0.02);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+.cta-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #5a90aa;
+  margin-bottom: 24px;
+}
+.cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  font-weight: 300;
+  color: var(--parchemin);
+  line-height: 1.2;
+  margin-bottom: 48px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-title em { color: var(--ocre); font-style: italic; }
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer {
+  background: #1e3a28;
+  color: #c8d8b0;
+  padding: 8px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sable);
+}
+.footer-logo span { color: var(--ocre); }
+.footer-text { font-size: 0.88rem; color: #c8d8b0; }
+
+/* ══════════════════════════════════
+   PAGE CARTE
+══════════════════════════════════ */
+#page-carte {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: var(--creme);
+}
+
+.carte-header {
+  background: #e8f0e0;
+  color: #e8e0ff;
+  padding: 0 32px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  border-bottom: 2px solid var(--ardoise);
+}
+
+.carte-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.carte-logo span { color: var(--ocre); }
+
+.carte-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-retour {
+  background: none;
+  border: 1px solid rgba(232,213,176,0.3);
+  color: var(--sable);
+  padding: 7px 16px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-retour:hover { border-color: var(--sable); }
+
+.btn-ajouter {
+  background: var(--ocre);
+  border: none;
+  color: white;
+  padding: 8px 20px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-ajouter:hover { background: #b07035; }
+
+.carte-instruction {
+  background: #fff9f0;
+  border-bottom: 1px solid #2e5a38;
+  padding: 10px 32px;
+  font-size: 0.83rem;
+  color: var(--muted);
+  text-align: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.carte-instruction strong { color: var(--ocre); }
+
+#carte-map { flex: 1; cursor: crosshair; }
+#carte-map.idle { cursor: default; }
+
+/* LISTE LIEUX */
+.lieux-liste {
+  position: absolute;
+  top: 80px; left: 16px;
+  background: var(--creme);
+  border: 1px solid var(--sable);
+  box-shadow: 0 4px 24px var(--ombre);
+  z-index: 900;
+  min-width: 200px;
+  max-width: 230px;
+  max-height: 52vh;
+  overflow-y: auto;
+  display: none;
+}
+.lieux-liste-titre {
+  padding: 10px 14px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  border-bottom: 1px solid #2e5a38;
+  background: var(--parchemin);
+}
+.lieu-item {
+  padding: 10px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(232,213,176,0.4);
+  transition: background 0.15s;
+}
+.lieu-item:last-child { border: none; }
+.lieu-item:hover { background: var(--parchemin); }
+.lieu-item-nom { font-size: 0.85rem; font-weight: 400; padding-left: 8px; }
+.lieu-item-dates { font-size: 0.72rem; color: var(--ocre); padding-left: 8px; margin-top: 2px; }
+
+/* FORMULAIRE PANNEAU */
+.form-panneau {
+  position: absolute;
+  top: 0; right: 0;
+  width: 360px;
+  height: 100%;
+  background: var(--creme);
+  border-left: 2px solid var(--ocre);
+  box-shadow: -8px 0 40px var(--ombre);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+.form-panneau.ouvert { transform: translateX(0); }
+
+.form-panneau-header {
+  background: #e8f0e0;
+  color: #e8e0ff;
+  padding: 20px 22px;
+  flex-shrink: 0;
+}
+.form-panneau-header h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+.form-panneau-coords {
+  font-size: 0.72rem;
+  color: var(--ocre);
+  font-family: monospace;
+}
+
+.form-panneau-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px;
+}
+.form-panneau-body::-webkit-scrollbar { width: 3px; }
+.form-panneau-body::-webkit-scrollbar-thumb { background: var(--sable); }
+
+.champ { margin-bottom: 16px; }
+.champ label {
+  display: block;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.champ input[type=text],
+.champ input[type=number],
+.champ textarea,
+.champ select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--sable);
+  background: var(--parchemin);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.87rem;
+  color: var(--terre);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.champ input:focus,
+.champ textarea:focus,
+.champ select:focus { border-color: var(--ocre); background: white; }
+.champ textarea { resize: vertical; min-height: 90px; }
+.champ-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.upload-zone {
+  border: 1.5px dashed var(--sable);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--parchemin);
+}
+.upload-zone:hover { border-color: var(--ocre); background: #fff9f0; }
+.upload-zone p { font-size: 0.78rem; color: var(--muted); margin-top: 5px; }
+
+#form-photo-preview {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+#form-photo-preview img { width:100%; aspect-ratio:1; object-fit:cover; }
+
+.form-panneau-footer {
+  padding: 14px 22px;
+  border-top: 1px solid var(--sable);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  background: #1e3a28;
+}
+.btn-enregistrer {
+  flex: 1;
+  padding: 12px;
+  background: #e8f0e0;
+  color: #e8e0ff;
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-enregistrer:hover { background: var(--brun); }
+.btn-annuler {
+  padding: 12px 16px;
+  background: none;
+  border: 1px solid var(--sable);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-annuler:hover { border-color: var(--muted); color: var(--terre); }
+
+/* FICHE DÉTAIL */
+.fiche {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--creme);
+  border-top: 2px solid var(--ocre);
+  padding: 22px 28px 28px;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  z-index: 800;
+  max-height: 52vh;
+  overflow-y: auto;
+  box-shadow: 0 -8px 40px var(--ombre);
+}
+.fiche.ouverte { transform: translateY(0); }
+.fiche-fermer {
+  position: absolute; top:14px; right:16px;
+  background:none; border:none; font-size:1.1rem;
+  cursor:pointer; color:var(--muted);
+}
+.fiche-fermer:hover { color:var(--terre); }
+.fiche-nom {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+.fiche-meta {
+  font-size: 0.8rem;
+  color: var(--ocre);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+.fiche-texte {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: var(--brun);
+  white-space: pre-line;
+  margin-bottom: 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+}
+.fiche-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px,1fr));
+  gap: 6px;
+}
+.fiche-photos img {
+  width:100%; aspect-ratio:1; object-fit:cover;
+  cursor:pointer; transition:transform 0.2s, filter 0.2s;
+  filter: sepia(15%);
+}
+.fiche-photos img:hover { transform:scale(1.04); filter:sepia(0%); }
+
+/* LIGHTBOX */
+.lightbox {
+  display:none; position:fixed; inset:0;
+  background:rgba(26,15,5,0.94); z-index:9000;
+  align-items:center; justify-content:center;
+}
+.lightbox.ouverte { display:flex; }
+.lightbox img { max-width:90%; max-height:88%; object-fit:contain; }
+.lb-fermer {
+  position:absolute; top:18px; right:22px;
+  color:var(--sable); font-size:1.8rem;
+  background:none; border:none; cursor:pointer;
+}
+
+/* ══════════════════════════════════
+   LOGO ANIMÉ MAISON
+══════════════════════════════════ */
+#logo-maison-wrap {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+  opacity: 0;
+  animation: fadeIn 1s 0.3s forwards;
+  pointer-events: none;
+}
+
+#logo-maison-wrap svg {
+  overflow: visible;
+}
+
+.logo-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+/* Marqueur pulsant */
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(196,133,74,0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(196,133,74,0); }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="nav">
+  <a href="#" class="nav-logo" style="display:flex;align-items:center;line-height:1;">
+    <svg width="150" height="45" viewBox="0 0 148 44" style="overflow:visible;">
+      <!-- PIN -->
+      <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.15"/>
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <!-- MAISON -->
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#f5f2e8" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#f5f2e8" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <!-- NOM -->
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li style="margin-left:28px;"><a href="index.html" style="color:#d4880a;" onmouseover="this.style.color='#e8a030'" onmouseout="this.style.color='#d4880a'">Accueil</a></li>
+    <li><a href="etape1.html"><span class="nav-num">01</span> <span data-i18n="nav1">La Carte</span></a></li>
+    <li class="membres-only" style="display:none;"><a href="etape2.html"><span class="nav-num">02</span> <span data-i18n="nav2">Racontez</span></a></li>
+    <li class="membres-only" style="display:none;"><a href="temoignages.html"><span class="nav-num">03</span> <span data-i18n="nav3">Transmettez</span></a></li>
+    <li class="membres-only" style="display:none;"><a href="messagerie.html"><span class="nav-num">04</span> <span data-i18n="nav4">La Messagerie</span></a></li>
+    <li class="membres-only" style="display:none;"><a href="galerie.html"><span class="nav-num">05</span> <span data-i18n="nav5">Galerie</span></a></li>
+  </ul>
+  <div style="margin-left:auto;display:flex;align-items:center;">
+    <select id="lang-select" onchange="babelomApply(this.value)" style="background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--creme);font-family:'Jost',sans-serif;font-size:0.75rem;padding:5px 8px;outline:none;border-radius:2px;cursor:pointer;letter-spacing:0.06em;">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="ar">العربية</option>
+      <option value="de">Deutsch</option>
+      <option value="he">עברית</option>
+      <option value="pt">Português</option>
+      <option value="it">Italiano</option>
+      <option value="ru">Русский</option>
+      <option value="zh">中文</option>
+    </select>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero" style="position:relative;">
+
+  <!-- LOGO ANIMÉ MAISON -->
+  <div id="logo-maison-wrap">
+    <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280">
+      <defs>
+        <clipPath id="clip-interieur">
+          <!-- sol à y=270, hauteur intérieure 130px -->
+          <rect x="20" y="110" width="200" height="160"/>
+        </clipPath>
+        <!-- motif tuiles brique avec contraste -->
+        <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+        <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+      </defs>
+
+      <!-- SOL -->
+      <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+
+      <!-- MAISON : corps (y=110 à y=270, hauteur=160) -->
+      <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+
+      <!-- TOIT rempli tuiles brique -->
+      <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
+      <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
+      <!-- ligne de faîtage -->
+      <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+      <!-- contour toit -->
+      <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+      <!-- ombre sous toit -->
+      <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+
+      <!-- MAISON : porte élargie + recentrée -->
+      <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
+      <!-- panneaux porte -->
+      <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+
+      <!-- MAISON : fenêtre gauche haut (recentrée vers milieu) -->
+      <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- MAISON : fenêtre droite haut (recentrée vers milieu) -->
+      <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- MAISON : fenêtre gauche bas (recentrée) -->
+      <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- MAISON : fenêtre droite bas (recentrée) -->
+      <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- PERSONNAGES — marchent sur y=270 (sol) -->
+      <g clip-path="url(#clip-interieur)">
+        <g id="personnages"></g>
+      </g>
+
+      <!-- CHEMINÉE (par-dessus le toit) -->
+      <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+      <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
+      <!-- fumée -->
+      <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Mémoire collective des lieux habités</p>
+    <h1 class="hero-title">
+      Chaque maison<br>
+      garde <em>la trace</em><br>
+      de ceux qui l'ont<br>
+      habitée
+    </h1>
+    <p class="hero-subtitle">
+      Babelom est une archive vivante où chacun dépose la mémoire des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
+    </p>
+    <blockquote class="hero-quote">
+      « On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé. »
+      <cite>— Julien Green</cite>
+    </blockquote>
+  </div>
+
+  <div class="hero-right">
+    <div id="hero-map-preview"></div>
+    <div class="hero-map-overlay"></div>
+    <div class="map-dot"></div>
+    <div class="map-dot"></div>
+    <div class="map-dot"></div>
+    <div class="map-dot"></div>
+  </div>
+
+  <!-- PANNEAU PUBLICITAIRE B -->
+  <div id="panneau-pub-hero" style="position:absolute;top:18%;right:4%;z-index:4;opacity:0;animation:fadeUp 0.9s 1.4s forwards;pointer-events:none;">
+    <svg width="155" height="215" viewBox="0 0 155 215" style="overflow:visible;filter:drop-shadow(3px 6px 16px rgba(0,0,0,0.45));">
+      <rect x="68" y="150" width="10" height="62" rx="3" fill="#1a1a1a"/>
+      <rect x="53" y="202" width="40" height="8" rx="3" fill="#111"/>
+      <ellipse cx="73" cy="213" rx="28" ry="4" fill="rgba(0,0,0,0.12)"/>
+      <rect x="3" y="3" width="146" height="148" rx="3" fill="#1e1e1e"/>
+      <rect x="0" y="0" width="152" height="151" rx="5" fill="none" stroke="#1a1a1a" stroke-width="7"/>
+      <rect x="5" y="5" width="142" height="141" rx="2" fill="#cc1800"/>
+      <rect x="5" y="5" width="142" height="20" rx="2" fill="rgba(255,255,255,0.1)"/>
+      <text x="76" y="30" text-anchor="middle" font-family="Jost,sans-serif" font-size="6.5" font-weight="700" letter-spacing="2" fill="rgba(255,255,255,0.35)">PUBLICITE</text>
+      <text x="76" y="65" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-style="italic" fill="white" font-weight="600">Votre annonce</text>
+      <text x="76" y="83" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-style="italic" fill="white" font-weight="300">ici</text>
+      <line x1="22" y1="93" x2="130" y2="93" stroke="#f0d090" stroke-width="1"/>
+      <text x="76" y="108" text-anchor="middle" font-family="Jost,sans-serif" font-size="6.5" fill="#f0c060"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98faf9fafdf4f7f5a1d8fff5f9f1f4b6fbf7f5">[email&#160;protected]</a></text>
+      <rect x="5" y="122" width="142" height="12" rx="0" fill="rgba(0,0,0,0.45)"/>
+      <text x="76" y="131" text-anchor="middle" font-family="Jost,sans-serif" font-size="4.5" fill="rgba(255,255,255,0.75)">Pour votre sante, mangez au moins 5 fruits et legumes par jour</text>
+      <circle cx="12" cy="12" r="3.5" fill="#333" stroke="#555" stroke-width="0.8"/>
+      <circle cx="140" cy="12" r="3.5" fill="#333" stroke="#555" stroke-width="0.8"/>
+      <circle cx="12" cy="143" r="3.5" fill="#333" stroke="#555" stroke-width="0.8"/>
+      <circle cx="140" cy="143" r="3.5" fill="#333" stroke="#555" stroke-width="0.8"/>
+    </svg>
+  </div>
+
+</section>
+
+<!-- ══════════════ TABLE À PHOTOS ══════════════ -->
+<style>
+#table-photos-inline {
+  position: relative;
+}
+
+#tp-stack {
+  position: relative;
+  width: 280px;
+  height: 320px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.tp-card {
+  position: absolute;
+  width: 300px;
+  background: #faf6ee;
+  box-shadow:
+    2px 3px 8px rgba(0,0,0,0.35),
+    0 8px 28px rgba(0,0,0,0.28),
+    inset 0 0 0 6px #faf6ee;
+  transition: transform 0.55s cubic-bezier(0.34,1.3,0.64,1), opacity 0.4s ease, z-index 0s;
+  transform-origin: center bottom;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.tp-card-img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: sepia(0.18) contrast(1.04) brightness(0.96);
+}
+
+/* Marge photo papier */
+.tp-card-border {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 0 8px #faf6ee, inset 0 0 0 9px rgba(0,0,0,0.06);
+  pointer-events: none;
+}
+
+/* Petite ombre portée en bas de la photo */
+.tp-card::after {
+  content:'';
+  position: absolute;
+  bottom: -6px; left: 10%; right: 10%;
+  height: 8px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%);
+  filter: blur(4px);
+}
+
+/* Coins de fixation style album */
+.tp-corner {
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1.5px solid rgba(0,0,0,0.18);
+  background: rgba(210,180,120,0.5);
+}
+.tp-corner.tl { top: 6px; left: 6px; border-bottom:none; border-right:none; }
+.tp-corner.tr { top: 6px; right: 6px; border-bottom:none; border-left:none; }
+.tp-corner.bl { bottom: 6px; left: 6px; border-top:none; border-right:none; }
+.tp-corner.br { bottom: 6px; right: 6px; border-top:none; border-left:none; }
+
+/* Pastilles navigation */
+#tp-nav {
+  display: flex; justify-content: center; gap: 7px;
+  margin-top: 28px; position: relative; z-index: 10;
+}
+#tp-nav span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(0,0,0,0.15); cursor: pointer;
+  transition: all 0.25s;
+}
+#tp-nav span.on { background: #d4880a; transform: scale(1.5); }
+
+/* Flèches discrètes */
+#tp-prev, #tp-next {
+  position: absolute; top: 140px;
+  background: var(--terre); border: none;
+  color: var(--creme); font-size: 1.2rem;
+  width: 28px; height: 28px; border-radius: 50%;
+  cursor: pointer; z-index: 10; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; opacity: 0.85;
+}
+#tp-prev:hover, #tp-next:hover { background: var(--ocre); opacity: 1; }
+#tp-prev { left: 0; }
+#tp-next { right: 0; }
+</style>
+
+<script>
+// ── TABLE À PHOTOS ──
+// ▼▼▼ VOS PHOTOS PERSONNELLES — placez vos fichiers dans photos/ ▼▼▼
+var TP_PERSO = [
+  { src:'photos/photo1.jpg' },
+  { src:'photos/photo2.jpg' },
+  { src:'photos/photo3.jpg' },
+  { src:'photos/photo4.jpg' },
+  { src:'photos/photo5.jpg' },
+  { src:'photos/photo6.jpg' },
+  { src:'photos/photo7.jpg' },
+  { src:'photos/photo8.jpg' },
+  { src:'photos/photo9.jpg' },
+  { src:'photos/photo10.jpg' },
+  { src:'photos/photo11.jpg' },
+  { src:'photos/photo12.jpg' },
+  { src:'photos/photo13.jpg' },
+  { src:'photos/photo14.jpg' },
+  { src:'photos/photo15.jpg' },
+  { src:'photos/photo16.jpg' },
+  { src:'photos/photo17.jpg' },
+];
+
+var TP_UNSPLASH = []; // uniquement photos personnelles
+
+// On teste chaque photo perso : si elle charge, on l'ajoute en tête
+var TP_URLS = TP_UNSPLASH.slice(); // commence avec les Unsplash
+
+// Légères rotations aléatoires fixes pour chaque carte (recalculées dynamiquement)
+var TP_ROTS = [-3.2, 1.8, -1.1, 2.6, -2.4, 1.3, -0.7, 2.1, -1.9, 3.0];
+var TP_OFF  = [
+  {x:14, y:10}, {x:-8, y:6}, {x:6, y:-4}, {x:-12, y:8}, {x:10, y:-6},
+  {x:-6, y:12}, {x:8, y:4},  {x:-10,y:-8},{x:12, y:6},  {x:-4, y:10}
+];
+
+var tpCur = 0, tpTimer;
+
+window.addEventListener('load', function() {
+  var stack = document.getElementById('tp-stack');
+  var nav   = document.getElementById('tp-nav');
+  if (!stack || !nav) return;
+
+  function buildStack() {
+    stack.innerHTML = '';
+    nav.innerHTML   = '';
+
+    // Recalculer rotations/offsets selon le nombre final de photos
+    var n = TP_URLS.length;
+    TP_ROTS = [];
+    TP_OFF  = [];
+    var baseRots = [-3.2,1.8,-1.1,2.6,-2.4,1.3,-0.7,2.1,-1.9,3.0,-2.8,1.5,-0.9,2.3,-1.6];
+    var baseOff  = [{x:14,y:10},{x:-8,y:6},{x:6,y:-4},{x:-12,y:8},{x:10,y:-6},{x:-6,y:12},{x:8,y:4},{x:-10,y:-8},{x:12,y:6},{x:-4,y:10},{x:9,y:-5},{x:-7,y:9},{x:5,y:-3},{x:-11,y:7},{x:3,y:11}];
+    for (var i=0;i<n;i++) {
+      TP_ROTS.push(baseRots[i % baseRots.length]);
+      TP_OFF.push(baseOff[i % baseOff.length]);
+    }
+
+    TP_URLS.forEach(function(url, i) {
+      var card = document.createElement('div');
+      card.className = 'tp-card';
+      card.id = 'tpcard-' + i;
+      card.innerHTML =
+        '<img class="tp-card-img" src="' + url + '" alt="">' +
+        '<div class="tp-card-border"></div>' +
+        '<div class="tp-corner tl"></div><div class="tp-corner tr"></div>' +
+        '<div class="tp-corner bl"></div><div class="tp-corner br"></div>';
+      stack.appendChild(card);
+
+      var dot = document.createElement('span');
+      dot.addEventListener('click', function(e) { e.stopPropagation(); tpGo(i); });
+      nav.appendChild(dot);
+    });
+
+    tpCur = 0;
+    tpUpdate(0);
+  }
+
+  // Tester les photos perso en parallèle, puis construire le stack
+  var persoValides = [];
+  var tested = 0;
+
+  if (TP_PERSO.length === 0) { buildStack(); return; }
+
+  TP_PERSO.forEach(function(p, i) {
+    var img = new Image();
+    img.onload  = function() { persoValides.push({ idx: i, src: p.src }); check(); };
+    img.onerror = function() { check(); };
+    img.src = p.src;
+  });
+
+  function check() {
+    tested++;
+    if (tested < TP_PERSO.length) return;
+    // Trier par index pour respecter l'ordre
+    persoValides.sort(function(a,b){ return a.idx - b.idx; });
+    var persoSrcs = persoValides.map(function(p){ return p.src; });
+    // Insérer les perso en tête
+    TP_URLS = persoSrcs.concat(TP_UNSPLASH);
+    buildStack();
+  }
+
+  function tpUpdate(n) {
+    var total = TP_URLS.length;
+    TP_URLS.forEach(function(_, i) {
+      var card = document.getElementById('tpcard-' + i);
+      if (!card) return;
+      var off  = ((i - n + total) % total);
+      if (off === 0) {
+        card.style.transform = 'translate(-50%,-50%) rotate(' + TP_ROTS[i] + 'deg) translateY(0)';
+        card.style.left = '50%'; card.style.top = '50%';
+        card.style.zIndex = total + 10;
+        card.style.opacity = '1';
+      } else if (off <= 3) {
+        var depth = off * 5;
+        var rot   = TP_ROTS[(i + 3) % total] * (off * 0.5);
+        var ox    = TP_OFF[i].x * (off * 0.4);
+        var oy    = TP_OFF[i].y * (off * 0.3) + depth;
+        card.style.transform = 'translate(calc(-50% + ' + ox + 'px), calc(-50% + ' + oy + 'px)) rotate(' + rot + 'deg)';
+        card.style.left = '50%'; card.style.top = '50%';
+        card.style.zIndex = total + 10 - off;
+        card.style.opacity = off === 1 ? '0.75' : off === 2 ? '0.45' : '0.2';
+      } else {
+        card.style.opacity = '0';
+        card.style.zIndex = '0';
+        card.style.transform = 'translate(-50%,-50%) rotate(' + TP_ROTS[i] + 'deg)';
+        card.style.left = '50%'; card.style.top = '50%';
+      }
+    });
+    document.querySelectorAll('#tp-nav span').forEach(function(d, i) {
+      d.className = i === n ? 'on' : '';
+    });
+    clearTimeout(tpTimer);
+    tpTimer = setTimeout(function() { tpGo(tpCur + 1); }, 4200);
+  }
+
+  window.tpGo = function(n) {
+    tpCur = ((n % TP_URLS.length) + TP_URLS.length) % TP_URLS.length;
+    tpUpdate(tpCur);
+  };
+
+}); // fin window.load diaporama
+</script>
+
+<!-- ══════════════ CONNEXION / INSCRIPTION ══════════════ -->
+<section id="compte" style="background:var(--parchemin);padding:28px 52px;border-top:1px solid var(--sable);border-bottom:1px solid var(--sable);">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start;">
+
+    <!-- FORMULAIRES GAUCHE -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--sable);">
+
+    <!-- CRÉER UN COMPTE -->
+    <div style="background:var(--creme);padding:24px 28px;">
+      <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:6px;" data-i18n="firstVisit">Première visite</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--terre);margin-bottom:14px;line-height:1.2;" data-i18n="createAccount">Créer <em style="color:var(--ocre);font-style:italic;">un compte</em></h2>
+
+      <div style="margin-bottom:10px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;" data-i18n="labelNom">Nom *</label>
+        <input type="text" id="ins-nom" placeholder="Votre nom de famille" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;" data-i18n="labelPrenom">Prénom *</label>
+        <input type="text" id="ins-prenom" placeholder="Votre prénom" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <div style="margin-bottom:10px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;" data-i18n="labelEmail">Adresse e-mail *</label>
+        <input type="email" id="ins-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;" data-i18n="labelMdp">Mot de passe *</label>
+        <input type="password" id="ins-mdp" placeholder="8 caractères minimum" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <button onclick="creerCompte()" style="width:100%;background:var(--terre);color:var(--creme);border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">
+        <span data-i18n="btnCreate">Créer mon compte →</span>
+      </button>
+      <div id="ins-msg" style="margin-top:8px;font-size:0.78rem;color:var(--ardoise);min-height:16px;"></div>
+    </div>
+
+    <!-- SE CONNECTER -->
+    <div style="background:white;padding:24px 28px;">
+      <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:6px;" data-i18n="alreadyMember">Déjà inscrit</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--terre);margin-bottom:14px;line-height:1.2;">Se <em style="color:var(--ocre);font-style:italic;">connecter</em></h2>
+
+      <div style="margin-bottom:10px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;">Adresse e-mail</label>
+        <input type="email" id="con-email" placeholder="votre@email.com" style="width:100%;background:var(--creme);border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:5px;">Mot de passe</label>
+        <input type="password" id="con-mdp" placeholder="••••••••" style="width:100%;background:var(--creme);border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:8px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      </div>
+      <button onclick="seConnecter()" style="width:100%;background:var(--ocre);color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#b87008'" onmouseout="this.style.background='#d4880a'">
+        <span data-i18n="btnLogin">Se connecter →</span>
+      </button>
+      <div id="con-msg" style="margin-top:8px;font-size:0.78rem;color:var(--ardoise);min-height:16px;"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--sable);">
+        <a href="#" onclick="ouvrirResetMdp(event)" style="font-size:0.78rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;transition:color 0.2s;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'"><span data-i18n="forgotMdp">Mot de passe oublié ?</span></a>
+      </div>
+    </div>
+
+    </div><!-- fin grille formulaires -->
+
+    <!-- DIAPORAMA DROITE -->
+    <div id="table-photos-inline" style="width:320px;flex-shrink:0;position:relative;">
+      <button id="tp-prev" onclick="tpGo(tpCur-1)" style="position:absolute;left:-18px;top:50%;transform:translateY(-50%);z-index:10;background:var(--terre);color:var(--creme);border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.85;">‹</button>
+      <div id="tp-stack" onclick="tpGo(tpCur+1)" style="position:relative;width:280px;height:320px;margin:0 auto;cursor:pointer;"></div>
+      <div id="tp-nav" style="text-align:center;margin-top:12px;"></div>
+      <button id="tp-next" onclick="tpGo(tpCur+1)" style="position:absolute;right:-18px;top:50%;transform:translateY(-50%);z-index:10;background:var(--terre);color:var(--creme);border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.85;">›</button>
+    </div>
+
+  </div><!-- fin grille principale -->
+</section>
+
+<!-- MODALE MOT DE PASSE OUBLIÉ -->
+<div id="modale-reset" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:var(--creme);padding:48px 44px;max-width:440px;width:90%;animation:fadeUp 0.3s ease forwards;">
+    <div style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:10px;">Réinitialisation</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:400;color:var(--terre);margin-bottom:8px;line-height:1.2;">Mot de passe <em style="color:var(--ocre);font-style:italic;">oublié ?</em></h3>
+    <p style="font-size:0.88rem;color:var(--muted);line-height:1.65;margin-bottom:24px;">Saisissez l'adresse e-mail associée à votre compte. Nous vous enverrons un lien pour réinitialiser votre mot de passe.</p>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:7px;">Votre adresse e-mail</label>
+      <input type="email" id="reset-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:11px 14px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+    </div>
+    <div id="reset-msg" style="min-height:20px;font-size:0.82rem;margin-bottom:16px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--sable);">
+      <button onclick="fermerResetMdp()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.85rem;cursor:pointer;letter-spacing:0.06em;">Annuler</button>
+      <button onclick="envoyerReset()" style="background:var(--ocre);color:white;border:none;padding:12px 28px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#b87008'" onmouseout="this.style.background='#d4880a'">Envoyer le lien →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MANIFESTE ══════════════ -->
+<section id="manifeste">
+  <div class="manifeste-label">Le projet</div>
+  <div class="manifeste-text">
+    <p>Nous naissons quelque part. Nous grandissons quelque part. Nous partons, revenons, repartons. <em>Chaque lieu laisse une empreinte</em> — dans nos corps, dans notre façon de parler, dans ce que nous appelons chez nous.</p>
+    <p>Pourtant, ces traces disparaissent. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?</p>
+    <p><strong>Babelom est né de cette question.</strong> C'est une carte mondiale où chacun peut épingler les lieux où il a habité — avec ses dates, ses anecdotes, ses photos. Un point sur la carte. <em class="ardoise">Une vie derrière ce point.</em></p>
+    <p>Ensemble, nous construisons <em>une mémoire collective des lieux habités</em> — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.</p>
+  </div>
+</section>
+
+<!-- ══════════════ COMMENT ══════════════ -->
+<section id="comment">
+  <div class="section-header">
+    <div class="section-label" data-i18n="sectionLabel">Mode d'emploi</div>
+    <h2 class="section-title" data-i18n="sectionTitle">Trois gestes simples<br>pour une trace durable</h2>
+  </div>
+  <div class="steps">
+    <a href="etape1.html" class="step" style="text-decoration:none;display:block;">
+      <span class="step-num">01</span>
+      <div class="step-title" data-i18n="step1">Cliquez sur la carte</div>
+      <p class="step-desc">Naviguez jusqu'au lieu exact où vous avez vécu — rue, quartier, village. Cliquez pour y planter votre point.</p>
+    </a>
+    <div class="step">
+      <span class="step-num">02</span>
+      <div class="step-title" data-i18n="step2">Racontez</div>
+      <p class="step-desc">Les dates, le type de logement, mais surtout les anecdotes — l'odeur de la cage d'escalier, le bruit du voisin, la vue depuis la fenêtre.</p>
+    </div>
+    <a href="temoignages.html" class="step" style="text-decoration:none;display:block;">
+      <span class="step-num">03</span>
+      <div class="step-title" data-i18n="step3">Transmettez</div>
+      <p class="step-desc">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-logo">
+    <svg width="160" height="48" viewBox="0 0 148 44" style="overflow:visible;">
+      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+      <polyline points="8,19 16,9 24,19" fill="none" stroke="#e8d5b0" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#e8d5b0" stroke-width="1.3"/>
+      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
+    </svg>
+  </div>
+  <div class="footer-text" data-i18n="footerText">La mémoire des lieux habités · Tous droits réservés</div>
+  <div style="margin-top:10px;">
+    <span onclick="document.getElementById('modale-admin').style.display='flex';document.getElementById('admin-mdp').focus();"
+      style="font-size:0.85rem;color:#d4880a;cursor:pointer;letter-spacing:0.05em;user-select:none;">©</span>
+  </div>
+</footer>
+
+<!-- ACCÈS ADMIN (discret) -->
+<div id="modale-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:320px;font-family:'Jost',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#d4880a;margin-bottom:6px;">Accès administrateur</div>
+    <div style="font-size:0.78rem;color:#7a9a72;margin-bottom:20px;letter-spacing:0.06em;">Babelom — espace réservé</div>
+    <input id="admin-mdp" type="password" placeholder="Mot de passe administrateur"
+      style="width:100%;padding:10px 14px;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;font-family:'Jost',sans-serif;font-size:0.9rem;border-radius:2px;margin-bottom:12px;"
+      onkeydown="if(event.key==='Enter')validerAdmin()">
+    <div id="admin-msg" style="font-size:0.78rem;color:#c04040;min-height:18px;margin-bottom:12px;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="validerAdmin()" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;">Entrer</button>
+      <button onclick="document.getElementById('modale-admin').style.display='none'" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;">✕</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+function validerAdmin() {
+  const mdp = document.getElementById('admin-mdp').value;
+  const msg = document.getElementById('admin-msg');
+  if (mdp === 'babelom-admin-2024') {
+    localStorage.setItem('babelom-user', JSON.stringify({ prenom: 'Admin', email: 'admin@babelom.fr', role: 'admin', expires: Date.now() + 8 * 60 * 60 * 1000 }));
+    msg.style.color = '#4a7a52';
+    msg.textContent = '✓ Accès administrateur accordé.';
+    mettreAJourNav();
+    setTimeout(() => {
+      document.getElementById('modale-admin').style.display = 'none';
+      document.getElementById('admin-mdp').value = '';
+    }, 1200);
+  } else {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Mot de passe incorrect.';
+    document.getElementById('admin-mdp').value = '';
+  }
+}
+document.getElementById('modale-admin').addEventListener('click', function(e) {
+  if (e.target === this) this.style.display = 'none';
+});
+</script>
+
+
+<!-- ══════════════════════════════════════
+     PAGE CARTE
+══════════════════════════════════════ -->
+<div id="page-carte">
+  <div class="carte-header">
+    <div class="carte-logo">
+      <svg width="160" height="48" viewBox="0 0 148 44" style="overflow:visible;">
+        <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.2"/>
+        <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
+        <polyline points="8,19 16,9 24,19" fill="none" stroke="#f7f0e3" stroke-width="1.5" stroke-linejoin="round"/>
+        <rect x="10" y="19" width="12" height="9" fill="none" stroke="#f7f0e3" stroke-width="1.3"/>
+        <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
+        <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
+          <tspan fill="#1a1f3a" font-size="26" font-weight="700">B</tspan><tspan fill="#1a1f3a">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+        </text>
+      </svg>
+    </div>
+    <div class="carte-header-right">
+      <button class="btn-retour" onclick="fermerCarte()">← Retour</button>
+      <button class="btn-ajouter" onclick="activerAjout()">+ Ajouter un lieu</button>
+    </div>
+  </div>
+  <div class="carte-instruction" id="carte-instruction">
+    👆 <strong>Cliquez sur la carte</strong> à l'endroit exact où vous avez habité
+  </div>
+  <div id="carte-map"></div>
+
+  <!-- Liste lieux -->
+  <div class="lieux-liste" id="lieux-liste">
+    <div class="lieux-liste-titre">Mes lieux habités</div>
+    <div id="lieux-items"></div>
+  </div>
+
+  <!-- Formulaire panneau -->
+  <div class="form-panneau" id="form-panneau">
+    <div class="form-panneau-header">
+      <h3>Racontez ce lieu</h3>
+      <div class="form-panneau-coords" id="coords-affich"></div>
+    </div>
+    <div class="form-panneau-body">
+      <div class="champ">
+        <label>Nom du lieu / adresse</label>
+        <input type="text" id="f-nom" placeholder="Ex : Rue de la Paix, Paris">
+      </div>
+      <div class="champ champ-row">
+        <div>
+          <label>Arrivée *</label>
+          <input type="number" id="f-de" placeholder="1992" min="1900" max="2025">
+        </div>
+        <div>
+          <label>Départ *</label>
+          <input type="number" id="f-a" placeholder="1998" min="1900" max="2025">
+        </div>
+      </div>
+      <div class="champ">
+        <label>Type de logement</label>
+        <select id="f-type">
+          <option value="">Choisir…</option>
+          <option>Appartement</option>
+          <option>Maison</option>
+          <option>Maison familiale</option>
+          <option>Chambre d'étudiant</option>
+          <option>Colocation</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="champ">
+        <label>Anecdotes & souvenirs</label>
+        <textarea id="f-texte" placeholder="Les odeurs, les voisins, la lumière par la fenêtre…"></textarea>
+      </div>
+      <div class="champ">
+        <label>Photos (optionnel)</label>
+        <div class="upload-zone" onclick="document.getElementById('f-photos').click()">
+          <div style="font-size:1.5rem">📷</div>
+          <p>Cliquez pour ajouter des photos</p>
+        </div>
+        <input type="file" id="f-photos" multiple accept="image/*" style="display:none" onchange="previewPhotos(this)">
+        <div id="form-photo-preview"></div>
+      </div>
+    </div>
+    <div class="form-panneau-footer">
+      <button class="btn-annuler" onclick="annulerForm()">Annuler</button>
+      <button class="btn-enregistrer" onclick="enregistrer()">Enregistrer →</button>
+    </div>
+  </div>
+
+  <!-- Fiche détail -->
+  <div class="fiche" id="fiche">
+    <button class="fiche-fermer" onclick="fermerFiche()">✕</button>
+    <div class="fiche-nom" id="fiche-nom"></div>
+    <div class="fiche-meta" id="fiche-meta"></div>
+    <div class="fiche-texte" id="fiche-texte"></div>
+    <div class="fiche-photos" id="fiche-photos"></div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="fermerLightbox()">
+  <button class="lb-fermer">✕</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<script>
+// ── Helper session ──
+function babelomGetUser() {
+  try {
+    const raw = localStorage.getItem('babelom-user');
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    if (u.expires && Date.now() > u.expires) {
+      localStorage.removeItem('babelom-user');
+      return null;
+    }
+    return u;
+  } catch(e) { return null; }
+}
+
+// ══════════════════════════════════
+// LOGO MAISON ANIMÉ
+// ══════════════════════════════════
+
+const HOUSE_COLORS = [
+  { mur: '#f5d080', toit: '#8a3808', accent: '#1e3a28' }, // jaune soleil
+  { mur: '#90c878', toit: '#2e5a38', accent: '#1e3a28' }, // vert vif
+  { mur: '#f0a060', toit: '#8a3808', accent: '#d4880a' }, // orange pêche
+  { mur: '#80b8e0', toit: '#1e3a28', accent: '#4a7a52' }, // bleu ciel
+  { mur: '#e08080', toit: '#6a1808', accent: '#d4880a' }, // rose terracotta
+  { mur: '#a0d0a0', toit: '#2e5a38', accent: '#1e3a28' }, // vert menthe
+];
+
+// Silhouettes de profil — ombres chinoises, tournées vers la gauche
+// Toutes sur une base Y=120 (sol), hauteur ~50px pour un adulte
+// x = point d'ancrage horizontal (centre du groupe)
+
+const C1 = '#1e3a28'; // lune
+const C2 = '#d4880a'; // safran
+const C3 = '#4a7a52'; // indigo clair
+const C4 = '#c8d8b0'; // bleu pale
+const C5 = '#2e5a38'; // lilas
+
+// Silhouette adulte marchant de profil (vers la gauche)
+// Tête, cou, torse, bras, jambes — tout en path plein
+function adulteProfil(ox, oy, scale, couleur) {
+  const s = scale || 1;
+  const c = couleur || C1;
+  // head
+  const hx = ox + 2*s, hy = oy - 48*s, hr = 6*s;
+  // body path (torse + bassin)
+  const body = `M${ox+0*s},${oy-40*s} C${ox-4*s},${oy-38*s} ${ox-5*s},${oy-28*s} ${ox-4*s},${oy-20*s} L${ox+4*s},${oy-20*s} C${ox+6*s},${oy-28*s} ${ox+5*s},${oy-38*s} ${ox+2*s},${oy-40*s} Z`;
+  // bras avant (tendu légèrement en avant)
+  const armF = `M${ox-1*s},${oy-36*s} Q${ox-10*s},${oy-28*s} ${ox-13*s},${oy-20*s} Q${ox-14*s},${oy-15*s} ${ox-11*s},${oy-14*s} Q${ox-7*s},${oy-18*s} ${ox-4*s},${oy-22*s} Q${ox-2*s},${oy-30*s} ${ox+3*s},${oy-36*s} Z`;
+  // bras arrière (légèrement en arrière)
+  const armB = `M${ox+2*s},${oy-36*s} Q${ox+8*s},${oy-30*s} ${ox+9*s},${oy-22*s} Q${ox+10*s},${oy-17*s} ${ox+7*s},${oy-16*s} Q${ox+4*s},${oy-20*s} ${ox+2*s},${oy-28*s} Q${ox+0*s},${oy-33*s} ${ox-1*s},${oy-36*s} Z`;
+  // jambe avant (enjambée)
+  const legF = `M${ox-4*s},${oy-20*s} Q${ox-7*s},${oy-10*s} ${ox-10*s},${oy-2*s} Q${ox-12*s},${oy+2*s} ${ox-8*s},${oy+2*s} Q${ox-4*s},${oy-5*s} ${ox-2*s},${oy-14*s} Q${ox+0*s},${oy-18*s} ${ox+0*s},${oy-20*s} Z`;
+  // jambe arrière (en arrière)
+  const legB = `M${ox+0*s},${oy-20*s} Q${ox+3*s},${oy-10*s} ${ox+6*s},${oy-2*s} Q${ox+8*s},${oy+2*s} ${ox+4*s},${oy+2*s} Q${ox+1*s},${oy-8*s} ${ox-2*s},${oy-18*s} Z`;
+  return `
+    <ellipse cx="${hx}" cy="${hy}" rx="${hr*0.8}" ry="${hr}" fill="${c}"/>
+    <path d="${armB}" fill="${c}" opacity="0.7"/>
+    <path d="${legB}" fill="${c}" opacity="0.7"/>
+    <path d="${body}" fill="${c}"/>
+    <path d="${armF}" fill="${c}"/>
+    <path d="${legF}" fill="${c}"/>`;
+}
+
+// Silhouette femme (torse légèrement évasé, chignon)
+function femmeProfil(ox, oy, scale, couleur) {
+  const s = scale || 1;
+  const c = couleur || C2;
+  const hx = ox + 2*s, hy = oy - 48*s, hr = 5.5*s;
+  // chignon
+  const chignon = `M${hx+3*s},${hy-5*s} Q${hx+8*s},${hy-8*s} ${hx+6*s},${hy-2*s} Q${hx+3*s},${hy+1*s} ${hx+1*s},${hy-2*s} Z`;
+  // robe/jupe évasée
+  const robe = `M${ox-2*s},${oy-38*s} C${ox-6*s},${oy-30*s} ${ox-10*s},${oy-15*s} ${ox-12*s},${oy+2*s} L${ox+8*s},${oy+2*s} C${ox+8*s},${oy-10*s} ${ox+6*s},${oy-28*s} ${ox+4*s},${oy-38*s} Z`;
+  const armF = `M${ox-1*s},${oy-35*s} Q${ox-9*s},${oy-27*s} ${ox-11*s},${oy-19*s} Q${ox-12*s},${oy-14*s} ${ox-9*s},${oy-14*s} Q${ox-6*s},${oy-19*s} ${ox-3*s},${oy-26*s} Q${ox-1*s},${oy-31*s} ${ox+2*s},${oy-35*s} Z`;
+  return `
+    <ellipse cx="${hx}" cy="${hy}" rx="${hr*0.85}" ry="${hr}" fill="${c}"/>
+    <path d="${chignon}" fill="${c}"/>
+    <path d="${armF}" fill="${c}" opacity="0.8"/>
+    <path d="${robe}" fill="${c}"/>`;
+}
+
+// Enfant (plus petit, proportions enfantines)
+function enfantProfil(ox, oy, scale, couleur) {
+  const s = (scale || 1) * 0.62;
+  const c = couleur || C4;
+  const hx = ox + 1*s, hy = oy - 38*s, hr = 6*s;
+  const body = `M${ox+0*s},${oy-30*s} C${ox-4*s},${oy-22*s} ${ox-4*s},${oy-14*s} ${ox-3*s},${oy+2*s} L${ox+5*s},${oy+2*s} C${ox+6*s},${oy-10*s} ${ox+5*s},${oy-22*s} ${ox+3*s},${oy-30*s} Z`;
+  const armF = `M${ox-1*s},${oy-27*s} Q${ox-8*s},${oy-20*s} ${ox-9*s},${oy-14*s} Q${ox-8*s},${oy-10*s} ${ox-5*s},${oy-12*s} Q${ox-3*s},${oy-18*s} ${ox+1*s},${oy-24*s} Z`;
+  return `
+    <ellipse cx="${hx}" cy="${hy}" rx="${hr*0.85}" ry="${hr}" fill="${c}"/>
+    <path d="${armF}" fill="${c}"/>
+    <path d="${body}" fill="${c}"/>`;
+}
+
+// Personne âgée (courbée, canne)
+function ageProfil(ox, oy, scale, couleur) {
+  const s = scale || 1;
+  const c = couleur || C5;
+  const hx = ox - 2*s, hy = oy - 43*s, hr = 5*s;
+  // corps courbé en avant
+  const body = `M${ox+0*s},${oy-36*s} C${ox-6*s},${oy-28*s} ${ox-9*s},${oy-18*s} ${ox-8*s},${oy+2*s} L${ox+0*s},${oy+2*s} C${ox+2*s},${oy-12*s} ${ox+4*s},${oy-22*s} ${ox+5*s},${oy-34*s} Z`;
+  const armF = `M${ox-2*s},${oy-30*s} Q${ox-10*s},${oy-22*s} ${ox-14*s},${oy-12*s} Q${ox-15*s},${oy-7*s} ${ox-12*s},${oy-7*s} Q${ox-9*s},${oy-14*s} ${ox-5*s},${oy-22*s} Q${ox-1*s},${oy-27*s} ${ox+1*s},${oy-30*s} Z`;
+  // canne
+  const canne = `M${ox-12*s},${oy-12*s} L${ox-14*s},${oy+2*s} M${ox-16*s},${oy-12*s} L${ox-10*s},${oy-12*s}`;
+  return `
+    <ellipse cx="${hx}" cy="${hy}" rx="${hr*0.85}" ry="${hr}" fill="${c}"/>
+    <path d="${body}" fill="${c}"/>
+    <path d="${armF}" fill="${c}"/>
+    <path stroke="${c}" stroke-width="${1.8*s}" stroke-linecap="round" fill="none" d="${canne}"/>`;
+}
+
+const PERSONNAGES = [
+  // 1. Célibataire homme
+  (x) => `<g transform="translate(${x},0)">${adulteProfil(0, 270, 1, C1)}</g>`,
+
+  // 2. Couple — homme + femme
+  (x) => `<g transform="translate(${x},0)">
+    ${adulteProfil(-16, 270, 1, C1)}
+    ${femmeProfil(10, 270, 1, C2)}
+  </g>`,
+
+  // 3. Femme seule
+  (x) => `<g transform="translate(${x},0)">${femmeProfil(0, 270, 1, C2)}</g>`,
+
+  // 4. Famille — homme + femme + enfant
+  (x) => `<g transform="translate(${x},0)">
+    ${adulteProfil(-22, 270, 1, C1)}
+    ${femmeProfil(4, 270, 1, C2)}
+    ${enfantProfil(26, 270, 1, C4)}
+  </g>`,
+
+  // 5. Famille nombreuse — 2 adultes + 2 enfants
+  (x) => `<g transform="translate(${x},0)">
+    ${adulteProfil(-30, 270, 1, C1)}
+    ${femmeProfil(-4, 270, 1, C2)}
+    ${enfantProfil(18, 270, 1, C4)}
+    ${enfantProfil(34, 270, 1, C3)}
+  </g>`,
+
+  // 6. Personne âgée seule
+  (x) => `<g transform="translate(${x},0)">${ageProfil(0, 270, 1, C5)}</g>`,
+
+  // 7. Couple de personnes âgées
+  (x) => `<g transform="translate(${x},0)">
+    ${ageProfil(-14, 270, 1, C5)}
+    ${ageProfil(14, 270, 1, C1)}
+  </g>`,
+
+  // 8. Jeune adulte avec sac à dos
+  (x) => `<g transform="translate(${x},0)">
+    ${adulteProfil(0, 270, 1, C3)}
+    <path d="M${8},${155} Q${16},${152} ${17},${165} Q${17},${174} ${9},${173} Z" fill="${C4}" opacity="0.9"/>
+  </g>`,
+];
+
+function animateLogo() {
+  const personnagesG = document.getElementById('personnages');
+  const mur = document.getElementById('mur');
+  const toit = document.getElementById('toit');
+  const porte = document.getElementById('porte');
+
+  let currentPersonIdx = 0;
+  let currentColorIdx = 0;
+  let svgEl = null;
+  let animFrame = null;
+  let startTime = null;
+  const DURATION = 3400;
+  const PAUSE = 500;
+  const START_X = 280;
+  const END_X = -160;
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+  }
+
+  function changeColor(colorIdx) {
+    const c = HOUSE_COLORS[colorIdx % HOUSE_COLORS.length];
+    mur.setAttribute('fill', c.mur);
+    // transition douce via animation
+    mur.style.transition = 'fill 0.8s ease';
+    toit.setAttribute('stroke', c.toit);
+    porte.setAttribute('stroke', c.toit);
+  }
+
+  function runPerson() {
+    const idx = currentPersonIdx % PERSONNAGES.length;
+    currentColorIdx = currentPersonIdx % HOUSE_COLORS.length;
+
+    // Changer couleur maison à chaque entrée
+    changeColor(currentColorIdx);
+
+    // Créer le personnage
+    const wrapper = document.createElementNS('http://www.w3.org/2000/svg','g');
+    wrapper.id = 'current-person';
+    personnagesG.innerHTML = '';
+    personnagesG.appendChild(wrapper);
+
+    startTime = null;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      const elapsed = ts - startTime;
+      let progress = Math.min(elapsed / DURATION, 1);
+      const eased = easeInOut(progress);
+      const x = START_X + (END_X - START_X) * eased;
+
+      wrapper.innerHTML = PERSONNAGES[idx](x);
+
+      if (progress < 1) {
+        animFrame = requestAnimationFrame(step);
+      } else {
+        // Pause puis personnage suivant
+        currentPersonIdx++;
+        setTimeout(runPerson, PAUSE);
+      }
+    }
+
+    animFrame = requestAnimationFrame(step);
+  }
+
+  // Lancer après un délai initial
+  setTimeout(runPerson, 1200);
+}
+
+// Démarrer l'animation logo
+window.addEventListener('load', () => {
+  setTimeout(animateLogo, 800);
+});
+
+function ouvrirResetMdp(e) {
+  e.preventDefault();
+  const emailConnexion = document.getElementById('con-email').value.trim();
+  if (emailConnexion) document.getElementById('reset-email').value = emailConnexion;
+  document.getElementById('reset-msg').textContent = '';
+  document.getElementById('modale-reset').style.display = 'flex';
+}
+
+function fermerResetMdp() {
+  document.getElementById('modale-reset').style.display = 'none';
+  document.getElementById('reset-email').value = '';
+  document.getElementById('reset-msg').textContent = '';
+}
+
+async function envoyerReset() {
+  const email = document.getElementById('reset-email').value.trim();
+  const msg   = document.getElementById('reset-msg');
+  if (!email || !email.includes('@')) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Veuillez saisir une adresse e-mail valide.';
+    return;
+  }
+  const _sbReset = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const { error } = await _sbReset.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://bazouk9.github.io/Babelom/confirmation.html'
+  });
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Erreur : ' + error.message;
+  } else {
+    msg.style.color = '#4a7a52';
+    msg.textContent = '✓ Un lien de réinitialisation a été envoyé à ' + email;
+    setTimeout(fermerResetMdp, 3000);
+  }
+}
+
+document.getElementById('modale-reset').addEventListener('click', function(e) {
+  if (e.target === this) fermerResetMdp();
+});
+
+
+// ── COMPTE ──
+async function creerCompte() {
+  const nom    = document.getElementById('ins-nom').value.trim();
+  const prenom = document.getElementById('ins-prenom').value.trim();
+  const email  = document.getElementById('ins-email').value.trim().toLowerCase();
+  const mdp    = document.getElementById('ins-mdp').value;
+  const msg    = document.getElementById('ins-msg');
+
+  if (!nom || !prenom || !email || !mdp) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Veuillez remplir tous les champs obligatoires.'; return;
+  }
+  if (mdp.length < 8) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Le mot de passe doit contenir au moins 8 caractères.'; return;
+  }
+
+  msg.style.color = '#7a9a72';
+  msg.textContent = 'Création du compte…';
+
+  const _sbS = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const { data, error } = await _sbS.auth.signUp({
+    email,
+    password: mdp,
+    options: {
+      data: { prenom, nom },
+      emailRedirectTo: 'https://bazouk9.github.io/Babelom/confirmation.html'
+    }
+  });
+
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = error.message === 'User already registered'
+      ? 'Cette adresse email est déjà utilisée.'
+      : 'Erreur : ' + error.message;
+    return;
+  }
+
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Un email de confirmation vous a été envoyé. Vérifiez votre boîte mail pour activer votre compte.';
+}
+
+async function seConnecter() {
+  const email = document.getElementById('con-email').value.trim().toLowerCase();
+  const mdp   = document.getElementById('con-mdp').value;
+  const msg   = document.getElementById('con-msg');
+
+  if (!email || !mdp) {
+    msg.style.color = '#c04040';
+    msg.textContent = 'Veuillez renseigner votre email et mot de passe.'; return;
+  }
+
+  msg.style.color = '#7a9a72';
+  msg.textContent = 'Connexion…';
+
+  const _sbAuth = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const { data, error } = await _sbAuth.auth.signInWithPassword({ email, password: mdp });
+
+  if (error) {
+    msg.style.color = '#c04040';
+    msg.textContent = error.message === 'Email not confirmed'
+      ? 'Veuillez confirmer votre email avant de vous connecter.'
+      : error.message === 'Invalid login credentials'
+      ? 'Email ou mot de passe incorrect.'
+      : 'Erreur : ' + error.message;
+    return;
+  }
+
+  const user   = data.user;
+  const prenom = user.user_metadata?.prenom || email.split('@')[0];
+  const nom    = user.user_metadata?.nom || '';
+
+  localStorage.setItem('babelom-user', JSON.stringify({
+    id: user.id, prenom, nom, email: user.email, role: 'membre',
+    expires: Date.now() + 8 * 60 * 60 * 1000
+  }));
+
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Connexion réussie. Bon retour, ' + prenom + ' !';
+  mettreAJourNav();
+  setTimeout(() => { window.location.href = 'etape1.html'; }, 1200);
+}
+
+function mettreAJourNav() {
+  const user = babelomGetUser();
+  const navLinks = document.querySelector('.nav-links');
+  if (!navLinks) return;
+  if (user) {
+    navLinks.querySelectorAll('li.membres-only').forEach(li => li.style.display = 'flex');
+    let badge = document.getElementById('nav-user-badge');
+    if (!badge) {
+      badge = document.createElement('li');
+      badge.id = 'nav-user-badge';
+      badge.style.cssText = 'position:relative;display:flex;align-items:center;';
+      navLinks.appendChild(badge);
+    }
+    badge.innerHTML = `
+      <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
+        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
+        👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
+      </button>
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
+
+        <!-- En-tête -->
+        <div style="background:#1e3a28;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#d4880a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;">${(user.prenom||'?')[0].toUpperCase()}</div>
+          <div>
+            <div style="font-size:0.82rem;color:#e8dfc0;font-weight:500;">${user.prenom} ${user.nom||''}</div>
+            <div style="font-size:0.7rem;color:#7a9a72;">${user.email||''}</div>
+          </div>
+        </div>
+
+        <!-- Mes lieux avec compteur -->
+        <div style="border-bottom:1px solid #e0d8c0;">
+          <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleLieuxHistorique()" id="btn-hist-lieux">
+            <span style="font-size:0.78rem;color:#1e3a28;font-weight:500;display:flex;align-items:center;gap:6px;">
+              🏠 Mes lieux habités
+              <span id="badge-nb-lieux" style="background:#d4880a;color:white;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
+            </span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:#7a9a72;">▾</span>
+          </div>
+          <div id="liste-lieux-hist" style="display:none;padding:0 14px 8px;max-height:200px;overflow-y:auto;">
+            <div id="lieux-loading" style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:6px 0;">Chargement…</div>
+          </div>
+        </div>
+
+        <!-- Actions compte -->
+        <div id="menu-actions-compte" style="display:none;">
+          <div onclick="ouvrirModifMdp()" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="demanderDesinscription()" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
+          <div onclick="demanderSuppression()" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-bottom:1px solid #c8d8b0;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+        </div>
+        <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;">
+          <div onclick="basculerCompte()" style="font-size:0.72rem;color:#7a9a72;cursor:pointer;letter-spacing:0.06em;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">⚙️ Mon compte</div>
+          <div onclick="seDeconnecter()" style="font-size:0.72rem;color:#c04040;cursor:pointer;letter-spacing:0.06em;display:flex;align-items:center;gap:4px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
+        </div>
+      </div>`;
+
+    // Charger les lieux depuis Supabase
+    chargerLieuxMembre(user);
+  } else {
+    navLinks.querySelectorAll('li.membres-only').forEach(li => li.style.display = 'none');
+    const badge = document.getElementById('nav-user-badge');
+    if (badge) badge.remove();
+  }
+}
+
+function toggleMenuMembre(e) {
+  e.stopPropagation();
+  const d = document.getElementById('menu-membre-dropdown');
+  if (!d) return;
+  d.style.display = d.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleLieuxHistorique() {
+  const liste = document.getElementById('liste-lieux-hist');
+  const arrow = document.getElementById('arrow-hist');
+  if (!liste) return;
+  const open = liste.style.display !== 'none';
+  liste.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '▾' : '▴';
+}
+
+function basculerCompte() {
+  const el = document.getElementById('menu-actions-compte');
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+async function chargerLieuxMembre(user) {
+  try {
+    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sb.from('temoignages')
+      .select('id, adresse, ville, pays, annee_de, annee_a, type_logement, statut')
+      .eq('utilisateur_id', user.id)
+      .order('annee_de', { ascending: true });
+
+    const container = document.getElementById('lieux-loading');
+    const badge = document.getElementById('badge-nb-lieux');
+    if (!container) return;
+
+    if (error || !data || !data.length) {
+      if (badge) badge.textContent = '0';
+      container.innerHTML = '<div style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:4px 0;">Aucun souvenir déposé pour l\'instant.</div>';
+      return;
+    }
+
+    if (badge) badge.textContent = data.length;
+
+    const colors = ['#d4880a','#4a7a52','#2277cc','#e8335a','#7a4a8a'];
+    container.innerHTML = data.map(function(t, i) {
+      const lieu = [t.adresse, t.ville].filter(Boolean).join(', ');
+      const dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
+      const col = colors[i % colors.length];
+      return `<div style="padding:6px 0;border-bottom:1px solid #ede8d8;display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
+        <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.75rem;font-weight:500;color:#1e3a28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
+          <div style="font-size:0.68rem;color:#7a9a72;">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
+        </div>
+        <div style="display:flex;gap:3px;flex-shrink:0;">
+          <button onclick="modifierLieu('${t.id}')" title="Modifier"
+            style="background:#d4880a;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">✏️</button>
+          <button onclick="supprimerLieu('${t.id}')" title="Supprimer"
+            style="background:#e05050;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch(e) {
+    const c = document.getElementById('lieux-loading');
+    if (c) c.textContent = 'Erreur de chargement.';
+  }
+}
+
+function modifierLieu(id) {
+  fermerMenuMembre();
+  window.location.href = 'etape2.html?edit=' + id;
+}
+
+async function supprimerLieu(id) {
+  if (!confirm('Supprimer ce souvenir définitivement ?')) return;
+  try {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { error } = await sb.from('temoignages').delete().eq('id', id);
+    if (!error) {
+      const row = document.getElementById('lieu-row-' + id);
+      if (row) row.remove();
+      const badge = document.getElementById('badge-nb-lieux');
+      if (badge) badge.textContent = parseInt(badge.textContent||'1') - 1;
+    }
+  } catch(e) {}
+}
+
+function fermerMenuMembre() {
+  const d = document.getElementById('menu-membre-dropdown');
+  if (d) d.style.display = 'none';
+}
+
+// Fermer le menu si clic ailleurs
+document.addEventListener('click', function(e) {
+  const d = document.getElementById('menu-membre-dropdown');
+  const btn = document.getElementById('btn-menu-membre');
+  if (d && btn && !d.contains(e.target) && !btn.contains(e.target)) {
+    d.style.display = 'none';
+  }
+});
+
+function seDeconnecter() {
+  localStorage.removeItem('babelom-user');
+  mettreAJourNav();
+  window.location.reload();
+}
+
+// Init nav
+mettreAJourNav();
+
+
+
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── HERO MAP (décoratif) ──
+let heroMap;
+window.addEventListener('load', () => {
+  heroMap = L.map('hero-map-preview', {
+    zoomControl: false,
+    dragging: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    keyboard: false,
+    attributionControl: false,
+  }).setView([40, 30], 2);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    maxZoom: 10
+  }).addTo(heroMap);
+
+  // Points décoratifs sur les vraies villes
+  const heroLieux = [
+    { lat: 51.247, lng: 22.568 },  // Lublin
+    { lat: 35.556, lng: 6.174  },  // Batna
+    { lat: 48.856, lng: 2.352  },  // Paris
+    { lat: 47.886, lng: 106.905 }, // Oulan-Bator
+    { lat: 31.768, lng: 35.214 },  // Jérusalem
+    { lat: 45.424, lng: -75.695 }, // Ottawa
+    { lat: 6.244,  lng: -75.574 }, // Medellín
+    { lat: 43.548, lng: 10.310 },  // Livourne, Italie
+    { lat: 46.516, lng: 6.633  },  // Lausanne, Suisse
+    { lat: 41.299, lng: 69.240 },  // Tachkent, Ouzbékistan
+    { lat: 59.939, lng: 30.316 },  // Saint-Pétersbourg, Russie
+    { lat: 29.652, lng: 91.172 },  // Lhassa, Tibet
+    { lat: 11.934, lng: 79.830 },  // Pondichéry, Inde
+    { lat: 32.776, lng: -79.931 }, // Charleston, Caroline du Sud
+    { lat: 6.827,  lng: -5.289 },  // Yamoussoukro, Côte d'Ivoire
+    { lat: 30.593, lng: 114.305 }, // Wuhan, Chine
+    { lat: 37.566, lng: 126.978 }, // Séoul, Corée du Sud
+  ];
+  heroLieux.forEach(l => {
+    L.divIcon({className:''});
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:10px;height:10px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#d4880a;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>`,
+      iconSize: [10,10], iconAnchor: [5,10]
+    });
+    L.marker([l.lat, l.lng], { icon }).addTo(heroMap);
+  });
+  setTimeout(() => { heroMap.invalidateSize(); }, 400);
+});
+
+// ── CARTE PRINCIPALE ──
+const COULEURS = ['#d4880a','#6080c8','#d4607a','#a080e0','#40a080','#e8e0ff','#8090c8'];
+let carteMap = null;
+let lieux = [];
+let photosEnAttente = [];
+let latLngEnAttente = null;
+let marqueurTemp = null;
+let modeAjout = false;
+
+function ouvrirCarte(e) {
+  if (e) e.preventDefault();
+  const page = document.getElementById('page-carte');
+  page.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  if (!carteMap) {
+    carteMap = L.map('carte-map', { zoomControl: false }).setView([46, 10], 4);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
+    }).addTo(carteMap);
+    L.control.zoom({ position: 'bottomright' }).addTo(carteMap);
+    carteMap.on('click', clicCarte);
+
+    // Lieux exemples pré-chargés
+    const exemples = [
+      { nom: 'Lublin, Pologne', lat: 51.247, lng: 22.568, de: 1962, a: 1981, type: 'Appartement', texte: 'Une ville marquée par l\'histoire, des étés chauds et la place du Vieux Marché.', couleur: '#d4880a' },
+      { nom: 'Batna, Algérie', lat: 35.556, lng: 6.174, de: 1955, a: 1962, type: 'Maison', texte: 'La maison de famille, les orangers dans la cour, les montagnes de l\'Aurès à l\'horizon.', couleur: '#4a7a52' },
+      { nom: 'Falguière, Aveyron', lat: 44.15, lng: 2.58, de: 1978, a: 1995, type: 'Maison familiale', texte: 'Le causse, les moutons, les étés sans fin et les hivers de neige. Un monde à part.', couleur: '#2e5a38' },
+      { nom: 'Paris, France', lat: 48.856, lng: 2.352, de: 1995, a: 2010, type: 'Appartement', texte: 'Un 6ème étage sans ascenseur rue du Chemin Vert. La lumière du matin sur les toits.', couleur: '#d4607a' },
+    ];
+    exemples.forEach(l => {
+      lieux.push(l);
+      ajouterMarqueur(l);
+    });
+    majListe();
+  }
+
+  activerAjout();
+}
+
+function fermerCarte() {
+  document.getElementById('page-carte').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function activerAjout() {
+  modeAjout = true;
+  document.getElementById('carte-map').style.cursor = 'crosshair';
+  setInstruction('👆 <strong>Cliquez sur la carte</strong> à l\'endroit exact où vous avez habité', '#fff9f0', '#f0c8a0');
+  fermerFiche();
+}
+
+function setInstruction(txt, bg, border) {
+  const el = document.getElementById('carte-instruction');
+  el.innerHTML = txt;
+  el.style.background = bg;
+  el.style.borderBottomColor = border;
+}
+
+function clicCarte(e) {
+  if (!modeAjout) return;
+  latLngEnAttente = e.latlng;
+
+  if (marqueurTemp) carteMap.removeLayer(marqueurTemp);
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="width:18px;height:18px;border-radius:50%;background:var(--ocre, #c4854a);border:3px solid white;box-shadow:0 2px 10px rgba(196,133,74,0.7);animation:pulse 1.5s infinite"></div>`,
+    iconSize: [18,18], iconAnchor: [9,9]
+  });
+  marqueurTemp = L.marker(e.latlng, { icon }).addTo(carteMap);
+
+  document.getElementById('coords-affich').textContent =
+    `${e.latlng.lat.toFixed(4)}, ${e.latlng.lng.toFixed(4)}`;
+  document.getElementById('form-panneau').classList.add('ouvert');
+  setInstruction('✏️ <strong>Remplissez le formulaire</strong> pour décrire ce lieu', '#f0f8f0', '#a0d0a0');
+
+  setTimeout(() => document.getElementById('f-nom').focus(), 400);
+}
+
+function previewPhotos(input) {
+  photosEnAttente = [];
+  const preview = document.getElementById('form-photo-preview');
+  preview.innerHTML = '';
+  [...input.files].forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      photosEnAttente.push(ev.target.result);
+      const img = document.createElement('img');
+      img.src = ev.target.result;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function enregistrer() {
+  if (!latLngEnAttente) return;
+  const de = parseInt(document.getElementById('f-de').value);
+  const a  = parseInt(document.getElementById('f-a').value);
+  if (!de || !a) { alert('Veuillez indiquer les années.'); return; }
+  if (de > a)    { alert('L\'année d\'arrivée doit précéder le départ.'); return; }
+
+  const lieu = {
+    id: Date.now(),
+    nom: document.getElementById('f-nom').value.trim() || `Lieu ${lieux.length + 1}`,
+    lat: latLngEnAttente.lat,
+    lng: latLngEnAttente.lng,
+    de, a,
+    type: document.getElementById('f-type').value,
+    texte: document.getElementById('f-texte').value.trim(),
+    photos: [...photosEnAttente],
+    couleur: COULEURS[lieux.length % COULEURS.length]
+  };
+
+  lieux.push(lieu);
+  if (marqueurTemp) { carteMap.removeLayer(marqueurTemp); marqueurTemp = null; }
+  ajouterMarqueur(lieu);
+  majListe();
+  fermerForm();
+  setTimeout(() => ouvrirFiche(lieu), 300);
+  resetForm();
+}
+
+function annulerForm() {
+  if (marqueurTemp) { carteMap.removeLayer(marqueurTemp); marqueurTemp = null; }
+  fermerForm();
+  resetForm();
+  setInstruction('👆 <strong>Cliquez sur la carte</strong> à l\'endroit exact où vous avez habité', '#fff9f0', '#f0c8a0');
+}
+
+function fermerForm() {
+  document.getElementById('form-panneau').classList.remove('ouvert');
+  modeAjout = true;
+}
+
+function resetForm() {
+  ['f-nom','f-de','f-a','f-texte'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-type').value = '';
+  document.getElementById('f-photos').value = '';
+  document.getElementById('form-photo-preview').innerHTML = '';
+  photosEnAttente = [];
+  latLngEnAttente = null;
+}
+
+function ajouterMarqueur(lieu) {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div style="
+      width:20px;height:20px;
+      border-radius:50% 50% 50% 0;
+      transform:rotate(-45deg);
+      background:${lieu.couleur};
+      border:2.5px solid white;
+      box-shadow:0 2px 10px rgba(0,0,0,0.3);
+      cursor:pointer;
+    "></div>`,
+    iconSize: [20,20], iconAnchor: [10,20]
+  });
+  const m = L.marker([lieu.lat, lieu.lng], { icon }).addTo(carteMap);
+  m.on('click', (e) => {
+    L.DomEvent.stopPropagation(e);
+    if (document.getElementById('form-panneau').classList.contains('ouvert')) return;
+    carteMap.flyTo([lieu.lat, lieu.lng], 14, { duration: 0.7 });
+    setTimeout(() => ouvrirFiche(lieu), 500);
+  });
+  lieu.marqueur = m;
+}
+
+function majListe() {
+  const liste = document.getElementById('lieux-liste');
+  const items = document.getElementById('lieux-items');
+  liste.style.display = lieux.length ? 'block' : 'none';
+  items.innerHTML = '';
+  [...lieux].sort((a,b) => a.de - b.de).forEach(l => {
+    const div = document.createElement('div');
+    div.className = 'lieu-item';
+    div.innerHTML = `
+      <div class="lieu-item-nom" style="border-left:2px solid ${l.couleur}">${l.nom}</div>
+      <div class="lieu-item-dates">${l.de} – ${l.a} · ${l.a - l.de} an${l.a-l.de>1?'s':''}</div>
+    `;
+    div.onclick = () => {
+      carteMap.flyTo([l.lat, l.lng], 14, { duration: 0.8 });
+      setTimeout(() => ouvrirFiche(l), 700);
+    };
+    items.appendChild(div);
+  });
+}
+
+function ouvrirFiche(lieu) {
+  document.getElementById('fiche-nom').textContent = lieu.nom;
+  const dur = lieu.a - lieu.de;
+  let meta = `${lieu.de} – ${lieu.a}  ·  ${dur} an${dur>1?'s':''}`;
+  if (lieu.type) meta += `  ·  ${lieu.type}`;
+  document.getElementById('fiche-meta').textContent = meta;
+  document.getElementById('fiche-texte').textContent = lieu.texte || '';
+
+  const ph = document.getElementById('fiche-photos');
+  ph.innerHTML = '';
+  (lieu.photos||[]).forEach(src => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.onclick = (e) => { e.stopPropagation(); ouvrirLightbox(src); };
+    ph.appendChild(img);
+  });
+  document.getElementById('fiche').classList.add('ouverte');
+}
+
+function fermerFiche() {
+  document.getElementById('fiche').classList.remove('ouverte');
+}
+
+function ouvrirLightbox(src) {
+  document.getElementById('lb-img').src = src;
+  document.getElementById('lightbox').classList.add('ouverte');
+}
+function fermerLightbox() {
+  document.getElementById('lightbox').classList.remove('ouverte');
+}
+
+</script>
+ml>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — La mémoire des lieux habités</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</body>
+</html>
