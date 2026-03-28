@@ -368,6 +368,43 @@ footer {
   </div>
 </div>
 
+<!-- CTA -->
+<section id="cta-final">
+  <div>
+    <div class="cta-label"><span data-i18n="t3CtaLabel">Rejoignez l'archive</span></div>
+  </div>
+  <button class="btn-primary" onclick="ouvrirZoneSaisie()" style="flex-shrink:0;"><span data-i18n="t3CtaBtn">Déposez votre souvenir</span></button>
+</section>
+
+<!-- ZONE DE SAISIE TÉMOIGNAGE -->
+<div id="zone-saisie" style="display:none; background:var(--parchemin); padding:20px 52px; border-top:2px solid var(--sable);">
+  <div style="max-width:1100px; margin:0 auto;">
+    <!-- Rangée 1 : Auteur + Lieu + boutons -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+      <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);white-space:nowrap;flex-shrink:0;">Votre souvenir</span>
+      <input type="text" id="t-auteur" placeholder="Prénom, initiale" style="width:150px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+      <input type="text" id="t-lieu" placeholder="Lieu, pays" style="width:190px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+      <button onclick="fermerZoneSaisie()" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px;line-height:1;margin-left:auto;">✕</button>
+    </div>
+    <!-- Rangée 2 : Textarea grande + bouton soumettre -->
+    <div style="display:flex;gap:14px;align-items:flex-end;">
+      <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
+        <textarea id="t-texte" maxlength="4900" placeholder="Votre souvenir… Les odeurs, les voisins, la lumière par la fenêtre, un souvenir d'enfance, une fête, un déménagement…" oninput="document.getElementById('t-compteur').textContent=this.value.length;document.getElementById('t-compteur').style.color=this.value.length>4500?'#c04040':'#7a9a72';" style="width:100%;height:130px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Cormorant Garamond',serif;font-size:0.98rem;padding:11px 14px;outline:none;border-radius:2px;resize:vertical;line-height:1.7;"></textarea>
+        <div style="font-size:0.72rem;color:#7a9a72;text-align:right;"><span id="t-compteur">0</span> / 4 900 caractères</div>
+      </div>
+      <button onclick="soumettreTemoignage()" style="background:var(--ocre);color:white;border:none;padding:12px 28px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-bottom:22px;">Soumettre →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRMATION TÉMOIGNAGE -->
+<div id="confirm-temoignage" style="display:none;background:var(--terre);padding:48px 52px;text-align:center;">
+  <div style="font-size:2rem;margin-bottom:16px;">✉️</div>
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--parchemin);font-weight:300;margin-bottom:12px;">Merci pour votre témoignage</div>
+  <div style="font-size:0.9rem;color:var(--muted);line-height:1.7;">Il sera relu et ajouté à l'archive Babelom prochainement.</div>
+</div>
+
+
 <!-- TÉMOIGNAGES -->
 <div class="temoignages-wrap">
 
@@ -404,42 +441,6 @@ footer {
       Chargement des témoignages…
     </div>
   </div>
-
-<!-- CTA -->
-<section id="cta-final">
-  <div>
-    <div class="cta-label"><span data-i18n="t3CtaLabel">Rejoignez l'archive</span></div>
-  </div>
-  <button class="btn-primary" onclick="ouvrirZoneSaisie()" style="flex-shrink:0;"><span data-i18n="t3CtaBtn">Déposez votre souvenir</span></button>
-</section>
-
-<!-- ZONE DE SAISIE TÉMOIGNAGE -->
-<div id="zone-saisie" style="display:none; background:var(--parchemin); padding:20px 52px; border-top:2px solid var(--sable);">
-  <div style="max-width:1100px; margin:0 auto;">
-    <!-- Rangée 1 : Auteur + Lieu + boutons -->
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
-      <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);white-space:nowrap;flex-shrink:0;">Votre souvenir</span>
-      <input type="text" id="t-auteur" placeholder="Prénom, initiale" style="width:150px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
-      <input type="text" id="t-lieu" placeholder="Lieu, pays" style="width:190px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
-      <button onclick="fermerZoneSaisie()" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px;line-height:1;margin-left:auto;">✕</button>
-    </div>
-    <!-- Rangée 2 : Textarea grande + bouton soumettre -->
-    <div style="display:flex;gap:14px;align-items:flex-end;">
-      <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
-        <textarea id="t-texte" maxlength="4900" placeholder="Votre souvenir… Les odeurs, les voisins, la lumière par la fenêtre, un souvenir d'enfance, une fête, un déménagement…" oninput="document.getElementById('t-compteur').textContent=this.value.length;document.getElementById('t-compteur').style.color=this.value.length>4500?'#c04040':'#7a9a72';" style="width:100%;height:130px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Cormorant Garamond',serif;font-size:0.98rem;padding:11px 14px;outline:none;border-radius:2px;resize:vertical;line-height:1.7;"></textarea>
-        <div style="font-size:0.72rem;color:#7a9a72;text-align:right;"><span id="t-compteur">0</span> / 4 900 caractères</div>
-      </div>
-      <button onclick="soumettreTemoignage()" style="background:var(--ocre);color:white;border:none;padding:12px 28px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-bottom:22px;">Soumettre →</button>
-    </div>
-  </div>
-</div>
-
-<!-- CONFIRMATION TÉMOIGNAGE -->
-<div id="confirm-temoignage" style="display:none;background:var(--terre);padding:48px 52px;text-align:center;">
-  <div style="font-size:2rem;margin-bottom:16px;">✉️</div>
-  <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--parchemin);font-weight:300;margin-bottom:12px;">Merci pour votre témoignage</div>
-  <div style="font-size:0.9rem;color:var(--muted);line-height:1.7;">Il sera relu et ajouté à l'archive Babelom prochainement.</div>
-</div>
 
 <!-- FOOTER -->
 <div style="height:24px;background:var(--creme);"></div>
