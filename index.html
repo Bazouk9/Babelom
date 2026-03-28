@@ -278,6 +278,16 @@ nav.scrolled {
 @keyframes dotAppear {
   from { opacity:0; transform:rotate(-45deg) scale(0); }
   to   { opacity:1; transform:rotate(-45deg) scale(1); }
+
+@keyframes flecheAppear {
+  from { opacity:0; transform:translateY(-10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@keyframes flecheBounce {
+  0%,100% { transform:translateY(0); }
+  50%     { transform:translateY(10px); }
+}
 }
 
 /* ══════════════════════════════════
@@ -1050,6 +1060,25 @@ footer {
     <div class="map-dot"></div>
     <div class="map-dot"></div>
     <div class="map-dot"></div>
+    <!-- Flèche rouge animée vers le bas — à gauche de l'Amérique du Sud -->
+    <div id="hero-fleche" style="
+      position:absolute;
+      left:22%;
+      bottom:12%;
+      z-index:10;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:0;
+      opacity:0;
+      animation: flecheAppear 0.6s 3.2s forwards;
+      cursor:pointer;
+    " onclick="document.getElementById('table-photos-inline') ? document.getElementById('table-photos-inline').scrollIntoView({behavior:'smooth'}) : window.scrollBy({top:window.innerHeight,behavior:'smooth'})">
+      <svg width="38" height="70" viewBox="0 0 38 70" style="filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));animation:flecheBounce 1.2s 3.8s ease-in-out infinite;">
+        <line x1="19" y1="2" x2="19" y2="52" stroke="#cc2200" stroke-width="5" stroke-linecap="round"/>
+        <polyline points="5,38 19,58 33,38" fill="none" stroke="#cc2200" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
   </div>
 </section>
 
