@@ -455,8 +455,36 @@ footer {
       </text>
     </svg>
   </div>
+  <button onclick="ouvrirSignalement()" style="background:none;border:1px solid rgba(200,216,176,0.4);color:#c8d8b0;padding:7px 16px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.borderColor='#e08080';this.style.color='#e08080'" onmouseout="this.style.borderColor='rgba(200,216,176,0.4)';this.style.color='#c8d8b0'">⚑ Signaler un témoignage</button>
   <div class="footer-text"><span data-i18n="footerText">La mémoire des lieux habités · Tous droits réservés</span></div>
 </footer>
+
+<!-- MODALE SIGNALEMENT -->
+<div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:#f5f2e8;padding:36px 34px;max-width:460px;width:90%;border-radius:2px;">
+    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:#a04040;margin-bottom:8px;">Signalement</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#1e3a28;margin-bottom:6px;">Signaler <em style="color:#c04040;font-style:italic;">un témoignage</em></h3>
+    <p style="font-size:0.84rem;color:#7a9a72;line-height:1.65;margin-bottom:20px;">Indiquez la raison de votre signalement. Notre équipe examinera le témoignage dans les plus brefs délais.</p>
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:#7a9a72;margin-bottom:8px;">Motif *</label>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="delation" style="accent-color:#c04040;"> Contenu à caractère délateur</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="identite"> Usurpation d'identité</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="tiers"> Citation de noms de tiers sans consentement</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="autre"> Autre motif</label>
+      </div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:#7a9a72;margin-bottom:6px;">Précisions (optionnel)</label>
+      <textarea id="signalement-detail" placeholder="Décrivez brièvement le problème…" style="width:100%;background:white;border:1.5px solid #c8d8b0;color:#1e3a28;font-family:'Jost',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:2px;resize:none;height:80px;" onfocus="this.style.borderColor='#c04040'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+    </div>
+    <div id="signalement-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #c8d8b0;">
+      <button onclick="fermerSignalement()" style="background:none;border:none;color:#7a9a72;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;">Annuler</button>
+      <button onclick="envoyerSignalement()" style="background:#c04040;color:white;border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;" onmouseover="this.style.background='#a03030'" onmouseout="this.style.background='#c04040'">Envoyer →</button>
+    </div>
+  </div>
+</div>
 
 </body>
 <script>
@@ -720,6 +748,44 @@ document.addEventListener('contextmenu', function(e) {
 });
 document.addEventListener('dragstart', function(e) {
   if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
+});
+
+// ── SIGNALEMENT ──
+function ouvrirSignalement() {
+  document.getElementById('modale-signalement').style.display = 'flex';
+}
+function fermerSignalement() {
+  document.getElementById('modale-signalement').style.display = 'none';
+  document.querySelectorAll('input[name="motif"]').forEach(function(r){ r.checked = false; });
+  document.getElementById('signalement-detail').value = '';
+  document.getElementById('signalement-msg').textContent = '';
+}
+async function envoyerSignalement() {
+  const motif  = document.querySelector('input[name="motif"]:checked');
+  const detail = document.getElementById('signalement-detail').value.trim();
+  const msg    = document.getElementById('signalement-msg');
+  if (!motif) { msg.style.color='#c04040'; msg.textContent='Veuillez sélectionner un motif.'; return; }
+  msg.style.color='#7a9a72'; msg.textContent='Envoi en cours…';
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: '7428a95d-fc84-4a4b-8c08-b4e4382c7946',
+        subject:    '[Babelom Signalement] ' + motif.value,
+        from_name:  'Système Babelom',
+        message:    'Motif : ' + motif.value + '\n\nDétails : ' + (detail || 'Aucun détail fourni.') + '\n\nPage : ' + window.location.href
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      msg.style.color='#4a7a52'; msg.textContent='✓ Signalement envoyé.';
+      setTimeout(fermerSignalement, 2500);
+    } else { msg.style.color='#c04040'; msg.textContent='Erreur lors de l\'envoi.'; }
+  } catch(e) { msg.style.color='#c04040'; msg.textContent='Erreur réseau.'; }
+}
+document.getElementById('modale-signalement').addEventListener('click', function(e) {
+  if (e.target === this) fermerSignalement();
 });
 </script>
 </html>
