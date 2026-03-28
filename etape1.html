@@ -1244,7 +1244,7 @@ function buildPopup(p, isCluster, membres) {
   }
 
   if (user) {
-    const lienTem = p.id ? 'temoignages.html?id=' + p.id : 'temoignages.html';
+    const lienTem = p.id ? 'temoignage.html?id=' + p.id : 'temoignages.html';
     const type    = p.type_logement ? '🏠 <strong>Type :</strong> ' + p.type_logement + '<br>' : '';
     const annees  = (p.annee_de && p.annee_a) ? '📅 <strong>Années :</strong> ' + p.annee_de + ' – ' + p.annee_a + '<br>' : '';
     const extrait = p.texte ? '« ' + p.texte.substring(0, 80) + (p.texte.length > 80 ? '…' : '') + ' »' : '';

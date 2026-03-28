@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Témoignage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="supabase-config.js"></script>
+<script src="player.js" defer></script>
+<script src="i18n.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --terre:#1e3a28;--ocre:#d4880a;--sable:#c8d8b0;
+  --parchemin:#e8e4d0;--creme:#f5f2e8;--muted:#7a9a72;
+  --brun:#2e5a38;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--creme);color:var(--terre);font-family:'Jost',sans-serif;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;align-items:center;padding:0 28px;height:58px;gap:0;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:32px;}
+.nav-logo svg{width:28px;height:28px;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--creme);letter-spacing:0.08em;}
+.nav-logo-text span{color:var(--ocre);}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+.nav-links a{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:#c8dab0;text-decoration:none;display:flex;align-items:baseline;gap:10px;}
+.nav-links a:hover{color:white;}
+.nav-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ocre);}
+
+/* HERO */
+.hero{background:var(--terre);padding:52px 52px 40px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(200,216,176,0.08);}
+.hero-eyebrow{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:16px;}
+.hero-top{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:var(--ocre);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;color:white;flex-shrink:0;}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--creme);line-height:1.2;}
+.hero-name em{color:var(--ocre);font-style:italic;}
+.hero-adresse{font-size:0.9rem;color:var(--muted);margin-top:4px;}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.tag{background:rgba(200,216,176,0.12);color:#c8dab0;font-size:0.72rem;padding:4px 12px;border-radius:2px;border:1px solid rgba(200,216,176,0.2);}
+
+/* CONTENU */
+.content{max-width:860px;margin:0 auto;padding:48px 52px;}
+
+/* MÉTADONNÉES */
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0;margin-bottom:40px;border:1px solid var(--sable);border-radius:3px;overflow:hidden;background:white;}
+.meta-item{padding:16px 18px;border-right:1px solid var(--sable);border-bottom:1px solid var(--sable);}
+.meta-item:nth-child(even){border-right:none;}
+.meta-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:5px;}
+.meta-value{font-size:0.88rem;font-weight:500;color:var(--terre);}
+
+/* TÉMOIGNAGE */
+.temoignage-section{margin-bottom:44px;}
+.section-title{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:20px;padding-bottom:8px;border-bottom:1px solid var(--sable);}
+.temoignage-texte{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-weight:300;line-height:1.85;color:var(--terre);position:relative;padding-left:24px;}
+.temoignage-texte::before{content:'"';position:absolute;left:0;top:-8px;font-size:3rem;color:var(--ocre);opacity:0.4;font-family:'Cormorant Garamond',serif;line-height:1;}
+
+/* PHOTOS */
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.photo-protegee{position:relative;border-radius:3px;overflow:hidden;aspect-ratio:4/3;cursor:zoom-in;}
+.photo-protegee img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;transition:transform 0.3s;}
+.photo-protegee:hover img{transform:scale(1.04);}
+.photo-shield{position:absolute;inset:0;z-index:2;}
+.photo-watermark{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;color:rgba(255,255,255,0.7);text-shadow:0 1px 3px rgba(0,0,0,0.7);pointer-events:none;z-index:3;user-select:none;}
+
+/* FOYER */
+.foyer-grid{display:flex;gap:10px;flex-wrap:wrap;}
+.foyer-badge{background:var(--parchemin);border:1px solid var(--sable);border-radius:2px;padding:6px 14px;font-size:0.78rem;color:var(--terre);}
+.foyer-badge strong{color:var(--ocre);margin-right:4px;}
+
+/* ANECDOTES */
+.anecdote-bloc{background:var(--parchemin);border-left:3px solid var(--ocre);padding:16px 20px;border-radius:0 3px 3px 0;margin-bottom:12px;}
+.anecdote-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:6px;}
+.anecdote-text{font-size:0.88rem;line-height:1.7;color:var(--terre);}
+
+/* LIGHTBOX */
+#babelom-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+#babelom-lightbox.open{display:flex;}
+.lb-img-wrap{position:relative;max-width:90vw;max-height:80vh;}
+#lb-photo{max-width:90vw;max-height:78vh;object-fit:contain;pointer-events:none;display:block;}
+.lb-shield{position:absolute;inset:0;}
+.lb-wm{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:0.62rem;color:rgba(255,255,255,0.5);letter-spacing:0.12em;pointer-events:none;}
+.lb-controls{display:flex;gap:16px;align-items:center;}
+.lb-btn{background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-size:1.4rem;width:42px;height:42px;border-radius:50%;cursor:pointer;}
+#lb-close{position:fixed;top:18px;right:22px;background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.5rem;cursor:pointer;}
+#lb-count{font-size:0.8rem;color:rgba(255,255,255,0.5);min-width:50px;text-align:center;font-family:'Jost',sans-serif;}
+
+/* ACTIONS */
+.actions{display:flex;gap:14px;margin-top:44px;padding-top:24px;border-top:1px solid var(--sable);flex-wrap:wrap;}
+.btn-retour{background:var(--terre);color:var(--creme);text-decoration:none;padding:10px 22px;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;display:inline-flex;align-items:center;gap:8px;}
+.btn-retour:hover{background:var(--brun);}
+.btn-contact{background:none;border:1px solid var(--sable);color:var(--terre);padding:10px 22px;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;cursor:pointer;font-family:'Jost',sans-serif;}
+.btn-contact:hover{border-color:var(--ocre);color:var(--ocre);}
+
+/* LOADING / ERREUR */
+.page-loading{text-align:center;padding:80px 40px;color:var(--muted);font-style:italic;}
+.page-erreur{text-align:center;padding:80px 40px;}
+
+/* PROTECTION */
+img{-webkit-user-drag:none;}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 3L33 15V33H3V15L18 3Z" fill="#2e5a38" stroke="#d4880a" stroke-width="1.5"/>
+      <rect x="13" y="22" width="10" height="11" fill="#d4880a" rx="1"/>
+      <rect x="10" y="14" width="6" height="5" fill="#c8dab0" rx="0.5"/>
+      <rect x="20" y="14" width="6" height="5" fill="#c8dab0" rx="0.5"/>
+    </svg>
+    <span class="nav-logo-text">B<span>abel</span>Om</span>
+  </a>
+  <ul class="nav-links">
+    <li style="margin-left:28px;"><a href="index.html" style="color:#d4880a;">Accueil</a></li>
+    <li><a href="etape1.html"><span class="nav-num">01</span> La Carte</a></li>
+    <li><a href="temoignages.html"><span class="nav-num">03</span> Transmettez</a></li>
+  </ul>
+</nav>
+
+<!-- CONTENU DYNAMIQUE -->
+<div id="page-loading" class="page-loading">Chargement du témoignage…</div>
+<div id="page-content" style="display:none;">
+  <div class="hero" id="hero">
+    <div class="hero-eyebrow">Mémoire d'un lieu habité</div>
+    <div class="hero-top">
+      <div class="hero-avatar" id="hero-avatar">?</div>
+      <div>
+        <div class="hero-name" id="hero-name">—</div>
+        <div class="hero-adresse" id="hero-adresse">—</div>
+      </div>
+    </div>
+    <div class="hero-tags" id="hero-tags"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- MÉTADONNÉES -->
+    <div class="meta-grid" id="meta-grid"></div>
+
+    <!-- TÉMOIGNAGE -->
+    <div class="temoignage-section" id="section-texte" style="display:none;">
+      <div class="section-title">Le souvenir</div>
+      <div class="temoignage-texte" id="texte-contenu"></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="temoignage-section" id="section-photos" style="display:none;">
+      <div class="section-title">Photos du lieu</div>
+      <div class="photos-grid" id="photos-grid"></div>
+    </div>
+
+    <!-- FOYER -->
+    <div class="temoignage-section" id="section-foyer" style="display:none;">
+      <div class="section-title">Composition du foyer</div>
+      <div class="foyer-grid" id="foyer-grid"></div>
+    </div>
+
+    <!-- ANECDOTES -->
+    <div class="temoignage-section" id="section-anecdotes" style="display:none;">
+      <div class="section-title">Anecdotes & souvenirs</div>
+      <div id="anecdotes-contenu"></div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <a href="etape1.html" class="btn-retour">← Retour à la carte</a>
+      <a href="temoignages.html" class="btn-retour" style="background:var(--ocre);">Voir tous les souvenirs</a>
+    </div>
+
+  </div>
+</div>
+
+<div id="page-erreur" class="page-erreur" style="display:none;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Témoignage introuvable</div>
+  <p style="color:var(--muted);margin-bottom:20px;">Ce témoignage n'existe pas ou a été supprimé.</p>
+  <a href="etape1.html" class="btn-retour">← Retour à la carte</a>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="babelom-lightbox">
+  <button id="lb-close" onclick="fermerLightbox()">✕</button>
+  <div class="lb-img-wrap">
+    <img id="lb-photo" src="" alt="" oncontextmenu="return false;">
+    <div class="lb-shield" oncontextmenu="return false;" ondragstart="return false;"></div>
+    <div class="lb-wm">© Babelom — reproduction interdite</div>
+  </div>
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="lbPrev()">‹</button>
+    <span id="lb-count">1 / 1</span>
+    <button class="lb-btn" onclick="lbNext()">›</button>
+  </div>
+</div>
+
+<script>
+// Protection photos
+document.addEventListener('contextmenu', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
+document.addEventListener('dragstart', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
+
+// Lightbox
+var lbPhotos = [], lbIdx = 0;
+function ouvrirLightbox(photos, idx) {
+  lbPhotos = photos; lbIdx = idx;
+  document.getElementById('babelom-lightbox').classList.add('open');
+  majLightbox();
+}
+function majLightbox() {
+  document.getElementById('lb-photo').src = lbPhotos[lbIdx];
+  document.getElementById('lb-count').textContent = (lbIdx+1) + ' / ' + lbPhotos.length;
+}
+function lbPrev() { lbIdx = (lbIdx-1+lbPhotos.length)%lbPhotos.length; majLightbox(); }
+function lbNext() { lbIdx = (lbIdx+1)%lbPhotos.length; majLightbox(); }
+function fermerLightbox() { document.getElementById('babelom-lightbox').classList.remove('open'); }
+document.getElementById('babelom-lightbox').addEventListener('click', function(e){ if(e.target===this) fermerLightbox(); });
+document.addEventListener('keydown', function(e){
+  if(!document.getElementById('babelom-lightbox').classList.contains('open')) return;
+  if(e.key==='ArrowLeft') lbPrev();
+  if(e.key==='ArrowRight') lbNext();
+  if(e.key==='Escape') fermerLightbox();
+});
+
+// Chargement du témoignage
+async function chargerTemoignage() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) { afficherErreur(); return; }
+
+  try {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sb
+      .from('temoignages')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) { afficherErreur(); return; }
+    afficherTemoignage(data);
+  } catch(e) { afficherErreur(); }
+}
+
+function afficherTemoignage(t) {
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('page-content').style.display = 'block';
+
+  // ── HERO ──
+  const prenom = t.identite_prenom || '';
+  const nom    = t.identite_nom ? t.identite_nom[0] + '.' : '';
+  const auteur = (prenom + ' ' + nom).trim() || 'Membre anonyme';
+  const initiale = prenom ? prenom[0].toUpperCase() : '?';
+
+  document.getElementById('hero-avatar').textContent = initiale;
+  document.getElementById('hero-name').innerHTML = prenom + (nom ? ' <em>' + nom + '</em>' : '');
+  document.title = 'Babelom — ' + auteur;
+
+  const adresseParts = [t.adresse, t.ville, t.pays].filter(Boolean);
+  document.getElementById('hero-adresse').textContent = adresseParts.join(' · ');
+
+  // Tags
+  const tags = [];
+  if (t.type_logement) tags.push(t.type_logement);
+  if (t.annee_de && t.annee_a) tags.push(t.annee_de + ' – ' + t.annee_a);
+  if (t.etage) tags.push('Étage ' + t.etage);
+  if (t.pays) tags.push(t.pays);
+  document.getElementById('hero-tags').innerHTML = tags.map(function(tag){
+    return '<span class="tag">' + tag + '</span>';
+  }).join('');
+
+  // ── MÉTA ──
+  const metas = [
+    { label: 'Pays', value: t.pays },
+    { label: 'Ville', value: t.ville },
+    { label: 'Quartier', value: t.lieudit },
+    { label: 'Adresse', value: t.adresse },
+    { label: 'Type', value: t.type_logement },
+    { label: 'Étage', value: t.etage ? t.etage + (t.etage_total ? ' / ' + t.etage_total : '') : null },
+    { label: 'Arrivée', value: t.annee_de },
+    { label: 'Départ', value: t.annee_a },
+  ].filter(function(m){ return m.value; });
+
+  document.getElementById('meta-grid').innerHTML = metas.map(function(m){
+    return '<div class="meta-item"><div class="meta-label">' + m.label + '</div><div class="meta-value">' + m.value + '</div></div>';
+  }).join('');
+
+  // ── TEXTE ──
+  if (t.texte) {
+    document.getElementById('section-texte').style.display = 'block';
+    document.getElementById('texte-contenu').textContent = t.texte;
+  }
+
+  // ── PHOTOS ──
+  if (t.photos && Array.isArray(t.photos) && t.photos.length > 0) {
+    document.getElementById('section-photos').style.display = 'block';
+    document.getElementById('photos-grid').innerHTML = t.photos.map(function(url, i){
+      return '<div class="photo-protegee" onclick="ouvrirLightbox(' + JSON.stringify(t.photos) + ',' + i + ')">' +
+        '<img src="' + url + '" alt="Photo ' + (i+1) + '" loading="lazy" oncontextmenu="return false;">' +
+        '<div class="photo-shield" oncontextmenu="return false;" ondragstart="return false;"></div>' +
+        '<div class="photo-watermark">© Babelom</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // ── FOYER ──
+  var foyer = [];
+  if (t.foyer_conjoint > 0) foyer.push({ label: 'Conjoint·e', count: t.foyer_conjoint });
+  if (t.foyer_enfants > 0)  foyer.push({ label: 'Enfant(s)', count: t.foyer_enfants });
+  if (t.foyer_pere > 0)     foyer.push({ label: 'Père', count: t.foyer_pere });
+  if (t.foyer_mere > 0)     foyer.push({ label: 'Mère', count: t.foyer_mere });
+  if (t.foyer_frere > 0)    foyer.push({ label: 'Frère(s)', count: t.foyer_frere });
+  if (t.foyer_soeur > 0)    foyer.push({ label: 'Sœur(s)', count: t.foyer_soeur });
+  if (t.foyer_gp > 0)       foyer.push({ label: 'Grand-parent(s)', count: t.foyer_gp });
+  if (t.foyer_autres > 0)   foyer.push({ label: 'Autres', count: t.foyer_autres });
+
+  if (foyer.length > 0) {
+    document.getElementById('section-foyer').style.display = 'block';
+    document.getElementById('foyer-grid').innerHTML = foyer.map(function(f){
+      return '<div class="foyer-badge"><strong>' + f.count + '</strong>' + f.label + '</div>';
+    }).join('');
+  }
+
+  // ── ANECDOTES ──
+  var anecs = [];
+  if (t.texte_odeurs)    anecs.push({ label: 'Odeurs & parfums', text: t.texte_odeurs });
+  if (t.texte_sons)      anecs.push({ label: 'Sons & ambiances', text: t.texte_sons });
+  if (t.texte_anecdotes) anecs.push({ label: 'Anecdotes', text: t.texte_anecdotes });
+  if (t.texte_voisinage) anecs.push({ label: 'Voisinage', text: t.texte_voisinage });
+
+  if (anecs.length > 0) {
+    document.getElementById('section-anecdotes').style.display = 'block';
+    document.getElementById('anecdotes-contenu').innerHTML = anecs.map(function(a){
+      return '<div class="anecdote-bloc"><div class="anecdote-label">' + a.label + '</div><div class="anecdote-text">' + a.text + '</div></div>';
+    }).join('');
+  }
+}
+
+function afficherErreur() {
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('page-erreur').style.display = 'block';
+}
+
+// Vérifier accès membre
+var user = localStorage.getItem('babelom-user');
+if (!user) {
+  window.location.replace('index.html#compte');
+} else {
+  chargerTemoignage();
+}
+
+window.addEventListener('scroll', function(){
+  document.getElementById('nav').style.boxShadow = window.scrollY > 30 ? '0 2px 12px rgba(0,0,0,0.25)' : '';
+});
+</script>
+</body>
+</html>
