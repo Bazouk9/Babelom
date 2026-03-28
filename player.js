@@ -10,8 +10,8 @@ var PLAYLIST = [
 ];
 
 var audio    = null;
-var pisteIdx = parseInt(sessionStorage.getItem('babelom-piste') || '0');
-var isPlaying = sessionStorage.getItem('babelom-playing') === 'true';
+var pisteIdx = parseInt(localStorage.getItem('babelom-piste') || '0');
+var isPlaying = localStorage.getItem('babelom-playing') === 'true';
 
 // ── Injection du lecteur fixe ──
 function creerLecteur() {
@@ -72,14 +72,14 @@ function initPiste(autoplay) {
   window._bpAudio = audio;
   audio.volume = parseFloat(document.getElementById('bp-vol').value || '0.65');
   // Reprendre la position mémorisée
-  var savedTime = parseFloat(sessionStorage.getItem('babelom-time') || '0');
+  var savedTime = parseFloat(localStorage.getItem('babelom-time') || '0');
   if (savedTime > 0) audio.currentTime = savedTime;
 
   document.getElementById('bp-titre').textContent = '♪ ' + p.titre;
 
   audio.addEventListener('timeupdate', function() {
-    sessionStorage.setItem('babelom-time', audio.currentTime);
-    sessionStorage.setItem('babelom-piste', pisteIdx);
+    localStorage.setItem('babelom-time', audio.currentTime);
+    localStorage.setItem('babelom-piste', pisteIdx);
     if (!audio.duration) return;
     var pct = (audio.currentTime / audio.duration) * 100;
     var prog = document.getElementById('bp-prog');
@@ -88,12 +88,12 @@ function initPiste(autoplay) {
     if (temps) temps.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
   });
 
-  audio.addEventListener('ended', window.babelomNext);
+  audio.addEventListener('ended', function() { window.babelomNextAuto(); });
 
   if (autoplay) {
     audio.play().then(function() {
       updateBtn(true);
-      sessionStorage.setItem('babelom-playing', 'true');
+      localStorage.setItem('babelom-playing', 'true');
     }).catch(function(){});
   }
 }
@@ -112,18 +112,18 @@ function updateBtn(playing) {
 window.babelomToggle = function() {
   if (!audio) { initPiste(true); return; }
   if (audio.paused) {
-    audio.play().then(function(){ updateBtn(true); sessionStorage.setItem('babelom-playing','true'); });
+    audio.play().then(function(){ updateBtn(true); localStorage.setItem('babelom-playing','true'); });
   } else {
     audio.pause();
     updateBtn(false);
-    sessionStorage.setItem('babelom-playing','false');
+    localStorage.setItem('babelom-playing','false');
   }
 };
 
 window.babelomNext = function() {
   pisteIdx = (pisteIdx + 1) % PLAYLIST.length;
-  sessionStorage.setItem('babelom-piste', pisteIdx);
-  sessionStorage.setItem('babelom-time', '0');
+  localStorage.setItem('babelom-piste', pisteIdx);
+  localStorage.setItem('babelom-time', '0');
   var wasPlaying = audio && !audio.paused;
   initPiste(wasPlaying);
   if (wasPlaying) updateBtn(true);
@@ -147,9 +147,10 @@ window.babelomHide = function() {
 // ── Lancer ──
 document.addEventListener('DOMContentLoaded', function() {
   creerLecteur();
-  // Si une piste était en cours sur la page précédente, reprendre
-  if (isPlaying) {
-    setTimeout(function() { initPiste(true); }, 300);
+  // Démarrer automatiquement sauf si l'utilisateur a volontairement mis en pause
+  var pauseVolontaire = localStorage.getItem('babelom-playing') === 'false';
+  if (!pauseVolontaire) {
+    setTimeout(function() { initPiste(true); }, 400);
   } else {
     initPiste(false);
   }
