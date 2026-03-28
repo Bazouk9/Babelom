@@ -1947,8 +1947,38 @@ function seDeconnecter() {
   if (badge) badge.remove();
 }
 
-// Init nav au chargement
-mettreAJourNav();
+// Init nav — vérifier la session Supabase avant d'afficher l'utilisateur
+(async function() {
+  const stored = localStorage.getItem('babelom-user');
+  if (stored) {
+    try {
+      // Vérifier que la session Supabase est encore valide
+      const sbCheck = window.supabase
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+        : null;
+      if (sbCheck) {
+        const { data } = await sbCheck.auth.getSession();
+        if (!data || !data.session) {
+          // Session expirée côté Supabase — déconnecter
+          localStorage.removeItem('babelom-user');
+          localStorage.removeItem('babelom-piste');
+          localStorage.removeItem('babelom-playing');
+        }
+      }
+    } catch(e) {
+      // En cas d'erreur réseau : vérifier l'expiration locale
+      try {
+        const u = JSON.parse(stored);
+        if (u.expires && Date.now() > u.expires) {
+          localStorage.removeItem('babelom-user');
+        }
+      } catch(e2) {
+        localStorage.removeItem('babelom-user');
+      }
+    }
+  }
+  mettreAJourNav();
+})();
 
 
 

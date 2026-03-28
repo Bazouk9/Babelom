@@ -189,6 +189,29 @@ function babelomGetUser() {
 
 
 
+// Vérifier session Supabase au chargement
+(async function() {
+  const stored = localStorage.getItem('babelom-user');
+  if (!stored) return;
+  try {
+    const sbCheck = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+      : null;
+    if (sbCheck) {
+      const { data } = await sbCheck.auth.getSession();
+      if (!data || !data.session) {
+        localStorage.removeItem('babelom-user');
+        return;
+      }
+    }
+  } catch(e) {
+    try {
+      const u = JSON.parse(stored);
+      if (u.expires && Date.now() > u.expires) localStorage.removeItem('babelom-user');
+    } catch(e2) { localStorage.removeItem('babelom-user'); }
+  }
+})();
+
 // Protection globale
 document.addEventListener('contextmenu', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();return false;} });
 document.addEventListener('dragstart', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();return false;} });
