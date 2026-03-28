@@ -6,6 +6,7 @@
 <title>Babelom — Racontez votre lieu</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="player.js" defer></script>
 <script src="i18n.js?v=2"></script>
 <style>
@@ -1351,6 +1352,7 @@ async function valider() {
 
       // Témoignage
       texte,
+      texte_2:             document.getElementById('f-texte-2')?.value.trim() || null,
       photos:              photosUrls.length ? photosUrls : null,
 
       // Défunt (optionnel)
@@ -1361,7 +1363,17 @@ async function valider() {
       statut:              'en_attente',
     };
 
-    await sb.insert('temoignages', temoignage);
+    // ── Insérer le témoignage avec le SDK Supabase (gère bien les arrays) ──
+    const sbSdk = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+      : null;
+
+    if (sbSdk) {
+      const { error: insertError } = await sbSdk.from('temoignages').insert([temoignage]);
+      if (insertError) throw new Error(insertError.message);
+    } else {
+      await sb.insert('temoignages', temoignage);
+    }
 
     // ── Succès ──
     document.getElementById('confirmation').classList.add('visible');

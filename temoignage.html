@@ -157,14 +157,27 @@ img{-webkit-user-drag:none;}
 
     <!-- FOYER -->
     <div class="temoignage-section" id="section-foyer" style="display:none;">
-      <div class="section-title">Composition du foyer</div>
+      <div class="section-title">Composition du foyer — <span id="foyer-total" style="color:var(--ocre);font-style:italic;"></span></div>
       <div class="foyer-grid" id="foyer-grid"></div>
     </div>
 
-    <!-- ANECDOTES -->
-    <div class="temoignage-section" id="section-anecdotes" style="display:none;">
-      <div class="section-title">Anecdotes & souvenirs</div>
-      <div id="anecdotes-contenu"></div>
+    <!-- CONTEXTE & ANECDOTES -->
+    <div class="temoignage-section" id="section-contexte" style="display:none;">
+      <div class="section-title">Contexte & anecdotes</div>
+      <div class="anecdote-bloc">
+        <div class="anecdote-text" id="contexte-contenu"></div>
+      </div>
+    </div>
+
+    <!-- DÉFUNT -->
+    <div class="temoignage-section" id="section-defunt" style="display:none;">
+      <div class="section-title">Témoignage déposé au nom de</div>
+      <div class="anecdote-bloc">
+        <div class="meta-label">Personne</div>
+        <div class="meta-value" id="defunt-nom" style="font-size:1rem;margin-bottom:6px;"></div>
+        <div class="meta-label">Lien</div>
+        <div class="anecdote-text" id="defunt-lien"></div>
+      </div>
     </div>
 
     <!-- ACTIONS -->
@@ -286,7 +299,7 @@ function afficherTemoignage(t) {
     return '<div class="meta-item"><div class="meta-label">' + m.label + '</div><div class="meta-value">' + m.value + '</div></div>';
   }).join('');
 
-  // ── TEXTE ──
+  // ── TEXTE PRINCIPAL ──
   if (t.texte) {
     document.getElementById('section-texte').style.display = 'block';
     document.getElementById('texte-contenu').textContent = t.texte;
@@ -306,34 +319,45 @@ function afficherTemoignage(t) {
 
   // ── FOYER ──
   var foyer = [];
-  if (t.foyer_conjoint > 0) foyer.push({ label: 'Conjoint·e', count: t.foyer_conjoint });
-  if (t.foyer_enfants > 0)  foyer.push({ label: 'Enfant(s)', count: t.foyer_enfants });
-  if (t.foyer_pere > 0)     foyer.push({ label: 'Père', count: t.foyer_pere });
-  if (t.foyer_mere > 0)     foyer.push({ label: 'Mère', count: t.foyer_mere });
-  if (t.foyer_frere > 0)    foyer.push({ label: 'Frère(s)', count: t.foyer_frere });
-  if (t.foyer_soeur > 0)    foyer.push({ label: 'Sœur(s)', count: t.foyer_soeur });
-  if (t.foyer_gp > 0)       foyer.push({ label: 'Grand-parent(s)', count: t.foyer_gp });
-  if (t.foyer_autres > 0)   foyer.push({ label: 'Autres', count: t.foyer_autres });
+  if (t.foyer_celibataire > 0) foyer.push({ label: 'Célibataire', count: t.foyer_celibataire });
+  if (t.foyer_conjoint > 0)    foyer.push({ label: 'Conjoint·e', count: t.foyer_conjoint });
+  if (t.foyer_enfants > 0)     foyer.push({ label: 'Enfant(s)', count: t.foyer_enfants });
+  if (t.foyer_pere > 0)        foyer.push({ label: 'Père', count: t.foyer_pere });
+  if (t.foyer_mere > 0)        foyer.push({ label: 'Mère', count: t.foyer_mere });
+  if (t.foyer_frere > 0)       foyer.push({ label: 'Frère(s)', count: t.foyer_frere });
+  if (t.foyer_soeur > 0)       foyer.push({ label: 'Sœur(s)', count: t.foyer_soeur });
+  if (t.foyer_gp > 0)          foyer.push({ label: 'Grand-parent(s)', count: t.foyer_gp });
+  if (t.foyer_pe > 0)          foyer.push({ label: 'Petit(s)-enfant(s)', count: t.foyer_pe });
+  if (t.foyer_autres > 0)      foyer.push({ label: 'Autres', count: t.foyer_autres });
 
   if (foyer.length > 0) {
     document.getElementById('section-foyer').style.display = 'block';
+    // Calculer total
+    var total = foyer.reduce(function(s,f){ return s + f.count; }, 0);
+    document.getElementById('foyer-total').textContent = total + ' personne' + (total > 1 ? 's' : '');
     document.getElementById('foyer-grid').innerHTML = foyer.map(function(f){
       return '<div class="foyer-badge"><strong>' + f.count + '</strong>' + f.label + '</div>';
     }).join('');
   }
 
-  // ── ANECDOTES ──
-  var anecs = [];
-  if (t.texte_odeurs)    anecs.push({ label: 'Odeurs & parfums', text: t.texte_odeurs });
-  if (t.texte_sons)      anecs.push({ label: 'Sons & ambiances', text: t.texte_sons });
-  if (t.texte_anecdotes) anecs.push({ label: 'Anecdotes', text: t.texte_anecdotes });
-  if (t.texte_voisinage) anecs.push({ label: 'Voisinage', text: t.texte_voisinage });
+  // ── CONTEXTE & ANECDOTES (texte_2) ──
+  if (t.texte_2) {
+    document.getElementById('section-contexte').style.display = 'block';
+    document.getElementById('contexte-contenu').textContent = t.texte_2;
+  }
 
-  if (anecs.length > 0) {
-    document.getElementById('section-anecdotes').style.display = 'block';
-    document.getElementById('anecdotes-contenu').innerHTML = anecs.map(function(a){
-      return '<div class="anecdote-bloc"><div class="anecdote-label">' + a.label + '</div><div class="anecdote-text">' + a.text + '</div></div>';
-    }).join('');
+  // ── DÉFUNT ──
+  if (t.defunt_nom || t.defunt_prenom) {
+    document.getElementById('section-defunt').style.display = 'block';
+    var defuntNom = [t.defunt_prenom, t.defunt_nom].filter(Boolean).join(' ');
+    document.getElementById('defunt-nom').textContent = defuntNom;
+    if (t.defunt_lien) document.getElementById('defunt-lien').textContent = t.defunt_lien;
+  }
+
+  // ── ANCIEN NOM VOIE ──
+  if (t.ancien_nom) {
+    var ancienItem = '<div class="meta-item"><div class="meta-label">Ancien nom de la voie</div><div class="meta-value">' + t.ancien_nom + '</div></div>';
+    document.getElementById('meta-grid').innerHTML += ancienItem;
   }
 }
 
