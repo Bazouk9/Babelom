@@ -577,7 +577,7 @@ footer {
 <script>
 // ── GARDE D'ACCÈS ──
 (function() {
-  if (!sessionStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
+  if (!localStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
     window.location.replace('index.html#compte');
   }
 })();
