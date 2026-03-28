@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — La mémoire des lieux habités</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -864,23 +864,12 @@ footer {
    LOGO ANIMÉ MAISON
 ══════════════════════════════════ */
 #logo-maison-wrap {
-  position: absolute;
-  top: 80px;
-  left: 0;
-  right: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  z-index: 100;
-  opacity: 0;
-  animation: fadeIn 1s 0.3s forwards;
-  pointer-events: none;
+  justify-content: center;
+  padding: 20px 0 10px;
 }
 
-#logo-maison-wrap svg {
-  overflow: visible;
-}
 
 .logo-label {
   font-family: 'Cormorant Garamond', serif;
@@ -951,85 +940,22 @@ footer {
 <!-- ══════════════ HERO ══════════════ -->
 <section id="hero" style="position:relative;">
 
-  <!-- LOGO ANIMÉ MAISON -->
-  <div id="logo-maison-wrap">
-    <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280">
-      <defs>
-        <clipPath id="clip-interieur">
-          <!-- sol à y=270, hauteur intérieure 130px -->
-          <rect x="20" y="110" width="200" height="160"/>
-        </clipPath>
-        <!-- motif tuiles brique avec contraste -->
-        <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
-          <rect width="20" height="14" fill="#c8601a"/>
-          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-        </pattern>
-        <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
-          <rect width="20" height="14" fill="#c8601a"/>
-          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-        </pattern>
-      </defs>
-
-      <!-- SOL -->
-      <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
-
-      <!-- MAISON : corps (y=110 à y=270, hauteur=160) -->
-      <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
-
-      <!-- TOIT rempli tuiles brique -->
-      <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
-      <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
-      <!-- ligne de faîtage -->
-      <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
-      <!-- contour toit -->
-      <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
-      <!-- ombre sous toit -->
-      <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
-
-      <!-- MAISON : porte élargie + recentrée -->
-      <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-      <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
-      <!-- panneaux porte -->
-      <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-      <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-
-      <!-- MAISON : fenêtre gauche haut (recentrée vers milieu) -->
-      <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre droite haut (recentrée vers milieu) -->
-      <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre gauche bas (recentrée) -->
-      <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre droite bas (recentrée) -->
-      <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- PERSONNAGES — marchent sur y=270 (sol) -->
-      <g clip-path="url(#clip-interieur)">
-        <g id="personnages"></g>
-      </g>
-
-      <!-- CHEMINÉE (par-dessus le toit) -->
-      <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
-      <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
-      <!-- fumée -->
-      <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+  <!-- LOGO HERO -->
+  <div id="logo-maison-wrap" style="display:flex;align-items:center;justify-content:center;">
+    <svg width="380" height="110" viewBox="0 0 380 110" style="overflow:visible;">
+      <!-- PIN -->
+      <path d="M40,100 Q40,100 10,60 A32,32 0 1,1 70,60 Q40,100 40,100 Z" fill="#d4880a" opacity="0.15"/>
+      <path d="M40,95 Q40,95 12,58 A30,30 0 1,1 68,58 Q40,95 40,95 Z" fill="none" stroke="#d4880a" stroke-width="3"/>
+      <!-- MAISON dans le pin -->
+      <polyline points="20,48 40,22 60,48" fill="none" stroke="#f5f2e8" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="25" y="48" width="30" height="22" fill="none" stroke="#f5f2e8" stroke-width="2.5"/>
+      <rect x="33" y="55" width="13" height="15" fill="none" stroke="#d4880a" stroke-width="2"/>
+      <!-- BABELOM -->
+      <text x="90" y="68" font-family="Cormorant Garamond, serif" font-size="56" font-weight="600" letter-spacing="4">
+        <tspan fill="#f5f2e8" font-size="64" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="64" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
+      </text>
     </svg>
   </div>
-
   <div class="hero-left">
     <p class="hero-eyebrow">Mémoire collective des lieux habités</p>
     <h1 class="hero-title">
