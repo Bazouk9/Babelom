@@ -31,6 +31,78 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 
 
 
+
+/* ── DIAPORAMA PILE DE CARTES ── */
+#tp-wrap {
+  position: absolute;
+  top: 5%;
+  right: 16px;
+  z-index: 20;
+  width: 300px;
+}
+#tp-stack {
+  position: relative;
+  width: 280px;
+  height: 340px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.tp-card {
+  position: absolute;
+  width: 280px;
+  background: #faf6ee;
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.45), 0 8px 28px rgba(0,0,0,0.35), inset 0 0 0 6px #faf6ee;
+  transition: transform 0.55s cubic-bezier(0.34,1.3,0.64,1), opacity 0.4s ease;
+  transform-origin: center bottom;
+  overflow: hidden;
+  border-radius: 2px;
+}
+.tp-card-img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: sepia(0.15) contrast(1.04) brightness(0.96);
+}
+.tp-card-border {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 0 8px #faf6ee, inset 0 0 0 9px rgba(0,0,0,0.06);
+  pointer-events: none;
+}
+.tp-corner {
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 1.5px solid rgba(0,0,0,0.18);
+  background: rgba(210,180,120,0.5);
+}
+.tp-corner.tl { top: 6px; left: 6px; border-bottom:none; border-right:none; }
+.tp-corner.tr { top: 6px; right: 6px; border-bottom:none; border-left:none; }
+.tp-corner.bl { bottom: 6px; left: 6px; border-top:none; border-right:none; }
+.tp-corner.br { bottom: 6px; right: 6px; border-top:none; border-left:none; }
+#tp-nav {
+  display: flex; justify-content: center; gap: 7px;
+  margin-top: 14px; position: relative; z-index: 10;
+}
+#tp-nav span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); cursor: pointer;
+  transition: all 0.25s;
+}
+#tp-nav span.on { background: var(--orange); transform: scale(1.5); }
+#tp-prev, #tp-next {
+  position: absolute; top: 160px;
+  background: var(--orange); border: none;
+  color: white; font-size: 1rem;
+  width: 26px; height: 26px; border-radius: 50%;
+  cursor: pointer; z-index: 10; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.85;
+}
+#tp-prev:hover, #tp-next:hover { opacity: 1; }
+#tp-prev { left: -14px; }
+#tp-next { right: -14px; }
+
 /* ── PHOTO SLIDER ── */
 .slider-card {
   flex-shrink: 0;
@@ -91,7 +163,7 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 }
 
 /* ── TOP NAV FUSIONNÉ ── */
-#top-band{background:var(--nuit);padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:300;}
+#top-band{background:var(--nuit);padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:6px solid var(--orange);position:sticky;top:0;z-index:300;}
 .nav-ib{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-decoration:none;transition:transform 0.2s;padding:2px 6px;}
 .nav-ib:hover{transform:translateY(-2px);}
 .nav-circle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -157,7 +229,7 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 .msg-compte{margin-top:8px;font-size:0.75rem;min-height:16px;color:var(--turquoise);}
 
 /* ── FOOTER ── */
-footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:3px solid var(--orange);}
+footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:6px solid var(--orange);}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;}
 .footer-logo span{color:var(--orange);}
 .footer-links{display:flex;gap:16px;flex-wrap:wrap;}
@@ -168,7 +240,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 .footer-legal a:hover{color:var(--orange);}
 
 /* ── BOTTOM NAV MOBILE ── */
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nuit);border-top:3px solid var(--orange);padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nuit);border-top:6px solid var(--orange);padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
 .bn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 6px;border-radius:9px;text-decoration:none;transition:background 0.2s;}
 .bn.active{background:rgba(255,107,53,0.18);}
 .bn svg{transition:transform 0.2s;}
@@ -360,10 +432,11 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 
   <!-- MAISON ANIMÉE V1 — haut gauche au-dessus du badge -->
   <div id="logo-maison-wrap" style="position:absolute;left:32px;top:16px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
-    <svg id="logo-svg" width="300" height="280" viewBox="0 0 240 240">
+    <svg id="logo-svg" width="300" height="300" viewBox="0 0 240 210">
       <defs>
         <clipPath id="clip-interieur">
-          <rect x="20" y="145" width="200" height="80"/>
+          <!-- Personnages dessinés à y=190, visibles de y=110 à y=200 -->
+          <rect x="20" y="110" width="200" height="90"/>
         </clipPath>
         <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
           <rect width="20" height="14" fill="#c8601a"/>
@@ -379,102 +452,84 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
         </pattern>
       </defs>
 
-      <!-- SOL -->
-      <line x1="10" y1="228" x2="230" y2="228" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+      <!-- SOL (y=192 comme v1 mais un peu plus bas) -->
+      <line x1="10" y1="192" x2="230" y2="192" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
 
-      <!-- ÉTAGE 1 (mur haut) -->
-      <rect x="30" y="75" width="180" height="70" fill="#ede8d8" stroke="#1e3a28" stroke-width="1.6" rx="1"/>
-      <!-- Fenêtre gauche étage -->
-      <rect x="44" y="86" width="30" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
-      <line x1="59" y1="86" x2="59" y2="108" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <line x1="44" y1="97" x2="74" y2="97" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <!-- Fenêtre droite étage -->
-      <rect x="166" y="86" width="30" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
-      <line x1="181" y1="86" x2="181" y2="108" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <line x1="166" y1="97" x2="196" y2="97" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <!-- Fenêtre centrale étage -->
-      <rect x="105" y="82" width="30" height="28" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
-      <line x1="120" y1="82" x2="120" y2="110" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <line x1="105" y1="96" x2="135" y2="96" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
-      <!-- Séparation plancher -->
-      <line x1="30" y1="145" x2="210" y2="145" stroke="#1e3a28" stroke-width="1.5" opacity="0.4"/>
+      <!-- MUR UNIQUE — RDC + ÉTAGE, même couleur, aligné, de y=30 à y=190 -->
+      <rect id="mur" x="20" y="30" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
 
-      <!-- TOIT (au-dessus de l étage) -->
-      <polygon id="toit-fond" points="8,77 120,5 232,77" fill="url(#tuiles)"/>
-      <polygon points="8,77 120,5 232,77" fill="url(#tuiles2)" opacity="0.9"/>
-      <line x1="120" y1="5" x2="120" y2="9" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
-      <polyline id="toit" points="8,77 120,5 232,77" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
-      <line x1="18" y1="78" x2="222" y2="78" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+      <!-- Séparation plancher milieu — trait intérieur seulement -->
+      <line x1="22" y1="110" x2="218" y2="110" stroke="#1e3a28" stroke-width="1" opacity="0.25"/>
+
+      <!-- TOIT -->
+      <polygon id="toit-fond" points="8,32 120,0 232,32" fill="url(#tuiles)"/>
+      <polygon points="8,32 120,0 232,32" fill="url(#tuiles2)" opacity="0.9"/>
+      <line x1="120" y1="0" x2="120" y2="4" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+      <polyline id="toit" points="8,32 120,0 232,32" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="18" y1="33" x2="222" y2="33" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
 
       <!-- CHEMINÉE -->
-      <rect x="158" y="22" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
-      <rect x="155" y="19" width="22" height="6" fill="#c07828" rx="1"/>
-      <path d="M166,18 Q161,8 166,-2 Q171,-12 166,-22" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      <rect x="158" y="2" width="16" height="20" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+      <rect x="155" y="0" width="22" height="5" fill="#c07828" rx="1"/>
 
-      <!-- RDC (mur bas) -->
-      <rect id="mur" x="20" y="145" width="200" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+      <!-- FENÊTRES ÉTAGE (niveau haut : y=40 à y=100) -->
+      <rect x="36" y="42" width="30" height="24" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="51" y1="42" x2="51" y2="66" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="36" y1="54" x2="66" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <rect x="174" y="42" width="30" height="24" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="189" y1="42" x2="189" y2="66" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="174" y1="54" x2="204" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <!-- Fenêtre centrale étage -->
+      <rect x="105" y="40" width="30" height="28" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="120" y1="40" x2="120" y2="68" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="105" y1="54" x2="135" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+
+      <!-- FENÊTRES RDC (niveau bas : y=120 à y=160) -->
+      <rect x="32" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="49" y1="120" x2="49" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="32" y1="133" x2="66" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="174" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="191" y1="120" x2="191" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="174" y1="133" x2="208" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
 
       <!-- PORTE RDC -->
-      <rect id="porte" x="100" y="172" width="32" height="53" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-      <circle cx="127" cy="200" r="2.5" fill="#1e3a28"/>
-      <rect x="104" y="176" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-      <rect x="117" y="176" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect id="porte" x="100" y="138" width="32" height="52" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <circle cx="127" cy="165" r="2.5" fill="#1e3a28"/>
+      <rect x="104" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="117" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
 
-      <!-- Fenêtres RDC -->
-      <rect x="32" y="155" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="49" y1="155" x2="49" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="32" y1="168" x2="66" y2="168" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <rect x="174" y="155" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="191" y1="155" x2="191" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="174" y1="168" x2="208" y2="168" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- PERSONNAGES -->
+      <!-- PERSONNAGES au sol y=190 — clip depuis y=110 -->
       <g clip-path="url(#clip-interieur)"><g id="personnages"></g></g>
     </svg>
   </div>
 
 
+
+  <!-- DIAPORAMA PILE DE CARTES — haut droite -->
+  <div id="tp-wrap">
+    <div id="tp-stack" onclick="tpGo(tpCur+1)">
+      <button id="tp-prev" onclick="event.stopPropagation();tpGo(tpCur-1)">&#8249;</button>
+      <button id="tp-next" onclick="event.stopPropagation();tpGo(tpCur+1)">&#8250;</button>
+    </div>
+    <div id="tp-nav"></div>
+  </div>
+
   <!-- TEXTE en premier plan, côté gauche -->
   <div style="position:absolute;left:0;top:0;bottom:0;width:60%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:220px 48px 32px;">
-    <div class="hero-badge" style="animation:fadeDown 0.5s ease both;max-width:fit-content;">Archive vivante</div>
+    <div class="hero-badge" style="animation:fadeDown 0.5s ease both;max-width:fit-content;">Archive vivante · Monde entier</div>
     <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:white;line-height:1.2;margin:12px 0 10px;animation:fadeDown 0.5s 0.1s ease both;">La mémoire des <em style="color:var(--jaune);font-style:italic;">lieux habités</em></h1>
     <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.65;max-width:420px;animation:fadeDown 0.5s 0.2s ease both;">Chaque maison garde la trace de ceux qui l'ont habitée — pour que les murs n'oublient pas.</p>
   </div>
 
 </section>
-<!-- SLIDER PHOTOS PLEINE LARGEUR -->
-<section id="photo-slider" style="background:var(--nuit);padding:0;overflow:hidden;border-top:3px solid var(--orange);">
-  <div style="padding:16px 24px 10px;display:flex;align-items:center;justify-content:space-between;">
-    <div>
-      <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.2em;color:var(--orange);margin-bottom:4px;">Mémoire partagée</div>
-      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:white;font-style:italic;">La mémoire des <em style="color:var(--jaune);">lieux habités</em></div>
-    </div>
-    <div style="display:flex;gap:8px;">
-      <button onclick="sliderPrev()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
-      <button onclick="sliderNext()" style="width:34px;height:34px;border-radius:50%;background:var(--orange);border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
-    </div>
-  </div>
-  <!-- Piste défilante -->
-  <div id="slider-track-wrap" style="overflow:hidden;width:100%;padding-bottom:16px;">
-    <div id="slider-track" style="display:flex;gap:12px;padding:0 24px;transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;">
-      <!-- Photos chargées dynamiquement depuis Supabase -->
-    </div>
-  </div>
-  <!-- Indicateurs -->
-  <div id="slider-dots" style="display:flex;justify-content:center;gap:6px;padding:0 0 14px;"></div>
-</section>
 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">BABEL<span>Om</span></div>
-  <div class="footer-links">
-    <a href="etape1.html">Carte</a>
-    <a href="temoignages.html">Rechercher</a>
-    <a href="galerie.html">Galerie</a>
-  </div>
   <div class="footer-legal">
     <a href="mentions-legales.html">Mentions légales</a>
-    <a href="confidentialite.html">Politique de confidentialité</a>
+    <a href="confidentialite.html">Confidentialité</a>
+    <a href="confidentialite.html#cgu" style="color:var(--orange);">Conditions d'utilisation (CGU)</a>
   </div>
   <div style="width:100%;text-align:center;margin-top:4px;">
     <span onclick="document.getElementById('modale-admin').style.display='flex';document.getElementById('admin-mdp').focus();"
@@ -747,6 +802,102 @@ function sliderPrev() {
   var maxPage = Math.ceil(sliderCards.length / visible) - 1;
   sliderGoTo(sliderIdx <= 0 ? maxPage : sliderIdx - 1);
 }
+
+
+// ── DIAPORAMA PILE DE CARTES ──
+var TP_PERSO = [
+  { src:'Photos/photo1.jpg' },{ src:'Photos/photo2.jpg' },{ src:'Photos/photo3.jpg' },
+  { src:'Photos/photo4.jpg' },{ src:'Photos/photo5.jpg' },{ src:'Photos/photo6.jpg' },
+];
+var TP_URLS = [];
+var TP_ROTS = [-3.2,1.8,-1.1,2.6,-2.4,1.3,-0.7,2.1,-1.9,3.0];
+var TP_OFF  = [{x:14,y:10},{x:-8,y:6},{x:6,y:-4},{x:-12,y:8},{x:10,y:-6},{x:-6,y:12},{x:8,y:4},{x:-10,y:-8},{x:12,y:6},{x:-4,y:10}];
+var tpCur = 0, tpTimer;
+
+window.addEventListener('load', function() {
+  var stack = document.getElementById('tp-stack');
+  var nav   = document.getElementById('tp-nav');
+  if (!stack || !nav) return;
+
+  function buildStack() {
+    if (TP_URLS.length === 0) TP_URLS = ['','','','',''];
+    stack.querySelectorAll('.tp-card').forEach(function(el){ el.remove(); });
+    nav.innerHTML = '';
+    var n = TP_URLS.length;
+    var baseRots = [-3.2,1.8,-1.1,2.6,-2.4,1.3,-0.7,2.1,-1.9,3.0];
+    var baseOff  = [{x:14,y:10},{x:-8,y:6},{x:6,y:-4},{x:-12,y:8},{x:10,y:-6},{x:-6,y:12},{x:8,y:4},{x:-10,y:-8},{x:12,y:6},{x:-4,y:10}];
+    TP_ROTS=[]; TP_OFF=[];
+    for(var i=0;i<n;i++){ TP_ROTS.push(baseRots[i%baseRots.length]); TP_OFF.push(baseOff[i%baseOff.length]); }
+
+    TP_URLS.forEach(function(url, i) {
+      var card = document.createElement('div');
+      card.className = 'tp-card'; card.id = 'tpcard-'+i;
+      var imgContent = url
+        ? '<img class="tp-card-img" src="'+url+'" alt="" oncontextmenu="return false;">'
+        : '<div style="width:100%;height:150px;background:linear-gradient(135deg,#2e4480,#3a559a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🏠</div>';
+      card.innerHTML = imgContent + '<div class="tp-card-border"></div>' +
+        '<div class="tp-corner tl"></div><div class="tp-corner tr"></div>' +
+        '<div class="tp-corner bl"></div><div class="tp-corner br"></div>';
+      stack.insertBefore(card, stack.querySelector('#tp-prev'));
+      var dot = document.createElement('span');
+      dot.addEventListener('click', function(e){ e.stopPropagation(); tpGo(i); });
+      nav.appendChild(dot);
+    });
+    tpCur=0; tpUpdate(0);
+  }
+
+  var persoValides=[], tested=0;
+  if(TP_PERSO.length===0){ buildStack(); return; }
+  TP_PERSO.forEach(function(p,i){
+    var img=new Image();
+    img.onload=function(){ persoValides.push({idx:i,src:p.src}); check(); };
+    img.onerror=function(){ check(); };
+    img.src=p.src;
+  });
+  function check(){
+    tested++;
+    if(tested<TP_PERSO.length) return;
+    persoValides.sort(function(a,b){ return a.idx-b.idx; });
+    TP_URLS = persoValides.map(function(p){ return p.src; });
+    if(TP_URLS.length===0) TP_URLS=['','','','',''];
+    buildStack();
+  }
+
+  function tpUpdate(n) {
+    var total=TP_URLS.length;
+    for(var i=0;i<total;i++){
+      var card=document.getElementById('tpcard-'+i);
+      if(!card) continue;
+      var off=((i-n+total)%total);
+      if(off===0){
+        card.style.transform='translate(-50%,-50%) rotate('+TP_ROTS[i]+'deg)';
+        card.style.left='50%'; card.style.top='50%';
+        card.style.zIndex=total+10; card.style.opacity='1';
+      } else if(off<=3){
+        var depth=off*5, rot=TP_ROTS[(i+3)%total]*(off*0.5);
+        var ox=TP_OFF[i].x*(off*0.4), oy=TP_OFF[i].y*(off*0.3)+depth;
+        card.style.transform='translate(calc(-50% + '+ox+'px), calc(-50% + '+oy+'px)) rotate('+rot+'deg)';
+        card.style.left='50%'; card.style.top='50%';
+        card.style.zIndex=total+10-off;
+        card.style.opacity=off===1?'0.75':off===2?'0.45':'0.2';
+      } else {
+        card.style.opacity='0'; card.style.zIndex='0';
+        card.style.transform='translate(-50%,-50%) rotate('+TP_ROTS[i]+'deg)';
+        card.style.left='50%'; card.style.top='50%';
+      }
+    }
+    document.querySelectorAll('#tp-nav span').forEach(function(d,i){
+      d.className=i===n?'on':'';
+    });
+    clearTimeout(tpTimer);
+    tpTimer=setTimeout(function(){ tpGo(tpCur+1); },4200);
+  }
+
+  window.tpGo=function(n){
+    tpCur=((n%TP_URLS.length)+TP_URLS.length)%TP_URLS.length;
+    tpUpdate(tpCur);
+  };
+});
 
 // ── Scroll reveal cards ──
 const observer=new IntersectionObserver(entries=>{
