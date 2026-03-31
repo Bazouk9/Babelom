@@ -303,8 +303,18 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
     </a>
   </div>
 
-  <!-- Droite : Connexion + S'inscrire + Langue -->
+  <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
   <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <a href="confidentialite.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+      <div class="nav-circle" style="background:#6B5EA8;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
+          <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17" r="1.2" fill="white"/>
+        </svg>
+      </div>
+      <span class="nav-lbl">Notre projet</span>
+    </a>
     <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
     <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
     <!-- Sélecteur langue -->
@@ -350,10 +360,10 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 
   <!-- MAISON ANIMÉE V1 — haut gauche au-dessus du badge -->
   <div id="logo-maison-wrap" style="position:absolute;left:32px;top:16px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
-    <svg id="logo-svg" width="300" height="250" viewBox="0 0 240 200">
+    <svg id="logo-svg" width="300" height="280" viewBox="0 0 240 240">
       <defs>
         <clipPath id="clip-interieur">
-          <rect x="20" y="110" width="200" height="80"/>
+          <rect x="20" y="145" width="200" height="80"/>
         </clipPath>
         <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
           <rect width="20" height="14" fill="#c8601a"/>
@@ -368,34 +378,65 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
           <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
         </pattern>
       </defs>
-      <line x1="10" y1="192" x2="230" y2="192" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
-      <rect id="mur" x="20" y="110" width="200" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
-      <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
-      <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
-      <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
-      <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
-      <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
-      <rect id="porte" x="100" y="138" width="32" height="52" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-      <circle cx="127" cy="165" r="2.5" fill="#1e3a28"/>
-      <rect x="104" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-      <rect x="117" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-      <rect x="32" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="49" y1="120" x2="49" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="32" y1="133" x2="66" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <rect x="174" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="191" y1="120" x2="191" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="174" y1="133" x2="208" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- SOL -->
+      <line x1="10" y1="228" x2="230" y2="228" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+
+      <!-- ÉTAGE 1 (mur haut) -->
+      <rect x="30" y="75" width="180" height="70" fill="#ede8d8" stroke="#1e3a28" stroke-width="1.6" rx="1"/>
+      <!-- Fenêtre gauche étage -->
+      <rect x="44" y="86" width="30" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
+      <line x1="59" y1="86" x2="59" y2="108" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="44" y1="97" x2="74" y2="97" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <!-- Fenêtre droite étage -->
+      <rect x="166" y="86" width="30" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
+      <line x1="181" y1="86" x2="181" y2="108" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="166" y1="97" x2="196" y2="97" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <!-- Fenêtre centrale étage -->
+      <rect x="105" y="82" width="30" height="28" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
+      <line x1="120" y1="82" x2="120" y2="110" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="105" y1="96" x2="135" y2="96" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <!-- Séparation plancher -->
+      <line x1="30" y1="145" x2="210" y2="145" stroke="#1e3a28" stroke-width="1.5" opacity="0.4"/>
+
+      <!-- TOIT (au-dessus de l étage) -->
+      <polygon id="toit-fond" points="8,77 120,5 232,77" fill="url(#tuiles)"/>
+      <polygon points="8,77 120,5 232,77" fill="url(#tuiles2)" opacity="0.9"/>
+      <line x1="120" y1="5" x2="120" y2="9" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+      <polyline id="toit" points="8,77 120,5 232,77" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="18" y1="78" x2="222" y2="78" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+
+      <!-- CHEMINÉE -->
+      <rect x="158" y="22" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+      <rect x="155" y="19" width="22" height="6" fill="#c07828" rx="1"/>
+      <path d="M166,18 Q161,8 166,-2 Q171,-12 166,-22" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+
+      <!-- RDC (mur bas) -->
+      <rect id="mur" x="20" y="145" width="200" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+
+      <!-- PORTE RDC -->
+      <rect id="porte" x="100" y="172" width="32" height="53" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <circle cx="127" cy="200" r="2.5" fill="#1e3a28"/>
+      <rect x="104" y="176" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="117" y="176" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+
+      <!-- Fenêtres RDC -->
+      <rect x="32" y="155" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="49" y1="155" x2="49" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="32" y1="168" x2="66" y2="168" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="174" y="155" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="191" y1="155" x2="191" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="174" y1="168" x2="208" y2="168" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- PERSONNAGES -->
       <g clip-path="url(#clip-interieur)"><g id="personnages"></g></g>
-      <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
-      <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
-      <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
     </svg>
   </div>
 
 
   <!-- TEXTE en premier plan, côté gauche -->
   <div style="position:absolute;left:0;top:0;bottom:0;width:60%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:220px 48px 32px;">
-    <div class="hero-badge" style="animation:fadeDown 0.5s ease both;">Archive vivante · Monde entier</div>
+    <div class="hero-badge" style="animation:fadeDown 0.5s ease both;max-width:fit-content;">Archive vivante</div>
     <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:white;line-height:1.2;margin:12px 0 10px;animation:fadeDown 0.5s 0.1s ease both;">La mémoire des <em style="color:var(--jaune);font-style:italic;">lieux habités</em></h1>
     <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.65;max-width:420px;animation:fadeDown 0.5s 0.2s ease both;">Chaque maison garde la trace de ceux qui l'ont habitée — pour que les murs n'oublient pas.</p>
   </div>
