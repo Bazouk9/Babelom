@@ -29,8 +29,78 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);padding-bottom:60px;}
 
+
+
+/* ── PHOTO SLIDER ── */
+.slider-card {
+  flex-shrink: 0;
+  width: calc((100vw - 96px) / 4);
+  min-width: 200px;
+  max-width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--nuit2);
+  border: 1px solid var(--nuit3);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.slider-card:hover { transform: translateY(-4px); }
+.slider-card-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: var(--nuit3);
+}
+.slider-card-img-placeholder {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, var(--nuit2) 0%, var(--nuit3) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.2);
+  font-size: 2rem;
+}
+.slider-card-info {
+  padding: 10px 12px;
+}
+.slider-card-lieu {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  color: white;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slider-card-meta {
+  font-size: 0.65rem;
+  color: #8B9CC8;
+  margin-top: 3px;
+}
+.slider-card-tag {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── TOP NAV FUSIONNÉ ── */
+#top-band{background:var(--nuit);padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:3px solid var(--orange);position:sticky;top:0;z-index:300;}
+.nav-ib{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-decoration:none;transition:transform 0.2s;padding:2px 6px;}
+.nav-ib:hover{transform:translateY(-2px);}
+.nav-circle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-lbl{font-size:0.58rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:white;}
+.lang-opt{padding:8px 14px;font-family:'Nunito',sans-serif;font-size:0.78rem;color:white;cursor:pointer;transition:background 0.15s;}
+.lang-opt:hover{background:var(--nuit3);}
+
 /* ── BANDEAU TOP ── */
-#top-band{background:var(--orange);padding:7px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+/* supprimé */
 #top-band-txt{font-size:0.72rem;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.14em;}
 #top-band-btns{display:flex;gap:8px;}
 .top-btn{padding:5px 14px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;border:none;cursor:pointer;transition:transform 0.15s;}
@@ -39,7 +109,7 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 .btn-ins{background:var(--nuit);color:white;}
 
 /* ── NAV ── */
-#nav{background:var(--nuit);padding:0 24px;height:54px;display:flex;align-items:center;position:sticky;top:0;z-index:200;border-bottom:3px solid var(--orange);}
+/* supprimé */
 #nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;letter-spacing:0.04em;text-decoration:none;}
 #nav-logo span{color:var(--orange);}
 #nav-user{margin-left:auto;display:none;align-items:center;gap:10px;}
@@ -47,7 +117,7 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 #nav-deco{background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;}
 
 /* ── ICON BAR ── */
-#icon-bar{background:var(--nuit2);padding:12px 16px;display:flex;justify-content:space-around;border-bottom:2px solid var(--orange);}
+/* supprimé */
 .ib{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-decoration:none;transition:transform 0.2s;}
 .ib:hover{transform:translateY(-3px);}
 .ib-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
@@ -193,80 +263,76 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 
 <!-- BANDEAU ORANGE -->
 <div id="top-band">
-  <div id="top-band-txt">🌍 Mémoire collective des lieux habités</div>
-  <div id="top-band-btns">
+  <!-- Favicon + Logo -->
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
+  </div>
+
+  <!-- 5 ICÔNES nav -->
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
+    <a href="etape1.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--orange);">
+        <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/><line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/><path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/><circle cx="13" cy="5" r="1.8" fill="white"/></svg>
+      </div>
+      <span class="nav-lbl">Carte</span>
+    </a>
+    <a href="etape2.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--turquoise);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Raconter</span>
+    </a>
+    <a href="temoignages.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--jaune);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Rechercher</span>
+    </a>
+    <a href="galerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--vert);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/><circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/><path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/></svg>
+      </div>
+      <span class="nav-lbl">Galerie</span>
+    </a>
+    <a href="messagerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--rose);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/><circle cx="8" cy="10" r="1.4" fill="#CC4455"/><circle cx="12" cy="10" r="1.4" fill="#CC4455"/><circle cx="16" cy="10" r="1.4" fill="#CC4455"/></svg>
+      </div>
+      <span class="nav-lbl">Messagerie</span>
+    </a>
+  </div>
+
+  <!-- Droite : Connexion + S'inscrire + Langue -->
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
     <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
     <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <!-- Sélecteur langue -->
+    <div id="lang-select" style="position:relative;">
+      <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
+        <span id="lang-current">FR</span>
+        <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="2,3 5,7 8,3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div id="lang-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--nuit);border:1px solid var(--nuit3);border-radius:10px;overflow:hidden;min-width:130px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div class="lang-opt" onclick="setLang('FR')">🇫🇷 Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">🇬🇧 English</div>
+        <div class="lang-opt" onclick="setLang('AR')">🇦🇱 العربية</div>
+        <div class="lang-opt" onclick="setLang('ES')">🇪🇸 Español</div>
+        <div class="lang-opt" onclick="setLang('DE')">🇩🇪 Deutsch</div>
+        <div class="lang-opt" onclick="setLang('IT')">🇮🇹 Italiano</div>
+        <div class="lang-opt" onclick="setLang('PL')">🇵🇱 Polski</div>
+        <div class="lang-opt" onclick="setLang('PT')">🇵🇹 Português</div>
+        <div class="lang-opt" onclick="setLang('RU')">🇷🇺 Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">🇨🇳 中文</div>
+      </div>
+    </div>
+    <!-- User connecté -->
+    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
+      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
+      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
+    </div>
   </div>
-</div>
-
-<!-- NAV -->
-<nav id="nav">
-  <a href="index.html" id="nav-logo">BABEL<span>Om</span></a>
-  <div id="nav-user">
-    <span id="nav-user-name"></span>
-    <button id="nav-deco" onclick="seDeconnecter()">✕ Déconnexion</button>
-  </div>
-</nav>
-
-<!-- BARRE ICÔNES -->
-<div id="icon-bar">
-  <a href="etape1.html" class="ib">
-    <div class="ib-circle" style="background:var(--orange);">
-      <svg width="26" height="26" viewBox="0 0 26 26">
-        <path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/>
-        <line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/>
-        <line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/>
-        <path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/>
-        <path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/>
-        <circle cx="13" cy="5" r="1.8" fill="white"/>
-        <path d="M7,5 Q5.5,8 7,7.2 Q8.5,8 7,5Z" fill="white" stroke="#CC4400" stroke-width="0.4"/>
-        <path d="M20,4 Q18.5,7 20,6.3 Q21.5,7 20,4Z" fill="white" stroke="#CC4400" stroke-width="0.4"/>
-      </svg>
-    </div>
-    <span class="ib-label">Carte</span>
-  </a>
-  <a href="etape2.html" class="ib">
-    <div class="ib-circle" style="background:var(--turquoise);">
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/>
-        <line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/>
-        <line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <span class="ib-label">Raconter</span>
-  </a>
-  <a href="temoignages.html" class="ib">
-    <div class="ib-circle" style="background:var(--jaune);">
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/>
-        <path d="M7.5,7.5 Q9,6.5 11,7" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
-        <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <span class="ib-label">Rechercher</span>
-  </a>
-  <a href="galerie.html" class="ib">
-    <div class="ib-circle" style="background:var(--vert);">
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/>
-        <circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/>
-        <path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/>
-      </svg>
-    </div>
-    <span class="ib-label">Galerie</span>
-  </a>
-  <a href="messagerie.html" class="ib">
-    <div class="ib-circle" style="background:var(--rose);">
-      <svg width="24" height="24" viewBox="0 0 24 24">
-        <path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/>
-        <circle cx="8" cy="10" r="1.4" fill="#CC4455"/>
-        <circle cx="12" cy="10" r="1.4" fill="#CC4455"/>
-        <circle cx="16" cy="10" r="1.4" fill="#CC4455"/>
-      </svg>
-    </div>
-    <span class="ib-label">Messagerie</span>
-  </a>
 </div>
 
 <!-- HERO -->
@@ -282,9 +348,9 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
   <div class="map-dot" style="z-index:3;"></div>
   <div class="map-dot" style="z-index:3;"></div>
 
-  <!-- MAISON ANIMÉE — haut gauche au-dessus du badge -->
-  <div id="logo-maison-wrap" style="position:absolute;left:40px;top:28px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
-    <svg id="logo-svg" width="180" height="150" viewBox="0 0 240 200">
+  <!-- MAISON ANIMÉE V1 — haut gauche au-dessus du badge -->
+  <div id="logo-maison-wrap" style="position:absolute;left:32px;top:16px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
+    <svg id="logo-svg" width="300" height="250" viewBox="0 0 240 200">
       <defs>
         <clipPath id="clip-interieur">
           <rect x="20" y="110" width="200" height="80"/>
@@ -302,53 +368,24 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
           <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
         </pattern>
       </defs>
-
-      <!-- ÉTAGE supplémentaire en haut -->
-      <rect x="40" y="30" width="160" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-      <!-- fenêtres étage -->
-      <rect x="56" y="42" width="28" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
-      <line x1="70" y1="42" x2="70" y2="64" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
-      <line x1="56" y1="53" x2="84" y2="53" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
-      <rect x="152" y="42" width="28" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
-      <line x1="166" y1="42" x2="166" y2="64" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
-      <line x1="152" y1="53" x2="180" y2="53" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
-      <!-- balcon central étage -->
-      <rect x="102" y="68" width="36" height="5" fill="#c07828" rx="1"/>
-      <line x1="106" y1="68" x2="106" y2="110" stroke="#c07828" stroke-width="1.5"/>
-      <line x1="120" y1="68" x2="120" y2="110" stroke="#c07828" stroke-width="1.5"/>
-      <line x1="134" y1="68" x2="134" y2="110" stroke="#c07828" stroke-width="1.5"/>
-
-      <!-- SOL -->
       <line x1="10" y1="192" x2="230" y2="192" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
-
-      <!-- MAISON RDC -->
       <rect id="mur" x="20" y="110" width="200" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
-
-      <!-- TOIT -->
       <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
       <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
       <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
       <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
       <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
-
-      <!-- PORTE -->
       <rect id="porte" x="100" y="138" width="32" height="52" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
       <circle cx="127" cy="165" r="2.5" fill="#1e3a28"/>
       <rect x="104" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
       <rect x="117" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-
-      <!-- FENÊTRES RDC -->
       <rect x="32" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
       <line x1="49" y1="120" x2="49" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <line x1="32" y1="133" x2="66" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <rect x="174" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
       <line x1="191" y1="120" x2="191" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <line x1="174" y1="133" x2="208" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- PERSONNAGES -->
       <g clip-path="url(#clip-interieur)"><g id="personnages"></g></g>
-
-      <!-- CHEMINÉE -->
       <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
       <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
       <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
@@ -357,13 +394,35 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 
 
   <!-- TEXTE en premier plan, côté gauche -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:55%;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 48px 48px;">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:60%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:220px 48px 32px;">
     <div class="hero-badge" style="animation:fadeDown 0.5s ease both;">Archive vivante · Monde entier</div>
     <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:white;line-height:1.2;margin:12px 0 10px;animation:fadeDown 0.5s 0.1s ease both;">La mémoire des <em style="color:var(--jaune);font-style:italic;">lieux habités</em></h1>
     <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.65;max-width:420px;animation:fadeDown 0.5s 0.2s ease both;">Chaque maison garde la trace de ceux qui l'ont habitée — pour que les murs n'oublient pas.</p>
   </div>
 
 </section>
+<!-- SLIDER PHOTOS PLEINE LARGEUR -->
+<section id="photo-slider" style="background:var(--nuit);padding:0;overflow:hidden;border-top:3px solid var(--orange);">
+  <div style="padding:16px 24px 10px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.2em;color:var(--orange);margin-bottom:4px;">Mémoire partagée</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:white;font-style:italic;">La mémoire des <em style="color:var(--jaune);">lieux habités</em></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="sliderPrev()" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">‹</button>
+      <button onclick="sliderNext()" style="width:34px;height:34px;border-radius:50%;background:var(--orange);border:none;color:white;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">›</button>
+    </div>
+  </div>
+  <!-- Piste défilante -->
+  <div id="slider-track-wrap" style="overflow:hidden;width:100%;padding-bottom:16px;">
+    <div id="slider-track" style="display:flex;gap:12px;padding:0 24px;transition:transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;">
+      <!-- Photos chargées dynamiquement depuis Supabase -->
+    </div>
+  </div>
+  <!-- Indicateurs -->
+  <div id="slider-dots" style="display:flex;justify-content:center;gap:6px;padding:0 0 14px;"></div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">BABEL<span>Om</span></div>
@@ -450,6 +509,21 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 </div>
 
 <script>
+
+function toggleLang(){
+  var d=document.getElementById('lang-dropdown');
+  d.style.display=d.style.display==='block'?'none':'block';
+}
+function setLang(code){
+  document.getElementById('lang-current').textContent=code;
+  document.getElementById('lang-dropdown').style.display='none';
+  if(typeof setLanguage==='function') setLanguage(code.toLowerCase());
+}
+document.addEventListener('click',function(e){
+  if(!document.getElementById('lang-select').contains(e.target))
+    document.getElementById('lang-dropdown').style.display='none';
+});
+
 function ouvrirModale(id){document.getElementById(id).style.display='flex';}
 function fermerModale(id){document.getElementById(id).style.display='none';}
 // ── Session ──
@@ -532,6 +606,107 @@ function validerAdmin(){
   else{document.getElementById('admin-mdp').style.borderColor='var(--rose)';setTimeout(()=>{document.getElementById('admin-mdp').style.borderColor='';},1000);}
 }
 
+
+// ── SLIDER PHOTOS ──
+var sliderIdx = 0;
+var sliderCards = [];
+
+async function chargerSlider() {
+  try {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data } = await sb.from('temoignages')
+      .select('id,ville,pays,annee_de,annee_a,photos,texte')
+      .eq('statut','publie')
+      .not('photos','is',null)
+      .limit(20);
+    
+    const track = document.getElementById('slider-track');
+    const dots = document.getElementById('slider-dots');
+    if (!track) return;
+
+    // Si pas de données Supabase, afficher des placeholders
+    const items = (data && data.length > 0) ? data : [
+      {ville:'Lyon',pays:'France',annee_de:1988,annee_a:1994,photos:null},
+      {ville:'Alger',pays:'Algérie',annee_de:1975,annee_a:1990,photos:null},
+      {ville:'Varsovie',pays:'Pologne',annee_de:2000,annee_a:2010,photos:null},
+      {ville:'Montréal',pays:'Canada',annee_de:1995,annee_a:2005,photos:null},
+      {ville:'Tunis',pays:'Tunisie',annee_de:1980,annee_a:1992,photos:null},
+      {ville:'Madrid',pays:'Espagne',annee_de:2003,annee_a:2015,photos:null},
+      {ville:'Berlin',pays:'Allemagne',annee_de:1990,annee_a:2001,photos:null},
+      {ville:'Istanbul',pays:'Turquie',annee_de:1978,annee_a:1989,photos:null},
+    ];
+
+    sliderCards = items;
+    track.innerHTML = '';
+
+    const colors = ['var(--orange)','var(--turquoise)','var(--jaune)','var(--vert)','var(--rose)'];
+    items.forEach(function(t, i) {
+      var card = document.createElement('div');
+      card.className = 'slider-card';
+      var imgHtml = '';
+      if (t.photos && t.photos.length > 0) {
+        imgHtml = '<img class="slider-card-img" src="'+t.photos[0]+'" alt="" oncontextmenu="return false;" ondragstart="return false;">';
+      } else {
+        imgHtml = '<div class="slider-card-img-placeholder">🏠</div>';
+      }
+      var annees = t.annee_de ? (t.annee_de + (t.annee_a ? ' — '+t.annee_a : '')) : '';
+      card.innerHTML = imgHtml +
+        '<div class="slider-card-info">'+
+          '<div class="slider-card-lieu">'+(t.ville||'Lieu inconnu')+'</div>'+
+          '<div class="slider-card-meta">'+(t.pays||'')+(annees?' · '+annees:'')+'</div>'+
+          '<span class="slider-card-tag" style="background:'+colors[i%colors.length]+';color:'+
+            (colors[i%colors.length]==='var(--jaune)'?'var(--nuit)':'white')+'">'+(t.pays||'')+'</span>'+
+        '</div>';
+      card.onclick = function() { if(t.id) window.location.href='temoignage.html?id='+t.id; };
+      track.appendChild(card);
+    });
+
+    // Dots
+    var totalPages = Math.ceil(items.length / 4);
+    dots.innerHTML = '';
+    for (var p = 0; p < totalPages; p++) {
+      var dot = document.createElement('div');
+      dot.style.cssText = 'width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.2s;';
+      dot.setAttribute('data-page', p);
+      dot.onclick = (function(pp){ return function(){ sliderGoTo(pp); }; })(p);
+      dots.appendChild(dot);
+    }
+    sliderGoTo(0);
+  } catch(e) { console.log('Slider:', e.message); }
+}
+
+function sliderGoTo(page) {
+  sliderIdx = page;
+  var track = document.getElementById('slider-track');
+  if (!track || !track.firstChild) return;
+  var cardW = track.firstChild.offsetWidth + 12;
+  var visible = Math.max(1, Math.floor((window.innerWidth - 48) / cardW));
+  var offset = page * visible * cardW;
+  track.style.transform = 'translateX(-'+offset+'px)';
+  document.querySelectorAll('#slider-dots div').forEach(function(d,i){
+    d.style.background = i===page ? 'var(--orange)' : 'rgba(255,255,255,0.3)';
+    d.style.width = i===page ? '18px' : '7px';
+    d.style.borderRadius = '4px';
+  });
+}
+
+function sliderNext() {
+  var track = document.getElementById('slider-track');
+  if (!track || !track.firstChild) return;
+  var cardW = track.firstChild.offsetWidth + 12;
+  var visible = Math.max(1, Math.floor((window.innerWidth - 48) / cardW));
+  var maxPage = Math.ceil(sliderCards.length / visible) - 1;
+  sliderGoTo(sliderIdx >= maxPage ? 0 : sliderIdx + 1);
+}
+function sliderPrev() {
+  var track = document.getElementById('slider-track');
+  if (!track || !track.firstChild) return;
+  var cardW = track.firstChild.offsetWidth + 12;
+  var visible = Math.max(1, Math.floor((window.innerWidth - 48) / cardW));
+  var maxPage = Math.ceil(sliderCards.length / visible) - 1;
+  sliderGoTo(sliderIdx <= 0 ? maxPage : sliderIdx - 1);
+}
+
 // ── Scroll reveal cards ──
 const observer=new IntersectionObserver(entries=>{
   entries.forEach((e,i)=>{
@@ -542,6 +717,7 @@ const observer=new IntersectionObserver(entries=>{
   });
 },{threshold:0.1});
 document.querySelectorAll('.card').forEach(c=>observer.observe(c));
+chargerSlider();
 
 const HOUSE_COLORS = [
   { mur: '#f5d080', toit: '#8a3808', accent: '#1e3a28' }, // jaune soleil
