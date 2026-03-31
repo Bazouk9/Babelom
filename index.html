@@ -224,7 +224,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
         <path d="M20,4 Q18.5,7 20,6.3 Q21.5,7 20,4Z" fill="white" stroke="#CC4400" stroke-width="0.4"/>
       </svg>
     </div>
-    <span class="ib-label">Plan</span>
+    <span class="ib-label">Carte</span>
   </a>
   <a href="etape2.html" class="ib">
     <div class="ib-circle" style="background:var(--turquoise);">
@@ -265,7 +265,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
         <circle cx="16" cy="10" r="1.4" fill="#CC4455"/>
       </svg>
     </div>
-    <span class="ib-label">Messages</span>
+    <span class="ib-label">Messagerie</span>
   </a>
 </div>
 
@@ -282,9 +282,9 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
   <div class="map-dot" style="z-index:3;"></div>
   <div class="map-dot" style="z-index:3;"></div>
 
-  <!-- MAISON ANIMÉE en premier plan, côté droit -->
-  <div id="logo-maison-wrap" style="position:absolute;right:5%;top:50%;transform:translateY(-50%);z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;display:flex;align-items:center;justify-content:center;">
-    <svg id="logo-svg" width="280" height="230" viewBox="0 0 240 200">
+  <!-- MAISON ANIMÉE — haut gauche au-dessus du badge -->
+  <div id="logo-maison-wrap" style="position:absolute;left:40px;top:28px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
+    <svg id="logo-svg" width="180" height="150" viewBox="0 0 240 200">
       <defs>
         <clipPath id="clip-interieur">
           <rect x="20" y="110" width="200" height="80"/>
@@ -302,32 +302,62 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
           <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
         </pattern>
       </defs>
+
+      <!-- ÉTAGE supplémentaire en haut -->
+      <rect x="40" y="30" width="160" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <!-- fenêtres étage -->
+      <rect x="56" y="42" width="28" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
+      <line x1="70" y1="42" x2="70" y2="64" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
+      <line x1="56" y1="53" x2="84" y2="53" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
+      <rect x="152" y="42" width="28" height="22" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.2" rx="1"/>
+      <line x1="166" y1="42" x2="166" y2="64" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
+      <line x1="152" y1="53" x2="180" y2="53" stroke="#1e3a28" stroke-width="0.8" opacity="0.6"/>
+      <!-- balcon central étage -->
+      <rect x="102" y="68" width="36" height="5" fill="#c07828" rx="1"/>
+      <line x1="106" y1="68" x2="106" y2="110" stroke="#c07828" stroke-width="1.5"/>
+      <line x1="120" y1="68" x2="120" y2="110" stroke="#c07828" stroke-width="1.5"/>
+      <line x1="134" y1="68" x2="134" y2="110" stroke="#c07828" stroke-width="1.5"/>
+
+      <!-- SOL -->
       <line x1="10" y1="192" x2="230" y2="192" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+
+      <!-- MAISON RDC -->
       <rect id="mur" x="20" y="110" width="200" height="80" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+
+      <!-- TOIT -->
       <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
       <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
       <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
       <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
       <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+
+      <!-- PORTE -->
       <rect id="porte" x="100" y="138" width="32" height="52" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
       <circle cx="127" cy="165" r="2.5" fill="#1e3a28"/>
       <rect x="104" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
       <rect x="117" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+
+      <!-- FENÊTRES RDC -->
       <rect x="32" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
       <line x1="49" y1="120" x2="49" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <line x1="32" y1="133" x2="66" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <rect x="174" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
       <line x1="191" y1="120" x2="191" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
       <line x1="174" y1="133" x2="208" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- PERSONNAGES -->
       <g clip-path="url(#clip-interieur)"><g id="personnages"></g></g>
+
+      <!-- CHEMINÉE -->
       <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
       <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
       <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
     </svg>
   </div>
 
+
   <!-- TEXTE en premier plan, côté gauche -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:55%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:40px 48px;">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:55%;z-index:10;display:flex;flex-direction:column;justify-content:flex-end;padding:40px 48px 48px;">
     <div class="hero-badge" style="animation:fadeDown 0.5s ease both;">Archive vivante · Monde entier</div>
     <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:white;line-height:1.2;margin:12px 0 10px;animation:fadeDown 0.5s 0.1s ease both;">La mémoire des <em style="color:var(--jaune);font-style:italic;">lieux habités</em></h1>
     <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.65;max-width:420px;animation:fadeDown 0.5s 0.2s ease both;">Chaque maison garde la trace de ceux qui l'ont habitée — pour que les murs n'oublient pas.</p>
@@ -338,7 +368,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 <footer>
   <div class="footer-logo">BABEL<span>Om</span></div>
   <div class="footer-links">
-    <a href="etape1.html">Plan</a>
+    <a href="etape1.html">Carte</a>
     <a href="temoignages.html">Rechercher</a>
     <a href="galerie.html">Galerie</a>
   </div>
@@ -360,7 +390,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
   </a>
   <a href="etape1.html" class="bn">
     <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M13,2 Q10,7 13,7 Q16,7 13,2Z" fill="#6B7A99"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl">Plan</div>
+    <div class="bn-dot"></div><div class="bn-lbl">Carte</div>
   </a>
   <a href="temoignages.html" class="bn">
     <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="none" stroke="#6B7A99" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#6B7A99" stroke-width="2.5" stroke-linecap="round"/></svg>
