@@ -163,7 +163,13 @@ nav {
 .temoignage {
   background: var(--creme);
   padding: 26px 24px;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
+  transform: translateY(24px);
+}
+.temoignage.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 .temoignage:hover { background: var(--parchemin); }
 
@@ -618,6 +624,9 @@ async function chargerTemoignages() {
   // Appliquer le filtre si déjà sélectionné
   const villeActive = select.value;
   if (villeActive) filtrerCombine();
+
+  // Déclencher le scroll reveal
+  setTimeout(observerCartes, 100);
 }
 
 function filtrerCombine() {
@@ -757,6 +766,23 @@ function fermerGalerie() { var lb = document.getElementById('babelom-lightbox');
     } catch(e2) { localStorage.removeItem('babelom-user'); }
   }
 })();
+
+// ── B — SCROLL REVEAL ──
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+function observerCartes() {
+  document.querySelectorAll('.temoignage').forEach(function(el, i) {
+    el.style.transitionDelay = (i % 3 * 0.1) + 's';
+    observer.observe(el);
+  });
+}
 
 window.addEventListener('load', chargerTemoignages);
 
