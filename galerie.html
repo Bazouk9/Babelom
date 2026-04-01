@@ -287,6 +287,12 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
 </div>
 
 <script>
+// ── SUPABASE SINGLETON ──
+if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
+  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+}
+function getSb(){ return window._sbClient || (window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)); }
+
 // ── Helper session ──
 function babelomGetUser() {
   try {
@@ -309,7 +315,7 @@ function babelomGetUser() {
   if (!stored) return;
   try {
     const sbCheck = window.supabase
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+      ? getSb()
       : null;
     if (sbCheck) {
       const { data } = await sbCheck.auth.getSession();
@@ -337,7 +343,7 @@ var lbIdx = 0;
 
 async function chargerGalerie() {
   try {
-    const sbClient = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const sbClient = window._sbAuthClient || getSb();
     const { data, error } = await sbClient
       .from('temoignages')
       .select('id, photos, ville, pays, adresse, annee_de, annee_a, type_logement')

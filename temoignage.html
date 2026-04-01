@@ -347,6 +347,12 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
 </div>
 
 <script>
+// ── SUPABASE SINGLETON ──
+if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
+  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+}
+function getSb(){ return window._sbClient || (window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)); }
+
 // Protection photos
 document.addEventListener('contextmenu', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
 document.addEventListener('dragstart', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
@@ -380,7 +386,7 @@ async function chargerTemoignage() {
   if (!id) { afficherErreur(); return; }
 
   try {
-    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const sb = getSb();
     const { data, error } = await sb
       .from('temoignages')
       .select('*')

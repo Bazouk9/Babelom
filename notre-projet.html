@@ -338,6 +338,12 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
 </footer>
 
 <script>
+// ── SUPABASE SINGLETON ──
+if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
+  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+}
+function getSb(){ return window._sbClient || (window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)); }
+
 // Scroll reveal
 var observer = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) {
