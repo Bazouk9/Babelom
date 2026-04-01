@@ -309,6 +309,69 @@ footer {
 .photo-protegee img { pointer-events:none; -webkit-user-drag:none; user-select:none; -webkit-user-select:none; }
 .photo-protegee .photo-shield { position:absolute; inset:0; z-index:2; cursor:default; }
 .photo-protegee .photo-watermark { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family:'Jost',sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.6); pointer-events:none; z-index:3; user-select:none; }
+
+/* ── FORMULAIRES V2 ── */
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
+textarea, select {
+  background: rgba(255,255,255,0.06) !important;
+  border: 2px solid rgba(255,255,255,0.35) !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):focus,
+textarea:focus, select:focus {
+  border-color: var(--orange) !important;
+  background: rgba(255,255,255,0.1) !important;
+}
+input::placeholder, textarea::placeholder {
+  color: rgba(255,255,255,0.4) !important;
+}
+select option {
+  background: var(--nuit2);
+  color: white;
+}
+label {
+  color: rgba(255,255,255,0.75) !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+/* Boutons formulaire */
+button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan):not(#bp-play):not(#bp-prev):not(#bp-next) {
+  font-family: 'Nunito', sans-serif;
+}
+/* Sections formulaire */
+.form-section-title, .form-group-label {
+  color: var(--orange) !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+}
+/* Cartes formulaire */
+.form-card, .form-bloc, .form-section {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 12px;
+  padding: 18px;
+}
+/* Texte général dans les formulaires */
+.form-panneau, #compte, .compte-box {
+  background: rgba(44,74,138,0.95) !important;
+  color: white !important;
+}
+/* Inline styles blancs → transparents */
+[style*="background:white"], [style*="background: white"] {
+  background: rgba(255,255,255,0.07) !important;
+}
+
 </style>
 <script>
 // ── GARDE D'ACCÈS ──
