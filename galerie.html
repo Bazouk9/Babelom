@@ -12,19 +12,21 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --terre:#1e3a28;--ocre:#d4880a;--sable:#c8d8b0;
-  --parchemin:#e8e4d0;--creme:#f5f2e8;--muted:#7a9a72;
+:root{
+  --orange:#FF6B35;--turquoise:#4ECDC4;--jaune:#FFD93D;--vert:#6BCB77;--rose:#FF8B94;--ocre:#d4880a;--nuit:#2c4a8a;--nuit2:#3358a0;--nuit3:#3d6ab8;
+  
+  --nuit:#2c4a8a;--ocre:#FF6B35;--sable:rgba(255,255,255,0.3);
+  --parchemin:#253566;--creme:#1e2d4a;--muted:#7a9a72;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--creme);color:var(--terre);font-family:'Jost',sans-serif;}
+body{background:var(--nuit);color:white;font-family:'Jost',sans-serif;}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;align-items:center;padding:0 28px;height:58px;gap:0;}
+nav{position:sticky;top:0;z-index:1000;background:var(--nuit);display:flex;align-items:center;padding:0 28px;height:58px;gap:0;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:32px;}
 .nav-logo svg{width:28px;height:28px;}
-.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--creme);letter-spacing:0.08em;}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--clair);letter-spacing:0.08em;}
 .nav-logo-text span{color:var(--ocre);}
 .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
 .nav-links a{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:#c8dab0;text-decoration:none;font-weight:400;display:flex;align-items:baseline;gap:10px;}
@@ -32,18 +34,18 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 .nav-links a .nav-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--ocre);}
 
 /* HERO */
-.galerie-hero{background:var(--terre);padding:48px 52px 36px;color:var(--creme);}
+.galerie-hero{background:var(--nuit);padding:48px 52px 36px;color:var(--clair);}
 .galerie-eyebrow{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:12px;}
 .galerie-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;line-height:1.2;margin-bottom:8px;}
 .galerie-title em{color:var(--ocre);font-style:italic;}
-.galerie-sub{font-size:0.9rem;color:var(--muted);line-height:1.7;}
+.galerie-sub{font-size:0.9rem;color:rgba(255,255,255,0.55);line-height:1.7;}
 
 /* FILTRES */
-.galerie-filtres{background:var(--parchemin);padding:16px 52px;border-bottom:1px solid var(--sable);display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;}
-.galerie-filtres label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);display:block;margin-bottom:5px;}
-.galerie-filtres input, .galerie-filtres select{background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;}
+.galerie-filtres{background:rgba(255,255,255,0.08);padding:16px 52px;border-bottom:1px solid rgba(255,255,255,0.2);display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;}
+.galerie-filtres label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.55);display:block;margin-bottom:5px;}
+.galerie-filtres input, .galerie-filtres select{background:white;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;}
 .galerie-filtres input:focus, .galerie-filtres select:focus{border-color:var(--ocre);}
-#galerie-count{font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;}
+#galerie-count{font-size:0.78rem;color:rgba(255,255,255,0.55);font-style:italic;padding-bottom:8px;}
 
 /* GRILLE PHOTOS */
 .galerie-wrap{padding:32px 52px;max-width:1300px;margin:0 auto;}
@@ -59,7 +61,7 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 .galerie-item .g-meta{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(20,40,28,0.85));padding:20px 10px 8px;opacity:0;transition:opacity 0.2s;z-index:4;pointer-events:none;}
 .galerie-item:hover .g-meta{opacity:1;}
 .g-meta-lieu{font-size:0.72rem;font-weight:500;color:#e8dfc0;letter-spacing:0.04em;}
-.g-meta-dates{font-size:0.65rem;color:var(--muted);}
+.g-meta-dates{font-size:0.65rem;color:rgba(255,255,255,0.55);}
 
 /* LIGHTBOX */
 #babelom-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
@@ -76,8 +78,8 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 #lb-info{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:rgba(255,255,255,0.7);text-align:center;}
 
 /* LOADING */
-.galerie-loading{text-align:center;padding:60px;color:var(--muted);font-style:italic;}
-.galerie-vide{text-align:center;padding:60px;color:var(--muted);}
+.galerie-loading{text-align:center;padding:60px;color:rgba(255,255,255,0.55);font-style:italic;}
+.galerie-vide{text-align:center;padding:60px;color:rgba(255,255,255,0.55);}
 
 /* PROTECTION GLOBALE */
 img{-webkit-user-drag:none;}
@@ -85,39 +87,88 @@ img{-webkit-user-drag:none;}
 </head>
 <body>
 
-<nav id="nav">
-  <a href="index.html" class="nav-logo">
-    <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 3L33 15V33H3V15L18 3Z" fill="#2e5a38" stroke="#d4880a" stroke-width="1.5"/>
-      <rect x="13" y="22" width="10" height="11" fill="#d4880a" rx="1"/>
-      <rect x="10" y="14" width="6" height="5" fill="#c8dab0" rx="0.5"/>
-      <rect x="20" y="14" width="6" height="5" fill="#c8dab0" rx="0.5"/>
-    </svg>
-    <span class="nav-logo-text">B<span>abel</span>Om</span>
-  </a>
-  <ul class="nav-links">
-    <li style="margin-left:28px;"><a href="index.html" style="color:#d4880a;">Accueil</a></li>
-    <li><a href="etape1.html"><span class="nav-num">01</span> <span data-i18n="nav1">La Carte</span></a></li>
-    <li><a href="etape2.html"><span class="nav-num">02</span> <span data-i18n="nav2">Racontez</span></a></li>
-    <li><a href="temoignages.html"><span class="nav-num">03</span> <span data-i18n="nav3">Transmettez</span></a></li>
-    <li><a href="messagerie.html"><span class="nav-num">04</span> <span data-i18n="nav4">La Messagerie</span></a></li>
-    <li><a href="galerie.html" style="color:#d4880a;"><span class="nav-num">05</span> Galerie</a></li>
-  </ul>
-  <div style="margin-left:auto;display:flex;align-items:center;">
-    <select id="lang-select" onchange="babelomApply(this.value)" style="background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--creme);font-family:'Jost',sans-serif;font-size:0.75rem;padding:5px 8px;outline:none;border-radius:2px;cursor:pointer;">
-      <option value="fr">Français</option>
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="ar">العربية</option>
-      <option value="de">Deutsch</option>
-      <option value="he">עברית</option>
-      <option value="pt">Português</option>
-      <option value="it">Italiano</option>
-      <option value="ru">Русский</option>
-      <option value="zh">中文</option>
-    </select>
+<div id="top-band">
+  <!-- Favicon + Logo -->
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
   </div>
-</nav>
+
+  <!-- 5 ICÔNES nav -->
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
+    <a href="etape1.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--orange);">
+        <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/><line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/><path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/><circle cx="13" cy="5" r="1.8" fill="white"/></svg>
+      </div>
+      <span class="nav-lbl">Carte</span>
+    </a>
+    <a href="etape2.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--turquoise);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Raconter</span>
+    </a>
+    <a href="temoignages.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--jaune);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Rechercher</span>
+    </a>
+    <a href="galerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--vert);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/><circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/><path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/></svg>
+      </div>
+      <span class="nav-lbl">Galerie</span>
+    </a>
+    <a href="messagerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--rose);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/><circle cx="8" cy="10" r="1.4" fill="#CC4455"/><circle cx="12" cy="10" r="1.4" fill="#CC4455"/><circle cx="16" cy="10" r="1.4" fill="#CC4455"/></svg>
+      </div>
+      <span class="nav-lbl">Messagerie</span>
+    </a>
+  </div>
+
+  <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+      <div class="nav-circle" style="background:#6B5EA8;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
+          <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17" r="1.2" fill="white"/>
+        </svg>
+      </div>
+      <span class="nav-lbl">Notre projet</span>
+    </a>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <!-- Sélecteur langue -->
+    <div id="lang-select" style="position:relative;">
+      <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
+        <span id="lang-current">FR</span>
+        <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="2,3 5,7 8,3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div id="lang-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--nuit);border:1px solid var(--nuit3);border-radius:10px;overflow:hidden;min-width:130px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div class="lang-opt" onclick="setLang('FR')">🇫🇷 Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">🇬🇧 English</div>
+        <div class="lang-opt" onclick="setLang('AR')">🇦🇱 العربية</div>
+        <div class="lang-opt" onclick="setLang('ES')">🇪🇸 Español</div>
+        <div class="lang-opt" onclick="setLang('DE')">🇩🇪 Deutsch</div>
+        <div class="lang-opt" onclick="setLang('IT')">🇮🇹 Italiano</div>
+        <div class="lang-opt" onclick="setLang('PL')">🇵🇱 Polski</div>
+        <div class="lang-opt" onclick="setLang('PT')">🇵🇹 Português</div>
+        <div class="lang-opt" onclick="setLang('RU')">🇷🇺 Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">🇨🇳 中文</div>
+      </div>
+    </div>
+    <!-- User connecté -->
+    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
+      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
+      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
+    </div>
+  </div>
+</div>
 
 <!-- HERO -->
 <div class="galerie-hero">
@@ -348,8 +399,8 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
 var user = babelomGetUser();
 if (!user) {
   document.getElementById('galerie-loading').innerHTML =
-    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
-    '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté Babelom.</p>' +
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:white;margin-bottom:12px;">Accès réservé aux membres</div>' +
+    '<p style="color:rgba(255,255,255,0.55);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté Babelom.</p>' +
     '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
 } else {
   chargerGalerie();
@@ -365,5 +416,27 @@ window.addEventListener('scroll', function() {
   <a href="mentions-legales.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Mentions légales</a>
   <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Confidentialité</a>
 </div>
+<nav id="bottom-nav">
+  <a href="index.html" class="bn active">
+    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl" style="color:var(--orange);">Accueil</div>
+  </a>
+  <a href="etape1.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M13,2 Q10,7 13,7 Q16,7 13,2Z" fill="#6B7A99"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Carte</div>
+  </a>
+  <a href="temoignages.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="none" stroke="#6B7A99" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#6B7A99" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Rechercher</div>
+  </a>
+  <a href="galerie.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#6B7A99" stroke-width="1.8"/><circle cx="8" cy="10" r="2" fill="#6B7A99" opacity="0.5"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Galerie</div>
+  </a>
+  <a href="#compte" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M4,20 Q4,14 12,14 Q20,14 20,20" fill="none" stroke="#6B7A99" stroke-width="1.8"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
+  </a>
+</nav>
 </body>
 </html>
