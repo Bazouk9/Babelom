@@ -51,8 +51,7 @@ body{font-family:'Nunito',sans-serif;background:var(--nuit);color:white;padding-
 .paragraphe{margin-bottom:48px;opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .paragraphe.visible{opacity:1;transform:translateY(0);}
 
-.para-num{font-size:0.6rem;font-weight:900;text-transform:uppercase;letter-spacing:0.22em;color:var(--orange);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
-.para-num::after{content:'';flex:1;height:1px;background:rgba(255,107,53,0.25);}
+
 
 .para-texte{font-size:1.05rem;line-height:1.9;color:rgba(255,255,255,0.85);font-weight:300;}
 .para-texte strong{color:white;font-weight:700;}
@@ -73,7 +72,7 @@ body{font-family:'Nunito',sans-serif;background:var(--nuit);color:white;padding-
 /* Icônes valeurs */
 .valeurs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:60px;opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .valeurs.visible{opacity:1;transform:translateY(0);}
-.valeur{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;transition:border-color 0.2s,background 0.2s;}
+.valeur{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px 20px;text-align:center;transition:border-color 0.2s,background 0.2s;}
 .valeur:hover{border-color:var(--orange);background:rgba(255,107,53,0.06);}
 .valeur-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem;}
 .valeur-titre{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:white;margin-bottom:6px;}
@@ -124,7 +123,6 @@ footer{background:var(--nuit2);border-top:6px solid var(--orange);padding:20px 4
 
   <!-- §1 -->
   <div class="paragraphe">
-    <div class="para-num">01</div>
     <p class="para-texte">
       Nous naissons <strong>quelque part</strong>. Nous grandissons <strong>quelque part</strong>. Nous partons, revenons, repartons. Chaque lieu laisse une empreinte — dans nos corps, dans notre façon de parler, dans ce que nous appelons <em>chez nous</em>.
     </p>
@@ -132,7 +130,6 @@ footer{background:var(--nuit2);border-top:6px solid var(--orange);padding:20px 4
 
   <!-- §2 -->
   <div class="paragraphe">
-    <div class="para-num">02</div>
     <p class="para-texte">
       Pourtant, ces traces <strong>disparaissent</strong>. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?
     </p>
@@ -147,7 +144,6 @@ footer{background:var(--nuit2);border-top:6px solid var(--orange);padding:20px 4
 
   <!-- §4 -->
   <div class="paragraphe">
-    <div class="para-num">03</div>
     <p class="para-texte">
       Ensemble, nous construisons une <strong>mémoire collective des lieux habités</strong> — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.
     </p>
