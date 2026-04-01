@@ -10,94 +10,187 @@
 <script src="i18n.js?v=2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --orange:#FF6B35;--turquoise:#4ECDC4;--jaune:#FFD93D;--vert:#6BCB77;--rose:#FF8B94;--ocre:#d4880a;--nuit:#2c4a8a;--nuit2:#3358a0;--nuit3:#3d6ab8;
-  
-  --nuit:#2c4a8a; --brun:#3358a0; --ocre:#FF6B35;
-  --sable:rgba(255,255,255,0.3); --parchemin:#253566; --creme:#1e2d4a;
+/* ══ CHARTE V2 BABELOM ══ */
+:root {
+  --orange:#FF6B35; --turquoise:#4ECDC4; --jaune:#FFD93D;
+  --vert:#6BCB77;   --rose:#FF8B94;      --ocre:#FF6B35;
+  --nuit:#2c4a8a;   --nuit2:#3358a0;     --nuit3:#3d6ab8;
+  --blanc:#FFFFFF;  --clair:#F8F9FF;
+  /* Alias v1 → v2 pour ne pas casser la logique existante */
+  --terre:#2c4a8a; --brun:#3358a0; --vert-fonce:#2c4a8a;
+  --sable:rgba(255,255,255,0.25); --parchemin:rgba(255,255,255,0.07);
+  --creme:#1e2d4a; --muted:rgba(255,255,255,0.55);
+  --sauge:var(--vert); --ardoise:var(--turquoise);
+}
+/* Navigation v2 */
+#top-band {
+  background: var(--nuit) !important;
+  padding: 8px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  border-bottom: 6px solid var(--orange) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 400 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
+}
+.nav-circle {
+  width: 40px !important; height: 40px !important;
+  border-radius: 50% !important;
+  display: flex !important; align-items: center !important; justify-content: center !important;
+  flex-shrink: 0 !important;
+}
+.nav-ib {
+  display: flex !important; flex-direction: column !important;
+  align-items: center !important; gap: 3px !important;
+  cursor: pointer !important; text-decoration: none !important;
+  transition: transform 0.2s !important; padding: 2px 6px !important;
+}
+.nav-ib:hover { transform: translateY(-2px) !important; }
+.nav-lbl {
+  font-size: 0.58rem !important; font-weight: 900 !important;
+  text-transform: uppercase !important; letter-spacing: 0.07em !important;
+  color: white !important;
+}
+.top-btn {
+  padding: 5px 14px !important; border-radius: 18px !important;
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 0.72rem !important; font-weight: 900 !important;
+  text-transform: uppercase !important; border: none !important; cursor: pointer !important;
+}
+.btn-cx  { background: white !important; color: var(--orange) !important; }
+.btn-ins { background: var(--nuit) !important; color: white !important; border: 1px solid rgba(255,255,255,0.3) !important; }
+.lang-opt { padding: 8px 14px; font-family: 'Nunito',sans-serif; font-size: 0.78rem; color: white; cursor: pointer; }
+.lang-opt:hover { background: var(--nuit3); }
+#nav-user { display: none; align-items: center; gap: 8px; }
+#nav-user-name { font-size: 0.78rem; font-weight: 700; color: var(--turquoise); }
+#nav-deco { background: none; border: 1px solid var(--rose); color: var(--rose); padding: 4px 10px; border-radius: 12px; font-family: 'Nunito',sans-serif; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
+/* Bottom nav */
+#bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--nuit); border-top: 6px solid var(--orange); padding: 6px 8px; display: flex; justify-content: space-around; z-index: 300; }
+.bn { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 3px 6px; border-radius: 9px; text-decoration: none; }
+.bn.active { background: rgba(255,107,53,0.18); }
+.bn-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); margin: 0 auto; opacity: 0; }
+.bn.active .bn-dot { opacity: 1; }
+.bn-lbl { font-size: 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em; color: #6B7A99; }
+.bn.active .bn-lbl { color: var(--orange); }
+/* Modales */
+.modale-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center; }
+.modale-box { background: var(--nuit2); border: 1px solid var(--nuit3); padding: 28px 32px; border-radius: 14px; width: 340px; font-family: 'Nunito',sans-serif; max-width: 90vw; }
+.modale-box h3 { font-family: 'Playfair Display',serif; font-size: 1.2rem; color: var(--orange); margin-bottom: 4px; }
+.modale-box p { font-size: 0.72rem; color: #8B9CC8; margin-bottom: 16px; }
+.input-compte { width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.35); border-radius: 10px; color: white; font-family: 'Nunito',sans-serif; font-size: 0.82rem; outline: none; margin-bottom: 8px; }
+.input-compte:focus { border-color: var(--orange); }
+.input-compte::placeholder { color: rgba(255,255,255,0.4); }
+.btn-compte { width: 100%; padding: 11px; border: none; border-radius: 10px; font-family: 'Nunito',sans-serif; font-size: 0.78rem; font-weight: 900; text-transform: uppercase; cursor: pointer; margin-top: 4px; }
+.msg-compte { margin-top: 8px; font-size: 0.75rem; min-height: 16px; color: var(--turquoise); }
+.btn-cancel { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 7px 14px; border-radius: 8px; font-family: 'Nunito',sans-serif; font-size: 0.75rem; cursor: pointer; }
+/* Formulaires */
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
+textarea, select {
+  background: rgba(255,255,255,0.06) !important;
+  border: 2px solid rgba(255,255,255,0.35) !important;
+  border-radius: 8px !important;
+  color: white !important;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):focus,
+textarea:focus, select:focus { border-color: var(--orange) !important; }
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
+select option { background: var(--nuit2); color: white; }
+/* Fond général */
+body { background: var(--nuit) !important; font-family: 'Nunito', sans-serif; padding-bottom: 70px; }
+/* Footer */
+footer { background: var(--nuit2) !important; border-top: 6px solid var(--orange) !important; padding: 10px 24px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; flex-wrap: wrap !important; gap: 8px !important; }
+
+:root {
+  --terre:#1e3a28; --brun:#2e5a38; --ocre:#d4880a;
+  --sable:#c8d8b0; --parchemin:#e8e4d0; --creme:#f5f2e8;
   --muted:#7a9a72; --ardoise:#4a7a52;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;}
-body{font-family:'Jost',sans-serif;background:var(--nuit);color:white;display:flex;flex-direction:column;}
+body{font-family:'Jost',sans-serif;background:var(--creme);color:var(--terre);display:flex;flex-direction:column;}
 
 /* NAV */
-nav{background:#2c4a8a;display:flex;align-items:center;justify-content:space-between;padding:14px 52px;flex-shrink:0;z-index:100;}
+nav{background:#1e3a28;display:flex;align-items:center;justify-content:space-between;padding:14px 52px;flex-shrink:0;z-index:100;}
 .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
 .nav-links a{font-size:.82rem;text-transform:uppercase;letter-spacing:.14em;color:#c8dab0;text-decoration:none;display:flex;align-items:baseline;gap:6px;transition:color .2s;}
 .nav-links a:hover,.nav-links a.active{color:white;}
-.nav-links a .nav-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:#FF6B35;}
+.nav-links a .nav-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:#d4880a;}
 .nav-links a.active .nav-num{color:#e8a030;}
 
 /* LAYOUT */
 .app{display:flex;flex:1;overflow:hidden;}
 
 /* SIDEBAR */
-.sidebar{width:300px;flex-shrink:0;background:rgba(255,255,255,0.08);border-right:2px solid rgba(255,255,255,0.2);display:flex;flex-direction:column;overflow:hidden;}
-.sidebar-header{padding:18px 18px 12px;border-bottom:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:space-between;}
-.sidebar-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:white;text-transform:uppercase;letter-spacing:.08em;}
+.sidebar{width:300px;flex-shrink:0;background:var(--parchemin);border-right:2px solid var(--sable);display:flex;flex-direction:column;overflow:hidden;}
+.sidebar-header{padding:18px 18px 12px;border-bottom:1px solid var(--sable);display:flex;align-items:center;justify-content:space-between;}
+.sidebar-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--terre);text-transform:uppercase;letter-spacing:.08em;}
 .btn-plus{background:var(--ocre);color:white;border:none;width:28px;height:28px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .15s;}
 .btn-plus:hover{background:#b87008;transform:scale(1.1);}
-.search-wrap{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.2);}
-.search-wrap input{width:100%;background:white;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Jost',sans-serif;font-size:.82rem;padding:7px 12px;outline:none;border-radius:20px;transition:border-color .2s;}
+.search-wrap{padding:10px 14px;border-bottom:1px solid var(--sable);}
+.search-wrap input{width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:.82rem;padding:7px 12px;outline:none;border-radius:20px;transition:border-color .2s;}
 .search-wrap input:focus{border-color:var(--ocre);}
 .conv-list{flex:1;overflow-y:auto;}
 .conv-item{padding:12px 16px;border-bottom:1px solid rgba(200,216,176,.35);cursor:pointer;transition:background .15s;display:flex;gap:11px;align-items:flex-start;}
 .conv-item:hover{background:rgba(245,242,232,.7);}
-.conv-item.active{background:var(--clair);border-left:3px solid var(--ocre);}
+.conv-item.active{background:var(--creme);border-left:3px solid var(--ocre);}
 .conv-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:700;color:white;flex-shrink:0;}
 .conv-body{flex:1;min-width:0;}
 .conv-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px;}
 .conv-nom{font-size:.87rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.conv-heure{font-size:.68rem;color:rgba(255,255,255,0.55);flex-shrink:0;margin-left:4px;}
-.conv-apercu{font-size:.77rem;color:rgba(255,255,255,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-heure{font-size:.68rem;color:var(--muted);flex-shrink:0;margin-left:4px;}
+.conv-apercu{font-size:.77rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .badge{background:var(--ocre);color:white;font-size:.62rem;font-weight:700;border-radius:10px;padding:1px 6px;}
 
 /* CHAT */
 .chat-zone{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:rgba(255,255,255,0.55);text-align:center;padding:40px;}
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--muted);text-align:center;padding:40px;}
 .empty-state .ico{font-size:2.8rem;opacity:.35;}
-.empty-state h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:white;}
+.empty-state h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--terre);}
 .empty-state p{font-size:.85rem;line-height:1.7;max-width:260px;}
 
 /* HEADER CHAT */
-.chat-header{padding:13px 22px;border-bottom:1px solid rgba(255,255,255,0.2);background:white;display:flex;align-items:center;gap:13px;flex-shrink:0;}
+.chat-header{padding:13px 22px;border-bottom:1px solid var(--sable);background:white;display:flex;align-items:center;gap:13px;flex-shrink:0;}
 .ch-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:white;}
 .ch-info{flex:1;}
 .ch-nom{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;}
-.ch-sub{font-size:.73rem;color:rgba(255,255,255,0.55);font-style:italic;}
-.ch-btn{background:none;border:1.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.55);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.ch-sub{font-size:.73rem;color:var(--muted);font-style:italic;}
+.ch-btn{background:none;border:1.5px solid var(--sable);color:var(--muted);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;}
 .ch-btn:hover{border-color:var(--ocre);color:var(--ocre);}
 
 /* MESSAGES */
 .msgs{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px;scroll-behavior:smooth;}
-.date-sep{text-align:center;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:10px;margin:2px 0;}
-.date-sep::before,.date-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.2);}
+.date-sep{text-align:center;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);display:flex;align-items:center;gap:10px;margin:2px 0;}
+.date-sep::before,.date-sep::after{content:'';flex:1;height:1px;background:var(--sable);}
 .msg-row{display:flex;gap:8px;align-items:flex-end;animation:pop .22s ease forwards;}
 .msg-row.moi{flex-direction:row-reverse;}
 @keyframes pop{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 .msg-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:.82rem;font-weight:700;color:white;flex-shrink:0;}
 .msg-content{display:flex;flex-direction:column;max-width:60%;}
 .msg-row.moi .msg-content{align-items:flex-end;}
-.bubble{padding:9px 15px;border-radius:16px 16px 16px 4px;font-size:.88rem;line-height:1.6;word-break:break-word;background:white;border:1.5px solid rgba(255,255,255,0.2);color:white;}
-.msg-row.moi .bubble{background:var(--nuit);color:var(--clair);border-color:white;border-radius:16px 16px 4px 16px;}
-.msg-meta{font-size:.67rem;color:rgba(255,255,255,0.55);margin-top:2px;padding:0 3px;}
+.bubble{padding:9px 15px;border-radius:16px 16px 16px 4px;font-size:.88rem;line-height:1.6;word-break:break-word;background:white;border:1.5px solid var(--sable);color:var(--terre);}
+.msg-row.moi .bubble{background:var(--terre);color:var(--creme);border-color:var(--terre);border-radius:16px 16px 4px 16px;}
+.msg-meta{font-size:.67rem;color:var(--muted);margin-top:2px;padding:0 3px;}
 .msg-row.moi .msg-meta{text-align:right;}
 
 /* TYPING */
 .typing{display:flex;align-items:center;gap:9px;opacity:0;transition:opacity .3s;padding:2px 0;}
 .typing.show{opacity:1;}
-.typing-dots{display:flex;gap:4px;background:white;border:1.5px solid rgba(255,255,255,0.2);padding:9px 13px;border-radius:16px 16px 16px 4px;}
-.typing-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.55);animation:dot 1.2s infinite;}
+.typing-dots{display:flex;gap:4px;background:white;border:1.5px solid var(--sable);padding:9px 13px;border-radius:16px 16px 16px 4px;}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:dot 1.2s infinite;}
 .typing-dots span:nth-child(2){animation-delay:.2s;}
 .typing-dots span:nth-child(3){animation-delay:.4s;}
 @keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
 
 /* SAISIE */
-.saisie{padding:12px 18px;border-top:1px solid rgba(255,255,255,0.2);background:white;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
-.saisie-ico{background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:7px;border-radius:50%;transition:color .2s,background .2s;}
-.saisie-ico:hover{color:var(--ocre);background:rgba(255,255,255,0.08);}
-.saisie textarea{flex:1;background:var(--clair);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Jost',sans-serif;font-size:.88rem;padding:9px 15px;outline:none;border-radius:20px;resize:none;min-height:40px;max-height:110px;line-height:1.5;transition:border-color .2s;}
+.saisie{padding:12px 18px;border-top:1px solid var(--sable);background:white;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;}
+.saisie-ico{background:none;border:none;color:var(--muted);font-size:1rem;cursor:pointer;padding:7px;border-radius:50%;transition:color .2s,background .2s;}
+.saisie-ico:hover{color:var(--ocre);background:var(--parchemin);}
+.saisie textarea{flex:1;background:var(--creme);border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:.88rem;padding:9px 15px;outline:none;border-radius:20px;resize:none;min-height:40px;max-height:110px;line-height:1.5;transition:border-color .2s;}
 .saisie textarea:focus{border-color:var(--ocre);background:white;}
 .btn-send{background:var(--ocre);color:white;border:none;width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;transition:background .2s,transform .15s;}
 .btn-send:hover{background:#b87008;transform:scale(1.05);}
@@ -106,89 +199,26 @@ nav{background:#2c4a8a;display:flex;align-items:center;justify-content:space-bet
 /* MODALE */
 .overlay{display:none;position:fixed;inset:0;background:rgba(30,58,40,.72);z-index:500;align-items:center;justify-content:center;}
 .overlay.on{display:flex;}
-.modal{background:var(--clair);padding:38px 34px;max-width:400px;width:90%;animation:fadeUp .28s ease;}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:6px;}
+.modal{background:var(--creme);padding:38px 34px;max-width:400px;width:90%;animation:fadeUp .28s ease;}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--terre);margin-bottom:6px;}
 .modal-title em{color:var(--ocre);font-style:italic;}
-.modal-sub{font-size:.84rem;color:rgba(255,255,255,0.55);margin-bottom:20px;line-height:1.6;}
-.modal label{display:block;font-size:.73rem;text-transform:uppercase;letter-spacing:.13em;color:rgba(255,255,255,0.55);margin-bottom:6px;}
-.modal input{width:100%;background:white;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Jost',sans-serif;font-size:.88rem;padding:10px 13px;outline:none;border-radius:2px;margin-bottom:14px;transition:border-color .2s;}
+.modal-sub{font-size:.84rem;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.modal label{display:block;font-size:.73rem;text-transform:uppercase;letter-spacing:.13em;color:var(--muted);margin-bottom:6px;}
+.modal input{width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:.88rem;padding:10px 13px;outline:none;border-radius:2px;margin-bottom:14px;transition:border-color .2s;}
 .modal input:focus{border-color:var(--ocre);}
-.modal-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.2);}
-.btn-cancel{background:none;border:none;color:rgba(255,255,255,0.55);font-family:'Jost',sans-serif;font-size:.82rem;cursor:pointer;}
-.btn-go{background:var(--nuit);color:var(--clair);border:none;padding:10px 22px;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;}
+.modal-foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:14px;border-top:1px solid var(--sable);}
+.btn-cancel{background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:.82rem;cursor:pointer;}
+.btn-go{background:var(--terre);color:var(--creme);border:none;padding:10px 22px;font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background .2s;}
 .btn-go:hover{background:var(--brun);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 
 /* SCROLLBAR */
 .conv-list::-webkit-scrollbar,.msgs::-webkit-scrollbar{width:3px;}
-.conv-list::-webkit-scrollbar-thumb,.msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.2);}
+.conv-list::-webkit-scrollbar-thumb,.msgs::-webkit-scrollbar-thumb{background:var(--sable);}
 
 /* FOOTER */
-footer{background: #2c4a8a;color:rgba(255,255,255,0.3);padding:9px 52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+footer{background: #1e3a28;color:#c8d8b0;padding:9px 52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
 .footer-text{font-size:.78rem;}
-
-/* ── FORMULAIRES V2 ── */
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
-textarea, select {
-  background: rgba(255,255,255,0.06) !important;
-  border: 2px solid rgba(255,255,255,0.35) !important;
-  border-radius: 8px !important;
-  color: white !important;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.88rem;
-  padding: 10px 14px;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
-  width: 100%;
-  box-sizing: border-box;
-}
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):focus,
-textarea:focus, select:focus {
-  border-color: var(--orange) !important;
-  background: rgba(255,255,255,0.1) !important;
-}
-input::placeholder, textarea::placeholder {
-  color: rgba(255,255,255,0.4) !important;
-}
-select option {
-  background: var(--nuit2);
-  color: white;
-}
-label {
-  color: rgba(255,255,255,0.75) !important;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-/* Boutons formulaire */
-button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan):not(#bp-play):not(#bp-prev):not(#bp-next) {
-  font-family: 'Nunito', sans-serif;
-}
-/* Sections formulaire */
-.form-section-title, .form-group-label {
-  color: var(--orange) !important;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-}
-/* Cartes formulaire */
-.form-card, .form-bloc, .form-section {
-  background: rgba(255,255,255,0.04) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
-  border-radius: 12px;
-  padding: 18px;
-}
-/* Texte général dans les formulaires */
-.form-panneau, #compte, .compte-box {
-  background: rgba(44,74,138,0.95) !important;
-  color: white !important;
-}
-/* Inline styles blancs → transparents */
-[style*="background:white"], [style*="background: white"] {
-  background: rgba(255,255,255,0.07) !important;
-}
-
 </style>
 <script>
 // ── GARDE D'ACCÈS ──
@@ -209,6 +239,8 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
   } catch(e) {}
 })();
 </script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -344,12 +376,13 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
 </div>
 
 <footer>
-  <div class="footer-logo" style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:var(--orange);">Om</span></div>
-  <div class="footer-links" style="display:flex;gap:14px;flex-wrap:wrap;">
-    <a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;transition:color 0.2s;">Mentions légales</a>
-    <a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;">Confidentialité</a>
+  <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:var(--orange);">Om</span></div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;">
+    <a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;">Mentions légales</a>
+    <a href="confidentialite.html"  style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;">Confidentialité</a>
     <a href="confidentialite.html#cgu" style="font-size:0.68rem;color:var(--orange);text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;">CGU</a>
   </div>
+  <div><span onclick="document.getElementById('modale-admin').style.display='flex'" style="font-size:0.65rem;color:rgba(255,255,255,0.2);cursor:pointer;">©</span></div>
 </footer>
 
 <!-- MODALE -->
@@ -369,176 +402,614 @@ button:not(.nav-ib):not(.bn):not(.top-btn):not(.btn-cancel):not(.btn-fermer-pan)
 </div>
 
 <script>
-const COLORS = ['#4a7a52','#FF6B35','#3358a0','#7a5a3a','#3a6a8a','#8a3a5a'];
-const REPLIES = [
-  'Oui, je m\'en souviens très bien… c\'était une autre époque.',
-  'Merci pour ce partage, cela me touche vraiment.',
-  'Avez-vous des photos de cette période ?',
-  'C\'est exactement pour ça que j\'ai rejoint Babelom.',
-  'Ma famille se posait la même question ! Incroyable.',
-  'Ces coïncidences de mémoire sont bouleversantes.',
-  'Je transmettrai cela à mes enfants.',
-  'Quel lieu extraordinaire pour grandir…',
-];
+// ── Singleton Supabase ──
+if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
+  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+}
+function getSb(){ return window._sbClient || (window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)); }
+PE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BabelOm — La mémoire des lieux habités</title>
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="i18n.js?v=2"></script>
+<script src="player.js" defer></script>
+<style>
+:root{
+  --orange:#FF6B35;
+  --turquoise:#4ECDC4;
+  --jaune:#FFD93D;
+  --vert:#6BCB77;
+  --rose:#FF8B94;
+  --ocre:#d4880a;
+  --nuit:#2c4a8a;
+  --nuit2:#3358a0;
+  --nuit3:#3d6ab8;
+  --blanc:#FFFFFF;
+  --clair:#F8F9FF;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);padding-bottom:60px;}
 
-let convs = [
-  { id:1, nom:'Fatima R.', lieu:'Tlemcen, Algérie', ini:'F', col:'#4a7a52', unread:2, msgs:[
-    {moi:false,txt:'Bonjour, j\'ai vu votre souvenir sur la carte — vous avez habité rue des Orangers à Tlemcen ?',h:'Hier 14:22'},
-    {moi:true, txt:'Oui ! De 1958 à 1962. Ma mère y est née. Vous connaissiez ce quartier ?',h:'Hier 15:04'},
-    {moi:false,txt:'Ma grand-mère habitait juste à côté. Elle parlait souvent d\'une famille avec trois enfants — c\'était peut-être la vôtre ?',h:'Hier 15:41'},
-    {moi:true, txt:'C\'est tout à fait possible ! Ma mère avait deux frères. Je vais lui demander.',h:'Aujourd\'hui 09:15'},
-    {moi:false,txt:'Ce serait extraordinaire. Ces retrouvailles de mémoire, c\'est exactement ce pour quoi Babelom existe.',h:'Aujourd\'hui 09:52'},
-    {moi:false,txt:'Avez-vous des photos de cette époque ?',h:'Aujourd\'hui 10:03'},
-  ]},
-  { id:2, nom:'Pierre-André M.', lieu:'Lublin, Pologne', ini:'P', col:'#FF6B35', unread:0, msgs:[
-    {moi:false,txt:'Bonjour, vos parents habitaient bien au 14 rue Krakowskie Przedmieście ?',h:'Lundi 11:30'},
-    {moi:true, txt:'Oui, de 1965 à 1972 ! Vous avez vécu dans le même immeuble ?',h:'Lundi 14:12'},
-    {moi:false,txt:'Mes grands-parents y étaient de 1960 à 1978. Quel monde !',h:'Lundi 14:45'},
-  ]},
-  { id:3, nom:'Sorel K.', lieu:'Paris 11e, France', ini:'S', col:'#3358a0', unread:0, msgs:[
-    {moi:false,txt:'Bonjour, je mène une recherche sur le quartier de la Roquette dans les années 80. Votre témoignage est précieux.',h:'12 jan. 16:00'},
-    {moi:true, txt:'Je suis ravie de pouvoir contribuer. Que souhaitez-vous savoir exactement ?',h:'13 jan. 09:20'},
-  ]},
-  { id:4, nom:'Équipe Babelom', lieu:'Babelom', ini:'B', col:'#7a5a3a', unread:0, msgs:[
-    {moi:false,txt:'Bienvenue dans l\'archive Babelom ! Votre souvenir a bien été enregistré. Merci de contribuer à cette mémoire collective.',h:'8 jan. 10:00'},
-  ]},
-];
 
-let active = null;
 
-function now() {
-  const d = new Date();
-  return `Aujourd'hui ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+
+/* ── DIAPORAMA PILE DE CARTES ── */
+#tp-wrap {
+  position: absolute;
+  top: 3%;
+  right: 12px;
+  z-index: 20;
+  width: 340px;
+}
+#tp-stack {
+  position: relative;
+  width: 320px;
+  height: 400px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.tp-card {
+  position: absolute;
+  width: 310px;
+  background: #faf6ee;
+  box-shadow: 2px 3px 12px rgba(0,0,0,0.5), 0 10px 32px rgba(0,0,0,0.4);
+  transition: transform 0.55s cubic-bezier(0.34,1.3,0.64,1), opacity 0.4s ease;
+  transform-origin: center bottom;
+  overflow: visible;
+  border-radius: 0;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='310' height='310'%3E%3Cdefs%3E%3Cfilter id='zigzag'%3E%3C/filter%3E%3C/defs%3E%3Crect x='0' y='0' width='310' height='310' fill='%23000'/%3E%3C/svg%3E");
+}
+/* Dentelure via pseudo-élément sur fond blanc */
+.tp-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #faf6ee;
+}
+/* Bords dentelés haut et bas avec clip-path polygon */
+.tp-card-inner {
+  position: relative;
+  background: #faf6ee;
+  clip-path: polygon(
+    0% 1.5%,  1.6% 0%,  3.2% 1.5%,  4.8% 0%,  6.4% 1.5%,  8% 0%,
+    9.6% 1.5%, 11.2% 0%, 12.8% 1.5%, 14.4% 0%, 16% 1.5%, 17.6% 0%,
+    19.2% 1.5%, 20.8% 0%, 22.4% 1.5%, 24% 0%, 25.6% 1.5%, 27.2% 0%,
+    28.8% 1.5%, 30.4% 0%, 32% 1.5%, 33.6% 0%, 35.2% 1.5%, 36.8% 0%,
+    38.4% 1.5%, 40% 0%, 41.6% 1.5%, 43.2% 0%, 44.8% 1.5%, 46.4% 0%,
+    48% 1.5%, 49.6% 0%, 51.2% 1.5%, 52.8% 0%, 54.4% 1.5%, 56% 0%,
+    57.6% 1.5%, 59.2% 0%, 60.8% 1.5%, 62.4% 0%, 64% 1.5%, 65.6% 0%,
+    67.2% 1.5%, 68.8% 0%, 70.4% 1.5%, 72% 0%, 73.6% 1.5%, 75.2% 0%,
+    76.8% 1.5%, 78.4% 0%, 80% 1.5%, 81.6% 0%, 83.2% 1.5%, 84.8% 0%,
+    86.4% 1.5%, 88% 0%, 89.6% 1.5%, 91.2% 0%, 92.8% 1.5%, 94.4% 0%,
+    96% 1.5%, 97.6% 0%, 99.2% 1.5%, 100% 1.5%,
+    100% 98.5%, 98.4% 100%, 96.8% 98.5%, 95.2% 100%, 93.6% 98.5%, 92% 100%,
+    90.4% 98.5%, 88.8% 100%, 87.2% 98.5%, 85.6% 100%, 84% 98.5%, 82.4% 100%,
+    80.8% 98.5%, 79.2% 100%, 77.6% 98.5%, 76% 100%, 74.4% 98.5%, 72.8% 100%,
+    71.2% 98.5%, 69.6% 100%, 68% 98.5%, 66.4% 100%, 64.8% 98.5%, 63.2% 100%,
+    61.6% 98.5%, 60% 100%, 58.4% 98.5%, 56.8% 100%, 55.2% 98.5%, 53.6% 100%,
+    52% 98.5%, 50.4% 100%, 48.8% 98.5%, 47.2% 100%, 45.6% 98.5%, 44% 100%,
+    42.4% 98.5%, 40.8% 100%, 39.2% 98.5%, 37.6% 100%, 36% 98.5%, 34.4% 100%,
+    32.8% 98.5%, 31.2% 100%, 29.6% 98.5%, 28% 100%, 26.4% 98.5%, 24.8% 100%,
+    23.2% 98.5%, 21.6% 100%, 20% 98.5%, 18.4% 100%, 16.8% 98.5%, 15.2% 100%,
+    13.6% 98.5%, 12% 100%, 10.4% 98.5%, 8.8% 100%, 7.2% 98.5%, 5.6% 100%,
+    4% 98.5%, 2.4% 100%, 0.8% 98.5%, 0% 98.5%
+  );
+  box-shadow: inset 0 0 0 8px #faf6ee, inset 0 0 0 9px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+.tp-card-img {
+  width: 100%;
+  height: 310px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: sepia(0.15) contrast(1.04) brightness(0.96);
+}
+.tp-card-border {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 0 8px #faf6ee, inset 0 0 0 9px rgba(0,0,0,0.06);
+  pointer-events: none;
+}
+.tp-corner {
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 1.5px solid rgba(0,0,0,0.18);
+  background: rgba(210,180,120,0.5);
+}
+.tp-corner.tl { top: 6px; left: 6px; border-bottom:none; border-right:none; }
+.tp-corner.tr { top: 6px; right: 6px; border-bottom:none; border-left:none; }
+.tp-corner.bl { bottom: 6px; left: 6px; border-top:none; border-right:none; }
+.tp-corner.br { bottom: 6px; right: 6px; border-top:none; border-left:none; }
+#tp-nav {
+  display: flex; justify-content: center; gap: 7px;
+  margin-top: 14px; position: relative; z-index: 10;
+}
+#tp-nav span {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.3); cursor: pointer;
+  transition: all 0.25s;
+}
+#tp-nav span.on { background: var(--orange); transform: scale(1.5); }
+#tp-prev, #tp-next {
+  position: absolute; top: 180px;
+  background: var(--orange); border: none;
+  color: white; font-size: 1rem;
+  width: 26px; height: 26px; border-radius: 50%;
+  cursor: pointer; z-index: 10; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0.85;
+}
+#tp-prev:hover, #tp-next:hover { opacity: 1; }
+#tp-prev { left: -14px; }
+#tp-next { right: -14px; }
+
+/* ── PHOTO SLIDER ── */
+.slider-card {
+  flex-shrink: 0;
+  width: calc((100vw - 96px) / 4);
+  min-width: 200px;
+  max-width: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--nuit2);
+  border: 1px solid var(--nuit3);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.slider-card:hover { transform: translateY(-4px); }
+.slider-card-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: var(--nuit3);
+}
+.slider-card-img-placeholder {
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, var(--nuit2) 0%, var(--nuit3) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.2);
+  font-size: 2rem;
+}
+.slider-card-info {
+  padding: 10px 12px;
+}
+.slider-card-lieu {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  color: white;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slider-card-meta {
+  font-size: 0.65rem;
+  color: #8B9CC8;
+  margin-top: 3px;
+}
+.slider-card-tag {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  font-size: 0.6rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
-function renderSidebar(f='') {
-  const el = document.getElementById('conv-list');
-  el.innerHTML = '';
-  convs.filter(c => !f || c.nom.toLowerCase().includes(f.toLowerCase()) || c.lieu.toLowerCase().includes(f.toLowerCase()))
-    .forEach(c => {
-      const last = c.msgs[c.msgs.length-1];
-      const d = document.createElement('div');
-      d.className = 'conv-item' + (active===c.id?' active':'');
-      d.innerHTML = `
-        <div class="conv-av" style="background:${c.col}">${c.ini}</div>
-        <div class="conv-body">
-          <div class="conv-top">
-            <span class="conv-nom">${c.nom}</span>
-            ${c.unread ? `<span class="badge">${c.unread}</span>` : `<span class="conv-heure">${last?.h?.split(' ')[0]||''}</span>`}
-          </div>
-          <div class="conv-apercu">${last?(last.moi?'Vous : ':'')+last.txt:'Nouvelle conversation'}</div>
-        </div>`;
-      d.onclick = () => openConv(c.id);
-      el.appendChild(d);
-    });
+/* ── TOP NAV FUSIONNÉ ── */
+#top-band{background:var(--nuit);padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:6px solid var(--orange);position:sticky;top:0;z-index:300;}
+.nav-ib{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-decoration:none;transition:transform 0.2s;padding:2px 6px;}
+.nav-ib:hover{transform:translateY(-2px);}
+.nav-circle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-lbl{font-size:0.58rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:white;}
+.lang-opt{padding:8px 14px;font-family:'Nunito',sans-serif;font-size:0.78rem;color:white;cursor:pointer;transition:background 0.15s;}
+.lang-opt:hover{background:var(--nuit3);}
+
+/* ── BANDEAU TOP ── */
+/* supprimé */
+#top-band-txt{font-size:0.72rem;font-weight:900;color:white;text-transform:uppercase;letter-spacing:0.14em;}
+#top-band-btns{display:flex;gap:8px;}
+.top-btn{padding:5px 14px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.1em;border:none;cursor:pointer;transition:transform 0.15s;}
+.top-btn:hover{transform:translateY(-1px);}
+.btn-cx{background:white;color:var(--orange);}
+.btn-ins{background:var(--nuit);color:white;}
+
+/* ── NAV ── */
+/* supprimé */
+#nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:white;letter-spacing:0.04em;text-decoration:none;}
+#nav-logo span{color:var(--orange);}
+#nav-user{margin-left:auto;display:none;align-items:center;gap:10px;}
+#nav-user-name{font-size:0.78rem;font-weight:700;color:var(--turquoise);}
+#nav-deco{background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;}
+
+/* ── ICON BAR ── */
+/* supprimé */
+.ib{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-decoration:none;transition:transform 0.2s;}
+.ib:hover{transform:translateY(-3px);}
+.ib-circle{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.ib-label{font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;color:white;margin-top:2px;}
+.membres-only{display:none;}
+
+/* ── HERO ── */
+#hero{background:var(--nuit);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;}
+#hero-text{flex:1;}
+.hero-badge{background:var(--orange);color:white;font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.14em;padding:3px 10px;border-radius:12px;display:inline-block;margin-bottom:10px;animation:fadeDown 0.5s ease both;}
+#hero-text h1{font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3vw,1.7rem);color:white;line-height:1.2;animation:fadeDown 0.5s 0.1s ease both;}
+#hero-text h1 em{color:var(--jaune);font-style:italic;}
+#hero-text p{font-size:0.78rem;color:#8B9CC8;margin-top:8px;line-height:1.6;animation:fadeDown 0.5s 0.2s ease both;}
+#hero-mascot{flex-shrink:0;animation:fadeLeft 0.6s 0.3s ease both;}
+
+/* ── CARDS ── */
+#cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px;background:var(--clair);}
+.card{border-radius:14px;padding:13px;display:flex;align-items:center;gap:11px;cursor:pointer;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;opacity:0;transform:translateY(16px);}
+.card.visible{opacity:1;transform:translateY(0);}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.card-title{font-family:'Playfair Display',serif;font-size:0.84rem;font-weight:700;color:var(--nuit);}
+.card-sub{font-family:'Nunito',sans-serif;font-size:0.62rem;color:#666;margin-top:2px;line-height:1.3;}
+
+/* ── SECTION COMPTE ── */
+#compte{background:var(--nuit2);padding:24px;}
+#compte h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:white;margin-bottom:16px;text-align:center;}
+#compte h2 em{color:var(--orange);font-style:italic;}
+.compte-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:700px;margin:0 auto;}
+.compte-box{background:var(--nuit);border-radius:14px;padding:20px;border:1px solid var(--nuit3);}
+.compte-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:white;margin-bottom:14px;line-height:1.2;}
+.compte-box h3 em{color:var(--orange);font-style:italic;}
+.input-compte{width:100%;padding:10px 14px;background:#0D1020;border:1.5px solid var(--nuit3);border-radius:10px;color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;outline:none;transition:border-color 0.2s;margin-bottom:8px;}
+.input-compte:focus{border-color:var(--orange);}
+.btn-compte{width:100%;padding:11px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;cursor:pointer;transition:transform 0.15s;margin-top:4px;}
+.btn-compte:hover{transform:translateY(-1px);}
+.msg-compte{margin-top:8px;font-size:0.75rem;min-height:16px;color:var(--turquoise);}
+
+/* ── FOOTER ── */
+footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:6px solid var(--orange);}
+.footer-logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;}
+.footer-logo span{color:var(--orange);}
+.footer-links{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-links a{font-size:0.7rem;color:#7a9a72;text-decoration:none;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;transition:color 0.2s;}
+.footer-links a:hover{color:var(--orange);}
+.footer-legal{display:flex;gap:16px;margin-top:8px;width:100%;justify-content:center;}
+.footer-legal a{font-size:0.65rem;color:#555;text-decoration:none;letter-spacing:0.06em;}
+.footer-legal a:hover{color:var(--orange);}
+
+/* ── BOTTOM NAV MOBILE ── */
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nuit);border-top:6px solid var(--orange);padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 6px;border-radius:9px;text-decoration:none;transition:background 0.2s;}
+.bn.active{background:rgba(255,107,53,0.18);}
+.bn svg{transition:transform 0.2s;}
+.bn:hover svg{transform:translateY(-2px);}
+.bn-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);margin:0 auto;opacity:0;}
+.bn.active .bn-dot{opacity:1;}
+.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;color:#6B7A99;}
+.bn.active .bn-lbl{color:var(--orange);}
+
+/* ── MODALE ADMIN ── */
+.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
+.modale-box{background:var(--nuit);border:1px solid var(--nuit3);padding:32px;border-radius:14px;width:320px;font-family:'Nunito',sans-serif;}
+.modale-box h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--orange);margin-bottom:6px;}
+.modale-box p{font-size:0.75rem;color:#7a9a72;margin-bottom:18px;letter-spacing:0.06em;}
+.modale-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+.btn-cancel{background:none;border:1px solid var(--nuit3);color:#7a9a72;padding:7px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.75rem;cursor:pointer;}
+.btn-valid{background:var(--orange);color:white;border:none;padding:7px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;}
+
+/* ── ANIMATIONS ── */
+@keyframes blink{50%{border-color:transparent;}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+@keyframes flecheBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
+
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+/* Forcer la hauteur de la carte */
+#hero { min-height: 85vh; }
+#hero .hero-right { min-height: 85vh; }
+
+/* Carte décorative dans le hero */
+#hero-map-preview {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  opacity: 1;
 }
 
-function openConv(id) {
-  active = id;
-  const c = convs.find(x=>x.id===id);
-  if (!c) return;
-  c.unread = 0;
-
-  document.getElementById('empty').style.display = 'none';
-  const chat = document.getElementById('chat');
-  chat.style.display = 'flex';
-
-  const av = document.getElementById('h-av');
-  av.textContent = c.ini; av.style.background = c.col;
-  document.getElementById('h-nom').textContent = c.nom;
-  document.getElementById('h-sub').textContent = c.lieu;
-
-  const tav = document.getElementById('t-av');
-  tav.textContent = c.ini; tav.style.background = c.col;
-
-  renderMsgs(c);
-  renderSidebar(document.getElementById('search').value);
-  document.getElementById('txt').focus();
+.hero-map-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--creme) 0%, transparent 30%, transparent 70%, var(--creme) 100%),
+              linear-gradient(to bottom, var(--creme) 0%, transparent 15%, transparent 85%, var(--creme) 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
-function renderMsgs(c) {
-  const el = document.getElementById('msgs');
-  el.innerHTML = '';
-  let lastD = '';
-  c.msgs.forEach(m => {
-    const d = m.h.includes('Hier') ? 'Hier' : m.h.includes('Aujourd') ? "Aujourd'hui" : m.h.split(' ')[0];
-    if (d !== lastD) {
-      lastD = d;
-      const sep = document.createElement('div');
-      sep.className = 'date-sep'; sep.textContent = d;
-      el.appendChild(sep);
-    }
-    const row = document.createElement('div');
-    row.className = 'msg-row' + (m.moi?' moi':'');
-    row.innerHTML = `
-      <div class="msg-av" style="background:${m.moi?'#2c4a8a':c.col}">${m.moi?'M':c.ini}</div>
-      <div class="msg-content">
-        <div class="bubble">${m.txt}</div>
-        <div class="msg-meta">${m.h}${m.moi?' · ✓':''}</div>
-      </div>`;
-    el.appendChild(row);
-  });
-  el.scrollTop = el.scrollHeight;
+/* Points animés sur la carte hero */
+.map-dot {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--ocre);
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(196,133,74,0.5);
+  z-index: 3;
+  opacity: 0;
+}
+#dot-lublin { top:41%; left:51%; animation: dotAppear 0.5s 1.5s forwards; }
+#dot-batna { top:52%; left:48%; animation: dotAppear 0.5s 1.9s forwards; }
+#dot-paris { top:42%; left:47%; animation: dotAppear 0.5s 2.3s forwards; }
+#dot-falguiere { top:44%; left:47%; animation: dotAppear 0.5s 2.7s forwards; }
+#dot-uruguay { top:68%; left:30%; animation: dotAppear 0.5s 3.1s forwards; } /* Uruguay */
+#dot-africa { top:57%; left:52%; animation: dotAppear 0.5s 3.5s forwards; }
+#dot-nz { top:74%; left:87%; animation: dotAppear 0.5s 3.9s forwards; } /* Nouvelle-Zélande */ /* Paris */
+
+@keyframes dotAppear {
+  from { opacity:0; transform:rotate(-45deg) scale(0); }
+  to   { opacity:1; transform:rotate(-45deg) scale(1); }
 }
 
-function send() {
-  const ta = document.getElementById('txt');
-  const txt = ta.value.trim();
-  if (!txt || active===null) return;
-  const c = convs.find(x=>x.id===active);
-  c.msgs.push({moi:true,txt,h:now()});
-  renderMsgs(c);
-  renderSidebar(document.getElementById('search').value);
-  ta.value = ''; ta.style.height = 'auto';
-  simulateReply(c);
-}
+/* logo-maison-wrap géré en inline */
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+@keyframes flecheBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
 
-function simulateReply(c) {
-  const t = document.getElementById('typing');
-  t.classList.add('show');
-  document.getElementById('msgs').appendChild(t);
-  document.getElementById('msgs').scrollTop = 99999;
-  setTimeout(() => {
-    if (active!==c.id){t.classList.remove('show');return;}
-    t.classList.remove('show');
-    c.msgs.push({moi:false,txt:REPLIES[Math.floor(Math.random()*REPLIES.length)],h:now()});
-    renderMsgs(c);
-    renderSidebar(document.getElementById('search').value);
-  }, 1400 + Math.random()*1200);
+/* ── RESPONSIVE ── */
+@media(min-width:640px){
+  #cards{grid-template-columns:1fr 1fr 1fr 1fr;}
+  .compte-grid{grid-template-columns:1fr 1fr;}
+  #hero{padding:28px 48px;}
+  #icon-bar{padding:12px 48px;}
 }
-
-function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
-function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
-function emoji(){
-  const list=['😊','🙏','❤️','🏠','✨','👋','🌍','📍'];
-  const t=document.getElementById('txt');
-  t.value+=list[Math.floor(Math.random()*list.length)]; t.focus();
+@media(max-width:480px){
+  #top-band{padding:6px 14px;}
+  #nav{padding:0 14px;}
+  #hero{padding:16px 14px;}
+  footer{padding:16px 14px;}
+  .compte-grid{grid-template-columns:1fr;}
 }
+</style>
+</head>
+<body>
 
-function archiver(){
-  if(!active) return;
-  convs=convs.filter(c=>c.id!==active); active=null;
-  document.getElementById('empty').style.display='flex';
-  document.getElementById('chat').style.display='none';
-  renderSidebar();
-}
+<!-- BANDEAU ORANGE -->
+<div id="top-band">
+  <!-- Favicon + Logo -->
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
+  </div>
 
-function openModal(){ document.getElementById('overlay').classList.add('on'); document.getElementById('m-dest').focus(); }
-function closeModal(){ document.getElementById('overlay').classList.remove('on'); document.getElementById('m-dest').value=''; document.getElementById('m-msg').value=''; }
-function startConv(){
-  const dest=document.getElementById('m-dest').value.trim();
-  const msg=document.getElementById('m-msg').value.trim();
-  if(!dest){document.getElementById('m-dest').focus();return;}
-  const id=Date.now();
-  convs.unshift({id,nom:dest,lieu:'Babelom',ini:dest[0].toUpperCase(),col:COLORS[convs.length%COLORS.length],unread:0,
-    msgs:msg?[{moi:true,txt:msg,h:now()}]:[]});
-  closeModal(); renderSidebar(); openConv(id);
-}
-document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+  <!-- 5 ICÔNES nav -->
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
+    <a href="etape1.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--orange);">
+        <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/><line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/><path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/><circle cx="13" cy="5" r="1.8" fill="white"/></svg>
+      </div>
+      <span class="nav-lbl">Carte</span>
+    </a>
+    <a href="etape2.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--turquoise);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Raconter</span>
+    </a>
+    <a href="temoignages.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--jaune);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Rechercher</span>
+    </a>
+    <a href="galerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--vert);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/><circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/><path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/></svg>
+      </div>
+      <span class="nav-lbl">Galerie</span>
+    </a>
+    <a href="messagerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--rose);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/><circle cx="8" cy="10" r="1.4" fill="#CC4455"/><circle cx="12" cy="10" r="1.4" fill="#CC4455"/><circle cx="16" cy="10" r="1.4" fill="#CC4455"/></svg>
+      </div>
+      <span class="nav-lbl">Messagerie</span>
+    </a>
+  </div>
 
-renderSidebar();
-openConv(1);
-</script>
+  <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+      <div class="nav-circle" style="background:#6B5EA8;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
+          <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17" r="1.2" fill="white"/>
+        </svg>
+      </div>
+      <span class="nav-lbl">Notre projet</span>
+    </a>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <!-- Sélecteur langue -->
+    <div id="lang-select" style="position:relative;">
+      <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
+        <span id="lang-current">FR</span>
+        <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="2,3 5,7 8,3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div id="lang-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--nuit);border:1px solid var(--nuit3);border-radius:10px;overflow:hidden;min-width:130px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div class="lang-opt" onclick="setLang('FR')">🇫🇷 Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">🇬🇧 English</div>
+        <div class="lang-opt" onclick="setLang('AR')">🇦🇱 العربية</div>
+        <div class="lang-opt" onclick="setLang('ES')">🇪🇸 Español</div>
+        <div class="lang-opt" onclick="setLang('DE')">🇩🇪 Deutsch</div>
+        <div class="lang-opt" onclick="setLang('IT')">🇮🇹 Italiano</div>
+        <div class="lang-opt" onclick="setLang('PL')">🇵🇱 Polski</div>
+        <div class="lang-opt" onclick="setLang('PT')">🇵🇹 Português</div>
+        <div class="lang-opt" onclick="setLang('RU')">🇷🇺 Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">🇨🇳 中文</div>
+      </div>
+    </div>
+    <!-- User connecté -->
+    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
+      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
+      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero" style="position:relative;height:65vh;overflow:visible;background:var(--nuit);">
+
+  <!-- CARTE PLEINE LARGEUR EN FOND -->
+  <div id="hero-map-preview" style="position:absolute;inset:0;z-index:1;opacity:1;"></div>
+  <!-- Overlay dégradé pour lisibilité -->
+  <div style="position:absolute;inset:0;z-index:2;background:linear-gradient(to right, rgba(26,42,80,0.82) 0%, rgba(26,42,80,0.55) 50%, rgba(26,42,80,0.35) 100%);pointer-events:none;"></div>
+  <div class="hero-map-overlay" style="z-index:2;"></div>
+  <div class="map-dot" id="dot-lublin" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-batna" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-paris" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-falguiere" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-uruguay" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-africa" style="z-index:3;"></div>
+  <div class="map-dot" id="dot-nz" style="z-index:3;"></div>
+
+  <!-- MAISON ANIMÉE V1 — haut gauche au-dessus du badge -->
+  <div id="logo-maison-wrap" style="position:absolute;left:32px;top:16px;z-index:10;opacity:0;animation:fadeIn 1s 0.3s forwards;pointer-events:none;">
+    <svg id="logo-svg" width="300" height="300" viewBox="0 0 240 210">
+      <defs>
+        <clipPath id="clip-interieur">
+          <!-- Personnages dessinés à y=190, visibles de y=110 à y=200 -->
+          <rect x="20" y="110" width="200" height="90"/>
+        </clipPath>
+        <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+        <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+      </defs>
+
+      <!-- SOL (y=192 comme v1 mais un peu plus bas) -->
+      <line x1="10" y1="192" x2="230" y2="192" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+
+      <!-- MUR UNIQUE — RDC + ÉTAGE, même couleur, aligné, de y=30 à y=190 -->
+      <rect id="mur" x="20" y="30" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+
+      <!-- Séparation plancher milieu — trait intérieur seulement -->
+      <line x1="22" y1="110" x2="218" y2="110" stroke="#1e3a28" stroke-width="1" opacity="0.25"/>
+
+      <!-- TOIT -->
+      <polygon id="toit-fond" points="8,32 120,0 232,32" fill="url(#tuiles)"/>
+      <polygon points="8,32 120,0 232,32" fill="url(#tuiles2)" opacity="0.9"/>
+      <line x1="120" y1="0" x2="120" y2="4" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+      <polyline id="toit" points="8,32 120,0 232,32" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="18" y1="33" x2="222" y2="33" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+
+      <!-- CHEMINÉE -->
+      <rect x="158" y="2" width="16" height="20" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+      <rect x="155" y="0" width="22" height="5" fill="#c07828" rx="1"/>
+
+      <!-- FENÊTRES ÉTAGE (niveau haut : y=40 à y=100) -->
+      <rect x="36" y="42" width="30" height="24" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="51" y1="42" x2="51" y2="66" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="36" y1="54" x2="66" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <rect x="174" y="42" width="30" height="24" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="189" y1="42" x2="189" y2="66" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="174" y1="54" x2="204" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <!-- Fenêtre centrale étage -->
+      <rect x="105" y="40" width="30" height="28" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.3" rx="1"/>
+      <line x1="120" y1="40" x2="120" y2="68" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+      <line x1="105" y1="54" x2="135" y2="54" stroke="#1e3a28" stroke-width="0.9" opacity="0.6"/>
+
+      <!-- FENÊTRES RDC (niveau bas : y=120 à y=160) -->
+      <rect x="32" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="49" y1="120" x2="49" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="32" y1="133" x2="66" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="174" y="120" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="191" y1="120" x2="191" y2="146" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="174" y1="133" x2="208" y2="133" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+
+      <!-- PORTE RDC -->
+      <rect id="porte" x="100" y="138" width="32" height="52" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <circle cx="127" cy="165" r="2.5" fill="#1e3a28"/>
+      <rect x="104" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="117" y="142" width="11" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+
+      <!-- PERSONNAGES au sol y=190 — clip depuis y=110 -->
+      <g clip-path="url(#clip-interieur)"><g id="personnages"></g></g>
+    </svg>
+  </div>
+
+
+
+  <!-- DIAPORAMA PILE DE CARTES — haut droite -->
+  <div id="tp-wrap">
+    <div id="tp-stack" onclick="tpGo(tpCur+1)">
+      <button id="tp-prev" onclick="event.stopPropagation();tpGo(tpCur-1)">&#8249;</button>
+      <button id="tp-next" onclick="event.stopPropagation();tpGo(tpCur+1)">&#8250;</button>
+    </div>
+    <div id="tp-nav"></div>
+  </div>
+
+  <!-- TEXTE en premier plan, côté gauche -->
+  <div style="position:absolute;left:0;top:0;bottom:0;width:52%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:260px 44px 28px;">
+
+    <!-- Eyebrow -->
+    <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.22em;color:var(--orange);margin-bottom:10px;animation:fadeDown 0.5s ease both;">Mémoire collective des lieux habités</div>
+
+    <!-- Titre principal -->
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.8vw,2rem);color:white;line-height:1.2;margin-bottom:12px;animation:fadeDown 0.5s 0.1s ease both;">Chaque maison garde <em style="color:var(--jaune);font-style:italic;">la trace</em> de ceux qui l'ont habitée</h1>
+
+    <!-- Sous-titre long -->
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.82);line-height:1.7;max-width:400px;margin-bottom:16px;animation:fadeDown 0.5s 0.2s ease both;">Babelom est une archive vivante où chacun dépose la mémoire des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.</p>
+
+    <!-- Citation Julien Green — machine à écrire -->
+    <blockquote style="border-left:3px solid #6BCB77;padding-left:14px;margin:0;animation:fadeDown 0.5s 0.35s ease both;">
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.92rem;color:#6BCB77;line-height:1.6;">
+        <span id="typer-quote"></span><span id="typer-cursor" style="border-right:2px solid #6BCB77;animation:blink 0.7s step-end infinite;margin-left:1px;">&nbsp;</span>
+      </div>
+      <cite id="typer-cite" style="display:block;font-style:normal;font-size:0.7rem;margin-top:6px;letter-spacing:0.12em;color:#6BCB77;font-family:'Nunito',sans-serif;text-transform:uppercase;opacity:0;transition:opacity 0.6s;">— Julien Green</cite>
+    </blockquote>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer style="padding:8px 24px;gap:8px;">
+  <div class="footer-logo">BABEL<span>Om</span></div>
+  <div class="footer-legal">
+    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="confidentialite.html">Confidentialité</a>
+    <a href="confidentialite.html#cgu" style="color:var(--orange);">Conditions d'utilisation (CGU)</a>
+  </div>
+  <div style="width:100%;text-align:center;margin-top:2px;">
+    <span onclick="document.getElementById('modale-admin').style.display='flex';document.getElementById('admin-mdp').focus();"
+      style="font-size:0.75rem;color:var(--orange);cursor:pointer;user-select:none;letter-spacing:0.05em;">©</span>
+  </div>
+</footer>
+
+<!-- BOTTOM NAV MOBILE -->
 <nav id="bottom-nav">
   <a href="index.html" class="bn active">
     <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
@@ -561,6 +1032,8 @@ openConv(1);
     <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
   </a>
 </nav>
+
+
 <!-- MODALE CONNEXION -->
 <div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
   <div class="modale-box">
@@ -604,12 +1077,6 @@ openConv(1);
 </div>
 
 <script>
-// ── SUPABASE SINGLETON ──
-if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
-  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-}
-function getSb(){ return window._sbClient || (window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)); }
-
 
 function toggleLang(){
   var d=document.getElementById('lang-dropdown');
@@ -639,28 +1106,26 @@ function babelomGetUser(){
 }
 
 function mettreAJourNav(){
-  const user=babelomGetUser();
-  const navUser=document.getElementById('nav-user');
-  const navName=document.getElementById('nav-user-name');
-  const topBtns=document.getElementById('top-band-btns');
-  const compte=document.getElementById('compte');
-  document.querySelectorAll('.membres-only').forEach(el=>el.style.display=user?'flex':'none');
+  var user = babelomGetUser();
+  var navUser = document.getElementById('nav-user');
+  var navName = document.getElementById('nav-user-name');
+  var topBtns = document.getElementById('top-band-btns');
+  var compte  = document.getElementById('compte');
+  document.querySelectorAll('.membres-only').forEach(function(el){ el.style.display = user ? 'flex' : 'none'; });
   if(user){
-    if(navUser)navUser.style.display='flex';
-    if(navName)navName.textContent='👤 '+user.prenom;
-    if(topBtns)topBtns.style.display='none';
-    if(compte)compte.style.display='none';
-  }else{
-    if(navUser)navUser.style.display='none';
-    if(topBtns)topBtns.style.display='flex';
-    if(compte)compte.style.display='block';
-    const badge=document.getElementById('nav-user-badge');
-    if(badge)badge.remove();
+    if(navUser) navUser.style.display = 'flex';
+    if(navName) navName.textContent = '👤 ' + user.prenom;
+    if(topBtns) topBtns.style.display = 'none';
+    if(compte)  compte.style.display  = 'none';
+  } else {
+    if(navUser) navUser.style.display = 'none';
+    if(topBtns) topBtns.style.display = 'flex';
+    if(compte)  compte.style.display  = 'block';
   }
 }
 
 function seDeconnecter(){
-  try{getSb().auth.signOut();}catch(e){}
+  try{window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON).auth.signOut();}catch(e){}
   localStorage.removeItem('babelom-user');
   mettreAJourNav();
 }
@@ -672,7 +1137,7 @@ async function seConnecter(){
   const msg=document.getElementById('msg-cx');
   msg.style.color='var(--turquoise)';msg.textContent='Connexion…';
   try{
-    const sb=getSb();
+    const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
     const {data,error}=await sb.auth.signInWithPassword({email,password:mdp});
     if(error)throw error;
     const prenom=data.user.user_metadata?.prenom||email.split('@')[0];
@@ -690,7 +1155,7 @@ async function sInscrire(){
   if(!prenom||!email||!mdp){msg.style.color='var(--rose)';msg.textContent='Tous les champs sont requis.';return;}
   msg.style.color='var(--turquoise)';msg.textContent='Création du compte…';
   try{
-    const sb=getSb();
+    const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
     const {data,error}=await sb.auth.signUp({email,password:mdp,options:{data:{prenom}}});
     if(error)throw error;
     msg.style.color='var(--vert)';
@@ -716,7 +1181,7 @@ var sliderCards = [];
 
 async function chargerSlider() {
   try {
-    const sb = getSb();
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     const { data } = await sb.from('temoignages')
       .select('id,ville,pays,annee_de,annee_a,photos,texte')
       .eq('statut','publie')
@@ -892,7 +1357,7 @@ window.addEventListener('load', function() {
   async function chargerPhotosSupabase() {
     try {
       if(typeof SUPABASE_URL === 'undefined'||typeof SUPABASE_ANON === 'undefined'){ TP_URLS=['','','','']; buildStack(); return; }
-      var sb = getSb();
+      var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
       var res = await sb.from('temoignages').select('photos').not('photos','is',null).limit(20);
       var urls = [];
       if(res.data){ res.data.forEach(function(t){ if(t.photos&&t.photos.length) urls.push(t.photos[0]); }); }
@@ -1450,7 +1915,7 @@ function fermerLightbox() {
     try{
       const u=JSON.parse(stored);
       if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');mettreAJourNav();return;}
-      const sb=getSb();
+      const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
       const {data}=await sb.auth.getSession();
       if(!data?.session)localStorage.removeItem('babelom-user');
     }catch(e){
@@ -1462,5 +1927,249 @@ function fermerLightbox() {
 </script>
 </body>
 </html>
+
+const COLORS = ['#4a7a52','#d4880a','#2e5a38','#7a5a3a','#3a6a8a','#8a3a5a'];
+const REPLIES = [
+  'Oui, je m\'en souviens très bien… c\'était une autre époque.',
+  'Merci pour ce partage, cela me touche vraiment.',
+  'Avez-vous des photos de cette période ?',
+  'C\'est exactement pour ça que j\'ai rejoint Babelom.',
+  'Ma famille se posait la même question ! Incroyable.',
+  'Ces coïncidences de mémoire sont bouleversantes.',
+  'Je transmettrai cela à mes enfants.',
+  'Quel lieu extraordinaire pour grandir…',
+];
+
+let convs = [
+  { id:1, nom:'Fatima R.', lieu:'Tlemcen, Algérie', ini:'F', col:'#4a7a52', unread:2, msgs:[
+    {moi:false,txt:'Bonjour, j\'ai vu votre souvenir sur la carte — vous avez habité rue des Orangers à Tlemcen ?',h:'Hier 14:22'},
+    {moi:true, txt:'Oui ! De 1958 à 1962. Ma mère y est née. Vous connaissiez ce quartier ?',h:'Hier 15:04'},
+    {moi:false,txt:'Ma grand-mère habitait juste à côté. Elle parlait souvent d\'une famille avec trois enfants — c\'était peut-être la vôtre ?',h:'Hier 15:41'},
+    {moi:true, txt:'C\'est tout à fait possible ! Ma mère avait deux frères. Je vais lui demander.',h:'Aujourd\'hui 09:15'},
+    {moi:false,txt:'Ce serait extraordinaire. Ces retrouvailles de mémoire, c\'est exactement ce pour quoi Babelom existe.',h:'Aujourd\'hui 09:52'},
+    {moi:false,txt:'Avez-vous des photos de cette époque ?',h:'Aujourd\'hui 10:03'},
+  ]},
+  { id:2, nom:'Pierre-André M.', lieu:'Lublin, Pologne', ini:'P', col:'#d4880a', unread:0, msgs:[
+    {moi:false,txt:'Bonjour, vos parents habitaient bien au 14 rue Krakowskie Przedmieście ?',h:'Lundi 11:30'},
+    {moi:true, txt:'Oui, de 1965 à 1972 ! Vous avez vécu dans le même immeuble ?',h:'Lundi 14:12'},
+    {moi:false,txt:'Mes grands-parents y étaient de 1960 à 1978. Quel monde !',h:'Lundi 14:45'},
+  ]},
+  { id:3, nom:'Sorel K.', lieu:'Paris 11e, France', ini:'S', col:'#2e5a38', unread:0, msgs:[
+    {moi:false,txt:'Bonjour, je mène une recherche sur le quartier de la Roquette dans les années 80. Votre témoignage est précieux.',h:'12 jan. 16:00'},
+    {moi:true, txt:'Je suis ravie de pouvoir contribuer. Que souhaitez-vous savoir exactement ?',h:'13 jan. 09:20'},
+  ]},
+  { id:4, nom:'Équipe Babelom', lieu:'Babelom', ini:'B', col:'#7a5a3a', unread:0, msgs:[
+    {moi:false,txt:'Bienvenue dans l\'archive Babelom ! Votre souvenir a bien été enregistré. Merci de contribuer à cette mémoire collective.',h:'8 jan. 10:00'},
+  ]},
+];
+
+let active = null;
+
+function now() {
+  const d = new Date();
+  return `Aujourd'hui ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function renderSidebar(f='') {
+  const el = document.getElementById('conv-list');
+  el.innerHTML = '';
+  convs.filter(c => !f || c.nom.toLowerCase().includes(f.toLowerCase()) || c.lieu.toLowerCase().includes(f.toLowerCase()))
+    .forEach(c => {
+      const last = c.msgs[c.msgs.length-1];
+      const d = document.createElement('div');
+      d.className = 'conv-item' + (active===c.id?' active':'');
+      d.innerHTML = `
+        <div class="conv-av" style="background:${c.col}">${c.ini}</div>
+        <div class="conv-body">
+          <div class="conv-top">
+            <span class="conv-nom">${c.nom}</span>
+            ${c.unread ? `<span class="badge">${c.unread}</span>` : `<span class="conv-heure">${last?.h?.split(' ')[0]||''}</span>`}
+          </div>
+          <div class="conv-apercu">${last?(last.moi?'Vous : ':'')+last.txt:'Nouvelle conversation'}</div>
+        </div>`;
+      d.onclick = () => openConv(c.id);
+      el.appendChild(d);
+    });
+}
+
+function openConv(id) {
+  active = id;
+  const c = convs.find(x=>x.id===id);
+  if (!c) return;
+  c.unread = 0;
+
+  document.getElementById('empty').style.display = 'none';
+  const chat = document.getElementById('chat');
+  chat.style.display = 'flex';
+
+  const av = document.getElementById('h-av');
+  av.textContent = c.ini; av.style.background = c.col;
+  document.getElementById('h-nom').textContent = c.nom;
+  document.getElementById('h-sub').textContent = c.lieu;
+
+  const tav = document.getElementById('t-av');
+  tav.textContent = c.ini; tav.style.background = c.col;
+
+  renderMsgs(c);
+  renderSidebar(document.getElementById('search').value);
+  document.getElementById('txt').focus();
+}
+
+function renderMsgs(c) {
+  const el = document.getElementById('msgs');
+  el.innerHTML = '';
+  let lastD = '';
+  c.msgs.forEach(m => {
+    const d = m.h.includes('Hier') ? 'Hier' : m.h.includes('Aujourd') ? "Aujourd'hui" : m.h.split(' ')[0];
+    if (d !== lastD) {
+      lastD = d;
+      const sep = document.createElement('div');
+      sep.className = 'date-sep'; sep.textContent = d;
+      el.appendChild(sep);
+    }
+    const row = document.createElement('div');
+    row.className = 'msg-row' + (m.moi?' moi':'');
+    row.innerHTML = `
+      <div class="msg-av" style="background:${m.moi?'#1e3a28':c.col}">${m.moi?'M':c.ini}</div>
+      <div class="msg-content">
+        <div class="bubble">${m.txt}</div>
+        <div class="msg-meta">${m.h}${m.moi?' · ✓':''}</div>
+      </div>`;
+    el.appendChild(row);
+  });
+  el.scrollTop = el.scrollHeight;
+}
+
+function send() {
+  const ta = document.getElementById('txt');
+  const txt = ta.value.trim();
+  if (!txt || active===null) return;
+  const c = convs.find(x=>x.id===active);
+  c.msgs.push({moi:true,txt,h:now()});
+  renderMsgs(c);
+  renderSidebar(document.getElementById('search').value);
+  ta.value = ''; ta.style.height = 'auto';
+  simulateReply(c);
+}
+
+function simulateReply(c) {
+  const t = document.getElementById('typing');
+  t.classList.add('show');
+  document.getElementById('msgs').appendChild(t);
+  document.getElementById('msgs').scrollTop = 99999;
+  setTimeout(() => {
+    if (active!==c.id){t.classList.remove('show');return;}
+    t.classList.remove('show');
+    c.msgs.push({moi:false,txt:REPLIES[Math.floor(Math.random()*REPLIES.length)],h:now()});
+    renderMsgs(c);
+    renderSidebar(document.getElementById('search').value);
+  }, 1400 + Math.random()*1200);
+}
+
+function onKey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
+function resize(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
+function emoji(){
+  const list=['😊','🙏','❤️','🏠','✨','👋','🌍','📍'];
+  const t=document.getElementById('txt');
+  t.value+=list[Math.floor(Math.random()*list.length)]; t.focus();
+}
+
+function archiver(){
+  if(!active) return;
+  convs=convs.filter(c=>c.id!==active); active=null;
+  document.getElementById('empty').style.display='flex';
+  document.getElementById('chat').style.display='none';
+  renderSidebar();
+}
+
+function openModal(){ document.getElementById('overlay').classList.add('on'); document.getElementById('m-dest').focus(); }
+function closeModal(){ document.getElementById('overlay').classList.remove('on'); document.getElementById('m-dest').value=''; document.getElementById('m-msg').value=''; }
+function startConv(){
+  const dest=document.getElementById('m-dest').value.trim();
+  const msg=document.getElementById('m-msg').value.trim();
+  if(!dest){document.getElementById('m-dest').focus();return;}
+  const id=Date.now();
+  convs.unshift({id,nom:dest,lieu:'Babelom',ini:dest[0].toUpperCase(),col:COLORS[convs.length%COLORS.length],unread:0,
+    msgs:msg?[{moi:true,txt:msg,h:now()}]:[]});
+  closeModal(); renderSidebar(); openConv(id);
+}
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+renderSidebar();
+openConv(1);
+</script>
+<nav id="bottom-nav">
+  <a href="index.html" class="bn active">
+    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl" style="color:var(--orange);">Accueil</div>
+  </a>
+  <a href="etape1.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M13,2 Q10,7 13,7 Q16,7 13,2Z" fill="#6B7A99"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Carte</div>
+  </a>
+  <a href="temoignages.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="none" stroke="#6B7A99" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#6B7A99" stroke-width="2.5" stroke-linecap="round"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Rechercher</div>
+  </a>
+  <a href="galerie.html" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#6B7A99" stroke-width="1.8"/><circle cx="8" cy="10" r="2" fill="#6B7A99" opacity="0.5"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Galerie</div>
+  </a>
+  <a href="#compte" class="bn">
+    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M4,20 Q4,14 12,14 Q20,14 20,20" fill="none" stroke="#6B7A99" stroke-width="1.8"/></svg>
+    <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
+  </a>
+</nav>
+<!-- MODALE CONNEXION -->
+<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
+  <div class="modale-box">
+    <h3 style="margin-bottom:4px;">Se connecter</h3>
+    <p style="font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;">Accédez à votre espace Babelom</p>
+    <input type="email" id="cx-email" class="input-compte" placeholder="Email">
+    <input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe">
+    <button class="btn-compte" style="background:var(--orange);color:white;" onclick="seConnecter()">Connexion →</button>
+    <div class="msg-compte" id="msg-cx"></div>
+    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore membre ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
+    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
+  </div>
+</div>
+
+<!-- MODALE INSCRIPTION -->
+<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')">
+  <div class="modale-box">
+    <h3 style="margin-bottom:4px;">Créer un compte</h3>
+    <p style="font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;">Rejoignez l'archive Babelom</p>
+    <input type="text" id="ins-prenom" class="input-compte" placeholder="Prénom">
+    <input type="email" id="ins-email" class="input-compte" placeholder="Email">
+    <input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe (6 car. min.)">
+    <button class="btn-compte" style="background:var(--turquoise);color:var(--nuit);" onclick="sInscrire()">S'inscrire →</button>
+    <div class="msg-compte" id="msg-ins"></div>
+    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Déjà membre ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-ins');ouvrirModale('modale-cx')">Se connecter</span></div>
+    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
+  </div>
+</div>
+
+<!-- MODALE ADMIN -->
+<div id="modale-admin" class="modale-overlay">
+  <div class="modale-box">
+    <h3>Accès administrateur</h3>
+    <p>Babelom — espace réservé</p>
+    <input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe admin">
+    <div class="modale-actions">
+      <button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button>
+      <button class="btn-valid" onclick="validerAdmin()">Accéder →</button>
+    </div>
+  </div>
+</div>
+<!-- MODALE ADMIN -->
+<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modale-box"><h3>Accès administrateur</h3><p>Espace réservé</p>
+    <input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe admin">
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button>
+      <button class="btn-compte" style="background:var(--orange);color:white;flex:1;" onclick="validerAdmin()">Accéder →</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
