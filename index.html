@@ -35,31 +35,72 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 /* ── DIAPORAMA PILE DE CARTES ── */
 #tp-wrap {
   position: absolute;
-  top: 5%;
-  right: 16px;
+  top: 3%;
+  right: 12px;
   z-index: 20;
-  width: 300px;
+  width: 380px;
 }
 #tp-stack {
   position: relative;
-  width: 280px;
-  height: 340px;
+  width: 360px;
+  height: 480px;
   margin: 0 auto;
   cursor: pointer;
 }
 .tp-card {
   position: absolute;
-  width: 280px;
+  width: 360px;
   background: #faf6ee;
-  box-shadow: 2px 3px 8px rgba(0,0,0,0.45), 0 8px 28px rgba(0,0,0,0.35), inset 0 0 0 6px #faf6ee;
+  box-shadow: 2px 3px 12px rgba(0,0,0,0.5), 0 10px 32px rgba(0,0,0,0.4);
   transition: transform 0.55s cubic-bezier(0.34,1.3,0.64,1), opacity 0.4s ease;
   transform-origin: center bottom;
+  overflow: visible;
+  border-radius: 0;
+  /* Effet carte postale dentelée via mask-image */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='290'%3E%3Cdefs%3E%3Cfilter id='zigzag'%3E%3C/filter%3E%3C/defs%3E%3Crect x='0' y='0' width='320' height='290' fill='%23000'/%3E%3C/svg%3E");
+}
+/* Dentelure via pseudo-élément sur fond blanc */
+.tp-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #faf6ee;
+}
+/* Bords dentelés haut et bas avec clip-path polygon */
+.tp-card-inner {
+  position: relative;
+  background: #faf6ee;
+  clip-path: polygon(
+    0% 1.5%,  1.6% 0%,  3.2% 1.5%,  4.8% 0%,  6.4% 1.5%,  8% 0%,
+    9.6% 1.5%, 11.2% 0%, 12.8% 1.5%, 14.4% 0%, 16% 1.5%, 17.6% 0%,
+    19.2% 1.5%, 20.8% 0%, 22.4% 1.5%, 24% 0%, 25.6% 1.5%, 27.2% 0%,
+    28.8% 1.5%, 30.4% 0%, 32% 1.5%, 33.6% 0%, 35.2% 1.5%, 36.8% 0%,
+    38.4% 1.5%, 40% 0%, 41.6% 1.5%, 43.2% 0%, 44.8% 1.5%, 46.4% 0%,
+    48% 1.5%, 49.6% 0%, 51.2% 1.5%, 52.8% 0%, 54.4% 1.5%, 56% 0%,
+    57.6% 1.5%, 59.2% 0%, 60.8% 1.5%, 62.4% 0%, 64% 1.5%, 65.6% 0%,
+    67.2% 1.5%, 68.8% 0%, 70.4% 1.5%, 72% 0%, 73.6% 1.5%, 75.2% 0%,
+    76.8% 1.5%, 78.4% 0%, 80% 1.5%, 81.6% 0%, 83.2% 1.5%, 84.8% 0%,
+    86.4% 1.5%, 88% 0%, 89.6% 1.5%, 91.2% 0%, 92.8% 1.5%, 94.4% 0%,
+    96% 1.5%, 97.6% 0%, 99.2% 1.5%, 100% 1.5%,
+    100% 98.5%, 98.4% 100%, 96.8% 98.5%, 95.2% 100%, 93.6% 98.5%, 92% 100%,
+    90.4% 98.5%, 88.8% 100%, 87.2% 98.5%, 85.6% 100%, 84% 98.5%, 82.4% 100%,
+    80.8% 98.5%, 79.2% 100%, 77.6% 98.5%, 76% 100%, 74.4% 98.5%, 72.8% 100%,
+    71.2% 98.5%, 69.6% 100%, 68% 98.5%, 66.4% 100%, 64.8% 98.5%, 63.2% 100%,
+    61.6% 98.5%, 60% 100%, 58.4% 98.5%, 56.8% 100%, 55.2% 98.5%, 53.6% 100%,
+    52% 98.5%, 50.4% 100%, 48.8% 98.5%, 47.2% 100%, 45.6% 98.5%, 44% 100%,
+    42.4% 98.5%, 40.8% 100%, 39.2% 98.5%, 37.6% 100%, 36% 98.5%, 34.4% 100%,
+    32.8% 98.5%, 31.2% 100%, 29.6% 98.5%, 28% 100%, 26.4% 98.5%, 24.8% 100%,
+    23.2% 98.5%, 21.6% 100%, 20% 98.5%, 18.4% 100%, 16.8% 98.5%, 15.2% 100%,
+    13.6% 98.5%, 12% 100%, 10.4% 98.5%, 8.8% 100%, 7.2% 98.5%, 5.6% 100%,
+    4% 98.5%, 2.4% 100%, 0.8% 98.5%, 0% 98.5%
+  );
+  box-shadow: inset 0 0 0 8px #faf6ee, inset 0 0 0 9px rgba(0,0,0,0.05);
   overflow: hidden;
-  border-radius: 2px;
 }
 .tp-card-img {
   width: 100%;
-  height: 210px;
+  height: 290px;
   object-fit: cover;
   object-position: center top;
   display: block;
@@ -91,7 +132,7 @@ body{font-family:'Nunito',sans-serif;background:var(--clair);color:var(--nuit);p
 }
 #tp-nav span.on { background: var(--orange); transform: scale(1.5); }
 #tp-prev, #tp-next {
-  position: absolute; top: 160px;
+  position: absolute; top: 220px;
   background: var(--orange); border: none;
   color: white; font-size: 1rem;
   width: 26px; height: 26px; border-radius: 50%;
@@ -260,6 +301,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 .btn-valid{background:var(--orange);color:white;border:none;padding:7px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.75rem;font-weight:700;cursor:pointer;}
 
 /* ── ANIMATIONS ── */
+@keyframes blink{50%{border-color:transparent;}}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-12px);}to{opacity:1;transform:translateY(0);}}
 @keyframes fadeLeft{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
 @keyframes flecheBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(8px);}}
@@ -301,10 +343,13 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
   z-index: 3;
   opacity: 0;
 }
-.map-dot:nth-child(1) { top:30%; left:62%; animation: dotAppear 0.5s 1.5s forwards; } /* Lublin */
-.map-dot:nth-child(2) { top:72%; left:48%; animation: dotAppear 0.5s 1.9s forwards; } /* Batna */
-.map-dot:nth-child(3) { top:50%; left:38%; animation: dotAppear 0.5s 2.3s forwards; } /* Falguière */
-.map-dot:nth-child(4) { top:38%; left:40%; animation: dotAppear 0.5s 2.7s forwards; } /* Paris */
+.map-dot:nth-child(1) { top:30%; left:62%; animation: dotAppear 0.5s 1.5s forwards; }
+.map-dot:nth-child(2) { top:72%; left:48%; animation: dotAppear 0.5s 1.9s forwards; }
+.map-dot:nth-child(3) { top:50%; left:38%; animation: dotAppear 0.5s 2.3s forwards; }
+.map-dot:nth-child(4) { top:38%; left:40%; animation: dotAppear 0.5s 2.7s forwards; }
+#dot-brazil    { top:67%; left:27%; animation: dotAppear 0.5s 3.1s forwards; }
+#dot-africa    { top:60%; left:53%; animation: dotAppear 0.5s 3.5s forwards; }
+#dot-australia { top:72%; left:82%; animation: dotAppear 0.5s 3.9s forwards; } /* Paris */
 
 @keyframes dotAppear {
   from { opacity:0; transform:rotate(-45deg) scale(0); }
@@ -377,7 +422,7 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 
   <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
   <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-    <a href="confidentialite.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+    <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
       <div class="nav-circle" style="background:#6B5EA8;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
@@ -515,10 +560,25 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
   </div>
 
   <!-- TEXTE en premier plan, côté gauche -->
-  <div style="position:absolute;left:0;top:0;bottom:0;width:60%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:220px 48px 32px;">
-    <div class="hero-badge" style="animation:fadeDown 0.5s ease both;max-width:fit-content;">Archive vivante · Monde entier</div>
-    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);color:white;line-height:1.2;margin:12px 0 10px;animation:fadeDown 0.5s 0.1s ease both;">La mémoire des <em style="color:var(--jaune);font-style:italic;">lieux habités</em></h1>
-    <p style="font-size:0.82rem;color:rgba(255,255,255,0.8);line-height:1.65;max-width:420px;animation:fadeDown 0.5s 0.2s ease both;">Chaque maison garde la trace de ceux qui l'ont habitée — pour que les murs n'oublient pas.</p>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:52%;z-index:10;display:flex;flex-direction:column;justify-content:center;padding:260px 44px 28px;">
+
+    <!-- Eyebrow -->
+    <div style="font-size:0.65rem;font-weight:900;text-transform:uppercase;letter-spacing:0.22em;color:var(--orange);margin-bottom:10px;animation:fadeDown 0.5s ease both;">Mémoire collective des lieux habités</div>
+
+    <!-- Titre principal -->
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.8vw,2rem);color:white;line-height:1.2;margin-bottom:12px;animation:fadeDown 0.5s 0.1s ease both;">Chaque maison garde <em style="color:var(--jaune);font-style:italic;">la trace</em> de ceux qui l'ont habitée</h1>
+
+    <!-- Sous-titre long -->
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.82);line-height:1.7;max-width:400px;margin-bottom:16px;animation:fadeDown 0.5s 0.2s ease both;">Babelom est une archive vivante où chacun dépose la mémoire des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.</p>
+
+    <!-- Citation Julien Green — machine à écrire -->
+    <blockquote style="border-left:3px solid var(--orange);padding-left:14px;margin:0;animation:fadeDown 0.5s 0.35s ease both;">
+      <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.92rem;color:rgba(255,255,255,0.65);line-height:1.6;">
+        <span id="typer-quote"></span><span id="typer-cursor" style="border-right:2px solid var(--orange);animation:blink 0.7s step-end infinite;margin-left:1px;">&nbsp;</span>
+      </div>
+      <cite id="typer-cite" style="display:block;font-style:normal;font-size:0.7rem;margin-top:6px;letter-spacing:0.12em;color:var(--orange);font-family:'Nunito',sans-serif;text-transform:uppercase;opacity:0;transition:opacity 0.6s;">— Julien Green</cite>
+    </blockquote>
+
   </div>
 
 </section>
@@ -835,9 +895,10 @@ window.addEventListener('load', function() {
       var imgContent = url
         ? '<img class="tp-card-img" src="'+url+'" alt="" oncontextmenu="return false;">'
         : '<div style="width:100%;height:150px;background:linear-gradient(135deg,#2e4480,#3a559a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🏠</div>';
-      card.innerHTML = imgContent + '<div class="tp-card-border"></div>' +
+      card.innerHTML = '<div class="tp-card-inner">' + imgContent +
         '<div class="tp-corner tl"></div><div class="tp-corner tr"></div>' +
-        '<div class="tp-corner bl"></div><div class="tp-corner br"></div>';
+        '<div class="tp-corner bl"></div><div class="tp-corner br"></div>' +
+        '</div>';
       stack.insertBefore(card, stack.querySelector('#tp-prev'));
       var dot = document.createElement('span');
       dot.addEventListener('click', function(e){ e.stopPropagation(); tpGo(i); });
@@ -898,6 +959,27 @@ window.addEventListener('load', function() {
     tpUpdate(tpCur);
   };
 });
+
+
+// ── MACHINE À ÉCRIRE citation ──
+(function() {
+  var texte = '« On ne quitte jamais vraiment les lieux où l’on a souffert ou aimé. »';
+  var el = document.getElementById('typer-quote');
+  var cursor = document.getElementById('typer-cursor');
+  var cite = document.getElementById('typer-cite');
+  if (!el) return;
+  var i = 0;
+  function type() {
+    if (i < texte.length) {
+      el.textContent += texte[i++];
+      setTimeout(type, i < 2 ? 800 : 36);
+    } else {
+      if (cursor) cursor.style.display = 'none';
+      if (cite) cite.style.opacity = '1';
+    }
+  }
+  setTimeout(type, 2000);
+})();
 
 // ── Scroll reveal cards ──
 const observer=new IntersectionObserver(entries=>{
