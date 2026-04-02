@@ -347,6 +347,56 @@ body{padding-bottom:70px!important;}
 .bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
 .bn.active .bn-lbl{color:#FF6B35;}
 </style>
+<style id="fix-visibility">
+/* Fix visibilité - couleurs directes sur les éléments principaux */
+.page-header { background: #3358a0 !important; color: white !important; }
+.header-title, .header-label, .header-sub, .step-badge { color: white !important; }
+.header-title em { color: #FF6B35 !important; }
+.main-content { background: #1A1A2E !important; }
+.forme-wrap, .form-wrap { 
+  background: #253070 !important; 
+  color: white !important; 
+}
+.form-section-title, .form-section-sub, .coords-affich { color: white !important; }
+.champ label { color: rgba(255,255,255,0.8) !important; }
+.champ input, .champ select, .champ textarea {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  color: white !important;
+  border-radius: 4px !important;
+}
+.champ input::placeholder, .champ textarea::placeholder {
+  color: rgba(255,255,255,0.4) !important;
+}
+.champ input:focus, .champ select:focus, .champ textarea:focus {
+  border-color: #FF6B35 !important;
+}
+select option { background: #2c4a8a; color: white; }
+#map { background: #253070 !important; }
+.carte-instruction { 
+  background: #3358a0 !important; 
+  color: white !important;
+  border-left-color: #FF6B35 !important;
+}
+.form-footer { border-top-color: rgba(255,255,255,0.15) !important; }
+.btn-retour { color: rgba(255,255,255,0.6) !important; }
+.btn-retour:hover { color: white !important; }
+.upload-zone { 
+  border-color: rgba(255,255,255,0.25) !important;
+  background: transparent !important;
+}
+.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+.step-pip { background: rgba(255,255,255,0.2) !important; }
+.step-pip.active { background: #FF6B35 !important; }
+/* Popup Leaflet */
+.leaflet-popup-content-wrapper { 
+  background: #3358a0 !important;
+  color: white !important;
+}
+.leaflet-popup-tip { background: #3358a0 !important; }
+/* Zone membres */
+.zone-recherche { color: white !important; }
+</style>
 </head>
 <body>
 
