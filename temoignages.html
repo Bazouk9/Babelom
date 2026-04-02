@@ -2,43 +2,39 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Témoignages</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
 <script>
-if(!window._sbClient&&typeof SUPABASE_URL!=='undefined'){window._sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);}
-function getSb(){if(!window._sbClient&&typeof SUPABASE_URL!=='undefined')window._sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);return window._sbClient;}
+function getSb(){if(window._babelomSb)return window._babelomSb;if(typeof SUPABASE_URL!=='undefined')window._babelomSb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);return window._babelomSb;}
+function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
 function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
 function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
 function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
 function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}
 document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
-function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');var compte=document.getElementById('compte');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='👤 '+user.prenom;if(topBtns)topBtns.style.display='none';if(compte)compte.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';if(compte)compte.style.display='block';}}
-function seDeconnecter(){try{if(getSb())getSb().auth.signOut();}catch(e){}localStorage.removeItem('babelom-user');mettreAJourNav();}
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await getSb().auth.signInWithPassword({email,password:mdp});if(res.error)throw res.error;var prenom=res.data.user.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}if(msg){msg.style.color='#4ECDC4';msg.textContent='Creation...';}try{var res=await getSb().auth.signUp({email,password:mdp,options:{data:{prenom}}});if(res.error)throw res.error;if(msg){msg.style.color='#6BCB77';msg.textContent=res.data.session?'Compte cree!':'Verifiez votre email.';}if(res.data.session){localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='#FF8B94';}
+function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='👤 '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
+function seDeconnecter(){try{getSb().auth.signOut();}catch(e){}localStorage.removeItem('babelom-user');mettreAJourNav();}
 </script>
 <script src="player.js" defer></script>
 <script src="i18n.js?v=2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --terre:    #2c4a8a;
-  --brun:     #3358a0;
-  --ocre:     #FF6B35;
-  --sable:    rgba(255,255,255,0.15);
-  --parchemin:rgba(255,255,255,0.06);
-  --creme:    #1e2d4a;
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
   --ombre:    rgba(0,0,40,0.25);
   --muted:    #7a9a72;
-  --sauge:    #FF6B35;
+  --sauge:    #d4880a;
   --sauge-clair: #b0c898;
-  --ardoise:  #4ECDC4;
+  --ardoise:  #4a7a52;
   --ardoise-clair: #c8dab0;
 }
 
@@ -46,9 +42,9 @@ function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Nunito', sans-serif;
-  background: #2c4a8a !important;
-  color: white !important;
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
   overflow-x: hidden;
 }
 
@@ -71,15 +67,15 @@ nav {
   padding: 8px 52px;
   background: rgba(22,50,32,0.98);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid #3358a0;
+  border-bottom: 1px solid #2e5a38;
 }
 
 .nav-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: white;
+  color: var(--terre);
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -105,28 +101,28 @@ nav {
 }
 .nav-links a:hover { color: white; }
 .nav-links a .nav-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #FF6B35;
+  color: #d4880a;
   line-height: 1;
 }
 .nav-links a:hover .nav-num { color: #e8a030; }
 .nav-links a.active { color: var(--ocre); border-bottom: 1px solid var(--ocre); padding-bottom: 2px; }
 
 .nav-cta {
-  background: #FF6B35 !important;
-  color: #2c4a8a !important;
+  background: #d4880a !important;
+  color: #1e3a28 !important;
   padding: 10px 22px !important;
   letter-spacing: 0.1em !important;
   transition: background 0.2s !important;
 }
-.nav-cta:hover { background: #b8720a !important; color: #2c4a8a !important; }
+.nav-cta:hover { background: #b8720a !important; color: #1e3a28 !important; }
 
 /* ── HERO TÉMOIGNAGES ── */
 .page-hero {
   padding: 140px 52px 80px;
-  border-bottom: 1px solid #3358a0;
+  border-bottom: 1px solid #2e5a38;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 80px;
@@ -136,27 +132,27 @@ nav {
 }
 
 .page-hero-label {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #6BCB77;
+  color: var(--sauge);
   line-height: 1.1;
 }
 
 .page-hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 3.5vw, 3.2rem);
   font-weight: 300;
   line-height: 1.2;
-  color: white;
+  color: var(--terre);
   margin-bottom: 16px;
 }
 
 .page-hero-sub {
   font-size: 0.9rem;
-  color: rgba(255,255,255,0.55);
+  color: var(--muted);
   line-height: 1.7;
   font-weight: 300;
 }
@@ -172,11 +168,11 @@ nav {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2px;
-  background: rgba(255,255,255,0.2);
+  background: var(--sable);
 }
 
 .temoignage {
-  background: rgba(255,255,255,0.05);
+  background: var(--creme);
   padding: 26px 24px;
   transition: background 0.3s, transform 0.5s ease, opacity 0.5s ease;
   opacity: 0;
@@ -186,23 +182,23 @@ nav {
   opacity: 1;
   transform: translateY(0);
 }
-.temoignage:hover { background: rgba(255,255,255,0.08); }
+.temoignage:hover { background: var(--parchemin); }
 
 /* grande carte */
 .temoignage:first-child {
   grid-row: span 2;
-  background: rgba(255,255,255,0.05);
-  color: white;
-  border-left: 4px solid #6BCB77;
+  background: var(--creme);
+  color: var(--terre);
+  border-left: 4px solid var(--sauge);
 }
-.temoignage:first-child:hover { background: rgba(255,255,255,0.08); }
+.temoignage:first-child:hover { background: var(--parchemin); }
 
 .temoignage:nth-child(2) { border-top: 3px solid var(--ocre); }
-.temoignage:nth-child(3) { border-top: 3px solid #4ECDC4; }
+.temoignage:nth-child(3) { border-top: 3px solid var(--ardoise); }
 
 /* guillemet décoratif */
 .temoignage-quote-mark {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.5rem;
   line-height: 0.6;
   color: var(--ocre);
@@ -213,7 +209,7 @@ nav {
 .temoignage:first-child .temoignage-quote-mark { color: var(--ocre); opacity: 0.3; }
 
 .temoignage-text {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.95rem;
   font-style: italic;
   font-weight: 300;
@@ -222,7 +218,7 @@ nav {
 }
 .temoignage:first-child .temoignage-text {
   font-size: 1.1rem;
-  color: white;
+  color: var(--terre);
 }
 
 .temoignage-author {
@@ -236,15 +232,15 @@ nav {
 
 .temoignage-lieu {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.55);
+  color: var(--muted);
   margin-top: 4px;
   font-style: italic;
 }
-.temoignage:first-child .temoignage-lieu { color: rgba(255,255,255,0.55); }
+.temoignage:first-child .temoignage-lieu { color: var(--muted); }
 
 /* ── CTA FINAL ── */
 #cta-final {
-  background: rgba(255,255,255,0.15);
+  background: #c8d8b0;
   padding: 28px 52px;
   display: flex;
   flex-direction: column;
@@ -260,10 +256,10 @@ nav {
   color: #5a90aa;
 }
 .cta-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
   font-weight: 300;
-  color: rgba(255,255,255,0.08);
+  color: var(--parchemin);
   line-height: 1.2;
   margin: 4px 0 0;
 }
@@ -274,7 +270,7 @@ nav {
   color: white;
   border: none;
   padding: 18px 48px;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: 0.12em;
@@ -288,22 +284,22 @@ nav {
 
 /* ── FOOTER ── */
 footer {
-  background: #2c4a8a;
-  color: rgba(255,255,255,0.15);
+  background: #1e3a28;
+  color: #c8d8b0;
   padding: 8px 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .footer-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.2rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.2);
+  color: var(--sable);
 }
 .footer-logo span { color: var(--ocre); }
-.footer-text { font-size: 0.88rem; color: rgba(255,255,255,0.15); }
+.footer-text { font-size: 0.88rem; color: #c8d8b0; }
 
 /* animations */
 @keyframes fadeUp {
@@ -321,7 +317,7 @@ footer {
 .photo-protegee { position:relative; display:inline-block; }
 .photo-protegee img { pointer-events:none; -webkit-user-drag:none; user-select:none; -webkit-user-select:none; }
 .photo-protegee .photo-shield { position:absolute; inset:0; z-index:2; cursor:default; }
-.photo-protegee .photo-watermark { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family:'Nunito',sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.6); pointer-events:none; z-index:3; user-select:none; }
+.photo-protegee .photo-watermark { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family:'Jost',sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.6); pointer-events:none; z-index:3; user-select:none; }
 </style>
 <script>
 // ── GARDE D'ACCÈS ──
@@ -337,24 +333,23 @@ footer {
 .nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
 .nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
 .nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;}
-.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;font-family:'Nunito',sans-serif!important;}
+.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;}
 .btn-cx{background:white!important;color:#FF6B35!important;}
 .btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
-.lang-opt{padding:8px 14px;color:white;cursor:pointer;}
-.lang-opt:hover{background:#3d6ab8;}
+.lang-opt{padding:8px 14px;color:#1e3a28;cursor:pointer;}
 #nav-user{display:none;align-items:center;gap:8px;}
 #nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
 #nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
 .modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
-.modale-box{background:#3358a0;border:1px solid #3d6ab8;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
-.modale-box h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:#FF6B35;margin-bottom:4px;}
-.modale-box p{font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;}
-.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.35);border-radius:10px;color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;outline:none;margin-bottom:8px;}
+.modale-box{background:#3358a0;border:1px solid #3d6ab8;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;}
+.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}
+.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
 .input-compte:focus{border-color:#FF6B35;}
 .input-compte::placeholder{color:rgba(255,255,255,0.4);}
-.btn-compte{width:100%;padding:11px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:900;text-transform:uppercase;cursor:pointer;margin-top:4px;}
+.btn-compte{width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;}
 .msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
 .btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
+body{padding-bottom:70px!important;}
 #bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
 .bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
 .bn.active{background:rgba(255,107,53,0.18);}
@@ -362,12 +357,48 @@ footer {
 .bn.active .bn-dot{opacity:1;}
 .bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
 .bn.active .bn-lbl{color:#FF6B35;}
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),textarea,select{background:rgba(255,255,255,0.06)!important;border:2px solid rgba(255,255,255,0.35)!important;border-radius:8px!important;color:white!important;outline:none;}
-input:focus,textarea:focus,select:focus{border-color:#FF6B35!important;}
-input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.4)!important;}
-select option{background:#3358a0;color:white;}
-footer{background:#3358a0!important;border-top:6px solid #FF6B35!important;padding:10px 24px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:8px!important;}
-body{padding-bottom:70px;}
+</style>
+<style id="v2-override">
+/* ── Surcharge charte v2 ── */
+:root {
+  --terre:    white !important;
+  --brun:     rgba(255,255,255,0.85) !important;
+  --ocre:     #FF6B35 !important;
+  --sable:    rgba(255,255,255,0.25) !important;
+  --parchemin:rgba(255,255,255,0.08) !important;
+  --creme:    rgba(255,255,255,0.06) !important;
+  --muted:    rgba(255,255,255,0.6) !important;
+  --sauge:    #FF6B35 !important;
+  --ardoise:  #4ECDC4 !important;
+}
+body {
+  background: #2c4a8a !important;
+  color: white !important;
+  font-family: 'Nunito', sans-serif !important;
+}
+.page-header { background: #3358a0 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+.form-wrap { background: rgba(255,255,255,0.04) !important; }
+.form-section-title { color: white !important; font-family: 'Playfair Display', serif !important; }
+.header-title { color: white !important; font-family: 'Playfair Display', serif !important; }
+footer { background: #3358a0 !important; border-top: 6px solid #FF6B35 !important; }
+.champ input, .champ select, .champ textarea {
+  background: rgba(255,255,255,0.07) !important;
+  border: 2px solid rgba(255,255,255,0.3) !important;
+  color: white !important;
+  border-radius: 8px !important;
+}
+.champ input:focus, .champ select:focus, .champ textarea:focus {
+  border-color: #FF6B35 !important;
+}
+.champ input::placeholder, .champ textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
+.champ label { color: rgba(255,255,255,0.7) !important; }
+.champ-cp-suggestions { background: #3358a0 !important; border-color: rgba(255,255,255,0.2) !important; }
+#cp-suggestions { background: #3358a0 !important; color: white !important; }
+.btn-valider { background: #FF6B35 !important; }
+.btn-valider:hover { background: #e05a28 !important; }
+.confirm-card { background: #3358a0 !important; }
+.confirm-title { color: white !important; }
+select option { background: #2c4a8a !important; color: white !important; }
 </style>
 </head>
 <body>
@@ -550,7 +581,14 @@ body{padding-bottom:70px;}
 
 <!-- FOOTER -->
 <div style="height:24px;background:var(--creme);"></div>
-<footer><div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:#FF6B35;">Om</span></div><div style="display:flex;gap:14px;"><a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions legales</a><a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialite</a><a href="confidentialite.html#cgu" style="font-size:0.68rem;color:#FF6B35;text-decoration:none;text-transform:uppercase;">CGU</a></div></footer>
+<footer style="background:#3358a0!important;border-top:6px solid #FF6B35!important;padding:12px 24px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:8px!important;">
+  <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:#FF6B35;">Om</span></div>
+  <div style="display:flex;gap:14px;">
+    <a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions légales</a>
+    <a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialité</a>
+    <a href="confidentialite.html#cgu" style="font-size:0.68rem;color:#FF6B35;text-decoration:none;text-transform:uppercase;">CGU</a>
+  </div>
+</footer>
 
 <!-- MODALE SIGNALEMENT -->
 <div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
@@ -579,9 +617,9 @@ body{padding-bottom:70px;}
   </div>
 </div>
 
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><p>Accedez a votre espace</p><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><p>Rejoignez Babelom</p><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Acces admin</h3><input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe"><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button><button class="btn-compte" style="background:#FF6B35;color:white;flex:1;" onclick="validerAdmin()">Acceder</button></div></div></div>
+<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
+<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>S'inscrire</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
+<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Acceder</button></div></div>
 <nav id="bottom-nav">
   <a href="index.html" class="bn active">
     <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
@@ -604,7 +642,12 @@ body{padding-bottom:70px;}
     <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
   </a>
 </nav>
-<script>(async function(){try{var s=localStorage.getItem('babelom-user');if(s){var u=JSON.parse(s);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');}else{var sess=await getSb().auth.getSession();if(!sess.data?.session)localStorage.removeItem('babelom-user');}}}catch(e){}mettreAJourNav();})();</script>
+<script>
+async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg)msg.textContent='...';try{var res=await getSb().auth.signInWithPassword({email,password:mdp});if(res.error)throw res.error;var prenom=res.data.user.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));if(msg)msg.textContent='OK';setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg)msg.textContent=e.message||'Erreur';}}
+async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg)msg.textContent='Champs requis';return;}try{var res=await getSb().auth.signUp({email,password:mdp,options:{data:{prenom}}});if(res.error)throw res.error;if(msg)msg.textContent=res.data.session?'OK':'Verifiez email';}catch(e){if(msg)msg.textContent=e.message||'Erreur';}}
+function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';}
+(async function(){try{var s=localStorage.getItem('babelom-user');if(s){var u=JSON.parse(s);if(u.expires&&Date.now()>u.expires)localStorage.removeItem('babelom-user');}}catch(e){}mettreAJourNav();})();
+</script>
 </body>
 <script>
 function ouvrirZoneSaisie() {
