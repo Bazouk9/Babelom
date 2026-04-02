@@ -457,73 +457,70 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-dot{opacity:1;}.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}.bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="fix-visibility">
-/* RESET COMPLET couleurs v1 → v2 */
-body, body * { color: white; }
-body { background: #1A1A2E !important; font-family: 'Nunito', sans-serif !important; padding-bottom: 70px !important; }
-
-/* Exceptions - éléments qui ont besoin d'une couleur spécifique */
-.page-header { background: #2c4a8a !important; border-bottom: 2px solid #FF6B35 !important; }
-.main-content { background: #1A1A2E !important; }
-.form-wrap { background: #1e2d50 !important; padding: 32px !important; }
-.carte-wrap { background: #1e2d50 !important; }
-#map { background: #253070 !important; }
-
-/* Inputs */
+/* RESET COMPLET */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body { 
+  background: #1A1A2E !important; 
+  color: white !important; 
+  font-family: 'Nunito', sans-serif !important; 
+  padding-bottom: 70px !important;
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column !important;
+}
+/* Structure principale */
+#top-band { flex-shrink: 0 !important; }
+.page-header { 
+  flex-shrink: 0 !important;
+  height: auto !important;
+  min-height: unset !important;
+  background: #2c4a8a !important; 
+  color: white !important; 
+  border-bottom: 2px solid #FF6B35 !important;
+}
+.main-content { 
+  flex: 1 !important;
+  background: #1A1A2E !important;
+  min-height: 500px !important;
+}
+/* Textes */
+.header-title, .header-label, .header-sub, .step-badge,
+.form-section-title, .form-section-sub, .coords-affich,
+h1, h2, h3, p, span, label { color: white !important; }
+.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
+.step-pip { background: rgba(255,255,255,0.2) !important; }
+.step-pip.active { background: #FF6B35 !important; }
+/* Formulaire */
+.form-wrap { background: #1e2d50 !important; color: white !important; }
+.champ label { color: rgba(255,255,255,0.8) !important; }
 .champ input, .champ select, .champ textarea,
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
+input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
 textarea, select {
   background: rgba(255,255,255,0.08) !important;
   border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important;
-  border-radius: 6px !important;
+  color: white !important; border-radius: 6px !important;
 }
 input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
 input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
-select option { background: #2c4a8a !important; }
-
+select option { background: #2c4a8a; color: white; }
+/* Carte */
+.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
+#map { min-height: 400px !important; }
+.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
 /* Boutons */
 .btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
-.btn-valider:disabled { background: rgba(255,255,255,0.15) !important; opacity: 0.5; }
-button { color: white; }
-
-/* Liens */
-a { color: rgba(255,255,255,0.85); text-decoration: none; }
-a:hover { color: #FF6B35; }
-a.active { color: #FF6B35 !important; }
-
-/* Nav et éléments de structure */
-.carte-instruction { background: #2c4a8a !important; border-left: 3px solid #FF6B35 !important; }
-.upload-zone { border-color: rgba(255,255,255,0.25) !important; background: rgba(255,255,255,0.03) !important; }
+.btn-retour { color: rgba(255,255,255,0.6) !important; }
+.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
+.upload-zone p { color: rgba(255,255,255,0.5) !important; }
 .form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
-.step-pip { background: rgba(255,255,255,0.2) !important; }
-.step-pip.active { background: #FF6B35 !important; }
-.step-badge { color: #FF6B35 !important; opacity: 1 !important; }
-
 /* Footer */
-footer { background: #2c4a8a !important; border-top: 4px solid #FF6B35 !important; }
-
-/* Inline styles avec couleurs v1 */
-[style*="background:#1e3a28"], [style*="background: #1e3a28"] { background: #2c4a8a !important; }
-[style*="background:#2e5a38"], [style*="background: #2e5a38"] { background: #3358a0 !important; }
-[style*="color:#1e3a28"], [style*="color: #1e3a28"] { color: white !important; }
+footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
+footer a { color: rgba(255,255,255,0.5) !important; }
+/* Inline styles v1 résiduels */
+[style*="#1e3a28"] { background-color: #2c4a8a !important; }
+[style*="#2e5a38"] { background-color: #3358a0 !important; }
 [style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
-[style*="color:#4a7a52"], [style*="color: #4a7a52"] { color: #4ECDC4 !important; }
-[style*="border.*#2e5a38"] { border-color: rgba(255,255,255,0.15) !important; }
-[style*="background:white"], [style*="background: white"] { background: rgba(255,255,255,0.07) !important; }
-
-/* Leaflet popup */
-.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #2c4a8a !important; }
-.leaflet-popup-content { color: white !important; }
-
-/* Éléments spécifiques */
-.nav-num { color: #FF6B35 !important; }
-.nav-links a { color: rgba(255,255,255,0.8) !important; }
-.nav-links a.active { color: #FF6B35 !important; }
-
-/* Fond des modales v1 */
-#modale-mdp > div, #modale-desinscription > div, #modale-suppression > div { 
-  background: #2c4a8a !important; border-color: #3358a0 !important; 
-}
 </style>
 </head>
 <body>
@@ -614,10 +611,6 @@ footer { background: #2c4a8a !important; border-top: 4px solid #FF6B35 !importan
 <!-- NAV -->
 
 
-<div id="test-visibilite" style="position:fixed;top:80px;left:0;right:0;z-index:99999;background:red;color:yellow;font-size:3rem;font-weight:900;text-align:center;padding:20px;border:5px solid white;">
-⚠ CONTENU VISIBLE - ETAPE 1 FONCTIONNE ⚠
-<br><small style="font-size:1rem;">Si vous voyez ceci, la page charge correctement</small>
-</div>
 <!-- HEADER -->
 <div class="page-header" style="background:#2c4a8a!important;color:white!important;display:flex!important;padding:22px 52px!important;border-bottom:3px solid #FF6B35!important;">
   <div class="step-badge">01</div>

@@ -33,7 +33,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--creme);
-  color: var(--terre);
+  color:white;
   overflow-x: hidden;
 }
 
@@ -64,7 +64,7 @@ nav {
   font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: var(--terre);
+  color:white;
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -135,13 +135,13 @@ nav {
   font-size: clamp(2rem, 3.5vw, 3.2rem);
   font-weight: 300;
   line-height: 1.2;
-  color: var(--terre);
+  color:white;
   margin-bottom: 16px;
 }
 
 .page-hero-sub {
   font-size: 0.9rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   line-height: 1.7;
   font-weight: 300;
 }
@@ -177,7 +177,7 @@ nav {
 .temoignage:first-child {
   grid-row: span 2;
   background: var(--creme);
-  color: var(--terre);
+  color:white;
   border-left: 4px solid var(--sauge);
 }
 .temoignage:first-child:hover { background: var(--parchemin); }
@@ -207,7 +207,7 @@ nav {
 }
 .temoignage:first-child .temoignage-text {
   font-size: 1.1rem;
-  color: var(--terre);
+  color:white;
 }
 
 .temoignage-author {
@@ -221,11 +221,11 @@ nav {
 
 .temoignage-lieu {
   font-size: 0.75rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   margin-top: 4px;
   font-style: italic;
 }
-.temoignage:first-child .temoignage-lieu { color: var(--muted); }
+.temoignage:first-child .temoignage-lieu { color:rgba(255,255,255,0.6); }
 
 /* ── CTA FINAL ── */
 #cta-final {
@@ -348,54 +348,70 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="fix-visibility">
-/* Fix visibilité - couleurs directes sur les éléments principaux */
-.page-header { background: #3358a0 !important; color: white !important; }
-.header-title, .header-label, .header-sub, .step-badge { color: white !important; }
-.header-title em { color: #FF6B35 !important; }
-.main-content { background: #1A1A2E !important; }
-.forme-wrap, .form-wrap { 
-  background: #253070 !important; 
+/* RESET COMPLET */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body { 
+  background: #1A1A2E !important; 
   color: white !important; 
+  font-family: 'Nunito', sans-serif !important; 
+  padding-bottom: 70px !important;
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column !important;
 }
-.form-section-title, .form-section-sub, .coords-affich { color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important;
-  border-radius: 4px !important;
+/* Structure principale */
+#top-band { flex-shrink: 0 !important; }
+.page-header { 
+  flex-shrink: 0 !important;
+  height: auto !important;
+  min-height: unset !important;
+  background: #2c4a8a !important; 
+  color: white !important; 
+  border-bottom: 2px solid #FF6B35 !important;
 }
-.champ input::placeholder, .champ textarea::placeholder {
-  color: rgba(255,255,255,0.4) !important;
+.main-content { 
+  flex: 1 !important;
+  background: #1A1A2E !important;
+  min-height: 500px !important;
 }
-.champ input:focus, .champ select:focus, .champ textarea:focus {
-  border-color: #FF6B35 !important;
-}
-select option { background: #2c4a8a; color: white; }
-#map { background: #253070 !important; }
-.carte-instruction { 
-  background: #3358a0 !important; 
-  color: white !important;
-  border-left-color: #FF6B35 !important;
-}
-.form-footer { border-top-color: rgba(255,255,255,0.15) !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.btn-retour:hover { color: white !important; }
-.upload-zone { 
-  border-color: rgba(255,255,255,0.25) !important;
-  background: transparent !important;
-}
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+/* Textes */
+.header-title, .header-label, .header-sub, .step-badge,
+.form-section-title, .form-section-sub, .coords-affich,
+h1, h2, h3, p, span, label { color: white !important; }
+.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
 .step-pip { background: rgba(255,255,255,0.2) !important; }
 .step-pip.active { background: #FF6B35 !important; }
-/* Popup Leaflet */
-.leaflet-popup-content-wrapper { 
-  background: #3358a0 !important;
-  color: white !important;
+/* Formulaire */
+.form-wrap { background: #1e2d50 !important; color: white !important; }
+.champ label { color: rgba(255,255,255,0.8) !important; }
+.champ input, .champ select, .champ textarea,
+input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+textarea, select {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  color: white !important; border-radius: 6px !important;
 }
-.leaflet-popup-tip { background: #3358a0 !important; }
-/* Zone membres */
-.zone-recherche { color: white !important; }
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
+input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
+select option { background: #2c4a8a; color: white; }
+/* Carte */
+.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
+#map { min-height: 400px !important; }
+.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
+/* Boutons */
+.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
+.btn-retour { color: rgba(255,255,255,0.6) !important; }
+.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
+.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
+/* Footer */
+footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
+footer a { color: rgba(255,255,255,0.5) !important; }
+/* Inline styles v1 résiduels */
+[style*="#1e3a28"] { background-color: #2c4a8a !important; }
+[style*="#2e5a38"] { background-color: #3358a0 !important; }
+[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
 </style>
 </head>
 <body>
@@ -485,12 +501,12 @@ select option { background: #2c4a8a; color: white; }
 </div>
 
 <!-- HEADER -->
-<div class="page-header" style="background:#1e3a28;padding:52px 52px 48px;border-bottom:1px solid #2e5a38;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;">
-  <div style="font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:700;color:#d4880a;line-height:1;opacity:0.9;">03</div>
+<div class="page-header" style="background:#2c4a8a;padding:52px 52px 48px;border-bottom:1px solid #2e5a38;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;">
+  <div style="font-family:'Playfair Display',serif;font-size:6rem;font-weight:700;color:#d4880a;line-height:1;opacity:0.9;">03</div>
   <div style="flex:1;">
-    <div style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.22em;color:#7a9a72;margin-bottom:12px;">Étape 3 · Transmettre</div>
-    <h1 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:#f5f2e8;line-height:1.2;margin-bottom:16px;">Ils ont déposé<br><em style="color:#d4880a;font-style:italic;">un souvenir</em></h1>
-    <p style="font-size:1rem;color:#7a9a72;line-height:1.7;max-width:500px;">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
+    <div style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.22em;color:rgba(255,255,255,0.6);margin-bottom:12px;">Étape 3 · Transmettre</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:#f5f2e8;line-height:1.2;margin-bottom:16px;">Ils ont déposé<br><em style="color:#d4880a;font-style:italic;">un souvenir</em></h1>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.6);line-height:1.7;max-width:500px;">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
   </div>
   <div>
     <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
@@ -498,35 +514,35 @@ select option { background: #2c4a8a; color: white; }
       <div style="width:32px;height:4px;border-radius:2px;background:#d4880a;"></div>
       <div style="width:32px;height:4px;border-radius:2px;background:#d4880a;"></div>
     </div>
-    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+    <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
   </div>
 </div>
 
 <!-- CTA -->
 <section id="cta-final">
   <div>
-    <div class="cta-label" style="color:#1e3a28;"><span data-i18n="t3CtaLabel">Rejoignez l'archive</span></div>
+    <div class="cta-label" style="color:white;"><span data-i18n="t3CtaLabel">Rejoignez l'archive</span></div>
   </div>
   <button class="btn-primary" onclick="ouvrirZoneSaisie()" style="flex-shrink:0;"><span data-i18n="t3CtaBtn">Déposez votre souvenir</span></button>
 </section>
 
 <!-- ZONE DE SAISIE TÉMOIGNAGE -->
-<div id="zone-saisie" style="display:none; background:var(--parchemin); padding:20px 52px; border-top:2px solid var(--sable);">
+<div id="zone-saisie" style="display:none; background:rgba(255,255,255,0.05); padding:20px 52px; border-top:2px solid var(--sable);">
   <div style="max-width:1100px; margin:0 auto;">
     <!-- Rangée 1 : Auteur + Lieu + boutons -->
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
-      <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);white-space:nowrap;flex-shrink:0;">Votre souvenir</span>
-      <input type="text" id="t-auteur" placeholder="Prénom, initiale" style="width:150px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
-      <input type="text" id="t-lieu" placeholder="Lieu, pays" style="width:190px;flex-shrink:0;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
-      <button onclick="fermerZoneSaisie()" style="background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer;padding:4px;line-height:1;margin-left:auto;">✕</button>
+      <span style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);white-space:nowrap;flex-shrink:0;">Votre souvenir</span>
+      <input type="text" id="t-auteur" placeholder="Prénom, initiale" style="width:150px;flex-shrink:0;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+      <input type="text" id="t-lieu" placeholder="Lieu, pays" style="width:190px;flex-shrink:0;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;">
+      <button onclick="fermerZoneSaisie()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.1rem;cursor:pointer;padding:4px;line-height:1;margin-left:auto;">✕</button>
     </div>
     <!-- Rangée 2 : Textarea grande + bouton soumettre -->
     <div style="display:flex;gap:14px;align-items:flex-end;">
       <div style="flex:1;display:flex;flex-direction:column;gap:4px;">
-        <textarea id="t-texte" maxlength="4900" placeholder="Votre souvenir… Les odeurs, les voisins, la lumière par la fenêtre, un souvenir d'enfance, une fête, un déménagement…" oninput="document.getElementById('t-compteur').textContent=this.value.length;document.getElementById('t-compteur').style.color=this.value.length>4500?'#c04040':'#7a9a72';" style="width:100%;height:130px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Cormorant Garamond',serif;font-size:0.98rem;padding:11px 14px;outline:none;border-radius:2px;resize:vertical;line-height:1.7;"></textarea>
-        <div style="font-size:0.72rem;color:#7a9a72;text-align:right;"><span id="t-compteur">0</span> / 4 900 caractères</div>
+        <textarea id="t-texte" maxlength="4900" placeholder="Votre souvenir… Les odeurs, les voisins, la lumière par la fenêtre, un souvenir d'enfance, une fête, un déménagement…" oninput="document.getElementById('t-compteur').textContent=this.value.length;document.getElementById('t-compteur').style.color=this.value.length>4500?'#c04040':'#7a9a72';" style="width:100%;height:130px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Playfair Display',serif;font-size:0.98rem;padding:11px 14px;outline:none;border-radius:2px;resize:vertical;line-height:1.7;"></textarea>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-align:right;"><span id="t-compteur">0</span> / 4 900 caractères</div>
       </div>
-      <button onclick="soumettreTemoignage()" style="background:var(--ocre);color:white;border:none;padding:12px 28px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-bottom:22px;">Soumettre →</button>
+      <button onclick="soumettreTemoignage()" style="background:var(--ocre);color:white;border:none;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-bottom:22px;">Soumettre →</button>
     </div>
   </div>
 </div>
@@ -534,8 +550,8 @@ select option { background: #2c4a8a; color: white; }
 <!-- CONFIRMATION TÉMOIGNAGE -->
 <div id="confirm-temoignage" style="display:none;background:var(--terre);padding:48px 52px;text-align:center;">
   <div style="font-size:2rem;margin-bottom:16px;">✉️</div>
-  <div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--parchemin);font-weight:300;margin-bottom:12px;">Merci pour votre témoignage</div>
-  <div style="font-size:0.9rem;color:var(--muted);line-height:1.7;">Il sera relu et ajouté à l'archive Babelom prochainement.</div>
+  <div style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--parchemin);font-weight:300;margin-bottom:12px;">Merci pour votre témoignage</div>
+  <div style="font-size:0.9rem;color:rgba(255,255,255,0.6);line-height:1.7;">Il sera relu et ajouté à l'archive Babelom prochainement.</div>
 </div>
 
 
@@ -548,36 +564,36 @@ select option { background: #2c4a8a; color: white; }
 
       <!-- Rechercher par ville -->
       <div style="display:flex;flex-direction:column;gap:5px;">
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Rechercher par ville</span>
-        <select id="filtre-ville" onchange="filtrerCombine()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;cursor:pointer;min-width:180px;text-transform:uppercase;letter-spacing:0.08em;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);">Rechercher par ville</span>
+        <select id="filtre-ville" onchange="filtrerCombine()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;cursor:pointer;min-width:180px;text-transform:uppercase;letter-spacing:0.08em;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           <option value="">— Toutes les villes —</option>
         </select>
       </div>
 
       <!-- Rechercher par rue -->
       <div style="display:flex;flex-direction:column;gap:5px;">
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Rechercher par rue</span>
-        <input type="text" id="recherche-rue" placeholder="Ex : rue de la Paix…" oninput="filtrerCombine()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;min-width:200px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);">Rechercher par rue</span>
+        <input type="text" id="recherche-rue" placeholder="Ex : rue de la Paix…" oninput="filtrerCombine()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;min-width:200px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
       </div>
 
       <!-- Rechercher par nom -->
       <div style="display:flex;flex-direction:column;gap:5px;">
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);">Rechercher par nom</span>
-        <input type="text" id="recherche-membre" placeholder="Nom de famille…" oninput="filtrerCombine()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;min-width:200px;transition:border-color 0.2s;text-transform:uppercase;letter-spacing:0.06em;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);">Rechercher par nom</span>
+        <input type="text" id="recherche-membre" placeholder="Nom de famille…" oninput="filtrerCombine()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;min-width:200px;transition:border-color 0.2s;text-transform:uppercase;letter-spacing:0.06em;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
       </div>
 
-      <span id="filtre-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></span>
+      <span id="filtre-count" style="font-size:0.78rem;color:rgba(255,255,255,0.6);font-style:italic;padding-bottom:8px;"></span>
     </div>
   </div>
 
   <div class="temoignages-grid" id="temoignages-grid">
-    <div style="text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">
+    <div style="text-align:center;padding:40px;color:rgba(255,255,255,0.6);font-size:0.9rem;grid-column:1/-1;">
       Chargement des témoignages…
     </div>
   </div>
 
 <!-- FOOTER -->
-<div style="height:24px;background:var(--creme);"></div>
+<div style="height:24px;background:#1e2d50;"></div>
 <footer>
   <div class="footer-logo">
     <svg width="160" height="48" viewBox="0 0 148 44" style="overflow:visible;">
@@ -590,37 +606,37 @@ select option { background: #2c4a8a; color: white; }
       </text>
     </svg>
   </div>
-  <button onclick="ouvrirSignalement()" style="background:none;border:1px solid rgba(200,216,176,0.4);color:#c8d8b0;padding:7px 16px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.borderColor='#e08080';this.style.color='#e08080'" onmouseout="this.style.borderColor='rgba(200,216,176,0.4)';this.style.color='#c8d8b0'">⚑ Signaler un témoignage</button>
+  <button onclick="ouvrirSignalement()" style="background:none;border:1px solid rgba(200,216,176,0.4);color:#c8d8b0;padding:7px 16px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.borderColor='#e08080';this.style.color='#e08080'" onmouseout="this.style.borderColor='rgba(200,216,176,0.4)';this.style.color='#c8d8b0'">⚑ Signaler un témoignage</button>
   <div class="footer-text"><span data-i18n="footerText">La mémoire des lieux habités · Tous droits réservés</span></div>
   <div style="margin-top:10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-    <a href="mentions-legales.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Mentions légales</a>
-    <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Confidentialité</a>
+    <a href="mentions-legales.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Mentions légales</a>
+    <a href="confidentialite.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Confidentialité</a>
   </div>
 </footer>
 
 <!-- MODALE SIGNALEMENT -->
 <div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
-  <div style="background:#f5f2e8;padding:36px 34px;max-width:460px;width:90%;border-radius:2px;">
+  <div style="background:#1e2d50;padding:36px 34px;max-width:460px;width:90%;border-radius:2px;">
     <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:#a04040;margin-bottom:8px;">Signalement</div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#1e3a28;margin-bottom:6px;">Signaler <em style="color:#c04040;font-style:italic;">un témoignage</em></h3>
-    <p style="font-size:0.84rem;color:#7a9a72;line-height:1.65;margin-bottom:20px;">Indiquez la raison de votre signalement. Notre équipe examinera le témoignage dans les plus brefs délais.</p>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:white;margin-bottom:6px;">Signaler <em style="color:#c04040;font-style:italic;">un témoignage</em></h3>
+    <p style="font-size:0.84rem;color:rgba(255,255,255,0.6);line-height:1.65;margin-bottom:20px;">Indiquez la raison de votre signalement. Notre équipe examinera le témoignage dans les plus brefs délais.</p>
     <div style="margin-bottom:14px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:#7a9a72;margin-bottom:8px;">Motif *</label>
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Motif *</label>
       <div style="display:flex;flex-direction:column;gap:8px;">
-        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="delation" style="accent-color:#c04040;"> Contenu à caractère délateur</label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="identite"> Usurpation d'identité</label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="tiers"> Citation de noms de tiers sans consentement</label>
-        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:#1e3a28;cursor:pointer;"><input type="radio" name="motif" value="autre"> Autre motif</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:white;cursor:pointer;"><input type="radio" name="motif" value="delation" style="accent-color:#c04040;"> Contenu à caractère délateur</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:white;cursor:pointer;"><input type="radio" name="motif" value="identite"> Usurpation d'identité</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:white;cursor:pointer;"><input type="radio" name="motif" value="tiers"> Citation de noms de tiers sans consentement</label>
+        <label style="display:flex;align-items:center;gap:10px;font-size:0.88rem;color:white;cursor:pointer;"><input type="radio" name="motif" value="autre"> Autre motif</label>
       </div>
     </div>
     <div style="margin-bottom:20px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:#7a9a72;margin-bottom:6px;">Précisions (optionnel)</label>
-      <textarea id="signalement-detail" placeholder="Décrivez brièvement le problème…" style="width:100%;background:white;border:1.5px solid #c8d8b0;color:#1e3a28;font-family:'Jost',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:2px;resize:none;height:80px;" onfocus="this.style.borderColor='#c04040'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Précisions (optionnel)</label>
+      <textarea id="signalement-detail" placeholder="Décrivez brièvement le problème…" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:2px;resize:none;height:80px;" onfocus="this.style.borderColor='#c04040'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
     </div>
     <div id="signalement-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #c8d8b0;">
-      <button onclick="fermerSignalement()" style="background:none;border:none;color:#7a9a72;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;">Annuler</button>
-      <button onclick="envoyerSignalement()" style="background:#c04040;color:white;border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;" onmouseover="this.style.background='#a03030'" onmouseout="this.style.background='#c04040'">Envoyer →</button>
+      <button onclick="fermerSignalement()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;">Annuler</button>
+      <button onclick="envoyerSignalement()" style="background:#c04040;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;" onmouseover="this.style.background='#a03030'" onmouseout="this.style.background='#c04040'">Envoyer →</button>
     </div>
   </div>
 </div>
@@ -660,7 +676,7 @@ async function chargerTemoignages() {
     .order('ville', { ascending: true });
 
   if (error || !data || !data.length) {
-    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">Aucun témoignage pour le moment — soyez le premier !</div>';
+    grid.innerHTML = '<div style="text-align:center;padding:40px;color:rgba(255,255,255,0.6);font-size:0.9rem;grid-column:1/-1;">Aucun témoignage pour le moment — soyez le premier !</div>';
     return;
   }
 
@@ -688,9 +704,9 @@ async function chargerTemoignages() {
     header.innerHTML =
       '<span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--ocre);font-family:\'Jost\',sans-serif;font-weight:500;">📍 ' + ville + '</span>' +
       '<div style="flex:1;height:1px;background:var(--sable);"></div>' +
-      '<span class="ville-count" style="font-size:0.7rem;color:var(--muted);">' + tems.length + '</span>' +
-      '<span style="font-size:0.7rem;color:var(--muted);">souvenir' + (tems.length > 1 ? 's' : '') + '</span>' +
-      '<span class="ville-toggle" style="font-size:0.8rem;color:var(--muted);transition:transform 0.2s;">▾</span>';
+      '<span class="ville-count" style="font-size:0.7rem;color:rgba(255,255,255,0.6);">' + tems.length + '</span>' +
+      '<span style="font-size:0.7rem;color:rgba(255,255,255,0.6);">souvenir' + (tems.length > 1 ? 's' : '') + '</span>' +
+      '<span class="ville-toggle" style="font-size:0.8rem;color:rgba(255,255,255,0.6);transition:transform 0.2s;">▾</span>';
 
     // Conteneur des témoignages de cette ville
     const bloc = document.createElement('div');
@@ -828,7 +844,7 @@ function buildPhotosHtml(photos, auteur) {
         '<div class="photo-watermark">© Babelom</div>' +
         '</div>';
     }).join('') +
-    (photos.length > 4 ? '<div style="width:72px;height:72px;border-radius:2px;background:var(--sable);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--muted);cursor:pointer;" onclick="ouvrirGalerie(' + JSON.stringify(photos) + ',0)">+' + (photos.length - 4) + '</div>' : '') +
+    (photos.length > 4 ? '<div style="width:72px;height:72px;border-radius:2px;background:var(--sable);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:rgba(255,255,255,0.6);cursor:pointer;" onclick="ouvrirGalerie(' + JSON.stringify(photos) + ',0)">+' + (photos.length - 4) + '</div>' : '') +
     '</div>';
 }
 

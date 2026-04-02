@@ -18,13 +18,13 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{background:var(--creme);color:var(--terre);font-family:'Nunito',sans-serif;}
+body{background:#1e2d50;color:white;font-family:'Nunito',sans-serif;}
 
 /* NAV */
 nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;align-items:center;padding:0 28px;height:58px;gap:0;}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:32px;}
 .nav-logo svg{width:28px;height:28px;}
-.nav-logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:var(--creme);letter-spacing:0.08em;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:white;letter-spacing:0.08em;}
 .nav-logo-text span{color:var(--ocre);}
 .nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
 .nav-links a{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:#c8dab0;text-decoration:none;font-weight:400;display:flex;align-items:baseline;gap:10px;}
@@ -32,18 +32,18 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 .nav-links a .nav-num{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ocre);}
 
 /* HERO */
-.galerie-hero{background:var(--terre);padding:48px 52px 36px;color:var(--creme);}
+.galerie-hero{background:var(--terre);padding:48px 52px 36px;color:white;}
 .galerie-eyebrow{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:12px;}
 .galerie-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;line-height:1.2;margin-bottom:8px;}
 .galerie-title em{color:var(--ocre);font-style:italic;}
-.galerie-sub{font-size:0.9rem;color:var(--muted);line-height:1.7;}
+.galerie-sub{font-size:0.9rem;color:rgba(255,255,255,0.6);line-height:1.7;}
 
 /* FILTRES */
-.galerie-filtres{background:var(--parchemin);padding:16px 52px;border-bottom:1px solid var(--sable);display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;}
-.galerie-filtres label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);display:block;margin-bottom:5px;}
-.galerie-filtres input, .galerie-filtres select{background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;}
+.galerie-filtres{background:rgba(255,255,255,0.05);padding:16px 52px;border-bottom:1px solid rgba(255,255,255,0.15);display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;}
+.galerie-filtres label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);display:block;margin-bottom:5px;}
+.galerie-filtres input, .galerie-filtres select{background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;}
 .galerie-filtres input:focus, .galerie-filtres select:focus{border-color:var(--ocre);}
-#galerie-count{font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;}
+#galerie-count{font-size:0.78rem;color:rgba(255,255,255,0.6);font-style:italic;padding-bottom:8px;}
 
 /* GRILLE PHOTOS */
 .galerie-wrap{padding:32px 52px;max-width:1300px;margin:0 auto;}
@@ -59,7 +59,7 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 .galerie-item .g-meta{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(20,40,28,0.85));padding:20px 10px 8px;opacity:0;transition:opacity 0.2s;z-index:4;pointer-events:none;}
 .galerie-item:hover .g-meta{opacity:1;}
 .g-meta-lieu{font-size:0.72rem;font-weight:500;color:#e8dfc0;letter-spacing:0.04em;}
-.g-meta-dates{font-size:0.65rem;color:var(--muted);}
+.g-meta-dates{font-size:0.65rem;color:rgba(255,255,255,0.6);}
 
 /* LIGHTBOX */
 #babelom-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
@@ -76,8 +76,8 @@ nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;alig
 #lb-info{font-family:'Playfair Display',serif;font-size:0.95rem;font-style:italic;color:rgba(255,255,255,0.7);text-align:center;}
 
 /* LOADING */
-.galerie-loading{text-align:center;padding:60px;color:var(--muted);font-style:italic;}
-.galerie-vide{text-align:center;padding:60px;color:var(--muted);}
+.galerie-loading{text-align:center;padding:60px;color:rgba(255,255,255,0.6);font-style:italic;}
+.galerie-vide{text-align:center;padding:60px;color:rgba(255,255,255,0.6);}
 
 /* PROTECTION GLOBALE */
 img{-webkit-user-drag:none;}
@@ -114,54 +114,70 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="fix-visibility">
-/* Fix visibilité - couleurs directes sur les éléments principaux */
-.page-header { background: #3358a0 !important; color: white !important; }
-.header-title, .header-label, .header-sub, .step-badge { color: white !important; }
-.header-title em { color: #FF6B35 !important; }
-.main-content { background: #1A1A2E !important; }
-.forme-wrap, .form-wrap { 
-  background: #253070 !important; 
+/* RESET COMPLET */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+body { 
+  background: #1A1A2E !important; 
   color: white !important; 
+  font-family: 'Nunito', sans-serif !important; 
+  padding-bottom: 70px !important;
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column !important;
 }
-.form-section-title, .form-section-sub, .coords-affich { color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important;
-  border-radius: 4px !important;
+/* Structure principale */
+#top-band { flex-shrink: 0 !important; }
+.page-header { 
+  flex-shrink: 0 !important;
+  height: auto !important;
+  min-height: unset !important;
+  background: #2c4a8a !important; 
+  color: white !important; 
+  border-bottom: 2px solid #FF6B35 !important;
 }
-.champ input::placeholder, .champ textarea::placeholder {
-  color: rgba(255,255,255,0.4) !important;
+.main-content { 
+  flex: 1 !important;
+  background: #1A1A2E !important;
+  min-height: 500px !important;
 }
-.champ input:focus, .champ select:focus, .champ textarea:focus {
-  border-color: #FF6B35 !important;
-}
-select option { background: #2c4a8a; color: white; }
-#map { background: #253070 !important; }
-.carte-instruction { 
-  background: #3358a0 !important; 
-  color: white !important;
-  border-left-color: #FF6B35 !important;
-}
-.form-footer { border-top-color: rgba(255,255,255,0.15) !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.btn-retour:hover { color: white !important; }
-.upload-zone { 
-  border-color: rgba(255,255,255,0.25) !important;
-  background: transparent !important;
-}
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+/* Textes */
+.header-title, .header-label, .header-sub, .step-badge,
+.form-section-title, .form-section-sub, .coords-affich,
+h1, h2, h3, p, span, label { color: white !important; }
+.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
 .step-pip { background: rgba(255,255,255,0.2) !important; }
 .step-pip.active { background: #FF6B35 !important; }
-/* Popup Leaflet */
-.leaflet-popup-content-wrapper { 
-  background: #3358a0 !important;
-  color: white !important;
+/* Formulaire */
+.form-wrap { background: #1e2d50 !important; color: white !important; }
+.champ label { color: rgba(255,255,255,0.8) !important; }
+.champ input, .champ select, .champ textarea,
+input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
+textarea, select {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  color: white !important; border-radius: 6px !important;
 }
-.leaflet-popup-tip { background: #3358a0 !important; }
-/* Zone membres */
-.zone-recherche { color: white !important; }
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
+input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
+select option { background: #2c4a8a; color: white; }
+/* Carte */
+.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
+#map { min-height: 400px !important; }
+.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
+/* Boutons */
+.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
+.btn-retour { color: rgba(255,255,255,0.6) !important; }
+.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
+.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
+/* Footer */
+footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
+footer a { color: rgba(255,255,255,0.5) !important; }
+/* Inline styles v1 résiduels */
+[style*="#1e3a28"] { background-color: #2c4a8a !important; }
+[style*="#2e5a38"] { background-color: #3358a0 !important; }
+[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
 </style>
 </head>
 <body>
@@ -478,8 +494,8 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
 var user = babelomGetUser();
 if (!user) {
   document.getElementById('galerie-loading').innerHTML =
-    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
-    '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté Babelom.</p>' +
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:white;margin-bottom:12px;">Accès réservé aux membres</div>' +
+    '<p style="color:rgba(255,255,255,0.6);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté Babelom.</p>' +
     '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
 } else {
   chargerGalerie();
@@ -492,8 +508,8 @@ window.addEventListener('scroll', function() {
 </script>
 
 <div style="text-align:center;padding:20px 0 8px;display:flex;gap:20px;justify-content:center;">
-  <a href="mentions-legales.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Mentions légales</a>
-  <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Confidentialité</a>
+  <a href="mentions-legales.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Mentions légales</a>
+  <a href="confidentialite.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Confidentialité</a>
 </div>
 </body>
 </html>
