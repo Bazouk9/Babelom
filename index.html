@@ -334,14 +334,20 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 /* Points animés sur la carte hero */
 .map-dot {
   position: absolute;
-  width: 10px; height: 10px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(-45deg);
-  background: var(--ocre);
-  border: 2px solid white;
-  box-shadow: 0 2px 8px rgba(196,133,74,0.5);
-  z-index: 3;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #FF6B35;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
   opacity: 0;
+  transform: scale(0);
+  transition: transform 0.2s;
+  z-index: 10;
+}
+.map-dot:hover {
+  transform: scale(1.4) !important;
+  background: #ff8c5a;
 }
 #dot-lublin { top:41%; left:51%; animation: dotAppear 0.5s 1.5s forwards; }
 #dot-batna { top:52%; left:48%; animation: dotAppear 0.5s 1.9s forwards; }
@@ -352,7 +358,9 @@ footer{background:var(--nuit);padding:20px 24px;display:flex;align-items:center;
 #dot-nz { top:74%; left:87%; animation: dotAppear 0.5s 3.9s forwards; } /* Nouvelle-Zélande */ /* Paris */
 
 @keyframes dotAppear {
-  from { opacity:0; transform:rotate(-45deg) scale(0); }
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
+}
   to   { opacity:1; transform:rotate(-45deg) scale(1); }
 }
 
@@ -1253,7 +1261,7 @@ window.addEventListener('load', () => {
     attributionControl: false,
   }).setView([40, 30], 2);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 10
   }).addTo(heroMap);
   setTimeout(()=>{ if(heroMap) heroMap.invalidateSize(); }, 300);
