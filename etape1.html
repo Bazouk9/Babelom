@@ -32,7 +32,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--creme);
-  color: var(--terre);
+  color:white;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -180,11 +180,11 @@ nav {
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
+  background:rgba(255,255,255,0.07);
   padding: 10px 20px;
   border-radius: 2px;
   font-size: 0.85rem;
-  color: var(--terre);
+  color:white;
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   z-index: 500;
   white-space: nowrap;
@@ -208,20 +208,20 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
   font-weight: 400;
-  color: var(--terre);
+  color:white;
   margin-bottom: 8px;
 }
 
 .form-section-sub {
   font-size: 0.88rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   line-height: 1.6;
   margin-bottom: 36px;
 }
 
 .coords-affich {
   font-size: 0.78rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   font-style: italic;
   margin-bottom: 28px;
   min-height: 20px;
@@ -238,7 +238,7 @@ nav {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   margin-bottom: 8px;
   font-weight: 400;
 }
@@ -247,9 +247,9 @@ nav {
 .champ select,
 .champ textarea {
   width: 100%;
-  background: white;
-  border: 1.5px solid var(--sable);
-  color: var(--terre);
+  background:rgba(255,255,255,0.07);
+  border:1.5px solid rgba(255,255,255,0.3);
+  color:white;
   font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   padding: 12px 16px;
@@ -280,8 +280,8 @@ nav {
   transition: border-color 0.2s, background 0.2s;
   border-radius: 2px;
 }
-.upload-zone:hover { border-color: var(--ocre); background: white; }
-.upload-zone p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+.upload-zone:hover { border-color: var(--ocre); background:rgba(255,255,255,0.07); }
+.upload-zone p { font-size: 0.85rem; color:rgba(255,255,255,0.6); margin-top: 8px; }
 
 .photos-preview {
   display: flex;
@@ -309,7 +309,7 @@ nav {
 .btn-retour {
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   background: none;
   border: none;
   cursor: pointer;
@@ -317,7 +317,7 @@ nav {
   text-decoration: none;
   transition: color 0.2s;
 }
-.btn-retour:hover { color: var(--terre); }
+.btn-retour:hover { color:white; }
 
 .btn-valider {
   background: var(--ocre);
@@ -334,7 +334,7 @@ nav {
   border-radius: 2px;
 }
 .btn-valider:hover { background: #b87008; transform: translateY(-1px); }
-.btn-valider:disabled { background: var(--sable); color: var(--muted); cursor: not-allowed; transform: none; }
+.btn-valider:disabled { background: var(--sable); color:rgba(255,255,255,0.6); cursor: not-allowed; transform: none; }
 
 /* ── CONFIRMATION ── */
 #confirmation {
@@ -366,7 +366,7 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 400;
-  color: var(--terre);
+  color:white;
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -374,7 +374,7 @@ nav {
 
 .confirm-sub {
   font-size: 0.95rem;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   line-height: 1.7;
   margin-bottom: 36px;
 }
@@ -403,8 +403,8 @@ nav {
 
 .btn-accueil {
   background: none;
-  color: var(--muted);
-  border: 1.5px solid var(--sable);
+  color:rgba(255,255,255,0.6);
+  border:1.5px solid rgba(255,255,255,0.3);
   padding: 12px 28px;
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
@@ -416,7 +416,7 @@ nav {
   transition: border-color 0.2s, color 0.2s;
   border-radius: 2px;
 }
-.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
+.btn-accueil:hover { border-color:white; color:white; }
 
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(20px); }
@@ -426,7 +426,7 @@ nav {
 /* ── FOOTER ── */
 footer {
   background: #2c4a8a;
-  color: var(--muted);
+  color:rgba(255,255,255,0.6);
   padding: 32px 52px;
   display: flex;
   align-items: center;
@@ -457,54 +457,73 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-dot{opacity:1;}.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}.bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="fix-visibility">
-/* Fix visibilité - couleurs directes sur les éléments principaux */
-.page-header { background: #3358a0 !important; color: white !important; }
-.header-title, .header-label, .header-sub, .step-badge { color: white !important; }
-.header-title em { color: #FF6B35 !important; }
+/* RESET COMPLET couleurs v1 → v2 */
+body, body * { color: white; }
+body { background: #1A1A2E !important; font-family: 'Nunito', sans-serif !important; padding-bottom: 70px !important; }
+
+/* Exceptions - éléments qui ont besoin d'une couleur spécifique */
+.page-header { background: #2c4a8a !important; border-bottom: 2px solid #FF6B35 !important; }
 .main-content { background: #1A1A2E !important; }
-.forme-wrap, .form-wrap { 
-  background: #253070 !important; 
-  color: white !important; 
-}
-.form-section-title, .form-section-sub, .coords-affich { color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea {
+.form-wrap { background: #1e2d50 !important; padding: 32px !important; }
+.carte-wrap { background: #1e2d50 !important; }
+#map { background: #253070 !important; }
+
+/* Inputs */
+.champ input, .champ select, .champ textarea,
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),
+textarea, select {
   background: rgba(255,255,255,0.08) !important;
   border: 1.5px solid rgba(255,255,255,0.3) !important;
   color: white !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
 }
-.champ input::placeholder, .champ textarea::placeholder {
-  color: rgba(255,255,255,0.4) !important;
-}
-.champ input:focus, .champ select:focus, .champ textarea:focus {
-  border-color: #FF6B35 !important;
-}
-select option { background: #2c4a8a; color: white; }
-#map { background: #253070 !important; }
-.carte-instruction { 
-  background: #3358a0 !important; 
-  color: white !important;
-  border-left-color: #FF6B35 !important;
-}
-.form-footer { border-top-color: rgba(255,255,255,0.15) !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.btn-retour:hover { color: white !important; }
-.upload-zone { 
-  border-color: rgba(255,255,255,0.25) !important;
-  background: transparent !important;
-}
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
+input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
+select option { background: #2c4a8a !important; }
+
+/* Boutons */
+.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
+.btn-valider:disabled { background: rgba(255,255,255,0.15) !important; opacity: 0.5; }
+button { color: white; }
+
+/* Liens */
+a { color: rgba(255,255,255,0.85); text-decoration: none; }
+a:hover { color: #FF6B35; }
+a.active { color: #FF6B35 !important; }
+
+/* Nav et éléments de structure */
+.carte-instruction { background: #2c4a8a !important; border-left: 3px solid #FF6B35 !important; }
+.upload-zone { border-color: rgba(255,255,255,0.25) !important; background: rgba(255,255,255,0.03) !important; }
+.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
 .step-pip { background: rgba(255,255,255,0.2) !important; }
 .step-pip.active { background: #FF6B35 !important; }
-/* Popup Leaflet */
-.leaflet-popup-content-wrapper { 
-  background: #3358a0 !important;
-  color: white !important;
+.step-badge { color: #FF6B35 !important; opacity: 1 !important; }
+
+/* Footer */
+footer { background: #2c4a8a !important; border-top: 4px solid #FF6B35 !important; }
+
+/* Inline styles avec couleurs v1 */
+[style*="background:#1e3a28"], [style*="background: #1e3a28"] { background: #2c4a8a !important; }
+[style*="background:#2e5a38"], [style*="background: #2e5a38"] { background: #3358a0 !important; }
+[style*="color:#1e3a28"], [style*="color: #1e3a28"] { color: white !important; }
+[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
+[style*="color:#4a7a52"], [style*="color: #4a7a52"] { color: #4ECDC4 !important; }
+[style*="border.*#2e5a38"] { border-color: rgba(255,255,255,0.15) !important; }
+[style*="background:white"], [style*="background: white"] { background: rgba(255,255,255,0.07) !important; }
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #2c4a8a !important; }
+.leaflet-popup-content { color: white !important; }
+
+/* Éléments spécifiques */
+.nav-num { color: #FF6B35 !important; }
+.nav-links a { color: rgba(255,255,255,0.8) !important; }
+.nav-links a.active { color: #FF6B35 !important; }
+
+/* Fond des modales v1 */
+#modale-mdp > div, #modale-desinscription > div, #modale-suppression > div { 
+  background: #2c4a8a !important; border-color: #3358a0 !important; 
 }
-.leaflet-popup-tip { background: #3358a0 !important; }
-/* Zone membres */
-.zone-recherche { color: white !important; }
 </style>
 </head>
 <body>
@@ -595,13 +614,17 @@ select option { background: #2c4a8a; color: white; }
 <!-- NAV -->
 
 
+<div id="test-visibilite" style="position:fixed;top:80px;left:0;right:0;z-index:99999;background:red;color:yellow;font-size:3rem;font-weight:900;text-align:center;padding:20px;border:5px solid white;">
+⚠ CONTENU VISIBLE - ETAPE 1 FONCTIONNE ⚠
+<br><small style="font-size:1rem;">Si vous voyez ceci, la page charge correctement</small>
+</div>
 <!-- HEADER -->
-<div class="page-header">
+<div class="page-header" style="background:#2c4a8a!important;color:white!important;display:flex!important;padding:22px 52px!important;border-bottom:3px solid #FF6B35!important;">
   <div class="step-badge">01</div>
-  <div class="header-content">
+  <div class="header-content" style="flex:1;color:white!important;">
     <div class="header-label"><span data-i18n="e1HeaderLabel">Étape 1 sur 3 · Déposer un souvenir</span></div>
-    <h1 class="header-title"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
-    <p class="header-sub">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
+    <h1 class="header-title" style="color:white!important;font-family:'Playfair Display',serif!important;font-size:1.7rem!important;"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
+    <p class="header-sub" style="color:rgba(255,255,255,0.7)!important;">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
   </div>
   <div>
     <div class="header-steps" style="margin-bottom:8px;">
@@ -609,12 +632,12 @@ select option { background: #2c4a8a; color: white; }
       <div class="step-pip"></div>
       <div class="step-pip"></div>
     </div>
-    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+    <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
   </div>
 </div>
 
 <!-- CONTENU -->
-<div class="main-content">
+<div class="main-content" style="display:grid!important;grid-template-columns:1fr 1fr!important;min-height:calc(100vh - 140px)!important;background:#1A1A2E!important;">
 
   <!-- CARTE -->
   <div class="carte-wrap">
@@ -633,7 +656,7 @@ select option { background: #2c4a8a; color: white; }
       gap:16px;
       z-index:500;
     ">
-      <p style="font-family:'Jost',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
+      <p style="font-family:'Nunito',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
         <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour découvrir les souvenirs, les anecdotes et les photos derrière chaque point.
       </p>
       <a href="index.html#compte" style="
@@ -641,7 +664,7 @@ select option { background: #2c4a8a; color: white; }
         color:white;
         text-decoration:none;
         padding:7px 16px;
-        font-family:'Jost',sans-serif;
+        font-family:'Nunito',sans-serif;
         font-size:0.75rem;
         text-transform:uppercase;
         letter-spacing:0.1em;
@@ -654,7 +677,7 @@ select option { background: #2c4a8a; color: white; }
   </div>
 
   <!-- FORMULAIRE -->
-  <div class="form-wrap">
+  <div class="form-wrap" style="background:#1e2d50!important;padding:48px 52px!important;color:white!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;">
     <div style="
       background: #d4880a;
       padding: 14px 20px;
@@ -669,7 +692,7 @@ select option { background: #2c4a8a; color: white; }
       ⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.
     </div>
 
-    <div class="form-section-title">Racontez ce lieu</div>
+    <div class="form-section-title" style="color:white!important;font-size:1.4rem!important;margin-bottom:8px!important;">Racontez ce lieu</div>
     <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
 
     <div class="coords-affich" id="coords-affich">Aucun point placé pour l'instant</div>
@@ -688,9 +711,9 @@ select option { background: #2c4a8a; color: white; }
         <label>Code postal</label>
         <div style="position:relative;">
           <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
-            style="width:100%;box-sizing:border-box;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
+            style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'" oninput="filtrerCP(this.value)">
-          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
     </div>
@@ -703,15 +726,15 @@ select option { background: #2c4a8a; color: white; }
     <div class="champ">
       <label>Adresse précise <span style="color:#d4880a;">*</span></label>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
         <div style="position:relative;flex:1;min-width:200px;">
           <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
-          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:var(--creme);border:none;padding:7px 14px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
-        <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:white;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
+        <span id="geo-msg" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;"></span>
       </div>
     </div>
 
@@ -774,30 +797,30 @@ select option { background: #2c4a8a; color: white; }
 </div>
 
   <!-- RECHERCHE MEMBRES -->
-  <div style="background:var(--parchemin);padding:20px 28px;border-bottom:1px solid var(--sable);">
+  <div style="background:rgba(255,255,255,0.05);padding:20px 28px;border-bottom:1px solid rgba(255,255,255,0.15);">
     <div style="max-width:900px;margin:0 auto;">
       <div id="zone-recherche-non-inscrit" style="display:none;background:var(--sable);border-radius:2px;padding:16px 20px;text-align:center;">
-        <p style="font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--terre);margin:0;">
+        <p style="font-family:'Nunito',sans-serif;font-size:0.85rem;color:white;margin:0;">
           <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse.
         </p>
-        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Jost',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
+        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Nunito',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
       </div>
       <div id="zone-recherche-membres" style="display:none;">
-        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
         <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
-            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par ville</span>
+            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
-            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par rue</span>
+            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
-            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par nom</span>
+            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
-          <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
+          <div id="rech-count" style="font-size:0.78rem;color:rgba(255,255,255,0.6);font-style:italic;padding-bottom:8px;"></div>
         </div>
         <div id="rech-resultats" style="margin-top:12px;"></div>
       </div>
@@ -822,26 +845,26 @@ select option { background: #2c4a8a; color: white; }
 
 <!-- MODALE CONTACT -->
 <div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.78);z-index:3000;align-items:center;justify-content:center;">
-  <div style="background:var(--creme);padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
-    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:8px;">Contact</div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--terre);margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
-    <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:22px;">
+  <div style="background:#1e2d50;padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
+    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Contact</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
+    <p style="font-size:0.84rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:22px;">
       Pour toute question, suggestion ou demande, écrivez-nous directement à
       <a href="/cdn-cgi/l/email-protection#8ae8ebe8efe6e5e7caede7ebe3e6a4e9e5e7" style="color:var(--ocre);text-decoration:none;font-weight:500;"><span class="__cf_email__" data-cfemail="81e3e0e3e4edeeecc1e6ece0e8edafe2eeec">[email&#160;protected]</span></a>
       ou utilisez ce formulaire.
     </p>
 
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
-      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
+      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
     </div>
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Adresse e-mail *</label>
-      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Adresse e-mail *</label>
+      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
     </div>
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Objet *</label>
-      <select id="c-objet" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Objet *</label>
+      <select id="c-objet" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
         <option value="">Choisir un objet…</option>
         <option value="question">Question générale</option>
         <option value="technique">Problème technique</option>
@@ -852,21 +875,21 @@ select option { background: #2c4a8a; color: white; }
       </select>
     </div>
     <div style="margin-bottom:18px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Message *</label>
-      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Message *</label>
+      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
     </div>
 
     <!-- Mention désinscription -->
-    <div style="background:var(--parchemin);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
-      <strong style="color:var(--terre);display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
+    <div style="background:rgba(255,255,255,0.05);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
+      <strong style="color:white;display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
       Pour toute demande de désinscription ou de suppression de vos données, sélectionnez l'objet correspondant ci-dessus. Votre compte et l'ensemble de vos témoignages seront supprimés dans un délai de 7 jours ouvrés. Conformément au RGPD, vous pouvez également écrire directement à <a href="/cdn-cgi/l/email-protection#a4c6c5c6c1c8cbc9e4c3c9c5cdc88ac7cbc9" style="color:var(--ocre);text-decoration:none;"><span class="__cf_email__" data-cfemail="e88a898a8d848785a88f85898184c68b8785">[email&#160;protected]</span></a>.
     </div>
 
     <div id="contact-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--sable);">
-      <button onclick="fermerContact()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-      <button onclick="envoyerContact()" style="background:var(--terre);color:var(--creme);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
+      <button onclick="fermerContact()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+      <button onclick="envoyerContact()" style="background:var(--terre);color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
     </div>
   </div>
 </div>
@@ -940,34 +963,34 @@ function babelomGetUser() {
     badge.style.cssText = 'position:relative;display:flex;align-items:center;';
     badge.innerHTML = `
       <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
-        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Nunito',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
         onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
         👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
       </button>
-      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
-        <div style="background:#1e3a28;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#1e2d50;border:1px solid rgba(255,255,255,0.2);border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Nunito',sans-serif;overflow:hidden;">
+        <div style="background:#2c4a8a;padding:10px 14px;display:flex;align-items:center;gap:10px;">
           <div style="width:30px;height:30px;border-radius:50%;background:#d4880a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;">${(user.prenom||'?')[0].toUpperCase()}</div>
           <div>
             <div style="font-size:0.82rem;color:#e8dfc0;font-weight:500;">${user.prenom} ${user.nom||''}</div>
-            <div style="font-size:0.7rem;color:#7a9a72;">${user.email||''}</div>
+            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">${user.email||''}</div>
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
           <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleLieuxHistorique()">
-            <span style="font-size:0.78rem;color:#1e3a28;font-weight:500;display:flex;align-items:center;gap:6px;">
+            <span style="font-size:0.78rem;color:white;font-weight:500;display:flex;align-items:center;gap:6px;">
               🏠 Mes lieux habités
               <span id="badge-nb-lieux" style="background:#d4880a;color:white;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
             </span>
-            <span id="arrow-hist" style="font-size:0.65rem;color:#7a9a72;">▾</span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:rgba(255,255,255,0.6);">▾</span>
           </div>
           <div id="liste-lieux-hist" style="display:none;padding:0 14px 8px;max-height:200px;overflow-y:auto;">
-            <div id="lieux-loading" style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:6px 0;">Chargement…</div>
+            <div id="lieux-loading" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:6px 0;">Chargement…</div>
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
         </div>
         <div style="padding:8px 14px;">
           <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
@@ -1005,7 +1028,7 @@ async function chargerLieuxMembre(user) {
     if (!container) return;
     if (error || !data || !data.length) {
       if (badge) badge.textContent = '0';
-      container.innerHTML = '<div style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
       return;
     }
     if (badge) badge.textContent = data.length;
@@ -1017,8 +1040,8 @@ async function chargerLieuxMembre(user) {
       return `<div style="padding:6px 0;border-bottom:1px solid #ede8d8;display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
         <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:0.75rem;font-weight:500;color:#1e3a28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
-          <div style="font-size:0.68rem;color:#7a9a72;">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
+          <div style="font-size:0.75rem;font-weight:500;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
+          <div style="font-size:0.68rem;color:rgba(255,255,255,0.6);">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
         </div>
         <div style="display:flex;gap:3px;flex-shrink:0;">
           <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
@@ -1203,7 +1226,7 @@ function afficherCPListe(liste) {
   var box = document.getElementById('cp-suggestions');
   if (!liste.length) { box.style.display='none'; return; }
   box.innerHTML = liste.map(function(cp){
-    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
+    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:white;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1227,7 +1250,7 @@ function filtrerVoies(val) {
   var matches = TYPES_VOIES.filter(function(v){ return v.toLowerCase().startsWith(val.toLowerCase()); });
   if (!matches.length) { box.style.display='none'; return; }
   box.innerHTML = matches.map(function(v){
-    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
+    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:white;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1324,11 +1347,11 @@ function buildPopup(p, isCluster, membres) {
   if (isCluster) {
     // Popup cluster : liste des inscrits de la ville
     var lignes = membres.map(function(m) {
-      return '<div style="font-size:0.8rem;color:#1e3a28;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
+      return '<div style="font-size:0.8rem;color:white;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
     }).join('');
     return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:0.72rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
-      '<div style="font-size:0.65rem;color:#7a9a72;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
+      '<div style="font-size:0.72rem;font-weight:600;color:white;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
+      '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:8px;"></div>' +
       lignes + '</div>';
   }
@@ -1351,20 +1374,20 @@ function buildPopup(p, isCluster, membres) {
         }).join('') + '</div>';
     }
     return '<div style="font-family:\'Jost\',sans-serif;min-width:220px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:white;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
       '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.8;margin-bottom:8px;">' + type + annees + '</div>' +
       photosHtml +
-      (extrait ? '<div style="font-size:0.82rem;color:#4a7a52;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
-      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#1e3a28;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
+      (extrait ? '<div style="font-size:0.82rem;color:#4ECDC4;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
+      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#2c4a8a;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
       '</div>';
   } else {
     return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:white;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
-      '<div style="font-size:0.8rem;color:#4a7a52;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
+      '<div style="font-size:0.8rem;color:#4ECDC4;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
       '<a href="index.html#compte" style="display:block;text-align:center;background:#d4880a;color:white;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Inscrivez-vous →</a>' +
       '</div>';
   }
@@ -1573,12 +1596,12 @@ function rechercherMembres() {
   count.textContent = filtres.length + ' souvenir' + (filtres.length>1?'s':'') + ' trouvé' + (filtres.length>1?'s':'');
 
   if (!filtres.length) {
-    res.innerHTML = '<div style="font-size:0.82rem;color:var(--muted);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
+    res.innerHTML = '<div style="font-size:0.82rem;color:rgba(255,255,255,0.6);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
     return;
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:white;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
       +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
   }).join('');
 }
