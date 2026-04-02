@@ -147,46 +147,43 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="v2-override">
-/* ── Surcharge charte v2 ── */
-:root {
-  --terre:    white !important;
-  --brun:     rgba(255,255,255,0.85) !important;
-  --ocre:     #FF6B35 !important;
-  --sable:    rgba(255,255,255,0.25) !important;
-  --parchemin:rgba(255,255,255,0.08) !important;
-  --creme:    rgba(255,255,255,0.06) !important;
-  --muted:    rgba(255,255,255,0.6) !important;
-  --sauge:    #FF6B35 !important;
-  --ardoise:  #4ECDC4 !important;
-}
-body {
-  background: #2c4a8a !important;
-  color: white !important;
-  font-family: 'Nunito', sans-serif !important;
-}
-.page-header { background: #3358a0 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+/* Override direct - sans variables CSS pour contourner la limitation !important */
+body { background: #2c4a8a !important; color: white !important; font-family: 'Nunito', sans-serif !important; }
+.page-header { background: #3358a0 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
+.header-title { color: white !important; font-family: 'Playfair Display', serif !important; }
+.header-label { color: rgba(255,255,255,0.6) !important; }
+.header-sub { color: rgba(255,255,255,0.6) !important; }
+.step-badge { color: #FF6B35 !important; }
+.main-content { background: #2c4a8a !important; }
 .form-wrap { background: rgba(255,255,255,0.04) !important; }
 .form-section-title { color: white !important; font-family: 'Playfair Display', serif !important; }
-.header-title { color: white !important; font-family: 'Playfair Display', serif !important; }
-footer { background: #3358a0 !important; border-top: 6px solid #FF6B35 !important; }
+.form-section-sub { color: rgba(255,255,255,0.6) !important; }
+.champ label { color: rgba(255,255,255,0.7) !important; }
 .champ input, .champ select, .champ textarea {
   background: rgba(255,255,255,0.07) !important;
   border: 2px solid rgba(255,255,255,0.3) !important;
-  color: white !important;
-  border-radius: 8px !important;
+  color: white !important; border-radius: 8px !important;
 }
-.champ input:focus, .champ select:focus, .champ textarea:focus {
-  border-color: #FF6B35 !important;
-}
+.champ input:focus, .champ select:focus, .champ textarea:focus { border-color: #FF6B35 !important; }
 .champ input::placeholder, .champ textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
-.champ label { color: rgba(255,255,255,0.7) !important; }
-.champ-cp-suggestions { background: #3358a0 !important; border-color: rgba(255,255,255,0.2) !important; }
-#cp-suggestions { background: #3358a0 !important; color: white !important; }
-.btn-valider { background: #FF6B35 !important; }
+.coords-affich { color: rgba(255,255,255,0.5) !important; }
+.coords-affich.placed { color: #4ECDC4 !important; }
+.carte-instruction { background: #3358a0 !important; color: white !important; border-left-color: #FF6B35 !important; }
+.btn-valider { background: #FF6B35 !important; color: white !important; }
 .btn-valider:hover { background: #e05a28 !important; }
-.confirm-card { background: #3358a0 !important; }
-.confirm-title { color: white !important; }
+.btn-valider:disabled { background: rgba(255,255,255,0.15) !important; color: rgba(255,255,255,0.4) !important; }
+.btn-retour { color: rgba(255,255,255,0.5) !important; }
+.btn-retour:hover { color: white !important; }
+.form-footer { border-top-color: rgba(255,255,255,0.1) !important; }
+.upload-zone { border-color: rgba(255,255,255,0.2) !important; }
+.upload-zone:hover { background: rgba(255,255,255,0.06) !important; border-color: #FF6B35 !important; }
+.upload-zone p { color: rgba(255,255,255,0.5) !important; }
+footer { background: #3358a0 !important; color: rgba(255,255,255,0.6) !important; border-top: 6px solid #FF6B35 !important; }
 select option { background: #2c4a8a !important; color: white !important; }
+#cp-suggestions, .cp-suggestion { background: #3358a0 !important; color: white !important; border-color: rgba(255,255,255,0.2) !important; }
+.membres-menu { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+.step-pip { background: rgba(255,255,255,0.15) !important; }
+.step-pip.active { background: #FF6B35 !important; }
 </style>
 </head>
 <body>
