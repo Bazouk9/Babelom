@@ -7,11 +7,7 @@
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="supabase-config.js"></script>
-<script src="player.js" defer></script>
-<script src="i18n.js?v=2"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="supabase-config.js"></script><script src="player.js" defer></script><script src="i18n.js?v=2"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="player.js" defer></script>
 <style>
 :root {
@@ -22,8 +18,8 @@
   --parchemin:rgba(255,255,255,0.08);
   --creme:#1A1A2E;
   --muted:rgba(255,255,255,0.6);
-  --sauge:#FF6B35;
-  --ardoise:#4ECDC4;
+  --sauge:    #FF6B35;
+  --ardoise:  #4ECDC4;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -32,10 +28,10 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--creme);
-  color:white;
+  color: var(--terre);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: block;
+  
 }
 
 /* ── NAV ── */
@@ -111,7 +107,7 @@ nav {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: #7a9a72;
+  color: rgba(255,255,255,0.6);
   margin-bottom: 4px;
 }
 
@@ -119,7 +115,7 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.2rem, 2vw, 1.7rem);
   font-weight: 300;
-  color: #1A1A2E;
+  color: #F0F0F0;
   line-height: 1.2;
   margin-bottom: 4px;
 }
@@ -128,7 +124,7 @@ nav {
 
 .header-sub {
   font-size: 0.82rem;
-  color: #7a9a72;
+  color: rgba(255,255,255,0.6);
   line-height: 1.5;
   max-width: 500px;
 }
@@ -169,7 +165,7 @@ nav {
 /* Popup Babelom */
 .popup-babelom .leaflet-popup-content-wrapper {
   border-radius: 3px;
-  box-shadow: 0 6px 24px rgba(26,26,46,0.18);
+  box-shadow: 0 6px 24px rgba(44,74,138,0.18);
   border: 1.5px solid rgba(255,255,255,0.2);
 }
 .popup-babelom .leaflet-popup-content { margin: 16px 18px; }
@@ -180,11 +176,11 @@ nav {
   top: 16px;
   left: 50%;
   transform: translateX(-50%);
-  background:rgba(255,255,255,0.07);
+  background: white;
   padding: 10px 20px;
   border-radius: 2px;
   font-size: 0.85rem;
-  color:white;
+  color: var(--terre);
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   z-index: 500;
   white-space: nowrap;
@@ -208,20 +204,20 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
   font-weight: 400;
-  color:white;
+  color: var(--terre);
   margin-bottom: 8px;
 }
 
 .form-section-sub {
   font-size: 0.88rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.6;
   margin-bottom: 36px;
 }
 
 .coords-affich {
   font-size: 0.78rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   font-style: italic;
   margin-bottom: 28px;
   min-height: 20px;
@@ -238,7 +234,7 @@ nav {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   margin-bottom: 8px;
   font-weight: 400;
 }
@@ -247,9 +243,9 @@ nav {
 .champ select,
 .champ textarea {
   width: 100%;
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.3);
-  color:white;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
   font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   padding: 12px 16px;
@@ -280,8 +276,8 @@ nav {
   transition: border-color 0.2s, background 0.2s;
   border-radius: 2px;
 }
-.upload-zone:hover { border-color: var(--ocre); background:rgba(255,255,255,0.07); }
-.upload-zone p { font-size: 0.85rem; color:rgba(255,255,255,0.6); margin-top: 8px; }
+.upload-zone:hover { border-color: var(--ocre); background: white; }
+.upload-zone p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
 
 .photos-preview {
   display: flex;
@@ -309,7 +305,7 @@ nav {
 .btn-retour {
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   background: none;
   border: none;
   cursor: pointer;
@@ -317,7 +313,7 @@ nav {
   text-decoration: none;
   transition: color 0.2s;
 }
-.btn-retour:hover { color:white; }
+.btn-retour:hover { color: var(--terre); }
 
 .btn-valider {
   background: var(--ocre);
@@ -334,14 +330,14 @@ nav {
   border-radius: 2px;
 }
 .btn-valider:hover { background: #b87008; transform: translateY(-1px); }
-.btn-valider:disabled { background: var(--sable); color:rgba(255,255,255,0.6); cursor: not-allowed; transform: none; }
+.btn-valider:disabled { background: var(--sable); color: var(--muted); cursor: not-allowed; transform: none; }
 
 /* ── CONFIRMATION ── */
 #confirmation {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(26,26,46,0.85);
+  background: rgba(44,74,138,0.85);
   z-index: 2000;
   align-items: center;
   justify-content: center;
@@ -366,7 +362,7 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 400;
-  color:white;
+  color: var(--terre);
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -374,7 +370,7 @@ nav {
 
 .confirm-sub {
   font-size: 0.95rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.7;
   margin-bottom: 36px;
 }
@@ -403,8 +399,8 @@ nav {
 
 .btn-accueil {
   background: none;
-  color:rgba(255,255,255,0.6);
-  border:1.5px solid rgba(255,255,255,0.3);
+  color: var(--muted);
+  border: 1.5px solid var(--sable);
   padding: 12px 28px;
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
@@ -416,7 +412,7 @@ nav {
   transition: border-color 0.2s, color 0.2s;
   border-radius: 2px;
 }
-.btn-accueil:hover { border-color:white; color:white; }
+.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
 
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(20px); }
@@ -426,7 +422,7 @@ nav {
 /* ── FOOTER ── */
 footer {
   background: #2c4a8a;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   padding: 32px 52px;
   display: flex;
   align-items: center;
@@ -435,92 +431,58 @@ footer {
 .footer-text { font-size: 0.82rem; }
 </style>
 <style id="nav-v2">
-#top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;}
+#top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;flex-direction:row!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;width:100%!important;box-sizing:border-box!important;}
 .nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
 .nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
-.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;}
-.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;}
-.btn-cx{background:white!important;color:#FF6B35!important;}.btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
-.lang-opt{padding:8px 14px;color:white;cursor:pointer;}.lang-opt:hover{background:rgba(255,255,255,0.1);}
-#nav-user{display:none;align-items:center;gap:8px;}#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
+.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;display:block!important;}
+.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;white-space:nowrap!important;}
+.btn-cx{background:white!important;color:#FF6B35!important;}
+.btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
+.lang-opt{padding:8px 14px;color:white;cursor:pointer;}
+#nav-user{display:none;align-items:center;gap:8px;}
+#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
 #nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
 .modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
 .modale-box{background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
-.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
+.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}
+.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
 .input-compte:focus{border-color:#FF6B35;}.input-compte::placeholder{color:rgba(255,255,255,0.4);}
 .btn-compte{width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;}
-.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
+.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
+.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
 body{padding-bottom:70px!important;}
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:1000;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
-.bn.active{background:rgba(255,107,53,0.18);}.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
-.bn.active .bn-dot{opacity:1;}.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}.bn.active .bn-lbl{color:#FF6B35;}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex!important;flex-direction:row!important;justify-content:space-around;z-index:1000;}
+.bn{display:flex!important;flex-direction:column!important;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
+.bn.active{background:rgba(255,107,53,0.18);}
+.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
+.bn.active .bn-dot{opacity:1;}.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
+.bn.active .bn-lbl{color:#FF6B35;}
 </style>
-<style id="fix-visibility">
-/* RESET COMPLET */
-html { box-sizing: border-box; }
-*, *::before, *::after { box-sizing: inherit; }
-body { 
-  background: #1A1A2E !important; 
-  color: white !important; 
-  font-family: 'Nunito', sans-serif !important; 
-  padding-bottom: 70px !important;
-  min-height: 100vh;
-  display: flex !important;
-  flex-direction: column !important;
-}
-/* Structure principale */
-#top-band { flex-shrink: 0 !important; }
-.page-header { 
-  flex-shrink: 0 !important;
-  height: auto !important;
-  min-height: unset !important;
-  background: #2c4a8a !important; 
-  color: white !important; 
-  border-bottom: 2px solid #FF6B35 !important;
-}
-.main-content { 
-  flex: 1 !important;
-  background: #1A1A2E !important;
-  min-height: 500px !important;
-}
-/* Textes */
-.header-title, .header-label, .header-sub, .step-badge,
-.form-section-title, .form-section-sub, .coords-affich,
-h1, h2, h3, p, span, label { color: white !important; }
-.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
-.step-pip { background: rgba(255,255,255,0.2) !important; }
-.step-pip.active { background: #FF6B35 !important; }
-/* Formulaire */
-.form-wrap { background: #1e2d50 !important; color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea,
-input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
-textarea, select {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important; border-radius: 6px !important;
-}
-input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
-input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
-select option { background: #2c4a8a; color: white; }
-/* Carte */
-.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
-#map { min-height: 400px !important; }
-.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
-/* Boutons */
-.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
-.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
-/* Footer */
-footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
-footer a { color: rgba(255,255,255,0.5) !important; }
-/* Inline styles v1 résiduels */
-[style*="#1e3a28"] { background-color: #2c4a8a !important; }
-[style*="#2e5a38"] { background-color: #3358a0 !important; }
-[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
+<style id="fix-v2">
+/* Corps */
+body{background:#1A1A2E!important;color:white!important;font-family:'Nunito',sans-serif!important;}
+/* Header - hauteur naturelle seulement */
+.page-header{background:#2c4a8a!important;color:white!important;border-bottom:3px solid #FF6B35!important;
+  height:auto!important;min-height:unset!important;flex-shrink:0!important;align-self:auto!important;}
+.header-title,.header-label,.header-sub,.step-badge{color:white!important;}
+.header-title em{color:#FF6B35!important;}
+.step-pip{background:rgba(255,255,255,0.2)!important;}.step-pip.active{background:#FF6B35!important;}
+/* Contenu */
+.main-content{background:#1A1A2E!important;}
+.form-wrap{background:#1e2d50!important;color:white!important;}
+.form-section-title,.form-section-sub,.coords-affich{color:white!important;}
+.champ label{color:rgba(255,255,255,0.8)!important;}
+.champ input,.champ select,.champ textarea{background:rgba(255,255,255,0.08)!important;border:1.5px solid rgba(255,255,255,0.3)!important;color:white!important;border-radius:6px!important;}
+.champ input::placeholder,.champ textarea::placeholder{color:rgba(255,255,255,0.4)!important;}
+.champ input:focus,.champ select:focus,.champ textarea:focus{border-color:#FF6B35!important;}
+select option{background:#2c4a8a;color:white;}
+.btn-valider{background:#FF6B35!important;color:white!important;}
+.btn-retour{color:rgba(255,255,255,0.6)!important;}
+.upload-zone{border-color:rgba(255,255,255,0.25)!important;}
+.upload-zone p{color:rgba(255,255,255,0.5)!important;}
+.form-footer{border-top-color:rgba(255,255,255,0.12)!important;}
+.carte-instruction{background:#2c4a8a!important;color:white!important;border-left-color:#FF6B35!important;}
+footer{background:#2c4a8a!important;border-top:4px solid #FF6B35!important;color:rgba(255,255,255,0.6)!important;}
 </style>
 </head>
 <body>
@@ -612,12 +574,12 @@ footer a { color: rgba(255,255,255,0.5) !important; }
 
 
 <!-- HEADER -->
-<div class="page-header" style="background:#2c4a8a!important;color:white!important;display:flex!important;padding:22px 52px!important;border-bottom:3px solid #FF6B35!important;">
+<div class="page-header">
   <div class="step-badge">01</div>
-  <div class="header-content" style="flex:1;color:white!important;">
+  <div class="header-content">
     <div class="header-label"><span data-i18n="e1HeaderLabel">Étape 1 sur 3 · Déposer un souvenir</span></div>
-    <h1 class="header-title" style="color:white!important;font-family:'Playfair Display',serif!important;font-size:1.7rem!important;"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
-    <p class="header-sub" style="color:rgba(255,255,255,0.7)!important;">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
+    <h1 class="header-title"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
+    <p class="header-sub">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
   </div>
   <div>
     <div class="header-steps" style="margin-bottom:8px;">
@@ -625,12 +587,12 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       <div class="step-pip"></div>
       <div class="step-pip"></div>
     </div>
-    <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
   </div>
 </div>
 
 <!-- CONTENU -->
-<div class="main-content" style="display:grid!important;grid-template-columns:1fr 1fr!important;min-height:calc(100vh - 140px)!important;background:#1A1A2E!important;">
+<div class="main-content">
 
   <!-- CARTE -->
   <div class="carte-wrap">
@@ -649,7 +611,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       gap:16px;
       z-index:500;
     ">
-      <p style="font-family:'Nunito',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
+      <p style="font-family:'Jost',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
         <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour découvrir les souvenirs, les anecdotes et les photos derrière chaque point.
       </p>
       <a href="index.html#compte" style="
@@ -657,7 +619,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
         color:white;
         text-decoration:none;
         padding:7px 16px;
-        font-family:'Nunito',sans-serif;
+        font-family:'Jost',sans-serif;
         font-size:0.75rem;
         text-transform:uppercase;
         letter-spacing:0.1em;
@@ -670,7 +632,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
   </div>
 
   <!-- FORMULAIRE -->
-  <div class="form-wrap" style="background:#1e2d50!important;padding:48px 52px!important;color:white!important;overflow-y:auto!important;display:flex!important;flex-direction:column!important;">
+  <div class="form-wrap">
     <div style="
       background: #d4880a;
       padding: 14px 20px;
@@ -685,7 +647,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       ⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.
     </div>
 
-    <div class="form-section-title" style="color:white!important;font-size:1.4rem!important;margin-bottom:8px!important;">Racontez ce lieu</div>
+    <div class="form-section-title">Racontez ce lieu</div>
     <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
 
     <div class="coords-affich" id="coords-affich">Aucun point placé pour l'instant</div>
@@ -704,9 +666,9 @@ footer a { color: rgba(255,255,255,0.5) !important; }
         <label>Code postal</label>
         <div style="position:relative;">
           <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
-            style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
+            style="width:100%;box-sizing:border-box;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
             onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'" oninput="filtrerCP(this.value)">
-          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
     </div>
@@ -719,15 +681,15 @@ footer a { color: rgba(255,255,255,0.5) !important; }
     <div class="champ">
       <label>Adresse précise <span style="color:#d4880a;">*</span></label>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
         <div style="position:relative;flex:1;min-width:200px;">
           <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
-          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:white;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
-        <span id="geo-msg" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;"></span>
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:var(--creme);border:none;padding:7px 14px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
+        <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
       </div>
     </div>
 
@@ -790,30 +752,30 @@ footer a { color: rgba(255,255,255,0.5) !important; }
 </div>
 
   <!-- RECHERCHE MEMBRES -->
-  <div style="background:rgba(255,255,255,0.05);padding:20px 28px;border-bottom:1px solid rgba(255,255,255,0.15);">
+  <div style="background:var(--parchemin);padding:20px 28px;border-bottom:1px solid var(--sable);">
     <div style="max-width:900px;margin:0 auto;">
       <div id="zone-recherche-non-inscrit" style="display:none;background:var(--sable);border-radius:2px;padding:16px 20px;text-align:center;">
-        <p style="font-family:'Nunito',sans-serif;font-size:0.85rem;color:white;margin:0;">
+        <p style="font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--terre);margin:0;">
           <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse.
         </p>
-        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Nunito',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
+        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Jost',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
       </div>
       <div id="zone-recherche-membres" style="display:none;">
-        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.6);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
         <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par ville</span>
-            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
+            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par rue</span>
-            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
+            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.6);">Par nom</span>
-            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
+            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
           </div>
-          <div id="rech-count" style="font-size:0.78rem;color:rgba(255,255,255,0.6);font-style:italic;padding-bottom:8px;"></div>
+          <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
         </div>
         <div id="rech-resultats" style="margin-top:12px;"></div>
       </div>
@@ -838,26 +800,26 @@ footer a { color: rgba(255,255,255,0.5) !important; }
 
 <!-- MODALE CONTACT -->
 <div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.78);z-index:3000;align-items:center;justify-content:center;">
-  <div style="background:#1e2d50;padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
-    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Contact</div>
-    <h3 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
-    <p style="font-size:0.84rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:22px;">
+  <div style="background:var(--creme);padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
+    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:8px;">Contact</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--terre);margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
+    <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:22px;">
       Pour toute question, suggestion ou demande, écrivez-nous directement à
       <a href="/cdn-cgi/l/email-protection#8ae8ebe8efe6e5e7caede7ebe3e6a4e9e5e7" style="color:var(--ocre);text-decoration:none;font-weight:500;"><span class="__cf_email__" data-cfemail="81e3e0e3e4edeeecc1e6ece0e8edafe2eeec">[email&#160;protected]</span></a>
       ou utilisez ce formulaire.
     </p>
 
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
-      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
+      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
     </div>
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Adresse e-mail *</label>
-      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Adresse e-mail *</label>
+      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
     </div>
     <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Objet *</label>
-      <select id="c-objet" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Objet *</label>
+      <select id="c-objet" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
         <option value="">Choisir un objet…</option>
         <option value="question">Question générale</option>
         <option value="technique">Problème technique</option>
@@ -868,28 +830,28 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       </select>
     </div>
     <div style="margin-bottom:18px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Message *</label>
-      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Message *</label>
+      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
     </div>
 
     <!-- Mention désinscription -->
-    <div style="background:rgba(255,255,255,0.05);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
-      <strong style="color:white;display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
+    <div style="background:var(--parchemin);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
+      <strong style="color:var(--terre);display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
       Pour toute demande de désinscription ou de suppression de vos données, sélectionnez l'objet correspondant ci-dessus. Votre compte et l'ensemble de vos témoignages seront supprimés dans un délai de 7 jours ouvrés. Conformément au RGPD, vous pouvez également écrire directement à <a href="/cdn-cgi/l/email-protection#a4c6c5c6c1c8cbc9e4c3c9c5cdc88ac7cbc9" style="color:var(--ocre);text-decoration:none;"><span class="__cf_email__" data-cfemail="e88a898a8d848785a88f85898184c68b8785">[email&#160;protected]</span></a>.
     </div>
 
     <div id="contact-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
 
     <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--sable);">
-      <button onclick="fermerContact()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-      <button onclick="envoyerContact()" style="background:var(--terre);color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
+      <button onclick="fermerContact()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+      <button onclick="envoyerContact()" style="background:var(--terre);color:var(--creme);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
     </div>
   </div>
 </div>
 
 
 
-<footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;"><div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:#FF6B35;">Om</span></div><div style="display:flex;gap:14px;"><a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions légales</a><a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialité</a></div></footer>
+<footer style="background:#2c4a8a;border-top:4px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;"><div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:#FF6B35;">Om</span></div><div style="display:flex;gap:14px;"><a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions légales</a><a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialité</a></div></footer>
 <nav id="bottom-nav">
   <a href="index.html" class="bn active">
     <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
@@ -912,8 +874,8 @@ footer a { color: rgba(255,255,255,0.5) !important; }
     <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
   </a>
 </nav>
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion →</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Créer un compte</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prénom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire →</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
+<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion →</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
+<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>S'inscrire</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prénom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire →</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
 <div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Accéder</button></div></div>
 <script>
 // ── Helper session ──
@@ -956,34 +918,34 @@ function babelomGetUser() {
     badge.style.cssText = 'position:relative;display:flex;align-items:center;';
     badge.innerHTML = `
       <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
-        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Nunito',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
         onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
         👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
       </button>
-      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#1e2d50;border:1px solid rgba(255,255,255,0.2);border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Nunito',sans-serif;overflow:hidden;">
-        <div style="background:#2c4a8a;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
+        <div style="background:#1e3a28;padding:10px 14px;display:flex;align-items:center;gap:10px;">
           <div style="width:30px;height:30px;border-radius:50%;background:#d4880a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;">${(user.prenom||'?')[0].toUpperCase()}</div>
           <div>
             <div style="font-size:0.82rem;color:#e8dfc0;font-weight:500;">${user.prenom} ${user.nom||''}</div>
-            <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">${user.email||''}</div>
+            <div style="font-size:0.7rem;color:#7a9a72;">${user.email||''}</div>
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
           <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleLieuxHistorique()">
-            <span style="font-size:0.78rem;color:white;font-weight:500;display:flex;align-items:center;gap:6px;">
+            <span style="font-size:0.78rem;color:#1e3a28;font-weight:500;display:flex;align-items:center;gap:6px;">
               🏠 Mes lieux habités
               <span id="badge-nb-lieux" style="background:#d4880a;color:white;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
             </span>
-            <span id="arrow-hist" style="font-size:0.65rem;color:rgba(255,255,255,0.6);">▾</span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:#7a9a72;">▾</span>
           </div>
           <div id="liste-lieux-hist" style="display:none;padding:0 14px 8px;max-height:200px;overflow-y:auto;">
-            <div id="lieux-loading" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:6px 0;">Chargement…</div>
+            <div id="lieux-loading" style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:6px 0;">Chargement…</div>
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:white;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
         </div>
         <div style="padding:8px 14px;">
           <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
@@ -1021,7 +983,7 @@ async function chargerLieuxMembre(user) {
     if (!container) return;
     if (error || !data || !data.length) {
       if (badge) badge.textContent = '0';
-      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      container.innerHTML = '<div style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
       return;
     }
     if (badge) badge.textContent = data.length;
@@ -1033,8 +995,8 @@ async function chargerLieuxMembre(user) {
       return `<div style="padding:6px 0;border-bottom:1px solid #ede8d8;display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
         <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:0.75rem;font-weight:500;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
-          <div style="font-size:0.68rem;color:rgba(255,255,255,0.6);">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
+          <div style="font-size:0.75rem;font-weight:500;color:#1e3a28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
+          <div style="font-size:0.68rem;color:#7a9a72;">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
         </div>
         <div style="display:flex;gap:3px;flex-shrink:0;">
           <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
@@ -1070,8 +1032,7 @@ document.addEventListener('click', function(e) {
 function fermerModale(id) {
   document.getElementById(id).style.display = 'none';
 }
-</script>
-<script>
+</script><script>
 function validerMdp() {
   const ancien = document.getElementById('mdp-ancien').value;
   const nouveau = document.getElementById('mdp-nouveau').value;
@@ -1219,7 +1180,7 @@ function afficherCPListe(liste) {
   var box = document.getElementById('cp-suggestions');
   if (!liste.length) { box.style.display='none'; return; }
   box.innerHTML = liste.map(function(cp){
-    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:white;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
+    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1243,7 +1204,7 @@ function filtrerVoies(val) {
   var matches = TYPES_VOIES.filter(function(v){ return v.toLowerCase().startsWith(val.toLowerCase()); });
   if (!matches.length) { box.style.display='none'; return; }
   box.innerHTML = matches.map(function(v){
-    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:white;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
+    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1340,11 +1301,11 @@ function buildPopup(p, isCluster, membres) {
   if (isCluster) {
     // Popup cluster : liste des inscrits de la ville
     var lignes = membres.map(function(m) {
-      return '<div style="font-size:0.8rem;color:white;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
+      return '<div style="font-size:0.8rem;color:#1e3a28;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
     }).join('');
     return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:0.72rem;font-weight:600;color:white;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
-      '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
+      '<div style="font-size:0.72rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
+      '<div style="font-size:0.65rem;color:#7a9a72;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:8px;"></div>' +
       lignes + '</div>';
   }
@@ -1367,20 +1328,20 @@ function buildPopup(p, isCluster, membres) {
         }).join('') + '</div>';
     }
     return '<div style="font-family:\'Jost\',sans-serif;min-width:220px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:white;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
       '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.8;margin-bottom:8px;">' + type + annees + '</div>' +
       photosHtml +
-      (extrait ? '<div style="font-size:0.82rem;color:#4ECDC4;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
-      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#2c4a8a;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
+      (extrait ? '<div style="font-size:0.82rem;color:#4a7a52;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
+      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#1e3a28;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
       '</div>';
   } else {
     return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:white;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
-      '<div style="font-size:0.8rem;color:#4ECDC4;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
+      '<div style="font-size:0.8rem;color:#4a7a52;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
       '<a href="index.html#compte" style="display:block;text-align:center;background:#d4880a;color:white;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Inscrivez-vous →</a>' +
       '</div>';
   }
@@ -1589,12 +1550,12 @@ function rechercherMembres() {
   count.textContent = filtres.length + ' souvenir' + (filtres.length>1?'s':'') + ' trouvé' + (filtres.length>1?'s':'');
 
   if (!filtres.length) {
-    res.innerHTML = '<div style="font-size:0.82rem;color:rgba(255,255,255,0.6);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
+    res.innerHTML = '<div style="font-size:0.82rem;color:var(--muted);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
     return;
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.2);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:white;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
       +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
   }).join('');
 }
@@ -1661,9 +1622,10 @@ function fermerModale(id){var el=document.getElementById(id);if(el)el.style.disp
 function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
 function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
 document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecté !';}setTimeout(function(){location.reload();},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Compte créé !':'Vérifiez votre email.';}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecté!';}setTimeout(function(){location.reload();},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Compte créé!':'Vérifiez votre email.';}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='#FF8B94';}
 </script>
+<script>setTimeout(function(){if(typeof mettreAJourNav==='function')mettreAJourNav();},200);</script>
 </body>
 </html>
