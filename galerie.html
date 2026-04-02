@@ -3,22 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Galerie photos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-<script>
-function getSb(){if(window._babelomSb)return window._babelomSb;if(typeof SUPABASE_URL!=='undefined')window._babelomSb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);return window._babelomSb;}
-function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
-function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
-function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
-function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
-function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}
-document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='👤 '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
-function seDeconnecter(){try{getSb().auth.signOut();}catch(e){}localStorage.removeItem('babelom-user');mettreAJourNav();}
-</script>
 <script src="player.js" defer></script>
 <script src="i18n.js?v=2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -108,7 +97,7 @@ img{-webkit-user-drag:none;}
 #nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
 .modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
 .modale-box{background:#3358a0;border:1px solid #3d6ab8;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;}
-.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}
+.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;font-family:'Playfair Display',serif;}
 .input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
 .input-compte:focus{border-color:#FF6B35;}
 .input-compte::placeholder{color:rgba(255,255,255,0.4);}
@@ -125,44 +114,83 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-lbl{color:#FF6B35;}
 </style>
 <style id="v2-override">
-/* Override direct - sans variables CSS pour contourner la limitation !important */
-body { background: #2c4a8a !important; color: white !important; font-family: 'Nunito', sans-serif !important; }
-.page-header { background: #3358a0 !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
-.header-title { color: white !important; font-family: 'Playfair Display', serif !important; }
-.header-label { color: rgba(255,255,255,0.6) !important; }
-.header-sub { color: rgba(255,255,255,0.6) !important; }
-.step-badge { color: #FF6B35 !important; }
-.main-content { background: #2c4a8a !important; }
-.form-wrap { background: rgba(255,255,255,0.04) !important; }
-.form-section-title { color: white !important; font-family: 'Playfair Display', serif !important; }
-.form-section-sub { color: rgba(255,255,255,0.6) !important; }
-.champ label { color: rgba(255,255,255,0.7) !important; }
-.champ input, .champ select, .champ textarea {
-  background: rgba(255,255,255,0.07) !important;
-  border: 2px solid rgba(255,255,255,0.3) !important;
-  color: white !important; border-radius: 8px !important;
-}
-.champ input:focus, .champ select:focus, .champ textarea:focus { border-color: #FF6B35 !important; }
-.champ input::placeholder, .champ textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
-.coords-affich { color: rgba(255,255,255,0.5) !important; }
-.coords-affich.placed { color: #4ECDC4 !important; }
-.carte-instruction { background: #3358a0 !important; color: white !important; border-left-color: #FF6B35 !important; }
-.btn-valider { background: #FF6B35 !important; color: white !important; }
-.btn-valider:hover { background: #e05a28 !important; }
-.btn-valider:disabled { background: rgba(255,255,255,0.15) !important; color: rgba(255,255,255,0.4) !important; }
-.btn-retour { color: rgba(255,255,255,0.5) !important; }
-.btn-retour:hover { color: white !important; }
-.form-footer { border-top-color: rgba(255,255,255,0.1) !important; }
-.upload-zone { border-color: rgba(255,255,255,0.2) !important; }
-.upload-zone:hover { background: rgba(255,255,255,0.06) !important; border-color: #FF6B35 !important; }
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
-footer { background: #3358a0 !important; color: rgba(255,255,255,0.6) !important; border-top: 6px solid #FF6B35 !important; }
-select option { background: #2c4a8a !important; color: white !important; }
-#cp-suggestions, .cp-suggestion { background: #3358a0 !important; color: white !important; border-color: rgba(255,255,255,0.2) !important; }
-.membres-menu { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
-.step-pip { background: rgba(255,255,255,0.15) !important; }
-.step-pip.active { background: #FF6B35 !important; }
+body{background:#2c4a8a!important;color:white!important;font-family:'Nunito',sans-serif!important;}
+.page-header{background:#3358a0!important;color:white!important;border-bottom:1px solid rgba(255,255,255,0.1)!important;}
+.header-title{color:white!important;}
+.header-label{color:rgba(255,255,255,0.6)!important;}
+.header-sub{color:rgba(255,255,255,0.6)!important;}
+.step-badge{color:#FF6B35!important;}
+.main-content{background:#2c4a8a!important;}
+.form-wrap{background:rgba(255,255,255,0.04)!important;}
+.form-section-title{color:white!important;}
+.form-section-sub{color:rgba(255,255,255,0.6)!important;}
+.champ label{color:rgba(255,255,255,0.7)!important;}
+.champ input,.champ select,.champ textarea{background:rgba(255,255,255,0.07)!important;border:2px solid rgba(255,255,255,0.3)!important;color:white!important;border-radius:8px!important;}
+.champ input:focus,.champ select:focus,.champ textarea:focus{border-color:#FF6B35!important;}
+.champ input::placeholder,.champ textarea::placeholder{color:rgba(255,255,255,0.4)!important;}
+.coords-affich{color:rgba(255,255,255,0.5)!important;}
+.carte-instruction{background:#3358a0!important;color:white!important;border-left-color:#FF6B35!important;}
+.btn-valider{background:#FF6B35!important;color:white!important;}
+.btn-valider:disabled{background:rgba(255,255,255,0.15)!important;color:rgba(255,255,255,0.4)!important;}
+.btn-retour{color:rgba(255,255,255,0.5)!important;}
+.form-footer{border-top-color:rgba(255,255,255,0.1)!important;}
+.upload-zone{border-color:rgba(255,255,255,0.2)!important;}
+.upload-zone p{color:rgba(255,255,255,0.5)!important;}
+footer{background:#3358a0!important;border-top:6px solid #FF6B35!important;color:rgba(255,255,255,0.6)!important;}
+select option{background:#2c4a8a!important;color:white!important;}
+.step-pip{background:rgba(255,255,255,0.15)!important;}
+.step-pip.active{background:#FF6B35!important;}
 </style>
+<script>
+// Auth Babelom - utilise l objet sb de supabase-config.js (pas de CDN nécessaire)
+function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
+function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
+function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}
+document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
+function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
+function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='\u{1F464} '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
+function seDeconnecter(){var key='sb-qbxshawdxqochjsmoodl-auth-token';localStorage.removeItem('babelom-user');localStorage.removeItem(key);mettreAJourNav();}
+async function seConnecter(){
+  var email=document.getElementById('cx-email').value.trim();
+  var mdp=document.getElementById('cx-mdp').value;
+  var msg=document.getElementById('msg-cx');
+  if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}
+  try{
+    var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{
+      method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,password:mdp})
+    });
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error_description||data.msg||'Erreur connexion');
+    var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];
+    localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));
+    localStorage.setItem('sb-qbxshawdxqochjsmoodl-auth-token',JSON.stringify({access_token:data.access_token,refresh_token:data.refresh_token}));
+    if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}
+    setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);
+  }catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}
+}
+async function sInscrire(){
+  var prenom=document.getElementById('ins-prenom').value.trim();
+  var email=document.getElementById('ins-email').value.trim();
+  var mdp=document.getElementById('ins-mdp').value;
+  var msg=document.getElementById('msg-ins');
+  if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis';}return;}
+  if(msg){msg.style.color='#4ECDC4';msg.textContent='Creation...';}
+  try{
+    var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{
+      method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})
+    });
+    var data=await res.json();
+    if(!res.ok)throw new Error(data.error_description||data.msg||'Erreur');
+    if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Compte cree!':'Verifiez votre email';}
+    if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}
+  }catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}
+}
+function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='#FF8B94';}
+setTimeout(mettreAJourNav, 100);
+</script>
 </head>
 <body>
 
@@ -496,7 +524,7 @@ window.addEventListener('scroll', function() {
   <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Confidentialité</a>
 </div>
 <div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>S'inscrire</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
+<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
 <div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Acceder</button></div></div>
 <nav id="bottom-nav">
   <a href="index.html" class="bn active">
@@ -520,11 +548,5 @@ window.addEventListener('scroll', function() {
     <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
   </a>
 </nav>
-<script>
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg)msg.textContent='...';try{var res=await getSb().auth.signInWithPassword({email,password:mdp});if(res.error)throw res.error;var prenom=res.data.user.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));if(msg)msg.textContent='OK';setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg)msg.textContent=e.message||'Erreur';}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg)msg.textContent='Champs requis';return;}try{var res=await getSb().auth.signUp({email,password:mdp,options:{data:{prenom}}});if(res.error)throw res.error;if(msg)msg.textContent=res.data.session?'OK':'Verifiez email';}catch(e){if(msg)msg.textContent=e.message||'Erreur';}}
-function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';}
-(async function(){try{var s=localStorage.getItem('babelom-user');if(s){var u=JSON.parse(s);if(u.expires&&Date.now()>u.expires)localStorage.removeItem('babelom-user');}}catch(e){}mettreAJourNav();})();
-</script>
 </body>
 </html>
