@@ -1,97 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BabelOm — Temoignages</title>
-<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Témoignages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
-
 <script>
-
-// ── Singleton Supabase ──
-if(!window._sbClient && typeof SUPABASE_URL !== 'undefined'){
-  window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-}
-function getSb(){
-  if(!window._sbClient && typeof SUPABASE_URL !== 'undefined')
-    window._sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-  return window._sbClient;
-}
+if(!window._sbClient&&typeof SUPABASE_URL!=='undefined'){window._sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);}
+function getSb(){if(!window._sbClient&&typeof SUPABASE_URL!=='undefined')window._sbClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);return window._sbClient;}
 function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
 function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
 function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
-function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof setLanguage==='function')setLanguage(code.toLowerCase());}
+function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}
 document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
 function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
 function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');var compte=document.getElementById('compte');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='👤 '+user.prenom;if(topBtns)topBtns.style.display='none';if(compte)compte.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';if(compte)compte.style.display='block';}}
 function seDeconnecter(){try{if(getSb())getSb().auth.signOut();}catch(e){}localStorage.removeItem('babelom-user');mettreAJourNav();}
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='var(--turquoise)';msg.textContent='Connexion...';}try{var res=await getSb().auth.signInWithPassword({email,password:mdp});if(res.error)throw res.error;var prenom=res.data.user.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='var(--vert)';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='var(--rose)';msg.textContent=e.message||'Erreur';}}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='var(--rose)';msg.textContent='Champs requis.';}return;}if(msg){msg.style.color='var(--turquoise)';msg.textContent='Creation...';}try{var res=await getSb().auth.signUp({email,password:mdp,options:{data:{prenom}}});if(res.error)throw res.error;if(msg){msg.style.color='var(--vert)';msg.textContent=res.data.session?'Compte cree!':'Verifiez votre email.';}if(res.data.session){localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='var(--rose)';msg.textContent=e.message||'Erreur';}}}
-function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='var(--rose)';}
-
+async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await getSb().auth.signInWithPassword({email,password:mdp});if(res.error)throw res.error;var prenom=res.data.user.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}if(msg){msg.style.color='#4ECDC4';msg.textContent='Creation...';}try{var res=await getSb().auth.signUp({email,password:mdp,options:{data:{prenom}}});if(res.error)throw res.error;if(msg){msg.style.color='#6BCB77';msg.textContent=res.data.session?'Compte cree!':'Verifiez votre email.';}if(res.data.session){localStorage.setItem('babelom-user',JSON.stringify({id:res.data.user.id,email,prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='#FF8B94';}
 </script>
-<script src="i18n.js?v=2"></script>
 <script src="player.js" defer></script>
-<style>
-
-:root{--orange:#FF6B35;--turquoise:#4ECDC4;--jaune:#FFD93D;--vert:#6BCB77;--rose:#FF8B94;--ocre:#FF6B35;--nuit:#2c4a8a;--nuit2:#3358a0;--nuit3:#3d6ab8;--blanc:#FFFFFF;--clair:#F8F9FF;--terre:#2c4a8a;--brun:#3358a0;--sable:rgba(255,255,255,0.25);--parchemin:rgba(255,255,255,0.07);--creme:#1e2d4a;--muted:    rgba(255,255,255,0.55);}
-#top-band{background:var(--nuit)!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid var(--orange)!important;position:sticky!important;top:0!important;z-index:400!important;}
-.nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
-.nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;transition:transform 0.2s;padding:2px 6px!important;}
-.nav-ib:hover{transform:translateY(-2px);}
-.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;letter-spacing:0.07em!important;color:white!important;}
-.top-btn{padding:5px 14px!important;border-radius:18px!important;font-family:'Nunito',sans-serif!important;font-size:0.72rem!important;font-weight:900!important;text-transform:uppercase!important;border:none!important;cursor:pointer!important;}
-.btn-cx{background:white!important;color:var(--orange)!important;}
-.btn-ins{background:var(--nuit)!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
-.lang-opt{padding:8px 14px;color:white;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.78rem;}
-.lang-opt:hover{background:var(--nuit3);}
-#nav-user{display:none;align-items:center;gap:8px;}
-#nav-user-name{font-size:0.78rem;font-weight:700;color:var(--turquoise);}
-#nav-deco{background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;cursor:pointer;}
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--nuit);border-top:6px solid var(--orange);padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 6px;border-radius:9px;text-decoration:none;}
-.bn.active{background:rgba(255,107,53,0.18);}
-.bn-dot{width:5px;height:5px;border-radius:50%;background:var(--orange);margin:0 auto;opacity:0;}
-.bn.active .bn-dot{opacity:1;}
-.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
-.bn.active .bn-lbl{color:var(--orange);}
-.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
-.modale-box{background:var(--nuit2);border:1px solid var(--nuit3);padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
-.modale-box h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--orange);margin-bottom:4px;}
-.modale-box p{font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;}
-.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.35);border-radius:10px;color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;outline:none;margin-bottom:8px;}
-.input-compte:focus{border-color:var(--orange);}
-.input-compte::placeholder{color:rgba(255,255,255,0.4);}
-.btn-compte{width:100%;padding:11px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:900;text-transform:uppercase;cursor:pointer;margin-top:4px;}
-.msg-compte{margin-top:8px;font-size:0.75rem;min-height:16px;color:var(--turquoise);}
-.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.75rem;cursor:pointer;}
-body{background:var(--nuit)!important;padding-bottom:70px;}
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),textarea,select{background:rgba(255,255,255,0.06)!important;border:2px solid rgba(255,255,255,0.35)!important;border-radius:8px!important;color:white!important;outline:none;transition:border-color 0.2s;}
-input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):focus,textarea:focus,select:focus{border-color:var(--orange)!important;}
-input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.4)!important;}
-select option{background:var(--nuit2);color:white;}
-footer{background:var(--nuit2)!important;border-top:6px solid var(--orange)!important;padding:10px 24px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:8px!important;}
-
-</style>
-
-
-
-
-
-
-
+<script src="i18n.js?v=2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --terre:    #2c4a8a;
-  --brun:     #3358a0;
-  --ocre:     #FF6B35;
-  --sable:    rgba(255,255,255,0.25);
-  --parchemin:#253566;
-  --creme:    #1e2d4a;
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
   --ombre:    rgba(0,0,40,0.25);
-  --muted:    rgba(255,255,255,0.55);
+  --muted:    #7a9a72;
   --sauge:    #d4880a;
   --sauge-clair: #b0c898;
   --ardoise:  #4a7a52;
@@ -102,9 +46,9 @@ footer{background:var(--nuit2)!important;border-top:6px solid var(--orange)!impo
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--nuit);
-  color: white;
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
   overflow-x: hidden;
 }
 
@@ -127,15 +71,15 @@ nav {
   padding: 8px 52px;
   background: rgba(22,50,32,0.98);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid #2e5a38;
 }
 
 .nav-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.6rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: white;
+  color: var(--terre);
   text-decoration: none;
   text-transform: uppercase;
 }
@@ -161,7 +105,7 @@ nav {
 }
 .nav-links a:hover { color: white; }
 .nav-links a .nav-num {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1rem;
   font-weight: 700;
   color: #d4880a;
@@ -172,17 +116,17 @@ nav {
 
 .nav-cta {
   background: #d4880a !important;
-  color: white !important;
+  color: #1e3a28 !important;
   padding: 10px 22px !important;
   letter-spacing: 0.1em !important;
   transition: background 0.2s !important;
 }
-.nav-cta:hover { background: #b8720a !important; color: white !important; }
+.nav-cta:hover { background: #b8720a !important; color: #1e3a28 !important; }
 
 /* ── HERO TÉMOIGNAGES ── */
 .page-hero {
   padding: 140px 52px 80px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid #2e5a38;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 80px;
@@ -192,7 +136,7 @@ nav {
 }
 
 .page-hero-label {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.8rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -202,11 +146,11 @@ nav {
 }
 
 .page-hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(2rem, 3.5vw, 3.2rem);
   font-weight: 300;
   line-height: 1.2;
-  color: white;
+  color: var(--terre);
   margin-bottom: 16px;
 }
 
@@ -232,7 +176,7 @@ nav {
 }
 
 .temoignage {
-  background: var(--nuit);
+  background: var(--creme);
   padding: 26px 24px;
   transition: background 0.3s, transform 0.5s ease, opacity 0.5s ease;
   opacity: 0;
@@ -247,8 +191,8 @@ nav {
 /* grande carte */
 .temoignage:first-child {
   grid-row: span 2;
-  background: var(--nuit);
-  color: white;
+  background: var(--creme);
+  color: var(--terre);
   border-left: 4px solid var(--sauge);
 }
 .temoignage:first-child:hover { background: var(--parchemin); }
@@ -258,7 +202,7 @@ nav {
 
 /* guillemet décoratif */
 .temoignage-quote-mark {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.5rem;
   line-height: 0.6;
   color: var(--ocre);
@@ -269,7 +213,7 @@ nav {
 .temoignage:first-child .temoignage-quote-mark { color: var(--ocre); opacity: 0.3; }
 
 .temoignage-text {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.95rem;
   font-style: italic;
   font-weight: 300;
@@ -278,7 +222,7 @@ nav {
 }
 .temoignage:first-child .temoignage-text {
   font-size: 1.1rem;
-  color: white;
+  color: var(--terre);
 }
 
 .temoignage-author {
@@ -300,7 +244,7 @@ nav {
 
 /* ── CTA FINAL ── */
 #cta-final {
-  background: rgba(255,255,255,0.1);
+  background: #c8d8b0;
   padding: 28px 52px;
   display: flex;
   flex-direction: column;
@@ -316,7 +260,7 @@ nav {
   color: #5a90aa;
 }
 .cta-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: clamp(1.4rem, 2.2vw, 2rem);
   font-weight: 300;
   color: var(--parchemin);
@@ -330,7 +274,7 @@ nav {
   color: white;
   border: none;
   padding: 18px 48px;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: 0.12em;
@@ -344,7 +288,7 @@ nav {
 
 /* ── FOOTER ── */
 footer {
-  background: var(--nuit2);
+  background: #1e3a28;
   color: #c8d8b0;
   padding: 8px 52px;
   display: flex;
@@ -352,7 +296,7 @@ footer {
   justify-content: space-between;
 }
 .footer-logo {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Cormorant Garamond', serif;
   font-size: 1.2rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -377,12 +321,58 @@ footer {
 .photo-protegee { position:relative; display:inline-block; }
 .photo-protegee img { pointer-events:none; -webkit-user-drag:none; user-select:none; -webkit-user-select:none; }
 .photo-protegee .photo-shield { position:absolute; inset:0; z-index:2; cursor:default; }
-.photo-protegee .photo-watermark { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family: 'Nunito', sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.6); pointer-events:none; z-index:3; user-select:none; }
-</style>yle>
-
-
+.photo-protegee .photo-watermark { position:absolute; bottom:5px; left:0; right:0; text-align:center; font-family:'Jost',sans-serif; font-size:0.6rem; font-weight:600; letter-spacing:0.08em; color:rgba(255,255,255,0.75); text-shadow:0 1px 3px rgba(0,0,0,0.6); pointer-events:none; z-index:3; user-select:none; }
+</style>
+<script>
+// ── GARDE D'ACCÈS ──
+(function() {
+  if (!localStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
+    window.location.replace('index.html#compte');
+  }
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+#top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:400!important;}
+.nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
+.nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
+.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;}
+.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;font-family:'Nunito',sans-serif!important;}
+.btn-cx{background:white!important;color:#FF6B35!important;}
+.btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
+.lang-opt{padding:8px 14px;color:white;cursor:pointer;}
+.lang-opt:hover{background:#3d6ab8;}
+#nav-user{display:none;align-items:center;gap:8px;}
+#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
+#nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
+.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
+.modale-box{background:#3358a0;border:1px solid #3d6ab8;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
+.modale-box h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:#FF6B35;margin-bottom:4px;}
+.modale-box p{font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;}
+.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.35);border-radius:10px;color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;outline:none;margin-bottom:8px;}
+.input-compte:focus{border-color:#FF6B35;}
+.input-compte::placeholder{color:rgba(255,255,255,0.4);}
+.btn-compte{width:100%;padding:11px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:900;text-transform:uppercase;cursor:pointer;margin-top:4px;}
+.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
+.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
+.bn.active{background:rgba(255,107,53,0.18);}
+.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
+.bn.active .bn-dot{opacity:1;}
+.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
+.bn.active .bn-lbl{color:#FF6B35;}
+input:not([type="radio"]):not([type="checkbox"]):not([type="range"]),textarea,select{background:rgba(255,255,255,0.06)!important;border:2px solid rgba(255,255,255,0.35)!important;border-radius:8px!important;color:white!important;outline:none;}
+input:focus,textarea:focus,select:focus{border-color:#FF6B35!important;}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.4)!important;}
+select option{background:#3358a0;color:white;}
+footer{background:#3358a0!important;border-top:6px solid #FF6B35!important;padding:10px 24px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;flex-wrap:wrap!important;gap:8px!important;}
+body{padding-bottom:70px;}
+</style>
 </head>
 <body>
+
+<!-- NAV -->
 <div id="top-band">
   <!-- Favicon + Logo -->
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
@@ -465,10 +455,6 @@ footer {
     </div>
   </div>
 </div>
-
-
-<!-- NAV -->
-
 
 <!-- HEADER -->
 <div class="page-header" style="background:#1e3a28;padding:52px 52px 48px;border-bottom:1px solid #2e5a38;display:flex;align-items:flex-end;justify-content:space-between;gap:40px;">
@@ -564,7 +550,7 @@ footer {
 
 <!-- FOOTER -->
 <div style="height:24px;background:var(--creme);"></div>
-
+<footer><div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:#FF6B35;">Om</span></div><div style="display:flex;gap:14px;"><a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions legales</a><a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialite</a><a href="confidentialite.html#cgu" style="font-size:0.68rem;color:#FF6B35;text-decoration:none;text-transform:uppercase;">CGU</a></div></footer>
 
 <!-- MODALE SIGNALEMENT -->
 <div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.75);z-index:3000;align-items:center;justify-content:center;">
@@ -593,8 +579,9 @@ footer {
   </div>
 </div>
 
-
-<footer><div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:white;">BABEL<span style="color:var(--orange);">Om</span></div><div style="display:flex;gap:14px;flex-wrap:wrap;"><a href="mentions-legales.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Mentions legales</a><a href="confidentialite.html" style="font-size:0.68rem;color:rgba(255,255,255,0.4);text-decoration:none;text-transform:uppercase;">Confidentialite</a><a href="confidentialite.html#cgu" style="font-size:0.68rem;color:var(--orange);text-decoration:none;text-transform:uppercase;">CGU</a></div></footer>
+<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><p>Accedez a votre espace</p><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
+<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><p>Rejoignez Babelom</p><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
+<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Acces admin</h3><input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe"><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button><button class="btn-compte" style="background:#FF6B35;color:white;flex:1;" onclick="validerAdmin()">Acceder</button></div></div></div>
 <nav id="bottom-nav">
   <a href="index.html" class="bn active">
     <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
@@ -617,11 +604,341 @@ footer {
     <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
   </a>
 </nav>
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><p>Accedez a votre espace</p><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:var(--orange);color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><p>Rejoignez Babelom</p><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:var(--turquoise);color:var(--nuit);" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Acces admin</h3><input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe"><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button><button class="btn-compte" style="background:var(--orange);color:white;flex:1;" onclick="validerAdmin()">Acceder</button></div></div></div>
-
+<script>(async function(){try{var s=localStorage.getItem('babelom-user');if(s){var u=JSON.parse(s);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');}else{var sess=await getSb().auth.getSession();if(!sess.data?.session)localStorage.removeItem('babelom-user');}}}catch(e){}mettreAJourNav();})();</script>
+</body>
 <script>
-(async function(){try{var s=localStorage.getItem('babelom-user');if(s){var u=JSON.parse(s);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');}else{var sess=await getSb().auth.getSession();if(!sess.data?.session)localStorage.removeItem('babelom-user');}}}catch(e){}mettreAJourNav();})();
+function ouvrirZoneSaisie() {
+  const zone = document.getElementById('zone-saisie');
+  zone.style.display = 'block';
+  zone.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelector('#zone-saisie input').focus();
+}
+
+function fermerZoneSaisie() {
+  document.getElementById('zone-saisie').style.display = 'none';
+  ['t-auteur','t-lieu','t-texte'].forEach(id => document.getElementById(id).value = '');
+}
+
+function soumettreTemoignage() {
+  const texte = document.getElementById('t-texte').value.trim();
+  if (!texte) { alert('Veuillez écrire votre souvenir avant de soumettre.'); return; }
+  document.getElementById('zone-saisie').style.display = 'none';
+  const confirm = document.getElementById('confirm-temoignage');
+  confirm.style.display = 'block';
+  confirm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── CHARGEMENT TÉMOIGNAGES DEPUIS SUPABASE ──
+const sbClient = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+async function chargerTemoignages() {
+  const grid = document.getElementById('temoignages-grid');
+
+  const { data, error } = await sbClient
+    .from('temoignages')
+    .select('id, identite_prenom, identite_nom, ville, pays, texte, annee_de, annee_a, type_logement, cree_le')
+    .order('ville', { ascending: true });
+
+  if (error || !data || !data.length) {
+    grid.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:0.9rem;grid-column:1/-1;">Aucun témoignage pour le moment — soyez le premier !</div>';
+    return;
+  }
+
+  const params  = new URLSearchParams(window.location.search);
+  const idCible = params.get('id');
+
+  // Grouper par ville
+  const parVille = {};
+  data.forEach(function(t) {
+    const ville = (t.ville || 'Lieu inconnu').trim();
+    if (!parVille[ville]) parVille[ville] = [];
+    parVille[ville].push(t);
+  });
+
+  grid.innerHTML = '';
+  grid.style.display = 'block'; // on gère le layout manuellement
+
+  Object.keys(parVille).sort().forEach(function(ville) {
+    const tems = parVille[ville];
+
+    // En-tête de ville
+    const header = document.createElement('div');
+    header.setAttribute('data-ville', ville);
+    header.style.cssText = 'grid-column:1/-1;display:flex;align-items:center;gap:14px;margin:28px 0 12px;cursor:pointer;user-select:none;';
+    header.innerHTML =
+      '<span style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--ocre);font-family:\'Jost\',sans-serif;font-weight:500;">📍 ' + ville + '</span>' +
+      '<div style="flex:1;height:1px;background:var(--sable);"></div>' +
+      '<span class="ville-count" style="font-size:0.7rem;color:var(--muted);">' + tems.length + '</span>' +
+      '<span style="font-size:0.7rem;color:var(--muted);">souvenir' + (tems.length > 1 ? 's' : '') + '</span>' +
+      '<span class="ville-toggle" style="font-size:0.8rem;color:var(--muted);transition:transform 0.2s;">▾</span>';
+
+    // Conteneur des témoignages de cette ville
+    const bloc = document.createElement('div');
+    bloc.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:8px;';
+
+    tems.forEach(function(t) {
+      const prenom  = t.identite_prenom || '';
+      const nom     = t.identite_nom ? t.identite_nom[0] + '.' : '';
+      const auteur  = (prenom + ' ' + nom).trim() || 'Anonyme';
+      const pays    = t.pays || '';
+      const annees  = t.annee_de && t.annee_a ? t.annee_de + ' – ' + t.annee_a : '';
+      const texte   = t.texte || '';
+      const estCible = t.id === idCible;
+
+      const div = document.createElement('div');
+      div.className = 'temoignage';
+      div.id = 'tem-' + t.id;
+      div.setAttribute('data-nom', (t.identite_nom || '').toLowerCase());
+      div.setAttribute('data-adresse', (t.adresse || '').toLowerCase());
+      if (estCible) div.style.borderTop = '3px solid var(--ocre)';
+
+      div.innerHTML =
+        '<span class="temoignage-quote-mark">"</span>' +
+        '<div class="temoignage-text">' + texte + '</div>' +
+        '<div class="temoignage-author">' + auteur + '</div>' +
+        '<div class="temoignage-lieu">' + (pays ? pays : '') + (annees ? ' · ' + annees : '') + '</div>' +
+        (t.photos && t.photos.length ? buildPhotosHtml(t.photos, auteur) : '');
+
+      bloc.appendChild(div);
+
+      if (estCible) {
+        setTimeout(function() {
+          div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 400);
+      }
+    });
+
+    // Toggle collapse au clic sur l'en-tête
+    header.addEventListener('click', function() {
+      const isOpen = bloc.style.display !== 'none';
+      bloc.style.display = isOpen ? 'none' : 'grid';
+      header.querySelector('.ville-toggle').style.transform = isOpen ? 'rotate(-90deg)' : '';
+    });
+
+    grid.appendChild(header);
+    grid.appendChild(bloc);
+  });
+
+    // Peupler le menu déroulant
+  const select = document.getElementById('filtre-ville');
+  Object.keys(parVille).sort().forEach(function(ville) {
+    const opt = document.createElement('option');
+    opt.value = ville;
+    opt.textContent = ville.toUpperCase() + ' (' + parVille[ville].length + ')';
+    select.appendChild(opt);
+  });
+
+  // Appliquer le filtre si déjà sélectionné
+  const villeActive = select.value;
+  if (villeActive) filtrerCombine();
+
+  // Déclencher le scroll reveal
+  setTimeout(observerCartes, 100);
+}
+
+function filtrerCombine() {
+  const ville    = document.getElementById('filtre-ville').value;
+  const rechNom  = (document.getElementById('recherche-membre').value || '').toLowerCase().trim();
+  const rechRue  = (document.getElementById('recherche-rue') ? document.getElementById('recherche-rue').value : '').toLowerCase().trim();
+  const grid     = document.getElementById('temoignages-grid');
+  const count    = document.getElementById('filtre-count');
+  const headers  = grid.querySelectorAll('[data-ville]');
+  let total = 0;
+
+  headers.forEach(function(header) {
+    const v    = header.getAttribute('data-ville');
+    const bloc = header.nextElementSibling;
+    const villeOk = !ville || v === ville;
+
+    if (!villeOk) {
+      header.style.display = 'none';
+      if (bloc) bloc.style.display = 'none';
+      return;
+    }
+
+    if (!rechNom && !rechRue) {
+      header.style.display = '';
+      if (bloc) { bloc.style.display = 'grid'; }
+      total += parseInt(header.querySelector('.ville-count').textContent) || 0;
+    } else {
+      const cartes = bloc ? bloc.querySelectorAll('.temoignage') : [];
+      let visibles = 0;
+      cartes.forEach(function(carte) {
+        let ok = true;
+        if (rechNom) {
+          const nom = (carte.getAttribute('data-nom') || '').toLowerCase();
+          ok = ok && (nom.startsWith(rechNom) || nom.includes(rechNom));
+        }
+        if (rechRue) {
+          const adresse = (carte.getAttribute('data-adresse') || carte.textContent).toLowerCase();
+          ok = ok && adresse.includes(rechRue);
+        }
+        carte.style.display = ok ? '' : 'none';
+        if (ok) visibles++;
+      });
+      header.style.display = visibles > 0 ? '' : 'none';
+      if (bloc) bloc.style.display = visibles > 0 ? 'grid' : 'none';
+      total += visibles;
+    }
+  });
+
+  const labels = [];
+  if (ville) labels.push(ville);
+  if (rechNom) labels.push('nom : ' + rechNom.toUpperCase());
+  if (rechRue) labels.push('rue : ' + rechRue);
+  count.textContent = total > 0
+    ? total + ' souvenir' + (total > 1 ? 's' : '') + (labels.length ? ' · ' + labels.join(', ') : '')
+    : (labels.length || ville ? 'Aucun résultat' : '');
+}
+
+// Garder compatibilité avec l'ancien appel
+function filtrerVille(ville) { filtrerCombine(); }
+
+// ── AFFICHAGE PHOTOS PROTÉGÉES ──
+function buildPhotosHtml(photos, auteur) {
+  if (!photos || !photos.length) return '';
+  return '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">' +
+    photos.slice(0,4).map(function(url, i) {
+      return '<div class="photo-protegee" style="width:72px;height:72px;border-radius:2px;overflow:hidden;flex-shrink:0;">' +
+        '<img src="' + url + '" alt="Photo ' + (i+1) + '" ' +
+          'style="width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;" ' +
+          'oncontextmenu="return false;" ' +
+          'onclick="ouvrirGalerie(' + JSON.stringify(photos) + ',' + i + ')">' +
+        '<div class="photo-shield" oncontextmenu="return false;" ondragstart="return false;" onclick="ouvrirGalerie(' + JSON.stringify(photos) + ',' + i + ')" style="cursor:zoom-in;"></div>' +
+        '<div class="photo-watermark">© Babelom</div>' +
+        '</div>';
+    }).join('') +
+    (photos.length > 4 ? '<div style="width:72px;height:72px;border-radius:2px;background:var(--sable);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--muted);cursor:pointer;" onclick="ouvrirGalerie(' + JSON.stringify(photos) + ',0)">+' + (photos.length - 4) + '</div>' : '') +
+    '</div>';
+}
+
+// ── LIGHTBOX ──
+var galeriePhotos = [], galerieIdx = 0;
+function ouvrirGalerie(photos, idx) {
+  galeriePhotos = photos; galerieIdx = idx;
+  var lb = document.getElementById('babelom-lightbox');
+  if (!lb) {
+    lb = document.createElement('div');
+    lb.id = 'babelom-lightbox';
+    lb.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9998;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
+    lb.innerHTML = '<div style="position:relative;max-width:90vw;max-height:80vh;">' +
+      '<img id="lb-photo" style="max-width:90vw;max-height:78vh;object-fit:contain;pointer-events:none;-webkit-user-drag:none;display:block;" oncontextmenu="return false;">' +
+      '<div style="position:absolute;inset:0;" oncontextmenu="return false;" ondragstart="return false;"></div>' +
+      '<div style="position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:Jost,sans-serif;font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:0.1em;">© Babelom — reproduction interdite</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:16px;align-items:center;">' +
+      '<button onclick="galeriePrev()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;">‹</button>' +
+      '<span id="lb-count" style="font-family:Jost,sans-serif;font-size:0.8rem;color:rgba(255,255,255,0.6);">1 / 1</span>' +
+      '<button onclick="galerieNext()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-size:1.4rem;width:40px;height:40px;border-radius:50%;cursor:pointer;">›</button>' +
+      '</div>';
+    lb.addEventListener('click', function(e) { if (e.target === lb) fermerGalerie(); });
+    document.body.appendChild(lb);
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('babelom-lightbox') || document.getElementById('babelom-lightbox').style.display === 'none') return;
+      if (e.key === 'ArrowLeft') galeriePrev();
+      if (e.key === 'ArrowRight') galerieNext();
+      if (e.key === 'Escape') fermerGalerie();
+    });
+  }
+  lb.style.display = 'flex';
+  majGalerie();
+}
+function majGalerie() {
+  document.getElementById('lb-photo').src = galeriePhotos[galerieIdx];
+  document.getElementById('lb-count').textContent = (galerieIdx+1) + ' / ' + galeriePhotos.length;
+}
+function galeriePrev() { galerieIdx = (galerieIdx - 1 + galeriePhotos.length) % galeriePhotos.length; majGalerie(); }
+function galerieNext() { galerieIdx = (galerieIdx + 1) % galeriePhotos.length; majGalerie(); }
+function fermerGalerie() { var lb = document.getElementById('babelom-lightbox'); if (lb) lb.style.display = 'none'; }
+
+// Vérifier session Supabase au chargement
+(async function() {
+  const stored = localStorage.getItem('babelom-user');
+  if (!stored) return;
+  try {
+    const sbCheck = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
+      : null;
+    if (sbCheck) {
+      const { data } = await sbCheck.auth.getSession();
+      if (!data || !data.session) {
+        localStorage.removeItem('babelom-user');
+        return;
+      }
+    }
+  } catch(e) {
+    try {
+      const u = JSON.parse(stored);
+      if (u.expires && Date.now() > u.expires) localStorage.removeItem('babelom-user');
+    } catch(e2) { localStorage.removeItem('babelom-user'); }
+  }
+})();
+
+// ── B — SCROLL REVEAL ──
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+function observerCartes() {
+  document.querySelectorAll('.temoignage').forEach(function(el, i) {
+    el.style.transitionDelay = (i % 3 * 0.1) + 's';
+    observer.observe(el);
+  });
+}
+
+window.addEventListener('load', chargerTemoignages);
+
+// ── PROTECTION PHOTOS ──
+document.addEventListener('contextmenu', function(e) {
+  if (e.target.tagName === 'IMG' || e.target.classList.contains('photo-shield')) {
+    e.preventDefault(); return false;
+  }
+});
+document.addEventListener('dragstart', function(e) {
+  if (e.target.tagName === 'IMG') { e.preventDefault(); return false; }
+});
+
+// ── SIGNALEMENT ──
+function ouvrirSignalement() {
+  document.getElementById('modale-signalement').style.display = 'flex';
+}
+function fermerSignalement() {
+  document.getElementById('modale-signalement').style.display = 'none';
+  document.querySelectorAll('input[name="motif"]').forEach(function(r){ r.checked = false; });
+  document.getElementById('signalement-detail').value = '';
+  document.getElementById('signalement-msg').textContent = '';
+}
+async function envoyerSignalement() {
+  const motif  = document.querySelector('input[name="motif"]:checked');
+  const detail = document.getElementById('signalement-detail').value.trim();
+  const msg    = document.getElementById('signalement-msg');
+  if (!motif) { msg.style.color='#c04040'; msg.textContent='Veuillez sélectionner un motif.'; return; }
+  msg.style.color='#7a9a72'; msg.textContent='Envoi en cours…';
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        access_key: '7428a95d-fc84-4a4b-8c08-b4e4382c7946',
+        subject:    '[Babelom Signalement] ' + motif.value,
+        from_name:  'Système Babelom',
+        message:    'Motif : ' + motif.value + '\n\nDétails : ' + (detail || 'Aucun détail fourni.') + '\n\nPage : ' + window.location.href
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      msg.style.color='#4a7a52'; msg.textContent='✓ Signalement envoyé.';
+      setTimeout(fermerSignalement, 2500);
+    } else { msg.style.color='#c04040'; msg.textContent='Erreur lors de l\'envoi.'; }
+  } catch(e) { msg.style.color='#c04040'; msg.textContent='Erreur réseau.'; }
+}
+document.getElementById('modale-signalement').addEventListener('click', function(e) {
+  if (e.target === this) fermerSignalement();
+});
 </script>
-</body></html>
+</html>
