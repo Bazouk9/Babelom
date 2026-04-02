@@ -263,10 +263,11 @@ nav.scrolled {
   border-radius: 50%;
   background: #FF6B35;
   border: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.4);
   z-index: 3;
   cursor: pointer;
   opacity: 1;
+  transform: none;
 }
 .map-dot:nth-child(1) { top:30%; left:62%; animation: dotAppear 0.5s 1.5s forwards; } /* Lublin */
 .map-dot:nth-child(2) { top:72%; left:48%; animation: dotAppear 0.5s 1.9s forwards; } /* Batna */
@@ -1963,7 +1964,7 @@ window.addEventListener('load', () => {
     attributionControl: false,
   }).setView([40, 30], 2);
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 10
   }).addTo(heroMap);
 
@@ -2016,7 +2017,7 @@ function ouvrirCarte(e) {
 
   if (!carteMap) {
     carteMap = L.map('carte-map', { zoomControl: false }).setView([46, 10], 4);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}', {
       attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
     }).addTo(carteMap);
     L.control.zoom({ position: 'bottomright' }).addTo(carteMap);
