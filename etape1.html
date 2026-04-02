@@ -29,24 +29,24 @@ function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root {
-  --terre:    #1e3a28;
-  --brun:     #2e5a38;
-  --ocre:     #d4880a;
-  --sable:    #c8d8b0;
-  --parchemin:#e8e4d0;
-  --creme:    #f5f2e8;
+  --terre:    #2c4a8a;
+  --brun:     #3358a0;
+  --ocre:     #FF6B35;
+  --sable:    rgba(255,255,255,0.15);
+  --parchemin:rgba(255,255,255,0.06);
+  --creme:    #1e2d4a;
   --muted:    #7a9a72;
-  --sauge:    #d4880a;
-  --ardoise:  #4a7a52;
+  --sauge:    #FF6B35;
+  --ardoise:  #4ECDC4;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Jost', sans-serif;
-  background: var(--creme);
-  color: var(--terre);
+  font-family: 'Nunito', sans-serif;
+  background: #2c4a8a !important;
+  color: white !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ body {
 
 /* ── NAV ── */
 nav {
-  background: #1e3a28;
+  background: #2c4a8a;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -90,20 +90,20 @@ nav {
 }
 .nav-links a:hover { color: white; }
 .nav-links a .nav-num {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1rem;
   font-weight: 700;
-  color: #d4880a;
+  color: #FF6B35;
   line-height: 1;
 }
 .nav-links a:hover .nav-num { color: #e8a030; }
-.nav-links a.active { color: #d4880a; }
+.nav-links a.active { color: #FF6B35; }
 
 /* ── HEADER DE PAGE ── */
 .page-header {
-  background: #1e3a28;
+  background: #2c4a8a;
   padding: 22px 52px 18px;
-  border-bottom: 1px solid #2e5a38;
+  border-bottom: 1px solid #3358a0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -111,10 +111,10 @@ nav {
 }
 
 .step-badge {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 3.2rem;
   font-weight: 700;
-  color: #d4880a;
+  color: #FF6B35;
   line-height: 1;
   opacity: 0.9;
 }
@@ -130,15 +130,15 @@ nav {
 }
 
 .header-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: clamp(1.2rem, 2vw, 1.7rem);
   font-weight: 300;
-  color: #f5f2e8;
+  color: #1e2d4a;
   line-height: 1.2;
   margin-bottom: 4px;
 }
 
-.header-title em { color: #d4880a; font-style: italic; }
+.header-title em { color: #FF6B35; font-style: italic; }
 
 .header-sub {
   font-size: 0.82rem;
@@ -157,9 +157,9 @@ nav {
   width: 32px;
   height: 4px;
   border-radius: 2px;
-  background: #2e5a38;
+  background: #3358a0;
 }
-.step-pip.active { background: #d4880a; }
+.step-pip.active { background: #FF6B35; }
 
 /* ── CONTENU PRINCIPAL ── */
 .main-content {
@@ -184,7 +184,7 @@ nav {
 .popup-babelom .leaflet-popup-content-wrapper {
   border-radius: 3px;
   box-shadow: 0 6px 24px rgba(30,58,40,0.18);
-  border: 1.5px solid #c8d8b0;
+  border: 1.5px solid rgba(255,255,255,0.15);
 }
 .popup-babelom .leaflet-popup-content { margin: 16px 18px; }
 .popup-babelom .leaflet-popup-tip-container { display: block; }
@@ -198,7 +198,7 @@ nav {
   padding: 10px 20px;
   border-radius: 2px;
   font-size: 0.85rem;
-  color: var(--terre);
+  color: white;
   box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   z-index: 500;
   white-space: nowrap;
@@ -210,7 +210,7 @@ nav {
 
 /* ── FORMULAIRE ── */
 .form-wrap {
-  background: var(--creme);
+  background: rgba(255,255,255,0.05);
   padding: 48px 52px;
   overflow-y: auto;
   display: flex;
@@ -219,29 +219,29 @@ nav {
 }
 
 .form-section-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.6rem;
   font-weight: 400;
-  color: var(--terre);
+  color: white;
   margin-bottom: 8px;
 }
 
 .form-section-sub {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   line-height: 1.6;
   margin-bottom: 36px;
 }
 
 .coords-affich {
   font-size: 0.78rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   font-style: italic;
   margin-bottom: 28px;
   min-height: 20px;
   transition: color 0.3s;
 }
-.coords-affich.placed { color: var(--ardoise); }
+.coords-affich.placed { color: #4ECDC4; }
 
 .champ {
   margin-bottom: 24px;
@@ -252,7 +252,7 @@ nav {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   margin-bottom: 8px;
   font-weight: 400;
 }
@@ -262,9 +262,9 @@ nav {
 .champ textarea {
   width: 100%;
   background: white;
-  border: 1.5px solid var(--sable);
-  color: var(--terre);
-  font-family: 'Jost', sans-serif;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: white;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   padding: 12px 16px;
   outline: none;
@@ -287,7 +287,7 @@ nav {
 }
 
 .upload-zone {
-  border: 2px dashed var(--sable);
+  border: 2px dashed rgba(255,255,255,0.2);
   padding: 28px;
   text-align: center;
   cursor: pointer;
@@ -295,7 +295,7 @@ nav {
   border-radius: 2px;
 }
 .upload-zone:hover { border-color: var(--ocre); background: white; }
-.upload-zone p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+.upload-zone p { font-size: 0.85rem; color: rgba(255,255,255,0.55); margin-top: 8px; }
 
 .photos-preview {
   display: flex;
@@ -313,7 +313,7 @@ nav {
 .form-footer {
   margin-top: 36px;
   padding-top: 24px;
-  border-top: 1px solid var(--sable);
+  border-top: 1px solid rgba(255,255,255,0.2);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -321,9 +321,9 @@ nav {
 }
 
 .btn-retour {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   background: none;
   border: none;
   cursor: pointer;
@@ -331,14 +331,14 @@ nav {
   text-decoration: none;
   transition: color 0.2s;
 }
-.btn-retour:hover { color: var(--terre); }
+.btn-retour:hover { color: white; }
 
 .btn-valider {
   background: var(--ocre);
   color: white;
   border: none;
   padding: 14px 36px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.88rem;
   font-weight: 400;
   letter-spacing: 0.12em;
@@ -348,7 +348,7 @@ nav {
   border-radius: 2px;
 }
 .btn-valider:hover { background: #b87008; transform: translateY(-1px); }
-.btn-valider:disabled { background: var(--sable); color: var(--muted); cursor: not-allowed; transform: none; }
+.btn-valider:disabled { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.55); cursor: not-allowed; transform: none; }
 
 /* ── CONFIRMATION ── */
 #confirmation {
@@ -363,7 +363,7 @@ nav {
 #confirmation.visible { display: flex; }
 
 .confirm-card {
-  background: var(--creme);
+  background: rgba(255,255,255,0.05);
   padding: 64px 56px;
   max-width: 520px;
   text-align: center;
@@ -377,10 +377,10 @@ nav {
 }
 
 .confirm-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 400;
-  color: var(--terre);
+  color: white;
   margin-bottom: 16px;
   line-height: 1.2;
 }
@@ -388,7 +388,7 @@ nav {
 
 .confirm-sub {
   font-size: 0.95rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   line-height: 1.7;
   margin-bottom: 36px;
 }
@@ -401,11 +401,11 @@ nav {
 }
 
 .btn-nouveau {
-  background: var(--terre);
-  color: var(--creme);
+  background: white;
+  color: rgba(255,255,255,0.05);
   border: none;
   padding: 13px 28px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -417,10 +417,10 @@ nav {
 
 .btn-accueil {
   background: none;
-  color: var(--muted);
-  border: 1.5px solid var(--sable);
+  color: rgba(255,255,255,0.55);
+  border: 1.5px solid rgba(255,255,255,0.2);
   padding: 12px 28px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -430,7 +430,7 @@ nav {
   transition: border-color 0.2s, color 0.2s;
   border-radius: 2px;
 }
-.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
+.btn-accueil:hover { border-color: white; color: white; }
 
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(20px); }
@@ -439,8 +439,8 @@ nav {
 
 /* ── FOOTER ── */
 footer {
-  background: #1e3a28;
-  color: var(--muted);
+  background: #2c4a8a;
+  color: rgba(255,255,255,0.55);
   padding: 32px 52px;
   display: flex;
   align-items: center;

@@ -27,17 +27,17 @@ function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp
 <script src="i18n.js?v=2"></script>
 <style>
 :root {
-  --terre:    #1e3a28;
-  --ocre:     #d4880a;
-  --sable:    #c8d8b0;
-  --creme:    #f5f2e8;
+  --terre:    #2c4a8a;
+  --ocre:     #FF6B35;
+  --sable:    rgba(255,255,255,0.15);
+  --creme:    #1e2d4a;
   --muted:    #7a9a72;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: 'Jost', sans-serif;
-  background: var(--creme);
-  color: var(--terre);
+  font-family: 'Nunito', sans-serif;
+  background: #2c4a8a !important;
+  color: white !important;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,7 +47,7 @@ body {
 }
 .carte {
   background: white;
-  border: 1.5px solid var(--sable);
+  border: 1.5px solid rgba(255,255,255,0.2);
   border-radius: 4px;
   padding: 52px 48px;
   max-width: 480px;
@@ -61,7 +61,7 @@ body {
   display: block;
 }
 h1 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
   font-weight: 400;
   margin-bottom: 16px;
@@ -70,32 +70,32 @@ h1 {
 h1 em { color: var(--ocre); font-style: italic; }
 p {
   font-size: 0.92rem;
-  color: var(--muted);
+  color: rgba(255,255,255,0.55);
   line-height: 1.7;
   margin-bottom: 12px;
 }
 .btn {
   display: inline-block;
   margin-top: 28px;
-  background: var(--terre);
-  color: var(--creme);
+  background: white;
+  color: rgba(255,255,255,0.05);
   text-decoration: none;
   padding: 12px 28px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   border-radius: 2px;
   transition: background 0.2s;
 }
-.btn:hover { background: #2e5a38; }
+.btn:hover { background: #3358a0; }
 .btn-ocre {
   background: var(--ocre);
   margin-left: 12px;
 }
 .btn-ocre:hover { background: #b8720a; }
 .erreur { color: #c04040; font-size: 0.88rem; margin-top: 16px; }
-#etat-chargement { color: var(--muted); font-size: 0.88rem; }
+#etat-chargement { color: rgba(255,255,255,0.55); font-size: 0.88rem; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
