@@ -2267,7 +2267,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (prenomEl) prenomEl.textContent = user.prenom + (user.nom ? ' ' + user.nom : '');
   if (emailEl) emailEl.textContent = user.email || '';
   chargerLieuxMembre(user);
-}););
+});
 
 function toggleMenuMembre(e) {
   e.stopPropagation();
@@ -2286,52 +2286,55 @@ function toggleLieuxHistorique() {
 
 async function chargerLieuxMembre(user) {
   try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { data, error } = await sb.from('temoignages')
-      .select('id, adresse, ville, pays, annee_de, annee_a, type_logement')
-      .eq('utilisateur_id', user.id)
-      .order('annee_de', { ascending: true });
-    const container = document.getElementById('lieux-loading');
-    const badge = document.getElementById('badge-nb-lieux');
+    var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages?select=id,adresse,ville,pays,annee_de,annee_a,type_logement&utilisateur_id=eq.' + user.id + '&order=annee_de';
+    var res = await fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+    });
+    var data = await res.json();
+    var container = document.getElementById('lieux-loading');
+    var badge = document.getElementById('badge-nb-lieux');
     if (!container) return;
-    if (error || !data || !data.length) {
+    if (!data || !data.length) {
       if (badge) badge.textContent = '0';
-      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
       return;
     }
     if (badge) badge.textContent = data.length;
-    const colors = ['#d4880a','#4a7a52','#2277cc','#e8335a','#7a4a8a'];
+    var colors = ['#FF6B35','#4ECDC4','#FFD93D','#6BCB77','#FF8B94'];
     container.innerHTML = data.map(function(t, i) {
-      const lieu = [t.adresse, t.ville].filter(Boolean).join(', ');
-      const dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
-      const col = colors[i % colors.length];
-      return `<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
-        <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:0.75rem;font-weight:500;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
-          <div style="font-size:0.68rem;color:rgba(255,255,255,0.6);">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
-        </div>
-        <div style="display:flex;gap:3px;flex-shrink:0;">
-          <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
-            style="background:#d4880a;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:10px;cursor:pointer;">✏️</button>
-          <button onclick="supprimerLieu('${t.id}')" title="Supprimer"
-            style="background:#e05050;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:10px;cursor:pointer;">🗑</button>
-        </div>
-      </div>`;
+      var lieu = [t.adresse, t.ville, t.pays].filter(Boolean).join(', ');
+      var dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
+      var col = colors[i % colors.length];
+      return '<div style="padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:8px;" id="lieu-row-' + t.id + '">' +
+        '<div style="width:7px;height:7px;border-radius:50%;background:' + col + ';flex-shrink:0;"></div>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:0.75rem;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (lieu||'Lieu non précisé') + '</div>' +
+          '<div style="font-size:0.68rem;color:rgba(255,255,255,0.55);">' + (dates||'') + (t.type_logement?' · '+t.type_logement:'') + '</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:3px;flex-shrink:0;">' +
+          '<button onclick="window.location.href='etape2.html?edit=' + t.id + ''" title="Modifier" style="background:#FF6B35;color:white;border:none;font-size:0.65rem;padding:2px 7px;border-radius:4px;cursor:pointer;">✏️</button>' +
+          '<button onclick="supprimerLieu('' + t.id + '')" title="Supprimer" style="background:#c04040;color:white;border:none;font-size:0.65rem;padding:2px 7px;border-radius:4px;cursor:pointer;">🗑</button>' +
+        '</div>' +
+      '</div>';
     }).join('');
-  } catch(e) {}
+  } catch(e) {
+    var container = document.getElementById('lieux-loading');
+    if (container) container.innerHTML = '<div style="font-size:0.75rem;color:#FF8B94;padding:4px 0;">Erreur de chargement.</div>';
+  }
 }
 
 async function supprimerLieu(id) {
   if (!confirm('Supprimer ce souvenir définitivement ?')) return;
   try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { error } = await sb.from('temoignages').delete().eq('id', id);
-    if (!error) {
-      const row = document.getElementById('lieu-row-' + id);
+    var res = await fetch('https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages?id=eq.' + id, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+    });
+    if (res.ok) {
+      var row = document.getElementById('lieu-row-' + id);
       if (row) row.remove();
-      const badge = document.getElementById('badge-nb-lieux');
-      if (badge) badge.textContent = parseInt(badge.textContent||'1') - 1;
+      var badge = document.getElementById('badge-nb-lieux');
+      if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent||'1') - 1);
     }
   } catch(e) {}
 }
