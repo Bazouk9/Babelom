@@ -742,22 +742,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 </div>
 
 <!-- HEADER -->
-<div class="page-header">
-  <div class="step-badge">02</div>
-  <div class="header-content">
-    <div class="header-label"><span data-i18n="e2HeaderLabel">Étape 2 sur 3 · Déposer un souvenir</span></div>
-    <h1 class="header-title">Racontez<br><em>ce lieu</em></h1>
-    <p class="header-sub">Les anecdotes, les odeurs, les visages — tout ce que l'adresse ne dit pas. Et quelques photos si vous en avez.</p>
-  </div>
-  <div>
-    <div class="header-steps" style="margin-bottom:8px;">
-      <div class="step-pip active"></div>
-      <div class="step-pip active"></div>
-      <div class="step-pip"></div>
-    </div>
-    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
-  </div>
-</div>
+
 
 <!-- RÉCAP LIEU -->
 <div class="recap-lieu" id="recap-lieu">
@@ -789,7 +774,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 
   <div class="champ">
     <label>Date de naissance</label>
-    <input type="date" id="f-identite-naissance" style="max-width:240px;">
+    <input type="number" id="f-identite-naissance" placeholder="Ex : 1952" min="1900" max="2010" style="max-width:140px;">
   </div>
 
   <!-- TÉMOIGNAGE POSTHUME -->
@@ -956,11 +941,11 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   </div>
 
   <div class="champ">
-    <label>Photos <span style="font-weight:300;font-size:0.78rem;color:var(--muted);">(optionnel · 4 max)</span></label>
+    <label>Photos de personnes et/ou de votre domicile <span style="font-weight:300;font-size:0.78rem;color:var(--muted);">(optionnel · 4 max)</span></label>
     <div class="upload-zone" onclick="document.getElementById('f-photos').click()">
       <div class="upload-icon">📷</div>
       <h3>Ajouter des photos</h3>
-      <p>Façade, intérieur, rue, portraits — tout ce qui évoque ce lieu.<br>Formats acceptés : JPG, PNG, HEIC · Maximum 4 photos</p>
+      <p>De personnes et/ou de votre domicile — façade, intérieur, portraits.<br>Formats acceptés : JPG, PNG, HEIC · Maximum 4 photos</p>
     </div>
     <input type="file" id="f-photos" multiple accept="image/*" style="display:none" onchange="ajouterPhotos(this)">
     <div class="photos-preview" id="photos-preview"></div>
@@ -1028,7 +1013,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 
   <div class="form-footer">
     <a href="etape1.html" class="btn-retour"><span data-i18n="e2BtnRetour">← Étape précédente</span></a>
-    <button class="btn-valider" id="btn-valider" onclick="valider()" disabled style="opacity:0.4;cursor:not-allowed;"><span data-i18n="e2BtnValider">Valider et envoyer →</span></button>
+    <button class="btn-valider" id="btn-valider" onclick="valider()" disabled style="opacity:0.4;cursor:not-allowed;"><span data-i18n="e2BtnValider">Valider</span></button>
   </div>
 
 </div>
