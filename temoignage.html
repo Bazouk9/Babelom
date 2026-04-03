@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<!-- BABELOM v2 20260403-1003 -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babelom — Témoignage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="supabase-config.js"></script>
+<script src="player.js" defer></script>
+<script src="i18n.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --terre:    #2c4a8a;--ocre:     #FF6B35;--sable:    rgba(255,255,255,0.25);
+  --parchemin:rgba(255,255,255,0.08);--creme:    #1A1A2E;--muted:    rgba(255,255,255,0.6);
+  --brun:     #3358a0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--creme);color:var(--terre);font-family:'Nunito',sans-serif;min-height:100vh;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:1000;background:var(--terre);display:flex;align-items:center;padding:0 28px;height:58px;gap:0;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:32px;}
+.nav-logo svg{width:28px;height:28px;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:var(--creme);letter-spacing:0.08em;}
+.nav-logo-text span{color:var(--ocre);}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none;}
+.nav-links a{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:#c8dab0;text-decoration:none;display:flex;align-items:baseline;gap:10px;}
+.nav-links a:hover{color:white;}
+.nav-num{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--ocre);}
+
+/* HERO */
+.hero{background:var(--terre);padding:52px 52px 40px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:300px;height:300px;border-radius:50%;border:1px solid rgba(200,216,176,0.08);}
+.hero-eyebrow{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:16px;}
+.hero-top{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.hero-avatar{width:52px;height:52px;border-radius:50%;background:var(--ocre);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;color:white;flex-shrink:0;}
+.hero-name{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--creme);line-height:1.2;}
+.hero-name em{color:var(--ocre);font-style:italic;}
+.hero-adresse{font-size:0.9rem;color:var(--muted);margin-top:4px;}
+.hero-tags{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+.tag{background:rgba(200,216,176,0.12);color:#c8dab0;font-size:0.72rem;padding:4px 12px;border-radius:2px;border:1px solid rgba(200,216,176,0.2);}
+
+/* CONTENU */
+.content{max-width:860px;margin:0 auto;padding:48px 52px;}
+
+/* MÉTADONNÉES */
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0;margin-bottom:40px;border:1px solid var(--sable);border-radius:3px;overflow:hidden;background:white;}
+.meta-item{padding:16px 18px;border-right:1px solid var(--sable);border-bottom:1px solid var(--sable);}
+.meta-item:nth-child(even){border-right:none;}
+.meta-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:5px;}
+.meta-value{font-size:0.88rem;font-weight:500;color:var(--terre);}
+
+/* TÉMOIGNAGE */
+.temoignage-section{margin-bottom:44px;}
+.section-title{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.22em;color:var(--ocre);margin-bottom:20px;padding-bottom:8px;border-bottom:1px solid var(--sable);}
+.temoignage-texte{font-family:'Playfair Display',serif;font-size:1.18rem;font-weight:300;line-height:1.85;color:var(--terre);position:relative;padding-left:24px;}
+.temoignage-texte::before{content:'"';position:absolute;left:0;top:-8px;font-size:3rem;color:var(--ocre);opacity:0.4;font-family:'Playfair Display',serif;line-height:1;}
+
+/* PHOTOS */
+.photos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.photo-protegee{position:relative;border-radius:3px;overflow:hidden;aspect-ratio:4/3;cursor:zoom-in;}
+.photo-protegee img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;transition:transform 0.3s;}
+.photo-protegee:hover img{transform:scale(1.04);}
+.photo-shield{position:absolute;inset:0;z-index:2;}
+.photo-watermark{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:0.6rem;font-weight:600;letter-spacing:0.1em;color:rgba(255,255,255,0.7);text-shadow:0 1px 3px rgba(0,0,0,0.7);pointer-events:none;z-index:3;user-select:none;}
+
+/* FOYER */
+.foyer-grid{display:flex;gap:10px;flex-wrap:wrap;}
+.foyer-badge{background:var(--parchemin);border:1px solid var(--sable);border-radius:2px;padding:6px 14px;font-size:0.78rem;color:var(--terre);}
+.foyer-badge strong{color:var(--ocre);margin-right:4px;}
+
+/* ANECDOTES */
+.anecdote-bloc{background:var(--parchemin);border-left:3px solid var(--ocre);padding:16px 20px;border-radius:0 3px 3px 0;margin-bottom:12px;}
+.anecdote-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);margin-bottom:6px;}
+.anecdote-text{font-size:0.88rem;line-height:1.7;color:var(--terre);}
+
+/* LIGHTBOX */
+#babelom-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+#babelom-lightbox.open{display:flex;}
+.lb-img-wrap{position:relative;max-width:90vw;max-height:80vh;}
+#lb-photo{max-width:90vw;max-height:78vh;object-fit:contain;pointer-events:none;display:block;}
+.lb-shield{position:absolute;inset:0;}
+.lb-wm{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:0.62rem;color:rgba(255,255,255,0.5);letter-spacing:0.12em;pointer-events:none;}
+.lb-controls{display:flex;gap:16px;align-items:center;}
+.lb-btn{background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-size:1.4rem;width:42px;height:42px;border-radius:50%;cursor:pointer;}
+#lb-close{position:fixed;top:18px;right:22px;background:none;border:none;color:rgba(255,255,255,0.6);font-size:1.5rem;cursor:pointer;}
+#lb-count{font-size:0.8rem;color:rgba(255,255,255,0.5);min-width:50px;text-align:center;font-family:'Nunito',sans-serif;}
+
+/* ACTIONS */
+.actions{display:flex;gap:14px;margin-top:44px;padding-top:24px;border-top:1px solid var(--sable);flex-wrap:wrap;}
+.btn-retour{background:var(--terre);color:var(--creme);text-decoration:none;padding:10px 22px;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;display:inline-flex;align-items:center;gap:8px;}
+.btn-retour:hover{background:var(--brun);}
+.btn-contact{background:none;border:1px solid var(--sable);color:var(--terre);padding:10px 22px;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;cursor:pointer;font-family:'Nunito',sans-serif;}
+.btn-contact:hover{border-color:var(--ocre);color:var(--ocre);}
+
+/* LOADING / ERREUR */
+.page-loading{text-align:center;padding:80px 40px;color:var(--muted);font-style:italic;}
+.page-erreur{text-align:center;padding:80px 40px;}
+
+/* PROTECTION */
+img{-webkit-user-drag:none;}
+</style>
+<style id="nav-v2">
+
+#top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;}
+.nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
+.nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
+.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;}
+.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;}
+.btn-cx{background:white!important;color:#FF6B35!important;}
+.btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
+.lang-opt{padding:8px 14px;color:white;cursor:pointer;}
+.lang-opt:hover{background:rgba(255,255,255,0.1);}
+#nav-user{display:none;align-items:center;gap:8px;}
+#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
+#nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
+.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
+.modale-box{background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
+.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}
+.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
+.input-compte:focus{border-color:#FF6B35;}
+.input-compte::placeholder{color:rgba(255,255,255,0.4);}
+.btn-compte{width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;}
+.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
+.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
+body{padding-bottom:70px!important;}
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:1000;}
+.bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
+.bn.active{background:rgba(255,107,53,0.18);}
+.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
+.bn.active .bn-dot{opacity:1;}
+.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
+.bn.active .bn-lbl{color:#FF6B35;}
+
+</style>
+</head>
+<body>
+
+<div id="top-band">
+  <!-- Favicon + Logo -->
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
+  </div>
+
+  <!-- 5 ICÔNES nav -->
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
+    <a href="etape1.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--orange);">
+        <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/><line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/><path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/><circle cx="13" cy="5" r="1.8" fill="white"/></svg>
+      </div>
+      <span class="nav-lbl">Carte</span>
+    </a>
+    <a href="etape2.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--turquoise);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Raconter</span>
+    </a>
+    <a href="temoignages.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--jaune);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Rechercher</span>
+    </a>
+    <a href="galerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--vert);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/><circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/><path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/></svg>
+      </div>
+      <span class="nav-lbl">Galerie</span>
+    </a>
+    <a href="messagerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--rose);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/><circle cx="8" cy="10" r="1.4" fill="#CC4455"/><circle cx="12" cy="10" r="1.4" fill="#CC4455"/><circle cx="16" cy="10" r="1.4" fill="#CC4455"/></svg>
+      </div>
+      <span class="nav-lbl">Messagerie</span>
+    </a>
+  </div>
+
+  <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
+  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+      <div class="nav-circle" style="background:#6B5EA8;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
+          <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="12" cy="17" r="1.2" fill="white"/>
+        </svg>
+      </div>
+      <span class="nav-lbl">Notre projet</span>
+    </a>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <!-- Sélecteur langue -->
+    <div id="lang-select" style="position:relative;">
+      <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
+        <span id="lang-current">FR</span>
+        <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="2,3 5,7 8,3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <div id="lang-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--nuit);border:1px solid var(--nuit3);border-radius:10px;overflow:hidden;min-width:130px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
+        <div class="lang-opt" onclick="setLang('FR')">🇫🇷 Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">🇬🇧 English</div>
+        <div class="lang-opt" onclick="setLang('AR')">🇦🇱 العربية</div>
+        <div class="lang-opt" onclick="setLang('ES')">🇪🇸 Español</div>
+        <div class="lang-opt" onclick="setLang('DE')">🇩🇪 Deutsch</div>
+        <div class="lang-opt" onclick="setLang('IT')">🇮🇹 Italiano</div>
+        <div class="lang-opt" onclick="setLang('PL')">🇵🇱 Polski</div>
+        <div class="lang-opt" onclick="setLang('PT')">🇵🇹 Português</div>
+        <div class="lang-opt" onclick="setLang('RU')">🇷🇺 Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">🇨🇳 中文</div>
+      </div>
+    </div>
+    <!-- User connecté -->
+    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
+      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
+      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENU DYNAMIQUE -->
+<div id="page-loading" class="page-loading">Chargement du témoignage…</div>
+<div id="page-content" style="display:none;">
+  <div class="hero" id="hero">
+    <div class="hero-eyebrow">Mémoire d'un lieu habité</div>
+    <div class="hero-top">
+      <div class="hero-avatar" id="hero-avatar">?</div>
+      <div>
+        <div class="hero-name" id="hero-name">—</div>
+        <div class="hero-adresse" id="hero-adresse">—</div>
+      </div>
+    </div>
+    <div class="hero-tags" id="hero-tags"></div>
+  </div>
+
+  <div class="content">
+
+    <!-- MÉTADONNÉES -->
+    <div class="meta-grid" id="meta-grid"></div>
+
+    <!-- TÉMOIGNAGE -->
+    <div class="temoignage-section" id="section-texte" style="display:none;">
+      <div class="section-title">Le souvenir</div>
+      <div class="temoignage-texte" id="texte-contenu"></div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div class="temoignage-section" id="section-photos" style="display:none;">
+      <div class="section-title">Photos du lieu</div>
+      <div class="photos-grid" id="photos-grid"></div>
+    </div>
+
+    <!-- FOYER -->
+    <div class="temoignage-section" id="section-foyer" style="display:none;">
+      <div class="section-title">Composition du foyer — <span id="foyer-total" style="color:var(--ocre);font-style:italic;"></span></div>
+      <div class="foyer-grid" id="foyer-grid"></div>
+    </div>
+
+    <!-- CONTEXTE & ANECDOTES -->
+    <div class="temoignage-section" id="section-contexte" style="display:none;">
+      <div class="section-title">Contexte & anecdotes</div>
+      <div class="anecdote-bloc">
+        <div class="anecdote-text" id="contexte-contenu"></div>
+      </div>
+    </div>
+
+    <!-- DÉFUNT -->
+    <div class="temoignage-section" id="section-defunt" style="display:none;">
+      <div class="section-title">Témoignage déposé au nom de</div>
+      <div class="anecdote-bloc">
+        <div class="meta-label">Personne</div>
+        <div class="meta-value" id="defunt-nom" style="font-size:1rem;margin-bottom:6px;"></div>
+        <div class="meta-label">Lien</div>
+        <div class="anecdote-text" id="defunt-lien"></div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <a href="etape1.html" class="btn-retour">← Retour à la carte</a>
+      <a href="temoignages.html" class="btn-retour" style="background:var(--ocre);">Voir tous les souvenirs</a>
+    </div>
+    <div style="margin-top:24px;display:flex;gap:20px;">
+      <a href="mentions-legales.html" style="font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Mentions légales</a>
+      <a href="confidentialite.html" style="font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Confidentialité</a>
+    </div>
+
+  </div>
+</div>
+
+<div id="page-erreur" class="page-erreur" style="display:none;">
+  <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Témoignage introuvable</div>
+  <p style="color:var(--muted);margin-bottom:20px;">Ce témoignage n'existe pas ou a été supprimé.</p>
+  <a href="etape1.html" class="btn-retour">← Retour à la carte</a>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="babelom-lightbox">
+  <button id="lb-close" onclick="fermerLightbox()">✕</button>
+  <div class="lb-img-wrap">
+    <img id="lb-photo" src="" alt="" oncontextmenu="return false;">
+    <div class="lb-shield" oncontextmenu="return false;" ondragstart="return false;"></div>
+    <div class="lb-wm">© Babelom — reproduction interdite</div>
+  </div>
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="lbPrev()">‹</button>
+    <span id="lb-count">1 / 1</span>
+    <button class="lb-btn" onclick="lbNext()">›</button>
+  </div>
+</div>
+
+<script>
+// Protection photos
+document.addEventListener('contextmenu', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
+document.addEventListener('dragstart', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();} });
+
+// Lightbox
+var lbPhotos = [], lbIdx = 0;
+function ouvrirLightbox(photos, idx) {
+  lbPhotos = photos; lbIdx = idx;
+  document.getElementById('babelom-lightbox').classList.add('open');
+  majLightbox();
+}
+function majLightbox() {
+  document.getElementById('lb-photo').src = lbPhotos[lbIdx];
+  document.getElementById('lb-count').textContent = (lbIdx+1) + ' / ' + lbPhotos.length;
+}
+function lbPrev() { lbIdx = (lbIdx-1+lbPhotos.length)%lbPhotos.length; majLightbox(); }
+function lbNext() { lbIdx = (lbIdx+1)%lbPhotos.length; majLightbox(); }
+function fermerLightbox() { document.getElementById('babelom-lightbox').classList.remove('open'); }
+document.getElementById('babelom-lightbox').addEventListener('click', function(e){ if(e.target===this) fermerLightbox(); });
+document.addEventListener('keydown', function(e){
+  if(!document.getElementById('babelom-lightbox').classList.contains('open')) return;
+  if(e.key==='ArrowLeft') lbPrev();
+  if(e.key==='ArrowRight') lbNext();
+  if(e.key==='Escape') fermerLightbox();
+});
+
+// Chargement du témoignage
+async function chargerTemoignage() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (!id) { afficherErreur(); return; }
+
+  try {
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sb
+      .from('temoignages')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error || !data) { afficherErreur(); return; }
+    afficherTemoignage(data);
+  } catch(e) { afficherErreur(); }
+}
+
+function afficherTemoignage(t) {
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('page-content').style.display = 'block';
+
+  // ── HERO ──
+  const prenom = t.identite_prenom || '';
+  const nom    = t.identite_nom ? t.identite_nom[0] + '.' : '';
+  const auteur = (prenom + ' ' + nom).trim() || 'Membre anonyme';
+  const initiale = prenom ? prenom[0].toUpperCase() : '?';
+
+  document.getElementById('hero-avatar').textContent = initiale;
+  document.getElementById('hero-name').innerHTML = prenom + (nom ? ' <em>' + nom + '</em>' : '');
+  document.title = 'Babelom — ' + auteur;
+
+  const adresseParts = [t.adresse, t.ville, t.pays].filter(Boolean);
+  document.getElementById('hero-adresse').textContent = adresseParts.join(' · ');
+
+  // Tags
+  const tags = [];
+  if (t.type_logement) tags.push(t.type_logement);
+  if (t.annee_de && t.annee_a) tags.push(t.annee_de + ' – ' + t.annee_a);
+  if (t.etage) tags.push('Étage ' + t.etage);
+  if (t.pays) tags.push(t.pays);
+  document.getElementById('hero-tags').innerHTML = tags.map(function(tag){
+    return '<span class="tag">' + tag + '</span>';
+  }).join('');
+
+  // ── MÉTA ──
+  const metas = [
+    { label: 'Pays', value: t.pays },
+    { label: 'Ville', value: t.ville },
+    { label: 'Quartier', value: t.lieudit },
+    { label: 'Adresse', value: t.adresse },
+    { label: 'Type', value: t.type_logement },
+    { label: 'Étage', value: t.etage ? t.etage + (t.etage_total ? ' / ' + t.etage_total : '') : null },
+    { label: 'Arrivée', value: t.annee_de },
+    { label: 'Départ', value: t.annee_a },
+  ].filter(function(m){ return m.value; });
+
+  document.getElementById('meta-grid').innerHTML = metas.map(function(m){
+    return '<div class="meta-item"><div class="meta-label">' + m.label + '</div><div class="meta-value">' + m.value + '</div></div>';
+  }).join('');
+
+  // ── TEXTE PRINCIPAL ──
+  if (t.texte) {
+    document.getElementById('section-texte').style.display = 'block';
+    document.getElementById('texte-contenu').textContent = t.texte;
+  }
+
+  // ── PHOTOS ──
+  if (t.photos && Array.isArray(t.photos) && t.photos.length > 0) {
+    document.getElementById('section-photos').style.display = 'block';
+    document.getElementById('photos-grid').innerHTML = t.photos.map(function(url, i){
+      return '<div class="photo-protegee" onclick="ouvrirLightbox(' + JSON.stringify(t.photos) + ',' + i + ')">' +
+        '<img src="' + url + '" alt="Photo ' + (i+1) + '" loading="lazy" oncontextmenu="return false;">' +
+        '<div class="photo-shield" oncontextmenu="return false;" ondragstart="return false;"></div>' +
+        '<div class="photo-watermark">© Babelom</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  // ── FOYER ──
+  var foyer = [];
+  if (t.foyer_celibataire > 0) foyer.push({ label: 'Célibataire', count: t.foyer_celibataire });
+  if (t.foyer_conjoint > 0)    foyer.push({ label: 'Conjoint·e', count: t.foyer_conjoint });
+  if (t.foyer_enfants > 0)     foyer.push({ label: 'Enfant(s)', count: t.foyer_enfants });
+  if (t.foyer_pere > 0)        foyer.push({ label: 'Père', count: t.foyer_pere });
+  if (t.foyer_mere > 0)        foyer.push({ label: 'Mère', count: t.foyer_mere });
+  if (t.foyer_frere > 0)       foyer.push({ label: 'Frère(s)', count: t.foyer_frere });
+  if (t.foyer_soeur > 0)       foyer.push({ label: 'Sœur(s)', count: t.foyer_soeur });
+  if (t.foyer_gp > 0)          foyer.push({ label: 'Grand-parent(s)', count: t.foyer_gp });
+  if (t.foyer_pe > 0)          foyer.push({ label: 'Petit(s)-enfant(s)', count: t.foyer_pe });
+  if (t.foyer_autres > 0)      foyer.push({ label: 'Autres', count: t.foyer_autres });
+
+  if (foyer.length > 0) {
+    document.getElementById('section-foyer').style.display = 'block';
+    // Calculer total
+    var total = foyer.reduce(function(s,f){ return s + f.count; }, 0);
+    document.getElementById('foyer-total').textContent = total + ' personne' + (total > 1 ? 's' : '');
+    document.getElementById('foyer-grid').innerHTML = foyer.map(function(f){
+      return '<div class="foyer-badge"><strong>' + f.count + '</strong>' + f.label + '</div>';
+    }).join('');
+  }
+
+  // ── CONTEXTE & ANECDOTES (texte_2) ──
+  if (t.texte_2) {
+    document.getElementById('section-contexte').style.display = 'block';
+    document.getElementById('contexte-contenu').textContent = t.texte_2;
+  }
+
+  // ── DÉFUNT ──
+  if (t.defunt_nom || t.defunt_prenom) {
+    document.getElementById('section-defunt').style.display = 'block';
+    var defuntNom = [t.defunt_prenom, t.defunt_nom].filter(Boolean).join(' ');
+    document.getElementById('defunt-nom').textContent = defuntNom;
+    if (t.defunt_lien) document.getElementById('defunt-lien').textContent = t.defunt_lien;
+  }
+
+  // ── ANCIEN NOM VOIE ──
+  if (t.ancien_nom) {
+    var ancienItem = '<div class="meta-item"><div class="meta-label">Ancien nom de la voie</div><div class="meta-value">' + t.ancien_nom + '</div></div>';
+    document.getElementById('meta-grid').innerHTML += ancienItem;
+  }
+}
+
+function afficherErreur() {
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('page-erreur').style.display = 'block';
+}
+
+// Vérifier accès membre
+var user = localStorage.getItem('babelom-user');
+if (!user) {
+  window.location.replace('index.html#compte');
+} else {
+  chargerTemoignage();
+}
+
+window.addEventListener('scroll', function(){
+  document.getElementById('nav').style.boxShadow = window.scrollY > 30 ? '0 2px 12px rgba(0,0,0,0.25)' : '';
+});
+</script>
+</body>
+</html>
