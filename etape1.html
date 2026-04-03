@@ -1,200 +1,88 @@
+<!-- BABELOM-ETAPE1-20260403-203213 -->
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Babelom · Étape 1</title>
+  <title>Babelom · Étape 1 · 20260403-203213</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <!-- Leaflet -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <!-- Config -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
   <script src="supabase-config.js"></script>
   <script src="i18n.js?v=2"></script>
-  <style id="nav-css">
-
-#top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;}
-.nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
-.nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
-.nav-lbl{font-size:0.58rem!important;font-weight:900!important;text-transform:uppercase!important;color:white!important;}
-.top-btn{padding:5px 14px!important;border-radius:18px!important;font-size:0.72rem!important;font-weight:900!important;border:none!important;cursor:pointer!important;}
-.btn-cx{background:white!important;color:#FF6B35!important;}
-.btn-ins{background:#2c4a8a!important;color:white!important;border:1px solid rgba(255,255,255,0.3)!important;}
-.lang-opt{padding:8px 14px;color:white;cursor:pointer;}
-.lang-opt:hover{background:rgba(255,255,255,0.1);}
-#nav-user{display:none;align-items:center;gap:8px;}
-#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
-#nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
-.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
-.modale-box{background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
-.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;}
-.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
-.input-compte:focus{border-color:#FF6B35;}
-.input-compte::placeholder{color:rgba(255,255,255,0.4);}
-.btn-compte{width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;}
-.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
-.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
-body{padding-bottom:70px!important;}
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:1000;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
-.bn.active{background:rgba(255,107,53,0.18);}
-.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
-.bn.active .bn-dot{opacity:1;}
-.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
-.bn.active .bn-lbl{color:#FF6B35;}
-
-  </style>
-  <style id="page-css">
+  <style>
 :root {
-  --orange: #FF6B35; --turquoise: #4ECDC4; --jaune: #FFD93D;
-  --vert: #6BCB77; --rose: #FF8B94; --nuit: #2c4a8a;
+  --orange:#FF6B35; --turquoise:#4ECDC4; --jaune:#FFD93D;
+  --vert:#6BCB77; --rose:#FF8B94; --nuit:#2c4a8a;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: 'Nunito', sans-serif;
-  background: #243B6E;
-  color: white;
-  padding-bottom: 60px;
-}
+body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding-bottom:60px; }
+#top-band { background:#2c4a8a; padding:8px 20px; display:flex; align-items:center; gap:12px; border-bottom:6px solid #FF6B35; position:sticky; top:0; z-index:400; }
+.nav-circle { width:40px!important; height:40px!important; border-radius:50%!important; display:flex!important; align-items:center!important; justify-content:center!important; }
+.nav-lbl { font-size:0.52rem; font-weight:900; text-transform:uppercase; letter-spacing:0.08em; color:white; display:block; text-align:center; margin-top:3px; }
+.nav-ib { display:flex; flex-direction:column; align-items:center; text-decoration:none; padding:2px 4px; }
 
-/* ═══ LAYOUT : carte à gauche, form à droite ═══ */
-.page-wrap {
+/* LAYOUT CRITIQUE */
+#layout {
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: calc(100vh - 76px);
 }
-
-/* ═══ CARTE : hauteur fixe en vh ═══ */
-.carte-wrap {
-  position: sticky;
-  top: 0;
+#map-container {
   width: 50%;
-  height: calc(100vh - 70px);
+  height: 100%;
   flex-shrink: 0;
+  position: relative;
   background: #d4e8f0;
-  overflow: hidden;
 }
 #map {
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
 }
-
-/* ═══ FORMULAIRE scrollable ═══ */
-.form-wrap {
+#form-container {
   width: 50%;
-  background: #1e3060;
+  height: 100%;
   overflow-y: auto;
-  min-height: calc(100vh - 70px);
-  padding: 28px 32px;
+  background: #1e3060;
+  padding: 24px 28px;
 }
 
-/* Formulaire styles */
-.form-section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: white;
-  margin-bottom: 6px;
-}
-.form-section-sub {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 20px;
-}
-.coords-affich {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.5);
-  font-style: italic;
-  margin-bottom: 16px;
-}
-.form-section-title-warn {
-  background: #FF6B35;
-  padding: 12px 18px;
-  border-radius: 6px;
-  font-size: 0.84rem;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-.champ { margin-bottom: 14px; }
-.champ label {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 5px;
-}
-.champ input, .champ select {
-  width: 100%;
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid rgba(255,255,255,0.2);
-  color: white;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.88rem;
-  padding: 10px 12px;
-  border-radius: 6px;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.2s;
-}
-.champ input:focus, .champ select:focus { border-color: #FF6B35; }
-.champ input::placeholder { color: rgba(255,255,255,0.35); }
-.champ select option { background: #1e3060; color: white; }
-.champ-row { display: flex; gap: 12px; }
-.champ-row > div { flex: 1; }
-#f-num-voie { width: 72px !important; min-width: 72px !important; flex-shrink: 0 !important; }
-#cp-suggestions, #voies-suggestions {
-  position: absolute; top: 100%; left: 0; right: 0;
-  background: #1e3060; border: 1.5px solid #FF6B35;
-  border-top: none; border-radius: 0 0 6px 6px;
-  z-index: 200; max-height: 160px; overflow-y: auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: none;
-}
-#cp-suggestions div, #voies-suggestions div {
-  padding: 8px 12px; cursor: pointer; font-size: 0.82rem; color: white;
-}
-#cp-suggestions div:hover, #voies-suggestions div:hover { background: rgba(255,255,255,0.1); }
-.btn-localiser {
-  background: #2c4a8a; color: white; border: none;
-  padding: 8px 14px; font-family: 'Nunito', sans-serif;
-  font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
-  cursor: pointer; border-radius: 6px; transition: background 0.2s;
-}
-.btn-localiser:hover { background: #3358a0; }
-.form-footer {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);
-}
-.btn-retour { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; }
-.btn-valider {
-  background: #FF6B35; color: white; border: none;
-  padding: 10px 22px; font-family: 'Nunito', sans-serif;
-  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em;
-  text-transform: uppercase; cursor: pointer; border-radius: 8px;
-}
-.btn-valider:hover { background: #e55a25; }
+/* FORMULAIRE */
+.form-section-title-warn { background:#FF6B35; padding:12px 16px; border-radius:6px; font-size:0.84rem; line-height:1.5; margin-bottom:20px; }
+.form-section-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:white; margin-bottom:6px; }
+.form-section-sub { font-size:0.85rem; color:rgba(255,255,255,0.6); margin-bottom:16px; }
+.coords-affich { font-size:0.78rem; color:rgba(255,255,255,0.5); font-style:italic; margin-bottom:14px; }
+.champ { margin-bottom:14px; }
+.champ label { display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.7); margin-bottom:5px; }
+.champ input, .champ select { width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.2); color:white; font-family:'Nunito',sans-serif; font-size:0.88rem; padding:10px 12px; border-radius:6px; outline:none; box-sizing:border-box; transition:border-color 0.2s; }
+.champ input:focus, .champ select:focus { border-color:#FF6B35; }
+.champ input::placeholder { color:rgba(255,255,255,0.35); }
+.champ select option { background:#1e3060; color:white; }
+.champ-row { display:flex; gap:10px; }
+.champ-row > div { flex:1; }
+#f-num-voie { width:72px!important; flex-shrink:0!important; }
+#cp-suggestions, #voies-suggestions { position:absolute; top:100%; left:0; right:0; background:#1e3060; border:1.5px solid #FF6B35; border-top:none; border-radius:0 0 6px 6px; z-index:200; max-height:160px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,0.3); display:none; }
+#cp-suggestions div, #voies-suggestions div { padding:8px 12px; cursor:pointer; font-size:0.82rem; color:white; }
+#cp-suggestions div:hover, #voies-suggestions div:hover { background:rgba(255,255,255,0.1); }
+.btn-localiser { background:#2c4a8a; color:white; border:none; padding:8px 14px; font-family:'Nunito',sans-serif; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:6px; }
+.btn-localiser:hover { background:#3358a0; }
+.form-footer { display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1); }
+.btn-retour { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.8rem; }
+.btn-valider { background:#FF6B35; color:white; border:none; padding:10px 22px; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; border-radius:8px; }
 
 /* Popup Leaflet */
-.popup-babelom .leaflet-popup-content-wrapper {
-  border-radius: 10px !important; padding: 0 !important;
-  overflow: hidden !important; box-shadow: 0 8px 32px rgba(0,0,0,0.25) !important;
-}
-.popup-babelom .leaflet-popup-content { margin: 0 !important; }
-.popup-babelom .leaflet-popup-tip { background: #2c4a8a !important; }
-.popup-babelom .leaflet-popup-close-button {
-  color: white !important; z-index: 10 !important; top: 6px !important; right: 10px !important;
-}
+.popup-babelom .leaflet-popup-content-wrapper { border-radius:10px!important; padding:0!important; overflow:hidden!important; box-shadow:0 8px 32px rgba(0,0,0,0.25)!important; }
+.popup-babelom .leaflet-popup-content { margin:0!important; }
+.popup-babelom .leaflet-popup-close-button { color:white!important; z-index:10!important; top:6px!important; right:10px!important; }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .page-wrap { flex-direction: column; }
-  .carte-wrap { position: relative; width: 100%; height: 45vh; }
-  .form-wrap { width: 100%; min-height: auto; }
+@media (max-width:768px) {
+  #layout { flex-direction:column; height:auto; }
+  #map-container { width:100%; height:45vh; }
+  #form-container { width:100%; height:auto; }
 }
-</style>
+  </style>
 </head>
 <body>
 
@@ -320,15 +208,13 @@ body {
   </div>
 </div>
 
-<!-- CONTENU -->
-<div class="page-wrap">
-  <!-- CARTE -->
-  <div class="carte-wrap" style="position:sticky;top:0;width:50%;height:calc(100vh - 70px);overflow:hidden;background:#d4e8f0;">
-    <div id="map" style="width:100%;height:100%;min-height:400px;"></div>
+<!-- LAYOUT : carte + formulaire -->
+<div id="layout">
+  <div id="map-container">
+    <div id="map"></div>
   </div>
-
-  <!-- FORMULAIRE -->
-  <div class="form-wrap">
+  <div id="form-container">
+    
     <div class="form-section-title-warn">⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.</div>
 
     <div class="form-section-title">Racontez ce lieu</div>
@@ -429,6 +315,7 @@ body {
       <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
       <button class="btn-valider" id="btn-valider" onclick="allerEtape2()"><span data-i18n="e1BtnSuivant">Continuer → Étape 2</span></button>
     </div>
+  
   </div>
 </div>
 
@@ -450,7 +337,6 @@ body {
           <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
         </div>
 
-<!-- FOOTER -->
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
   <!-- Logo -->
   <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">
@@ -477,7 +363,6 @@ body {
 
 
 
-<!-- SCRIPTS -->
 <script>
 // ── Helper session ──
 function babelomGetUser() {
