@@ -136,7 +136,7 @@ const BABELOM_TRANSLATIONS = {
     e2Regl9:'Vous pouvez demander à tout moment la suppression de vos données personnelles et témoignages, conformément au RGPD, en écrivant à babelom9@gmail.com. Vos informations sont publiées sans limitation de durée mais peuvent être retirées librement. Aucune information n\'est transmise à des tiers à des fins commerciales.',
     e2ReglHint:'↓ Faites défiler jusqu\'en bas pour pouvoir accepter',
     e2ReglAccepter:'J\'ai lu et j\'accepte la charte d\'utilisation de Babelom',
-    e2BtnValider:'Valider et envoyer →',
+    e2BtnValider:'Valider →',
     e2BtnRetour:'← Étape précédente',
     e2Envoi:'Envoi en cours…',
     e2Succes:'✓ Votre souvenir a bien été enregistré.',
