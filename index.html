@@ -1006,6 +1006,15 @@ body{padding-bottom:70px!important;}
     </blockquote>
   </div>
 
+  
+  <!-- DIAPORAMA CARTE POSTALE -->
+  <div id="table-photos-inline" style="width:320px;flex-shrink:0;position:relative;">
+      <button id="tp-prev" onclick="tpGo(tpCur-1)" style="position:absolute;left:-18px;top:50%;transform:translateY(-50%);z-index:10;background:#2c4a8a;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.85;">‹</button>
+      <div id="tp-stack" onclick="tpGo(tpCur+1)" style="position:relative;width:280px;height:320px;margin:0 auto;cursor:pointer;"></div>
+      <div id="tp-nav" style="text-align:center;margin-top:12px;"></div>
+      <button id="tp-next" onclick="tpGo(tpCur+1)" style="position:absolute;right:-18px;top:50%;transform:translateY(-50%);z-index:10;background:#2c4a8a;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.85;">›</button>
+    </div>
+
   <div class="hero-right">
     <div id="hero-map-preview"></div>
     <div class="hero-map-overlay"></div>
