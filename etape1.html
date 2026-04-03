@@ -185,6 +185,22 @@ body {
 }
 .popup-babelom .leaflet-popup-content { margin: 0; }
 
+
+/* Leaflet popup */
+.popup-babelom .leaflet-popup-content-wrapper {
+  border-radius: 10px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25) !important;
+  border: none !important;
+}
+.popup-babelom .leaflet-popup-content { margin: 0 !important; }
+.popup-babelom .leaflet-popup-tip { background: #2c4a8a !important; }
+.popup-babelom .leaflet-popup-close-button {
+  color: white !important; z-index: 10 !important;
+  top: 6px !important; right: 10px !important;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .page-wrap { grid-template-columns: 1fr; grid-template-rows: 45vh 1fr; height: auto; }
@@ -362,7 +378,7 @@ body {
     <div class="champ">
       <label>Adresse précise <span style="color:#FF6B35;">*</span></label>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:6px;transition:border-color 0.2s;" >
+        <input type="text" id="f-num-voie" placeholder="N°"  >
         <div style="position:relative;flex:1;min-width:200px;">
           <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
           <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#1e3060;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
@@ -898,15 +914,28 @@ function buildPopup(p, isCluster, membres) {
   try { user = JSON.parse(localStorage.getItem('babelom-user')); } catch(e) {}
 
   if (isCluster) {
-    // Popup cluster : liste des inscrits de la ville
     var lignes = membres.map(function(m) {
-      return '<div style="font-size:0.8rem;color:#1e3a28;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
+      var lien = m.id ? 'temoignage.html?id=' + m.id : 'temoignages.html';
+      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #eee;text-decoration:none;background:white;cursor:pointer;" ' +
+        'onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">' +
+        '<span style="font-size:1rem;flex-shrink:0;">👤</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:0.82rem;font-weight:700;color:#1a2a5e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + m.nom + '</div>' +
+          '<div style="font-size:0.68rem;color:#5a6a9e;">' + (m.lieu||m.ville||'') + '</div>' +
+        '</div>' +
+        '<span style="color:#FF6B35;font-size:0.8rem;flex-shrink:0;">→</span>' +
+      '</a>';
     }).join('');
-    return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:0.72rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
-      '<div style="font-size:0.65rem;color:#7a9a72;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
-      '<div style="height:1px;background:#c8d8b0;margin-bottom:8px;"></div>' +
-      lignes + '</div>';
+    return '<div style="font-family:Nunito,sans-serif;min-width:250px;border-radius:10px;overflow:hidden;">' +
+      '<div style="background:#2c4a8a;padding:12px 16px;">' +
+        '<div style="font-size:0.75rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.08em;">📍 ' + membres[0].lieu + '</div>' +
+        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-top:3px;">' + membres.length + ' membre' + (membres.length > 1 ? 's' : '') + ' dans ce lieu</div>' +
+      '</div>' +
+      '<div style="max-height:220px;overflow-y:auto;">' + lignes + '</div>' +
+      '<div style="padding:8px 12px;background:#f8f9ff;border-top:1px solid #e8eaf4;text-align:center;">' +
+        '<a href="temoignages.html" style="font-size:0.72rem;color:#2c4a8a;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.06em;">Voir tous les témoignages →</a>' +
+      '</div>' +
+    '</div>';
   }
 
   if (user) {
@@ -959,7 +988,7 @@ function renderMarkers() {
       var rep = membres[0];
       var marker = L.marker([rep.lat, rep.lng], { icon: makeClusterIcon(membres.length) });
       marker.on('click', function() {
-        marker.bindPopup(buildPopup(null, true, membres), { maxWidth:260, className:'popup-babelom' }).openPopup();
+        marker.bindPopup(buildPopup(null, true, membres), { maxWidth:300, minWidth:260, className:'popup-babelom', autoClose:false, closeOnClick:false }).openPopup();
         // Zoom automatique sur la ville au clic
         map.flyTo([rep.lat, rep.lng], ZOOM_DETAIL + 1, { duration:1.2 });
       });
@@ -969,7 +998,7 @@ function renderMarkers() {
       membres.forEach(function(p) {
         var marker = L.marker([p.lat, p.lng], { icon: iconInscrit });
         marker.on('click', function() {
-          marker.bindPopup(buildPopup(p, false, null), { maxWidth:260, className:'popup-babelom' }).openPopup();
+          marker.bindPopup(buildPopup(p, false, null), { maxWidth:280, minWidth:220, className:'popup-babelom', autoClose:false, closeOnClick:false }).openPopup();
         });
         markersLayer.addLayer(marker);
       });
