@@ -158,7 +158,7 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
         </div>
         <!-- Mes lieux habités -->
         <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
-          <div onclick="toggleLieuxHistorique()" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">
+          <div onclick="toggleLieuxHistorique()" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
             <span style="font-size:0.82rem;color:white;font-weight:600;display:flex;align-items:center;gap:6px;">
               🏠 Mes lieux habités
               <span id="badge-nb-lieux" style="background:#FF6B35;color:white;font-size:0.62rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
@@ -171,11 +171,11 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
         </div>
         <!-- Actions compte -->
         <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🗑 Supprimer mon compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;">🔑 Modifier le mot de passe</div>
+          <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);">🗑 Supprimer mon compte</div>
         </div>
         <!-- Déconnexion --><!-- Déconnexion -->
-        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">✕ Se déconnecter</div>
+        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;">✕ Se déconnecter</div>
       </div></div>
 
     <!-- Boutons Connexion/Inscrire (non connecté) -->
@@ -255,7 +255,7 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
         </div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:#2c4a8a;color:white;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#3358a0'" onmouseout="this.style.background='#2c4a8a'">📍 Localiser sur la carte</button>
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:#2c4a8a;color:white;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;white-space:nowrap;transition:background 0.2s;">📍 Localiser sur la carte</button>
         <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
       </div>
     </div>
@@ -321,15 +321,15 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
         <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
           <div style="display:flex;flex-direction:column;gap:5px;">
             <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
-            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
             <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
-            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;">
           </div>
           <div style="display:flex;flex-direction:column;gap:5px;">
             <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
-            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;">
           </div>
           <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
         </div>
@@ -341,11 +341,11 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
   </a>
   <!-- Liens centraux -->
   <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;">
-    <a href="confidentialite.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+    <a href="confidentialite.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Confidentialité</span>
     </a>
-    <a href="mentions-legales.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+    <a href="mentions-legales.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Mentions légales</span>
     </a>
@@ -402,7 +402,7 @@ function babelomGetUser() {
     badge.innerHTML = `
       <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
         style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
-        onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
+       >
         👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
       </button>
       <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
@@ -426,12 +426,12 @@ function babelomGetUser() {
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;">🔑 Modifier le mot de passe</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;">🚪 Désinscription du compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;">🗑 Suppression des données</div>
         </div>
         <div style="padding:8px 14px;">
-          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
+          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;">✕ Se déconnecter</div>
         </div>
       </div>`;
     navLinks.appendChild(badge);
@@ -676,7 +676,7 @@ function afficherCPListe(liste) {
   var box = document.getElementById('cp-suggestions');
   if (!liste.length) { box.style.display='none'; return; }
   box.innerHTML = liste.map(function(cp){
-    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
+    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;">'+cp+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -700,7 +700,7 @@ function filtrerVoies(val) {
   var matches = TYPES_VOIES.filter(function(v){ return v.toLowerCase().startsWith(val.toLowerCase()); });
   if (!matches.length) { box.style.display='none'; return; }
   box.innerHTML = matches.map(function(v){
-    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
+    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;">'+v+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -796,24 +796,23 @@ function buildPopup(p, isCluster, membres) {
   if (isCluster) {
     var lignes = membres.map(function(m) {
       var lien = m.id ? 'temoignage.html?id=' + m.id : 'temoignages.html';
-      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #eee;text-decoration:none;background:white;cursor:pointer;" ' +
-        'onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background='white'">' +
-        '<span style="font-size:1rem;flex-shrink:0;">👤</span>' +
+      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #eee;text-decoration:none;background:white;cursor:pointer;">' +
+        '<span style="font-size:1rem;flex-shrink:0;">&#128100;</span>' +
         '<div style="flex:1;min-width:0;">' +
           '<div style="font-size:0.82rem;font-weight:700;color:#1a2a5e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + m.nom + '</div>' +
-          '<div style="font-size:0.68rem;color:#5a6a9e;">' + (m.lieu||m.ville||'') + '</div>' +
+          '<div style="font-size:0.68rem;color:#5a6a9e;">' + (m.lieu || m.ville || '') + '</div>' +
         '</div>' +
-        '<span style="color:#FF6B35;font-size:0.8rem;flex-shrink:0;">→</span>' +
+        '<span style="color:#FF6B35;font-size:0.8rem;flex-shrink:0;">&#8594;</span>' +
       '</a>';
     }).join('');
     return '<div style="font-family:Nunito,sans-serif;min-width:250px;border-radius:10px;overflow:hidden;">' +
       '<div style="background:#2c4a8a;padding:12px 16px;">' +
-        '<div style="font-size:0.75rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.08em;">📍 ' + membres[0].lieu + '</div>' +
-        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-top:3px;">' + membres.length + ' membre' + (membres.length > 1 ? 's' : '') + ' dans ce lieu</div>' +
+        '<div style="font-size:0.75rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.08em;">&#128205; ' + membres[0].lieu + '</div>' +
+        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-top:3px;">' + membres.length + ' membre' + (membres.length > 1 ? 's' : '') + '</div>' +
       '</div>' +
       '<div style="max-height:220px;overflow-y:auto;">' + lignes + '</div>' +
       '<div style="padding:8px 12px;background:#f8f9ff;border-top:1px solid #e8eaf4;text-align:center;">' +
-        '<a href="temoignages.html" style="font-size:0.72rem;color:#2c4a8a;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.06em;">Voir tous les témoignages →</a>' +
+        '<a href="temoignages.html" style="font-size:0.72rem;color:#2c4a8a;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.06em;">Voir tous les t&#233;moignages &#8594;</a>' +
       '</div>' +
     '</div>';
   }
@@ -1063,7 +1062,7 @@ function rechercherMembres() {
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;">'
       +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
   }).join('');
 }
