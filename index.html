@@ -130,7 +130,7 @@ nav.scrolled {
 /* ══════════════════════════════════
    HERO
 ══════════════════════════════════ */
-#hero {
+#hero {overflow: hidden;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -139,10 +139,11 @@ nav.scrolled {
 }
 
 .hero-left {
+  padding-top: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 160px 52px 80px;
+  padding: 60px 52px 40px;
   position: relative;
   z-index: 2;
 }
@@ -829,6 +830,9 @@ body{padding-bottom:70px!important;}
   ) !important;
   border-radius: 0 !important;
 }</style>
+<style>
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+</style>
 </head>
 <body>
 
@@ -1009,10 +1013,7 @@ body{padding-bottom:70px!important;}
     <p class="hero-subtitle">
       Babelom est une archive vivante où chacun dépose la mémoire des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
     </p>
-    <blockquote class="hero-quote">
-      « On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé. »
-      <cite>— Julien Green</cite>
-    </blockquote>
+    <div id="hero-typewriter" style="margin-top:16px;font-family:'Courier New',monospace;font-size:0.9rem;color:#6BCB77;line-height:1.6;border-left:3px solid #6BCB77;padding-left:12px;min-height:3em;"><span id="typewriter-text"></span><span id="typewriter-cursor" style="animation:blink 0.7s infinite;">|</span></div><script>(function(){var txt="« On ne quitte jamais vraiment les lieux où l\\'on a souffert ou aimé. » — Julien Green";var i=0,el=document.getElementById("typewriter-text");function type(){if(i<txt.length){el.textContent+=txt[i++];setTimeout(type,35);}}window.addEventListener("load",function(){setTimeout(type,1200);});})();</script>
   </div>
 
   
@@ -1133,23 +1134,23 @@ body{padding-bottom:70px!important;}
 // ── TABLE À PHOTOS ──
 // ▼▼▼ VOS PHOTOS PERSONNELLES — placez vos fichiers dans photos/ ▼▼▼
 var TP_PERSO = [
-  { src:'Photos/photo1.jpg' },
-  { src:'Photos/photo2.jpg' },
-  { src:'Photos/photo3.jpg' },
-  { src:'Photos/photo4.jpg' },
-  { src:'Photos/photo5.jpg' },
-  { src:'Photos/photo6.jpg' },
-  { src:'Photos/photo7.jpg' },
-  { src:'Photos/photo8.jpg' },
-  { src:'Photos/photo9.jpg' },
-  { src:'Photos/photo10.jpg' },
-  { src:'Photos/photo11.jpg' },
-  { src:'Photos/photo12.jpg' },
-  { src:'Photos/photo13.jpg' },
-  { src:'Photos/photo14.jpg' },
-  { src:'Photos/photo15.jpg' },
-  { src:'Photos/photo16.jpg' },
-  { src:'Photos/photo17.jpg' },
+  { src:'photos/photo1.jpg' },
+  { src:'photos/photo2.jpg' },
+  { src:'photos/photo3.jpg' },
+  { src:'photos/photo4.jpg' },
+  { src:'photos/photo5.jpg' },
+  { src:'photos/photo6.jpg' },
+  { src:'photos/photo7.jpg' },
+  { src:'photos/photo8.jpg' },
+  { src:'photos/photo9.jpg' },
+  { src:'photos/photo10.jpg' },
+  { src:'photos/photo11.jpg' },
+  { src:'photos/photo12.jpg' },
+  { src:'photos/photo13.jpg' },
+  { src:'photos/photo14.jpg' },
+  { src:'photos/photo15.jpg' },
+  { src:'photos/photo16.jpg' },
+  { src:'photos/photo17.jpg' },
 ];
 
 var TP_UNSPLASH = []; // uniquement photos personnelles
