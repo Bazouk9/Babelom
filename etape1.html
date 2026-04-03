@@ -322,6 +322,33 @@ footer a:hover { color: var(--orange); }
 .leaflet-popup-tip { background: var(--bleu) !important; }
 .leaflet-popup-content { color: white !important; }
 </style>
+<style id="form-v1-css">
+.form-wrap .champ input,
+.form-wrap .champ select,
+.form-wrap .champ textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.08) !important;
+  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  color: white !important;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  padding: 10px 12px;
+  outline: none;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.form-wrap .champ input:focus,
+.form-wrap .champ select:focus { border-color: #FF6B35 !important; }
+.form-wrap .champ input::placeholder { color: rgba(255,255,255,0.4) !important; }
+.form-wrap select option { background: #2c4a8a; color: white; }
+#cp-suggestions div, #voies-suggestions div { 
+  padding: 8px 12px; cursor: pointer; font-size: 0.82rem; color: white;
+}
+#cp-suggestions div:hover, #voies-suggestions div:hover { 
+  background: rgba(255,255,255,0.1); 
+}
+</style>
 </head>
 <body>
 <div id="top-band">
@@ -413,23 +440,6 @@ footer a:hover { color: var(--orange); }
   </div>
 </div>
 
-<!-- HEADER -->
-<div class="page-header">
-  <div class="step-badge">01</div>
-  <div class="header-content">
-    <div class="header-label"><span data-i18n="e1HeaderLabel">Étape 1 sur 3 · Déposer un souvenir</span></div>
-    <h1 class="header-title"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
-    <p class="header-sub">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village.</p>
-  </div>
-  <div>
-    <div class="header-steps">
-      <div class="step-pip active"></div>
-      <div class="step-pip"></div>
-      <div class="step-pip"></div>
-    </div>
-  </div>
-</div>
-
 <!-- CONTENU -->
 <div class="main-content">
   <!-- CARTE -->
@@ -442,71 +452,120 @@ footer a:hover { color: var(--orange); }
 
   <!-- FORMULAIRE -->
   <div class="form-wrap">
-    <div class="form-section-title" data-i18n="e1FormTitle">Racontez ce lieu</div>
-    <div class="form-section-sub" data-i18n="e1FormSub">Quelques informations pour archiver votre mémoire.</div>
-    <div class="coords-affich" id="coords-affich"></div>
+    <div style="
+      background: #FF6B35;
+      padding: 14px 20px;
+      margin-bottom: 28px;
+      font-size: 0.88rem;
+      color: white;
+      line-height: 1.6;
+      border-radius: 2px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    ">
+      ⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.
+    </div>
 
-    <div class="champ-row">
-      <div class="champ">
-        <label data-i18n="e1FieldCountry">Pays *</label>
-        <input type="text" id="f-pays" placeholder="Ex: France" autocomplete="off">
+    <div class="form-section-title">Racontez ce lieu</div>
+    <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
+
+    <div class="coords-affich" id="coords-affich">Aucun point placé pour l'instant</div>
+
+    <div class="champ">
+      <label><span data-i18n="e1LabelPays">Pays *</span></label>
+      <input type="text" id="f-pays" placeholder="Ex : France, Algérie, Pologne…" data-i18n-ph="e1PhPays">
+    </div>
+
+    <div class="champ champ-row">
+      <div style="flex:2;">
+        <label><span data-i18n="e1LabelVille">Ville *</span></label>
+        <input type="text" id="f-ville" placeholder="Ex : Lyon, Batna, Lublin…" data-i18n-ph="e1PhVille" oninput="majCodesPostaux(this.value)">
       </div>
-      <div class="champ">
-        <label data-i18n="e1FieldCity">Ville *</label>
-        <input type="text" id="f-ville" placeholder="Ex: Lyon" autocomplete="off">
+      <div style="flex:1;">
+        <label>Code postal</label>
+        <div style="position:relative;">
+          <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
+            style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.25);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:6px;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" oninput="filtrerCP(this.value)">
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
       </div>
     </div>
 
     <div class="champ">
-      <label data-i18n="e1FieldAddress">Adresse</label>
-      <input type="text" id="f-adresse" placeholder="Rue, quartier..." autocomplete="off">
-      <div id="cp-suggestions"></div>
+      <label><span data-i18n="e1LabelLieudit">Lieu-dit / Quartier</span></label>
+      <input type="text" id="f-lieudit" placeholder="Ex : La Croix-Rousse, Bab Ezzouar, Vieux-Port…" data-i18n-ph="e1PhLieudit">
     </div>
 
-    <div class="champ-row">
-      <div class="champ">
-        <label data-i18n="e1FieldYearFrom">Année d'arrivée</label>
-        <input type="number" id="f-annee-de" placeholder="Ex: 1985" min="1800" max="2030">
+    <div class="champ">
+      <label>Adresse précise <span style="color:#FF6B35;">*</span></label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.25);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:6px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+        <div style="position:relative;flex:1;min-width:200px;">
+          <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.07);border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
       </div>
-      <div class="champ">
-        <label data-i18n="e1FieldYearTo">Année de départ</label>
-        <input type="number" id="f-annee-a" placeholder="Ex: 1995" min="1800" max="2030">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:rgba(255,255,255,0.07);color:#1e2d50;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#3358a0'" onmouseout="this.style.background='#2c4a8a'">📍 Localiser sur la carte</button>
+        <span id="geo-msg" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;"></span>
+      </div>
+    </div>
+
+    <div class="champ champ-row">
+      <div>
+        <label><span data-i18n="e1LabelAncienNom">Ancien nom de la voie</span></label>
+        <input type="text" id="f-ancien-nom" placeholder="Ex : rue du Maréchal-Foch" data-i18n-ph="e1PhAncienNom">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelNouveauNom">Nouveau nom de la voie</span></label>
+        <input type="text" id="f-nouveau-nom" placeholder="Ex : avenue de la Libération" data-i18n-ph="e1PhNouveauNom">
+      </div>
+    </div>
+
+    <div class="champ champ-row">
+      <div>
+        <label><span data-i18n="e1LabelArrivee">Année d'arrivée *</span></label>
+        <input type="number" id="f-de" placeholder="1988" min="1900" max="2025">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelDepart">Année de départ *</span></label>
+        <input type="number" id="f-a" placeholder="1994" min="1900" max="2025">
       </div>
     </div>
 
     <div class="champ">
-      <label data-i18n="e1FieldType">Type de logement</label>
-      <select id="f-type">
-        <option value="">— Choisir —</option>
-        <option value="maison">Maison</option>
-        <option value="appartement">Appartement</option>
-        <option value="villa">Villa</option>
-        <option value="ferme">Ferme</option>
-        <option value="chambre">Chambre</option>
-        <option value="autre">Autre</option>
+      <label>Type de logement <span style="color:#FF6B35;">*</span></label>
+      <select id="f-type" onchange="toggleEtage(this.value)">
+        <option value="">Choisir…</option>
+        <option><span data-i18n="e1TypeAppt">Appartement</span></option>
+        <option><span data-i18n="e1TypeMaison">Maison</span></option>
+        <option><span data-i18n="e1TypeFamiliale">Maison familiale</span></option>
+        <option><span data-i18n="e1TypeEtudiant">Chambre d'étudiant</span></option>
+        <option><span data-i18n="e1TypeColoc">Colocation</span></option>
+        <option>Autre</option>
       </select>
     </div>
 
-    <div class="champ">
-      <label data-i18n="e1FieldStory">Votre témoignage *</label>
-      <textarea id="f-texte" placeholder="Racontez vos souvenirs de ce lieu..." rows="4"></textarea>
+    <div class="champ champ-row" id="champ-etage" style="display:none;">
+      <div>
+        <label><span data-i18n="e1LabelEtage">Étage</span></label>
+        <input type="number" id="f-etage" placeholder="Ex : 3" min="0" max="100">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelEtagesTotal">Nombre total d'étages</span></label>
+        <input type="number" id="f-etages-total" placeholder="Ex : 6" min="1" max="100">
+      </div>
     </div>
 
     <div class="champ">
-      <label>Photos (optionnel)</label>
-      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('f-photos').click()">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <p data-i18n="e1UploadHint">Cliquez pour ajouter des photos</p>
-      </div>
-      <input type="file" id="f-photos" multiple accept="image/*" style="display:none" onchange="previewPhotos(this)">
-      <div class="photos-preview" id="photos-preview"></div>
+      <label><span data-i18n="e1LabelVoisins">Souvenirs du voisinage sans citer de noms</span></label>
+      <input type="text" id="f-voisins" placeholder="Ex : Une atmosphère, des habitudes, des bruits…" data-i18n-ph="e1PhVoisins">
     </div>
 
     <div class="form-footer">
-      <a href="index.html" class="btn-retour">← Accueil</a>
-      <button class="btn-valider" id="btn-valider" onclick="soumettreFormulaire()" disabled>
-        <span data-i18n="e1Submit">Déposer mon souvenir →</span>
-      </button>
+      <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
+      <button class="btn-valider" id="btn-valider" onclick="allerEtape2()"><span data-i18n="e1BtnSuivant">Continuer → Étape 2</span></button>
     </div>
   </div>
 </div>
