@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr"  dir="ltr">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,  initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Babelom · Étape 1</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <!-- Leaflet -->
@@ -323,8 +323,8 @@ body {
 <!-- CONTENU -->
 <div class="page-wrap">
   <!-- CARTE -->
-  <div class="carte-wrap">
-    <div id="map"></div>
+  <div class="carte-wrap" style="position:sticky;top:0;width:50%;height:calc(100vh - 70px);overflow:hidden;background:#d4e8f0;">
+    <div id="map" style="width:100%;height:100%;min-height:400px;"></div>
   </div>
 
   <!-- FORMULAIRE -->
@@ -733,7 +733,9 @@ window.addEventListener('load', function() {
     attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
   }).addTo(map);
   markersLayer = L.layerGroup().addTo(map);
-  setTimeout(function() { map.invalidateSize(); }, 400);
+  setTimeout(function() { map.invalidateSize(); }, 100);
+  setTimeout(function() { map.invalidateSize(); }, 500);
+  setTimeout(function() { map.invalidateSize(); }, 1500);
   renderMarkers();
   map.on('zoomend', renderMarkers);
 
