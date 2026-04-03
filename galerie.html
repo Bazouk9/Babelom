@@ -501,5 +501,23 @@ window.addEventListener('scroll', function() {
   <!-- Droits -->
   <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);text-align:right;flex-shrink:0;">La mémoire des lieux habités</div>
 </footer>
+<script id="nav-active">
+(function(){
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  if(path === '') path = 'index.html';
+  var links = document.querySelectorAll('.nav-ib');
+  links.forEach(function(a){
+    var href = (a.getAttribute('href') || '').split('?')[0];
+    if(href === path){
+      var circle = a.querySelector('.nav-circle');
+      if(circle){
+        circle.style.outline = '3px solid white';
+        circle.style.outlineOffset = '2px';
+        circle.style.transition = 'outline 0.2s';
+      }
+    }
+  });
+})();
+</script>
 </body>
 </html>
