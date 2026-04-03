@@ -1,429 +1,718 @@
 <!DOCTYPE html>
-<!-- BABELOM v2 20260403-1003 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Déposer un souvenir</title>
-<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="supabase-config.js"></script>
 <script src="i18n.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-/* === RESET === */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-/* === VARIABLES === */
 :root {
-  --bleu:    #2c4a8a;
-  --bleu2:   #3358a0;
-  --bleu3:   #3d6ab8;
-  --orange:  #FF6B35;
-  --turq:    #4ECDC4;
-  --fond:    #1A1A2E;
-  --fond2:   #1e2d50;
-  --blanc:   #ffffff;
-  --muted:   rgba(255,255,255,0.6);
-
-  --turquoise: #4ECDC4;
-  --jaune:     #FFD93D;
-  --vert:      #6BCB77;
-  --rose:      #FF8B94;
-  --nuit:      #2c4a8a;
-  --nuit2:     #3358a0;
-  --orange:    #FF6B35;
+  --orange: #FF6B35; --turquoise: #4ECDC4; --jaune: #FFD93D;
+  --vert: #6BCB77; --rose: #FF8B94; --nuit: #2c4a8a; --nuit2: #3358a0;
+  --terre:    #1e3a28;
+  --brun:     #2e5a38;
+  --ocre:     #d4880a;
+  --sable:    #c8d8b0;
+  --parchemin:#e8e4d0;
+  --creme:    #f5f2e8;
+  --muted:    #7a9a72;
+  --sauge:    #d4880a;
+  --ardoise:  #4a7a52;
 }
 
-/* === BASE === */
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: 'Nunito', sans-serif;
-  background: var(--fond);
-  color: white;
+  font-family: 'Jost', sans-serif;
+  background: var(--creme);
+  color: var(--terre);
   min-height: 100vh;
-  padding-bottom: 70px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* === PAGE HEADER === */
-.page-header {
-  background: var(--bleu);
-  padding: 18px 40px;
-  border-bottom: 3px solid var(--orange);
+/* ── NAV ── */
+nav {
+  background: #1e3a28;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
+  padding: 8px 52px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
-.step-badge {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: var(--orange);
-  line-height: 1;
-  flex-shrink: 0;
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
-.header-content { flex: 1; min-width: 200px; }
-.header-label {
-  font-size: 0.7rem;
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--muted);
+  letter-spacing: 0.14em;
+  color: #c8dab0;
+  text-decoration: none;
+  font-weight: 400;
+  transition: color 0.2s;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.nav-links a:hover { color: white; }
+.nav-links a .nav-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+}
+.nav-links a:hover .nav-num { color: #e8a030; }
+.nav-links a.active { color: #d4880a; }
+
+/* ── HEADER DE PAGE ── */
+.page-header {
+  background: #1e3a28;
+  padding: 22px 52px 18px;
+  border-bottom: 1px solid #2e5a38;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.step-badge {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #d4880a;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.header-content { flex: 1; }
+
+.header-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #7a9a72;
   margin-bottom: 4px;
 }
+
 .header-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 2vw, 1.6rem);
-  font-weight: 700;
-  color: white;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-weight: 300;
+  color: #f5f2e8;
   line-height: 1.2;
   margin-bottom: 4px;
 }
-.header-title em { color: var(--orange); font-style: italic; }
-.header-sub {
-  font-size: 0.8rem;
-  color: var(--muted);
-  line-height: 1.5;
-}
-.header-steps { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
-.step-pip { width: 28px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.2); }
-.step-pip.active { background: var(--orange); }
 
-/* === CONTENU PRINCIPAL === */
+.header-title em { color: #d4880a; font-style: italic; }
+
+.header-sub {
+  font-size: 0.82rem;
+  color: #7a9a72;
+  line-height: 1.5;
+  max-width: 500px;
+}
+
+.header-steps {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.step-pip {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  background: #2e5a38;
+}
+.step-pip.active { background: #d4880a; }
+
+/* ── CONTENU PRINCIPAL ── */
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 200px);
-}
-@media (max-width: 768px) {
-  .main-content { 
-    grid-template-columns: 1fr; 
-    grid-template-rows: 50vh auto;
-  }
-  .carte-wrap { position: relative; min-height: 500px; height: 100%; display: block; }
-  #map { width: 100%; height: 100%; min-height: 500px; z-index: 1; background: #e8f4f8; }
-  .page-header { padding: 14px 20px; }
+  min-height: calc(100vh - 140px);
 }
 
-/* === CARTE === */
-.carte-wrap { position: relative; min-height: 500px; height: 100%; display: block; }
-#map { width: 100%; height: 100%; min-height: 500px; z-index: 1; background: #e8f4f8; }
+/* ── CARTE ── */
+.carte-wrap {
+  position: relative;
+}
+
+#map {
+  width: 100%;
+  height: 600px;
+  z-index: 1;
+  background: #f2efe6;
+}
+
+/* Popup Babelom */
+.popup-babelom .leaflet-popup-content-wrapper {
+  border-radius: 3px;
+  box-shadow: 0 6px 24px rgba(30,58,40,0.18);
+  border: 1.5px solid #c8d8b0;
+}
+.popup-babelom .leaflet-popup-content { margin: 16px 18px; }
+.popup-babelom .leaflet-popup-tip-container { display: block; }
+
 .carte-instruction {
-  position: absolute; top: 14px; left: 50%;
+  position: absolute;
+  top: 16px;
+  left: 50%;
   transform: translateX(-50%);
-  background: var(--bleu);
-  color: white;
-  padding: 9px 18px;
-  border-radius: 4px;
-  font-size: 0.82rem;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  background: white;
+  padding: 10px 20px;
+  border-radius: 2px;
+  font-size: 0.85rem;
+  color: var(--terre);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
   z-index: 500;
   white-space: nowrap;
-  border-left: 3px solid var(--orange);
+  border-left: 3px solid var(--ocre);
   transition: opacity 0.3s;
 }
+
 .carte-instruction.hidden { opacity: 0; pointer-events: none; }
 
-/* === FORMULAIRE === */
+/* ── FORMULAIRE ── */
 .form-wrap {
-  background: #1e2d50 !important;
-  padding: 32px 40px;
+  background: var(--creme);
+  padding: 48px 52px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
+
 .form-section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 6px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--terre);
+  margin-bottom: 8px;
 }
+
 .form-section-sub {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   color: var(--muted);
   line-height: 1.6;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
+
 .coords-affich {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   color: var(--muted);
   font-style: italic;
-  margin-bottom: 24px;
-  min-height: 18px;
+  margin-bottom: 28px;
+  min-height: 20px;
   transition: color 0.3s;
 }
-.coords-affich.placed { color: var(--turq); }
-.champ { margin-bottom: 20px; }
+.coords-affich.placed { color: var(--ardoise); }
+
+.champ {
+  margin-bottom: 24px;
+}
+
 .champ label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 6px;
-  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 400;
 }
-.champ input, .champ select, .champ textarea {
+
+.champ input,
+.champ select,
+.champ textarea {
   width: 100%;
-  background: rgba(255,255,255,0.07);
-  border: 1.5px solid rgba(255,255,255,0.25);
-  color: white;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.9rem;
-  padding: 10px 14px;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem;
+  padding: 12px 16px;
   outline: none;
   transition: border-color 0.2s;
-  border-radius: 6px;
+  border-radius: 2px;
 }
-.champ input:focus, .champ select:focus, .champ textarea:focus {
-  border-color: var(--orange);
-  background: rgba(255,255,255,0.1);
+
+.champ input:focus,
+.champ select:focus,
+.champ textarea:focus {
+  border-color: var(--ocre);
 }
-.champ input::placeholder, .champ textarea::placeholder {
-  color: rgba(255,255,255,0.35);
+
+.champ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+
+.champ-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
-.champ textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
-.champ-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-select option { background: var(--bleu); color: white; }
+
 .upload-zone {
-  border: 2px dashed rgba(255,255,255,0.25);
-  padding: 24px;
+  border: 2px dashed var(--sable);
+  padding: 28px;
   text-align: center;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.03);
+  border-radius: 2px;
 }
-.upload-zone:hover { border-color: var(--orange); background: rgba(255,107,53,0.06); }
-.upload-zone p { font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
-.photos-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.photos-preview img { width: 68px; height: 68px; object-fit: cover; border-radius: 4px; }
+.upload-zone:hover { border-color: var(--ocre); background: white; }
+.upload-zone p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+
+.photos-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.photos-preview img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
 .form-footer {
-  margin-top: 28px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--sable);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
+
 .btn-retour {
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.82rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
   color: var(--muted);
   background: none;
   border: none;
   cursor: pointer;
+  letter-spacing: 0.08em;
   text-decoration: none;
   transition: color 0.2s;
 }
-.btn-retour:hover { color: white; }
+.btn-retour:hover { color: var(--terre); }
+
 .btn-valider {
-  background: var(--orange);
+  background: var(--ocre);
   color: white;
   border: none;
-  padding: 12px 32px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  padding: 14px 36px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
-  border-radius: 8px;
+  border-radius: 2px;
 }
-.btn-valider:hover { background: #e05a28; transform: translateY(-1px); }
-.btn-valider:disabled { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); cursor: not-allowed; transform: none; }
+.btn-valider:hover { background: #b87008; transform: translateY(-1px); }
+.btn-valider:disabled { background: var(--sable); color: var(--muted); cursor: not-allowed; transform: none; }
 
-/* === CONFIRMATION === */
+/* ── CONFIRMATION ── */
 #confirmation {
-  display: none; position: fixed; inset: 0;
-  background: rgba(26,26,46,0.92); z-index: 2000;
-  align-items: center; justify-content: center;
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30,58,40,0.85);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
 }
 #confirmation.visible { display: flex; }
+
 .confirm-card {
-  background: var(--bleu);
-  padding: 48px 44px;
-  max-width: 480px;
+  background: var(--creme);
+  padding: 64px 56px;
+  max-width: 520px;
   text-align: center;
-  border-radius: 16px;
-  animation: fadeUp 0.4s ease forwards;
+  animation: fadeUp 0.5s ease forwards;
 }
-.confirm-icon { font-size: 2.8rem; margin-bottom: 18px; display: block; }
+
+.confirm-icon {
+  font-size: 3rem;
+  margin-bottom: 24px;
+  display: block;
+}
+
 .confirm-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.8rem;
-  color: white;
-  margin-bottom: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--terre);
+  margin-bottom: 16px;
+  line-height: 1.2;
 }
-.confirm-title em { color: var(--orange); font-style: italic; }
-.confirm-sub { font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
-.confirm-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.confirm-title em { color: var(--ocre); font-style: italic; }
+
+.confirm-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .btn-nouveau {
-  background: var(--orange); color: white; border: none;
-  padding: 12px 24px; border-radius: 8px;
-  font-family: 'Nunito', sans-serif; font-size: 0.82rem;
-  font-weight: 700; cursor: pointer;
+  background: var(--terre);
+  color: var(--creme);
+  border: none;
+  padding: 13px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 2px;
 }
+.btn-nouveau:hover { background: var(--brun); }
+
 .btn-accueil {
-  background: none; color: var(--muted);
-  border: 1.5px solid rgba(255,255,255,0.25);
-  padding: 11px 24px; border-radius: 8px;
-  font-family: 'Nunito', sans-serif; font-size: 0.82rem;
-  cursor: pointer; text-decoration: none; display: inline-block;
+  background: none;
+  color: var(--muted);
+  border: 1.5px solid var(--sable);
+  padding: 12px 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, color 0.2s;
+  border-radius: 2px;
 }
+.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
+
 @keyframes fadeUp {
-  from { opacity:0; transform:translateY(16px); }
+  from { opacity:0; transform:translateY(20px); }
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* === FOOTER === */
+/* ── FOOTER ── */
 footer {
-  background: var(--bleu);
+  background: #1e3a28;
   color: var(--muted);
-  padding: 16px 40px;
+  padding: 32px 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  border-top: 4px solid var(--orange);
 }
-footer a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.72rem; text-transform: uppercase; }
-footer a:hover { color: var(--orange); }
-
-/* === NAV V2 === */
-#top-band{background:#2c4a8a;padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:6px solid #FF6B35;position:sticky;top:0;z-index:400;}
-.nav-circle{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.nav-ib{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-decoration:none;padding:2px 6px;}
-.nav-lbl{font-size:0.58rem;font-weight:900;text-transform:uppercase;color:white;}
-.top-btn{padding:5px 14px;border-radius:18px;font-size:0.72rem;font-weight:900;border:none;cursor:pointer;}
-.btn-cx{background:white;color:#FF6B35;}.btn-ins{background:#2c4a8a;color:white;border:1px solid rgba(255,255,255,0.3);}
-.lang-opt{padding:8px 14px;color:white;cursor:pointer;}.lang-opt:hover{background:rgba(255,255,255,0.1);}
-#nav-user{display:none;align-items:center;gap:8px;}
-#nav-user-name{color:#4ECDC4;font-size:0.78rem;font-weight:700;}
-#nav-deco{background:none;border:1px solid #FF8B94;color:#FF8B94;padding:4px 10px;border-radius:12px;font-size:0.7rem;cursor:pointer;}
-.modale-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;}
-.modale-box{background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;}
-.modale-box h3{font-size:1.2rem;color:#FF6B35;margin-bottom:8px;font-family:'Playfair Display',serif;}
-.input-compte{width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;}
-.input-compte:focus{border-color:#FF6B35;}.input-compte::placeholder{color:rgba(255,255,255,0.4);}
-.btn-compte{width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;}
-.msg-compte{margin-top:8px;font-size:0.75rem;color:#4ECDC4;}
-.btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
-#bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:300;}
-.bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
-.bn.active{background:rgba(255,107,53,0.18);}.bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
-.bn.active .bn-dot{opacity:1;}.bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
-.bn.active .bn-lbl{color:#FF6B35;}
-
-/* Autocomplete */
-#cp-suggestions, .autocomplete-list {
-  background: var(--bleu2); border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 6px; max-height: 200px; overflow-y: auto; z-index: 1000;
-}
-#cp-suggestions div, .autocomplete-list div {
-  padding: 8px 14px; cursor: pointer; font-size: 0.85rem; color: white;
-}
-#cp-suggestions div:hover, .autocomplete-list div:hover { background: rgba(255,255,255,0.1); }
-
-/* Leaflet popup */
-.leaflet-popup-content-wrapper { background: var(--bleu) !important; color: white !important; border-radius: 8px !important; }
-.leaflet-popup-tip { background: var(--bleu) !important; }
-.leaflet-popup-content { color: white !important; }
+.footer-text { font-size: 0.82rem; }
 </style>
-<style id="form-v1-css">
-.form-wrap .champ input,
-.form-wrap .champ select,
-.form-wrap .champ textarea {
-  width: 100%;
+
+
+<!-- MODALE MODIFIER MOT DE PASSE -->
+<div id="modale-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:340px;font-family:'Jost',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:20px;">Modifier le mot de passe</div>
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Mot de passe actuel</label>
+    <input type="password" id="mdp-ancien" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:14px;">
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Nouveau mot de passe</label>
+    <input type="password" id="mdp-nouveau" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:14px;">
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Confirmer le nouveau mot de passe</label>
+    <input type="password" id="mdp-confirm" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:6px;">
+    <div id="mdp-msg" style="font-size:0.78rem;min-height:18px;margin-bottom:14px;color:#c04040;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="validerMdp()" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;">Enregistrer</button>
+      <button onclick="fermerModale('modale-mdp')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE DÉSINSCRIPTION -->
+<div id="modale-desinscription" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:380px;font-family:'Jost',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:12px;">Désinscription du compte</div>
+    <p style="font-size:0.85rem;color:#7a9a72;line-height:1.6;margin-bottom:20px;">Votre compte sera désactivé dans un délai de <strong style="color:#c8d8b0;">7 jours ouvrés</strong>. Vos témoignages resteront visibles sauf demande explicite de suppression.</p>
+    <p style="font-size:0.82rem;color:#c8d8b0;margin-bottom:20px;">Pour confirmer, envoyez un email à <a href="/cdn-cgi/l/email-protection#c8aaa9aaada4a7a588afa5a9a1a4e6aba7a5" style="color:#d4880a;"><span class="__cf_email__" data-cfemail="f597949790999a98b59298949c99db969a98">[email&#160;protected]</span></a> avec l'objet <em>« Désinscription »</em>.</p>
+    <div style="display:flex;gap:10px;">
+      <a href="/cdn-cgi/l/email-protection#e587848780898a88a58288848c89cb868a88da9690878f808691d8a1264c968c8b9686978c95918c8a8bc3878a819cd8af80c5968a908d848c9180c58880c581264c968c8b9686978c9780c58190c5968c9180c5a7848780898a88cb" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;text-align:center;">Envoyer la demande</a>
+      <button onclick="fermerModale('modale-desinscription')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE SUPPRESSION DONNÉES -->
+<div id="modale-suppression" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:380px;font-family:'Jost',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:12px;">Suppression des données</div>
+    <p style="font-size:0.85rem;color:#7a9a72;line-height:1.6;margin-bottom:12px;">Conformément au RGPD, vous pouvez demander la suppression complète de vos données personnelles et témoignages.</p>
+    <p style="font-size:0.82rem;color:#c04040;line-height:1.6;margin-bottom:20px;">⚠️ Cette action est <strong>irréversible</strong>. Tous vos témoignages et données seront définitivement effacés sous 30 jours.</p>
+    <p style="font-size:0.82rem;color:#c8d8b0;margin-bottom:20px;">Envoyez votre demande à <a href="/cdn-cgi/l/email-protection#caa8aba8afa6a5a78aada7aba3a6e4a9a5a7" style="color:#d4880a;"><span class="__cf_email__" data-cfemail="187a797a7d747775587f75797174367b7775">[email&#160;protected]</span></a> avec l'objet <em>« Suppression données »</em>.</p>
+    <div style="display:flex;gap:10px;">
+      <a href="/cdn-cgi/l/email-protection#63010201060f0c0e23040e020a0f4d000c0e5c101601090600175e30161313110610100a0c0d43070c0d0da0ca061045010c071a5e290643100c160b020a1706430f024310161313110610100a0c0d43000c0e130fa0cb1706430706430e061043070c0d0da0ca061043130611100c0d0d060f0f06104306174317a0ca0e0c0a040d020406104310161143210201060f0c0e4d" style="flex:1;background:#c04040;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;text-align:center;">Envoyer la demande</a>
+      <button onclick="fermerModale('modale-suppression')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+    </div>
+  </div>
+</div>
+
+
+<style id="babelom-v2">
+/* Fond pages secondaires */
+body { background: #243B6E !important; color: white !important; padding-bottom: 70px; }
+
+/* Carte - hauteur fixe absolue */
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: calc(100vh - 70px);
+}
+.carte-wrap {
+  position: relative;
+  height: calc(100vh - 70px);
+  min-height: 400px;
+}
+#map {
+  position: absolute;
+  inset: 0;
+  background: #d4e8f0;
+}
+
+/* Formulaire */
+.form-wrap {
+  background: #1e3060 !important;
+  overflow-y: auto;
+  height: calc(100vh - 70px);
+}
+.form-section-title { color: white !important; }
+.form-section-sub, .coords-affich { color: rgba(255,255,255,0.65) !important; }
+.champ label, .form-section-title { color: rgba(255,255,255,0.9) !important; }
+.champ input, .champ select {
   background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  border: 1.5px solid rgba(255,255,255,0.25) !important;
   color: white !important;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.88rem;
-  padding: 10px 12px;
-  outline: none;
-  border-radius: 6px;
-  transition: border-color 0.2s;
-  box-sizing: border-box;
+  border-radius: 6px !important;
 }
-.form-wrap .champ input:focus,
-.form-wrap .champ select:focus { border-color: #FF6B35 !important; }
-.form-wrap .champ input::placeholder { color: rgba(255,255,255,0.4) !important; }
-.form-wrap select option { background: #2c4a8a; color: white; }
-#cp-suggestions div, #voies-suggestions div { 
-  padding: 8px 12px; cursor: pointer; font-size: 0.82rem; color: white;
+.champ input::placeholder { color: rgba(255,255,255,0.35) !important; }
+.champ input:focus, .champ select:focus { border-color: #FF6B35 !important; }
+.champ select option { background: #1e3060; }
+#cp-suggestions, #voies-suggestions {
+  background: #1e3060 !important;
+  border: 1.5px solid #FF6B35 !important;
+  color: white !important;
 }
-#cp-suggestions div:hover, #voies-suggestions div:hover { 
-  background: rgba(255,255,255,0.1); 
-}
-</style>
-<style id="form-v1-inputs">
-.form-wrap .champ input,.form-wrap .champ select,.form-wrap .champ textarea{width:100%;background:rgba(255,255,255,0.08)!important;border:1.5px solid rgba(255,255,255,0.3)!important;color:white!important;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 12px;outline:none;border-radius:6px;transition:border-color 0.2s;box-sizing:border-box;}
-.form-wrap .champ input:focus,.form-wrap .champ select:focus{border-color:#FF6B35!important;}
-.form-wrap .champ input::placeholder{color:rgba(255,255,255,0.4)!important;}
-.form-wrap select option{background:#2c4a8a;color:white;}
-#cp-suggestions,#voies-suggestions{background:#2c4a8a!important;border:1.5px solid #FF6B35!important;color:white!important;}
-#cp-suggestions div:hover,#voies-suggestions div:hover{background:rgba(255,255,255,0.1)!important;}
-</style>
-<style id="light-bg">
-body { background: #243B6E !important; color: white !important; }
-.form-wrap { background: #1e3060 !important; }
-.main-content { background: #243B6E !important; }
-.page-header { background: #1e3060 !important; border-bottom: 2px solid #FF6B35 !important; }
-footer { background: #1a2a5e !important; border-top: 6px solid #FF6B35 !important; }
-/* Textes */
-h1,h2,h3,p,span,label,div { color: inherit; }
-.header-title, .header-label, .header-sub { color: white !important; }
-.form-section-title { color: white !important; font-family: 'Playfair Display', serif !important; }
-.form-section-sub, .coords-affich { color: rgba(255,255,255,0.7) !important; }
-.champ label { color: rgba(255,255,255,0.85) !important; }
-</style>
-<style id="popup-v2">
-.popup-babelom .leaflet-popup-content-wrapper {
-  background: white !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 32px rgba(26,42,94,0.25) !important;
-  border: none !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-}
-.popup-babelom .leaflet-popup-content {
-  margin: 0 !important;
-  min-width: 240px !important;
-}
-.popup-babelom .leaflet-popup-tip {
-  background: white !important;
-}
-.popup-babelom .leaflet-popup-close-button {
-  color: #2c4a8a !important;
-  font-size: 18px !important;
-  z-index: 10 !important;
-}
-/* Empêcher la fermeture au clic sur la carte */
-.leaflet-popup { pointer-events: auto !important; }
-</style>
 
-<style id="nav-responsive">
-@media (max-width: 900px) {
-  .nav-circle { width:32px!important; height:32px!important; }
-  .nav-circle svg { width:15px!important; height:15px!important; }
-  .nav-lbl { font-size:0.46rem!important; }
-  .nav-ib { padding:2px 3px!important; }
-  #nav-icons { gap:1px!important; }
-  #top-band { padding:6px 10px!important; gap:6px!important; }
-  .top-btn { padding:4px 8px!important; font-size:0.62rem!important; }
-}
-@media (max-width: 600px) {
-  .nav-lbl { display:none!important; }
-  .nav-circle { width:36px!important; height:36px!important; }
+/* Boutons */
+.btn-valider { background: #FF6B35 !important; border-radius: 8px !important; color: white !important; }
+.btn-retour { color: rgba(255,255,255,0.6) !important; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content { grid-template-columns: 1fr; height: auto; grid-template-rows: 45vh 1fr; }
+  .carte-wrap { height: 45vh; }
+  .form-wrap { height: auto; }
 }
 </style>
 </head>
 <body>
+<script>
+// ── Helper session ──
+function babelomGetUser() {
+  try {
+    const raw = localStorage.getItem('babelom-user');
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    if (u.expires && Date.now() > u.expires) {
+      localStorage.removeItem('babelom-user');
+      return null;
+    }
+    return u;
+  } catch(e) { return null; }
+}
+
+// Vérifier session Supabase au chargement
+(async function() {
+  try {
+    const _sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data } = await _sb.auth.getSession();
+    if (data && data.session === null) {
+      // Session explicitement nulle (pas une erreur réseau) — déconnecter
+      localStorage.removeItem('babelom-user');
+    }
+    // Si erreur réseau : on garde l'utilisateur connecté
+  } catch(e) {}
+})();
+
+// Sync nav selon session — Menu D
+(function() {
+  const user = babelomGetUser();
+  document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelector('.nav-links');
+    if (!navLinks) return;
+    if (!user) return;
+    navLinks.querySelectorAll('li.membres-only').forEach(li => li.style.display = 'flex');
+    const badge = document.createElement('li');
+    badge.id = 'nav-user-badge';
+    badge.style.cssText = 'position:relative;display:flex;align-items:center;';
+    badge.innerHTML = `
+      <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
+        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
+        👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
+      </button>
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
+        <div style="background:#1e3a28;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#d4880a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;">${(user.prenom||'?')[0].toUpperCase()}</div>
+          <div>
+            <div style="font-size:0.82rem;color:#e8dfc0;font-weight:500;">${user.prenom} ${user.nom||''}</div>
+            <div style="font-size:0.7rem;color:#7a9a72;">${user.email||''}</div>
+          </div>
+        </div>
+        <div style="border-bottom:1px solid #e0d8c0;">
+          <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleLieuxHistorique()">
+            <span style="font-size:0.78rem;color:#1e3a28;font-weight:500;display:flex;align-items:center;gap:6px;">
+              🏠 Mes lieux habités
+              <span id="badge-nb-lieux" style="background:#d4880a;color:white;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
+            </span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:#7a9a72;">▾</span>
+          </div>
+          <div id="liste-lieux-hist" style="display:none;padding:0 14px 8px;max-height:200px;overflow-y:auto;">
+            <div id="lieux-loading" style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:6px 0;">Chargement…</div>
+          </div>
+        </div>
+        <div style="border-bottom:1px solid #e0d8c0;">
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+        </div>
+        <div style="padding:8px 14px;">
+          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
+        </div>
+      </div>`;
+    navLinks.appendChild(badge);
+    chargerLieuxMembre(user);
+  });
+})();
+
+function toggleMenuMembre(e) {
+  e.stopPropagation();
+  const d = document.getElementById('menu-membre-dropdown');
+  if (d) d.style.display = d.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleLieuxHistorique() {
+  const liste = document.getElementById('liste-lieux-hist');
+  const arrow = document.getElementById('arrow-hist');
+  if (!liste) return;
+  const open = liste.style.display !== 'none';
+  liste.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '▾' : '▴';
+}
+
+async function chargerLieuxMembre(user) {
+  try {
+    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sb.from('temoignages')
+      .select('id, adresse, ville, pays, annee_de, annee_a, type_logement')
+      .eq('utilisateur_id', user.id)
+      .order('annee_de', { ascending: true });
+    const container = document.getElementById('lieux-loading');
+    const badge = document.getElementById('badge-nb-lieux');
+    if (!container) return;
+    if (error || !data || !data.length) {
+      if (badge) badge.textContent = '0';
+      container.innerHTML = '<div style="font-size:0.75rem;color:#7a9a72;font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      return;
+    }
+    if (badge) badge.textContent = data.length;
+    const colors = ['#d4880a','#4a7a52','#2277cc','#e8335a','#7a4a8a'];
+    container.innerHTML = data.map(function(t, i) {
+      const lieu = [t.adresse, t.ville].filter(Boolean).join(', ');
+      const dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
+      const col = colors[i % colors.length];
+      return `<div style="padding:6px 0;border-bottom:1px solid #ede8d8;display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
+        <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.75rem;font-weight:500;color:#1e3a28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
+          <div style="font-size:0.68rem;color:#7a9a72;">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
+        </div>
+        <div style="display:flex;gap:3px;flex-shrink:0;">
+          <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
+            style="background:#d4880a;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">✏️</button>
+          <button onclick="supprimerLieu('${t.id}')" title="Supprimer"
+            style="background:#e05050;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+async function supprimerLieu(id) {
+  if (!confirm('Supprimer ce souvenir définitivement ?')) return;
+  try {
+    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { error } = await sb.from('temoignages').delete().eq('id', id);
+    if (!error) {
+      const row = document.getElementById('lieu-row-' + id);
+      if (row) row.remove();
+      const badge = document.getElementById('badge-nb-lieux');
+      if (badge) badge.textContent = parseInt(badge.textContent||'1') - 1;
+    }
+  } catch(e) {}
+}
+
+document.addEventListener('click', function(e) {
+  const d = document.getElementById('menu-membre-dropdown');
+  const btn = document.getElementById('btn-menu-membre');
+  if (d && btn && !d.contains(e.target) && !btn.contains(e.target)) d.style.display = 'none';
+});
+
+function fermerModale(id) {
+  document.getElementById(id).style.display = 'none';
+}
+</script>
+<script>
+function validerMdp() {
+  const ancien = document.getElementById('mdp-ancien').value;
+  const nouveau = document.getElementById('mdp-nouveau').value;
+  const confirm = document.getElementById('mdp-confirm').value;
+  const msg = document.getElementById('mdp-msg');
+  if (!ancien || !nouveau || !confirm) { msg.style.color='#c04040'; msg.textContent='Veuillez remplir tous les champs.'; return; }
+  if (nouveau.length < 8) { msg.style.color='#c04040'; msg.textContent='Le nouveau mot de passe doit faire au moins 8 caractères.'; return; }
+  if (nouveau !== confirm) { msg.style.color='#c04040'; msg.textContent='Les mots de passe ne correspondent pas.'; return; }
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Mot de passe modifié avec succès.';
+  setTimeout(() => fermerModale('modale-mdp'), 1500);
+}
+</script>
+
+
+<!-- NAV -->
 <div id="top-band">
   <!-- Favicon + Logo -->
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
@@ -432,7 +721,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   </div>
 
   <!-- 5 ICÔNES nav -->
-  <div id="nav-icons" style="display:flex;align-items:center;gap:2px;flex:1;justify-content:center;flex-wrap:nowrap;overflow:hidden;">
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
     <a href="index.html" class="nav-ib" style="margin-right:8px;">
       <div class="nav-circle" style="background:#7C3AED;border:2px solid rgba(255,255,255,0.3);">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -471,54 +760,142 @@ h1,h2,h3,p,span,label,div { color: inherit; }
     </a>
   </div>
 
-  <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
-  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+    <!-- Droite : Notre Projet + Auth + Langue -->
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    
+    <!-- Notre Projet -->
     <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
-      <div class="nav-circle" style="background:#6B5EA8;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
-          <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-          <circle cx="12" cy="17" r="1.2" fill="white"/>
-        </svg>
+      <div class="nav-circle" style="background:#7C3AED;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="white" stroke-width="1.5" fill="none"/></svg>
       </div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+
+    <!-- Mon Compte (connecté) -->
+    <div id="nav-user" style="display:none;align-items:center;position:relative;z-index:200;">
+      <button id="btn-menu-membre" onclick="toggleMenuMembre(event)" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;padding:5px 12px;border-radius:16px;display:flex;align-items:center;gap:6px;white-space:nowrap;">
+        <span id="nav-user-name">Mon compte</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
+      </button>
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;min-width:280px;z-index:9000;box-shadow:0 8px 24px rgba(0,0,0,0.4);overflow:hidden;font-family:'Nunito',sans-serif;">
+        <!-- En-tête membre -->
+        <div style="background:#3358a0;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div style="width:32px;height:32px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;flex-shrink:0;" id="menu-avatar">?</div>
+          <div>
+            <div id="menu-prenom" style="font-size:0.85rem;color:white;font-weight:700;"></div>
+            <div id="menu-email" style="font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:1px;"></div>
+          </div>
+        </div>
+        <!-- Mes lieux habités -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="toggleLieuxHistorique()" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">
+            <span style="font-size:0.82rem;color:white;font-weight:600;display:flex;align-items:center;gap:6px;">
+              🏠 Mes lieux habités
+              <span id="badge-nb-lieux" style="background:#FF6B35;color:white;font-size:0.62rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
+            </span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:rgba(255,255,255,0.5);">▾</span>
+          </div>
+          <div id="liste-lieux-hist" style="display:none;padding:0 12px 8px;max-height:200px;overflow-y:auto;">
+            <div id="lieux-loading" style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:6px 4px;">Chargement…</div>
+          </div>
+        </div>
+        <!-- Actions compte -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🗑 Supprimer mon compte</div>
+        </div>
+        <!-- Déconnexion --><!-- Déconnexion -->
+        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">✕ Se déconnecter</div>
+      </div></div>
+
+    <!-- Boutons Connexion/Inscrire (non connecté) -->
+    <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
+      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+      <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    </div>
+
     <!-- Sélecteur langue -->
     <div id="lang-select" style="position:relative;">
-      <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
-        <span id="lang-current">FR</span>
-        <svg width="10" height="10" viewBox="0 0 10 10"><polyline points="2,3 5,7 8,3" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <button id="lang-btn" onclick="toggleLang()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.72rem;display:flex;align-items:center;gap:4px;">
+        &#127760; <span id="lang-current">FR</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
       </button>
-      <div id="lang-dropdown" style="display:none;position:absolute;right:0;top:110%;background:var(--nuit);border:1px solid var(--nuit3);border-radius:10px;overflow:hidden;min-width:130px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.4);">
-        <div class="lang-opt" onclick="setLang('FR')">🇫🇷 Français</div>
-        <div class="lang-opt" onclick="setLang('EN')">🇬🇧 English</div>
-        <div class="lang-opt" onclick="setLang('AR')">🇦🇱 العربية</div>
-        <div class="lang-opt" onclick="setLang('ES')">🇪🇸 Español</div>
-        <div class="lang-opt" onclick="setLang('DE')">🇩🇪 Deutsch</div>
-        <div class="lang-opt" onclick="setLang('IT')">🇮🇹 Italiano</div>
-        <div class="lang-opt" onclick="setLang('PL')">🇵🇱 Polski</div>
-        <div class="lang-opt" onclick="setLang('PT')">🇵🇹 Português</div>
-        <div class="lang-opt" onclick="setLang('RU')">🇷🇺 Русский</div>
-        <div class="lang-opt" onclick="setLang('ZH')">🇨🇳 中文</div>
+      <div id="lang-dropdown" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:8px;min-width:130px;z-index:9000;box-shadow:0 6px 20px rgba(0,0,0,0.3);overflow:hidden;">
+        <div class="lang-opt" onclick="setLang('FR')">Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">English</div>
+        <div class="lang-opt" onclick="setLang('ES')">Español</div>
+        <div class="lang-opt" onclick="setLang('AR')">العربية</div>
+        <div class="lang-opt" onclick="setLang('DE')">Deutsch</div>
+        <div class="lang-opt" onclick="setLang('PT')">Português</div>
+        <div class="lang-opt" onclick="setLang('IT')">Italiano</div>
+        <div class="lang-opt" onclick="setLang('RU')">Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">中文</div>
       </div>
     </div>
-    <!-- User connecté -->
-    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
-      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
-      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
+
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="step-badge">01</div>
+  <div class="header-content">
+    <div class="header-label"><span data-i18n="e1HeaderLabel">Étape 1 sur 3 · Déposer un souvenir</span></div>
+    <h1 class="header-title"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
+    <p class="header-sub">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
+  </div>
+  <div>
+    <div class="header-steps" style="margin-bottom:8px;">
+      <div class="step-pip active"></div>
+      <div class="step-pip"></div>
+      <div class="step-pip"></div>
     </div>
+    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
   </div>
 </div>
 
 <!-- CONTENU -->
 <div class="main-content">
-  <div class="carte-wrap"><div id="map"></div></div>
+
+  <!-- CARTE -->
+  <div class="carte-wrap">
+    <div id="map" style="width:100%;height:600px;"></div>
+
+    <!-- BANDEAU INVITATION -->
+    <div style="
+      position:absolute;
+      bottom:0; left:0; right:0;
+      background:rgba(30,58,40,0.88);
+      backdrop-filter:blur(4px);
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      z-index:500;
+    ">
+      <p style="font-family:'Jost',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
+        <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour découvrir les souvenirs, les anecdotes et les photos derrière chaque point.
+      </p>
+      <a href="index.html#compte" style="
+        background:var(--ocre);
+        color:white;
+        text-decoration:none;
+        padding:7px 16px;
+        font-family:'Jost',sans-serif;
+        font-size:0.75rem;
+        text-transform:uppercase;
+        letter-spacing:0.1em;
+        border-radius:2px;
+        white-space:nowrap;
+        flex-shrink:0;
+        transition:background .2s;
+      " onmouseover="this.style.background='#b87008'" onmouseout="this.style.background='#d4880a'">Créer un compte</a>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
   <div class="form-wrap">
     <div style="
-      background: #FF6B35;
+      background: #d4880a;
       padding: 14px 20px;
       margin-bottom: 28px;
       font-size: 0.88rem;
@@ -550,9 +927,9 @@ h1,h2,h3,p,span,label,div { color: inherit; }
         <label>Code postal</label>
         <div style="position:relative;">
           <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
-            style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.25);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:6px;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" oninput="filtrerCP(this.value)">
-          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.08);border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+            style="width:100%;box-sizing:border-box;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
+            onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'" oninput="filtrerCP(this.value)">
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
     </div>
@@ -563,17 +940,17 @@ h1,h2,h3,p,span,label,div { color: inherit; }
     </div>
 
     <div class="champ">
-      <label>Adresse précise <span style="color:#FF6B35;">*</span></label>
+      <label>Adresse précise <span style="color:#d4880a;">*</span></label>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.25);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:6px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
         <div style="position:relative;flex:1;min-width:200px;">
           <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
-          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.08);border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
         </div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
-        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:rgba(255,255,255,0.08);color:#253566;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#3358a0'" onmouseout="this.style.background='#2c4a8a'">📍 Localiser sur la carte</button>
-        <span id="geo-msg" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;"></span>
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:var(--creme);border:none;padding:7px 14px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
+        <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
       </div>
     </div>
 
@@ -600,7 +977,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
     </div>
 
     <div class="champ">
-      <label>Type de logement <span style="color:#FF6B35;">*</span></label>
+      <label>Type de logement <span style="color:#d4880a;">*</span></label>
       <select id="f-type" onchange="toggleEtage(this.value)">
         <option value="">Choisir…</option>
         <option><span data-i18n="e1TypeAppt">Appartement</span></option>
@@ -632,28 +1009,51 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   </div>
 </div>
 
-<!-- ZONE RECHERCHE MEMBRES -->
-<div id="zone-recherche-membres" style="display:none;background:rgba(255,255,255,0.04);padding:20px 40px;border-bottom:1px solid rgba(255,255,255,0.08);">
-  <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);">Vérifiez si une personne de votre entourage a déjà déposé un souvenir ici.</p>
-  <div style="display:flex;gap:10px;margin-top:10px;max-width:400px;">
-    <input type="text" id="recherche-membre-input" placeholder="Prénom ou nom..." style="flex:1;padding:9px 14px;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.25);border-radius:6px;color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;outline:none;">
-    <button onclick="rechercherMembre()" style="background:#FF6B35;color:white;border:none;padding:9px 18px;border-radius:6px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;">Chercher</button>
+  <!-- RECHERCHE MEMBRES -->
+  <div style="background:var(--parchemin);padding:20px 28px;border-bottom:1px solid var(--sable);">
+    <div style="max-width:900px;margin:0 auto;">
+      <div id="zone-recherche-non-inscrit" style="display:none;background:var(--sable);border-radius:2px;padding:16px 20px;text-align:center;">
+        <p style="font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--terre);margin:0;">
+          <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse.
+        </p>
+        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Jost',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
+      </div>
+      <div id="zone-recherche-membres" style="display:none;">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
+            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
+            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
+            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+          </div>
+          <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
+        </div>
+        <div id="rech-resultats" style="margin-top:12px;"></div>
+      </div>
+    </div>
   </div>
-</div>
 
 <!-- CONFIRMATION -->
 <div id="confirmation">
   <div class="confirm-card">
     <span class="confirm-icon">🏠</span>
-    <div class="confirm-title">Merci pour votre <em>souvenir</em></div>
-    <p class="confirm-sub">Votre témoignage a été archivé dans Babelom. Il rejoindra la mémoire collective de ce lieu.</p>
+    <h2 class="confirm-title">Votre souvenir<br>est <em>enregistré</em></h2>
+    <p class="confirm-sub">Il rejoint l'archive de Babelom. Un point de plus sur la carte du monde — une vie derrière ce point.</p>
     <div class="confirm-actions">
-      <button class="btn-nouveau" onclick="nouveauDepot()">Déposer un autre souvenir</button>
+      <button class="btn-nouveau" onclick="nouveau()">Ajouter un autre lieu</button>
       <a href="index.html" class="btn-accueil">Retour à l'accueil</a>
     </div>
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
   <!-- Logo -->
   <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">
@@ -678,58 +1078,57 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);text-align:right;flex-shrink:0;">La mémoire des lieux habités</div>
 </footer>
 
-<nav id="bottom-nav">
-  <a href="index.html" class="bn active">
-    <svg width="20" height="20" viewBox="0 0 24 24"><path d="M3,12 L12,4 L21,12 L21,20 L15,20 L15,15 L9,15 L9,20 L3,20Z" fill="var(--orange)"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl" style="color:var(--orange);">Accueil</div>
-  </a>
-  <a href="etape1.html" class="bn">
-    <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M13,2 Q10,7 13,7 Q16,7 13,2Z" fill="#6B7A99"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl">Carte</div>
-  </a>
-  <a href="temoignages.html" class="bn">
-    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="none" stroke="#6B7A99" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#6B7A99" stroke-width="2.5" stroke-linecap="round"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl">Rechercher</div>
-  </a>
-  <a href="galerie.html" class="bn">
-    <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="#6B7A99" stroke-width="1.8"/><circle cx="8" cy="10" r="2" fill="#6B7A99" opacity="0.5"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl">Galerie</div>
-  </a>
-  <a href="#compte" class="bn">
-    <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="#6B7A99" stroke-width="1.8"/><path d="M4,20 Q4,14 12,14 Q20,14 20,20" fill="none" stroke="#6B7A99" stroke-width="1.8"/></svg>
-    <div class="bn-dot"></div><div class="bn-lbl">Profil</div>
-  </a>
-</nav>
+<!-- MODALE CONTACT -->
+<div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.78);z-index:3000;align-items:center;justify-content:center;">
+  <div style="background:var(--creme);padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
+    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:8px;">Contact</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--terre);margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
+    <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:22px;">
+      Pour toute question, suggestion ou demande, écrivez-nous directement à
+      <a href="/cdn-cgi/l/email-protection#8ae8ebe8efe6e5e7caede7ebe3e6a4e9e5e7" style="color:var(--ocre);text-decoration:none;font-weight:500;"><span class="__cf_email__" data-cfemail="81e3e0e3e4edeeecc1e6ece0e8edafe2eeec">[email&#160;protected]</span></a>
+      ou utilisez ce formulaire.
+    </p>
 
-<!-- Modales auth -->
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
-  <div class="modale-box"><h3>Se connecter</h3>
-    <input type="email" id="cx-email" class="input-compte" placeholder="Email">
-    <input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion →</button>
-    <div class="msg-compte" id="msg-cx"></div>
-    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
-    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
-  </div>
-</div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')">
-  <div class="modale-box"><h3>Créer un compte</h3>
-    <input type="text" id="ins-prenom" class="input-compte" placeholder="Prénom">
-    <input type="email" id="ins-email" class="input-compte" placeholder="Email">
-    <input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire →</button>
-    <div class="msg-compte" id="msg-ins"></div>
-    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
-  </div>
-</div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'">
-  <div class="modale-box"><h3>Admin</h3>
-    <input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Accéder</button>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
+      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Adresse e-mail *</label>
+      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Objet *</label>
+      <select id="c-objet" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
+        <option value="">Choisir un objet…</option>
+        <option value="question">Question générale</option>
+        <option value="technique">Problème technique</option>
+        <option value="signalement">Signalement de contenu</option>
+        <option value="desinscription">Demande de désinscription</option>
+        <option value="suppression">Suppression de mes données</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Message *</label>
+      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
+    </div>
+
+    <!-- Mention désinscription -->
+    <div style="background:var(--parchemin);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
+      <strong style="color:var(--terre);display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
+      Pour toute demande de désinscription ou de suppression de vos données, sélectionnez l'objet correspondant ci-dessus. Votre compte et l'ensemble de vos témoignages seront supprimés dans un délai de 7 jours ouvrés. Conformément au RGPD, vous pouvez également écrire directement à <a href="/cdn-cgi/l/email-protection#a4c6c5c6c1c8cbc9e4c3c9c5cdc88ac7cbc9" style="color:var(--ocre);text-decoration:none;"><span class="__cf_email__" data-cfemail="e88a898a8d848785a88f85898184c68b8785">[email&#160;protected]</span></a>.
+    </div>
+
+    <div id="contact-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--sable);">
+      <button onclick="fermerContact()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+      <button onclick="envoyerContact()" style="background:var(--terre);color:var(--creme);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
+    </div>
   </div>
 </div>
 
-<!-- Scripts métier v1 (logique carte, formulaire, autocomplétion) -->
 <script>
 var map = null;
 var marqueur = null, latLng = null;
@@ -793,7 +1192,7 @@ function groupByVille(list) {
 function makeIcon() {
   return L.divIcon({
     className: '',
-    html: '<div style="width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#FF6B35;border:3px solid white;box-shadow:0 3px 12px rgba(0,0,0,0.3);"></div>',
+    html: '<div style="width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#d4880a;border:3px solid white;box-shadow:0 3px 12px rgba(0,0,0,0.3);"></div>',
     iconSize: [22,22], iconAnchor: [11,22]
   });
 }
@@ -864,7 +1263,7 @@ function afficherCPListe(liste) {
   var box = document.getElementById('cp-suggestions');
   if (!liste.length) { box.style.display='none'; return; }
   box.innerHTML = liste.map(function(cp){
-    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Nunito\',sans-serif;font-size:0.85rem;color:#1a2a5e;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
+    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -888,7 +1287,7 @@ function filtrerVoies(val) {
   var matches = TYPES_VOIES.filter(function(v){ return v.toLowerCase().startsWith(val.toLowerCase()); });
   if (!matches.length) { box.style.display='none'; return; }
   box.innerHTML = matches.map(function(v){
-    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Nunito\',sans-serif;font-size:0.85rem;color:#1a2a5e;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
+    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -983,28 +1382,23 @@ function buildPopup(p, isCluster, membres) {
   try { user = JSON.parse(localStorage.getItem('babelom-user')); } catch(e) {}
 
   if (isCluster) {
-    // Popup cluster : liste scrollable avec noms cliquables
     var lignes = membres.map(function(m) {
       var lien = m.id ? 'temoignage.html?id=' + m.id : 'temoignages.html';
-      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid #e0ddd8;text-decoration:none;cursor:pointer;" onmouseover="this.style.background='#f5f0e8'" onmouseout="this.style.background=''">'+
-        '<span style="font-size:1rem;">👤</span>'+
-        '<div>'+
-          '<div style="font-size:0.82rem;font-weight:600;color:#1a2a5e;">' + m.nom + '</div>'+
-          '<div style="font-size:0.68rem;color:#5a6a8e;">' + (m.lieu||'') + '</div>'+
-        '</div>'+
-        '<span style="margin-left:auto;font-size:0.7rem;color:#d4880a;">→</span>'+
-      '</a>';
+      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid #e8eaf4;text-decoration:none;" onmouseover="this.style.background='#f0f4ff'" onmouseout="this.style.background=''">' +
+        '<span>👤</span>' +
+        '<div><div style="font-size:0.82rem;font-weight:600;color:#1a2a5e;">' + m.nom + '</div>' +
+        '<div style="font-size:0.68rem;color:#5a6a9e;">' + (m.lieu||'') + '</div></div>' +
+        '<span style="margin-left:auto;color:#FF6B35;">→</span></a>';
     }).join('');
-    return '<div style="font-family:'Nunito',sans-serif;min-width:240px;">' +
-      '<div style="background:#2c4a8a;padding:10px 14px;margin:-1px -1px 0;">' +
-        '<div style="font-size:0.72rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.1em;">📍 ' + membres[0].lieu + '</div>' +
-        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.65);margin-top:2px;">' + membres.length + ' membre' + (membres.length>1?'s':'') + ' dans ce lieu</div>' +
+    return '<div style="font-family:Nunito,sans-serif;min-width:240px;">' +
+      '<div style="background:#2c4a8a;padding:10px 14px;">' +
+        '<div style="font-size:0.72rem;font-weight:700;color:white;text-transform:uppercase;">' + membres[0].lieu + '</div>' +
+        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);">' + membres.length + ' membre(s)</div>' +
       '</div>' +
-      '<div style="max-height:220px;overflow-y:auto;padding:4px 10px;">' + lignes + '</div>' +
-      '<div style="padding:8px 10px;border-top:1px solid #e8e4d0;">' +
-        '<a href="temoignages.html" style="display:block;text-align:center;font-size:0.72rem;color:#2c4a8a;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;text-decoration:none;">Voir tous les témoignages →</a>' +
-      '</div>' +
-    '</div>';
+      '<div style="max-height:200px;overflow-y:auto;padding:0 8px;">' + lignes + '</div>' +
+      '<div style="padding:8px;border-top:1px solid #e8eaf4;text-align:center;">' +
+        '<a href="temoignages.html" style="font-size:0.72rem;color:#2c4a8a;font-weight:700;text-decoration:none;">Tous les témoignages →</a>' +
+      '</div></div>';
   }
 
   if (user) {
@@ -1024,22 +1418,22 @@ function buildPopup(p, isCluster, membres) {
             '</div>';
         }).join('') + '</div>';
     }
-    return '<div style="font-family:\'Nunito\',sans-serif;min-width:220px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:#1a2a5e;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:#5a6a8e;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
-      '<div style="height:1px;background:#d0d8ee;margin-bottom:10px;"></div>' +
-      '<div style="font-size:0.82rem;color:#2a4a8e;line-height:1.8;margin-bottom:8px;">' + type + annees + '</div>' +
+    return '<div style="font-family:\'Jost\',sans-serif;min-width:220px;padding:4px 2px;">' +
+      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
+      '<div style="font-size:0.82rem;color:#2e5a38;line-height:1.8;margin-bottom:8px;">' + type + annees + '</div>' +
       photosHtml +
-      (extrait ? '<div style="font-size:0.82rem;color:#3a5a9e;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
-      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#2c4a8a;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
+      (extrait ? '<div style="font-size:0.82rem;color:#4a7a52;line-height:1.6;margin-bottom:12px;font-style:italic;">' + extrait + '</div>' : '') +
+      '<a href="' + lienTem + '" style="display:block;text-align:center;background:#1e3a28;color:#f5f2e8;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Voir le témoignage complet →</a>' +
       '</div>';
   } else {
-    return '<div style="font-family:\'Nunito\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:1rem;font-weight:600;color:#1a2a5e;margin-bottom:2px;">' + p.nom + '</div>' +
-      '<div style="font-size:0.78rem;color:#5a6a8e;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
-      '<div style="height:1px;background:#d0d8ee;margin-bottom:10px;"></div>' +
-      '<div style="font-size:0.8rem;color:#3a5a9e;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
-      '<a href="index.html#compte" style="display:block;text-align:center;background:#FF6B35;color:white;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Inscrivez-vous →</a>' +
+    return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
+      '<div style="font-size:1rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">' + p.nom + '</div>' +
+      '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
+      '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
+      '<div style="font-size:0.8rem;color:#4a7a52;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
+      '<a href="index.html#compte" style="display:block;text-align:center;background:#d4880a;color:white;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Inscrivez-vous →</a>' +
       '</div>';
   }
 }
@@ -1252,7 +1646,7 @@ function rechercherMembres() {
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Nunito\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
       +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
   }).join('');
 }
@@ -1312,194 +1706,6 @@ function nouveau() {
   document.getElementById('coords-affich').classList.remove('placed');
   document.getElementById('instruction').classList.remove('hidden');
 }
-</script>
-
-<!-- Scripts helper session v1 (nav membre, modales mdp) -->
-<script>
-// ── Helper session ──
-function babelomGetUser() {
-  try {
-    const raw = localStorage.getItem('babelom-user');
-    if (!raw) return null;
-    const u = JSON.parse(raw);
-    if (u.expires && Date.now() > u.expires) {
-      localStorage.removeItem('babelom-user');
-      return null;
-    }
-    return u;
-  } catch(e) { return null; }
-}
-
-// Vérifier session Supabase au chargement
-(async function() {
-  try {
-    const _sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { data } = await _sb.auth.getSession();
-    if (data && data.session === null) {
-      // Session explicitement nulle (pas une erreur réseau) — déconnecter
-      localStorage.removeItem('babelom-user');
-    }
-    // Si erreur réseau : on garde l'utilisateur connecté
-  } catch(e) {}
-})();
-
-// Sync nav selon session — Menu D
-(function() {
-  const user = babelomGetUser();
-  document.addEventListener('DOMContentLoaded', function() {
-    const navLinks = document.querySelector('.nav-links');
-    if (!navLinks) return;
-    if (!user) return;
-    navLinks.querySelectorAll('li.membres-only').forEach(li => li.style.display = 'flex');
-    const badge = document.createElement('li');
-    badge.id = 'nav-user-badge';
-    badge.style.cssText = 'position:relative;display:flex;align-items:center;';
-    badge.innerHTML = `
-      <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
-        style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
-        onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
-        👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
-      </button>
-      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
-        <div style="background:#2c4a8a;padding:10px 14px;display:flex;align-items:center;gap:10px;">
-          <div style="width:30px;height:30px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:white;flex-shrink:0;">${(user.prenom||'?')[0].toUpperCase()}</div>
-          <div>
-            <div style="font-size:0.82rem;color:#e8dfc0;font-weight:500;">${user.prenom} ${user.nom||''}</div>
-            <div style="font-size:0.7rem;color:#5a6a8e;">${user.email||''}</div>
-          </div>
-        </div>
-        <div style="border-bottom:1px solid #e0d8c0;">
-          <div style="padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onclick="toggleLieuxHistorique()">
-            <span style="font-size:0.78rem;color:#1a2a5e;font-weight:500;display:flex;align-items:center;gap:6px;">
-              🏠 Mes lieux habités
-              <span id="badge-nb-lieux" style="background:#FF6B35;color:white;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
-            </span>
-            <span id="arrow-hist" style="font-size:0.65rem;color:#5a6a8e;">▾</span>
-          </div>
-          <div id="liste-lieux-hist" style="display:none;padding:0 14px 8px;max-height:200px;overflow-y:auto;">
-            <div id="lieux-loading" style="font-size:0.75rem;color:#5a6a8e;font-style:italic;padding:6px 0;">Chargement…</div>
-          </div>
-        </div>
-        <div style="border-bottom:1px solid #e0d8c0;">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1a2a5e;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1a2a5e;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1a2a5e;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
-        </div>
-        <div style="padding:8px 14px;">
-          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
-        </div>
-      </div>`;
-    navLinks.appendChild(badge);
-    chargerLieuxMembre(user);
-  });
-})();
-
-function toggleMenuMembre(e) {
-  e.stopPropagation();
-  const d = document.getElementById('menu-membre-dropdown');
-  if (d) d.style.display = d.style.display === 'none' ? 'block' : 'none';
-}
-
-function toggleLieuxHistorique() {
-  const liste = document.getElementById('liste-lieux-hist');
-  const arrow = document.getElementById('arrow-hist');
-  if (!liste) return;
-  const open = liste.style.display !== 'none';
-  liste.style.display = open ? 'none' : 'block';
-  if (arrow) arrow.textContent = open ? '▾' : '▴';
-}
-
-async function chargerLieuxMembre(user) {
-  try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { data, error } = await sb.from('temoignages')
-      .select('id, adresse, ville, pays, annee_de, annee_a, type_logement')
-      .eq('utilisateur_id', user.id)
-      .order('annee_de', { ascending: true });
-    const container = document.getElementById('lieux-loading');
-    const badge = document.getElementById('badge-nb-lieux');
-    if (!container) return;
-    if (error || !data || !data.length) {
-      if (badge) badge.textContent = '0';
-      container.innerHTML = '<div style="font-size:0.75rem;color:#5a6a8e;font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
-      return;
-    }
-    if (badge) badge.textContent = data.length;
-    const colors = ['#d4880a','#4a7a52','#2277cc','#e8335a','#7a4a8a'];
-    container.innerHTML = data.map(function(t, i) {
-      const lieu = [t.adresse, t.ville].filter(Boolean).join(', ');
-      const dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
-      const col = colors[i % colors.length];
-      return `<div style="padding:6px 0;border-bottom:1px solid #ede8d8;display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
-        <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:0.75rem;font-weight:500;color:#1a2a5e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
-          <div style="font-size:0.68rem;color:#5a6a8e;">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
-        </div>
-        <div style="display:flex;gap:3px;flex-shrink:0;">
-          <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
-            style="background:#FF6B35;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">✏️</button>
-          <button onclick="supprimerLieu('${t.id}')" title="Supprimer"
-            style="background:#e05050;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:2px;cursor:pointer;">🗑</button>
-        </div>
-      </div>`;
-    }).join('');
-  } catch(e) {}
-}
-
-async function supprimerLieu(id) {
-  if (!confirm('Supprimer ce souvenir définitivement ?')) return;
-  try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { error } = await sb.from('temoignages').delete().eq('id', id);
-    if (!error) {
-      const row = document.getElementById('lieu-row-' + id);
-      if (row) row.remove();
-      const badge = document.getElementById('badge-nb-lieux');
-      if (badge) badge.textContent = parseInt(badge.textContent||'1') - 1;
-    }
-  } catch(e) {}
-}
-
-document.addEventListener('click', function(e) {
-  const d = document.getElementById('menu-membre-dropdown');
-  const btn = document.getElementById('btn-menu-membre');
-  if (d && btn && !d.contains(e.target) && !btn.contains(e.target)) d.style.display = 'none';
-});
-
-function fermerModale(id) {
-  document.getElementById(id).style.display = 'none';
-}
-</script>
-<script>
-function validerMdp() {
-  const ancien = document.getElementById('mdp-ancien').value;
-  const nouveau = document.getElementById('mdp-nouveau').value;
-  const confirm = document.getElementById('mdp-confirm').value;
-  const msg = document.getElementById('mdp-msg');
-  if (!ancien || !nouveau || !confirm) { msg.style.color='#c04040'; msg.textContent='Veuillez remplir tous les champs.'; return; }
-  if (nouveau.length < 8) { msg.style.color='#c04040'; msg.textContent='Le nouveau mot de passe doit faire au moins 8 caractères.'; return; }
-  if (nouveau !== confirm) { msg.style.color='#c04040'; msg.textContent='Les mots de passe ne correspondent pas.'; return; }
-  msg.style.color = '#4a7a52';
-  msg.textContent = '✓ Mot de passe modifié avec succès.';
-  setTimeout(() => fermerModale('modale-mdp'), 1500);
-}
-</script>
-
-<!-- Auth v2 -->
-<script>
-function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
-function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
-function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
-function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
-document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
-function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');document.querySelectorAll('.membres-only').forEach(function(el){el.style.display=user?'flex':'none';});if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='👤 '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
-function seDeconnecter(){localStorage.removeItem('babelom-user');mettreAJourNav();}
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecté !';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Compte créé !':'Vérifiez votre email.';}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-function validerAdmin(){var mdp=document.getElementById('admin-mdp');if(mdp&&mdp.value==='babelom2024')window.location.href='admin-portal.html';else if(mdp)mdp.style.borderColor='#FF8B94';}
-setTimeout(mettreAJourNav, 100);
 </script>
 </body>
 </html>
