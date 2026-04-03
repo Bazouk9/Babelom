@@ -5,7 +5,7 @@
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Racontez votre lieu</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="supabase-config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="player.js" defer></script>
@@ -29,10 +29,9 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--creme);
-  color:white;
+  color: var(--terre);
   min-height: 100vh;
   display: block;
-  
 }
 
 /* ── NAV ── */
@@ -72,7 +71,7 @@ nav {
   color: #FF6B35;
   line-height: 1;
 }
-.nav-links a:hover .nav-num { color: #e05a28; }
+.nav-links a:hover .nav-num { color: #e8a030; }
 .nav-links a.active { color: #FF6B35; }
 
 /* ── HEADER ── */
@@ -154,7 +153,7 @@ nav {
 
 .recap-info {
   font-size: 0.92rem;
-  color:white;
+  color: var(--terre);
   line-height: 1.6;
 }
 
@@ -164,7 +163,7 @@ nav {
 
 .recap-info .recap-edit {
   font-size: 0.78rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   text-decoration: none;
   margin-left: 16px;
   letter-spacing: 0.06em;
@@ -186,13 +185,13 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 1.7rem;
   font-weight: 400;
-  color:white;
+  color: var(--terre);
   margin-bottom: 8px;
 }
 
 .form-section-sub {
   font-size: 0.92rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.65;
   margin-bottom: 40px;
 }
@@ -217,8 +216,8 @@ nav {
 }
 
 .famille-item {
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.3);
+  background: white;
+  border: 1.5px solid var(--sable);
   border-radius: 6px;
   padding: 10px 14px;
   display: flex;
@@ -238,8 +237,7 @@ nav {
 }
 
 .famille-info {
-  display: flex;
-  flex-direction: column;
+  display: block;
   gap: 2px;
 }
 
@@ -247,7 +245,7 @@ nav {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   font-weight: 400;
 }
 
@@ -262,7 +260,7 @@ nav {
   border-radius: 50%;
   border: 1px solid var(--sable);
   background: var(--creme);
-  color:white;
+  color: var(--terre);
   font-size: 0.85rem;
   cursor: pointer;
   display: flex;
@@ -278,7 +276,7 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   font-weight: 600;
-  color:white;
+  color: var(--terre);
   min-width: 16px;
   text-align: center;
 }
@@ -286,9 +284,9 @@ nav {
 
 .champ input {
   width: 100%;
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.3);
-  color:white;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
   font-family: 'Nunito', sans-serif;
   font-size: 0.95rem;
   padding: 12px 16px;
@@ -303,16 +301,16 @@ nav {
   font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   margin-bottom: 10px;
   font-weight: 400;
 }
 
 .champ textarea {
   width: 100%;
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.3);
-  color:white;
+  background: white;
+  border: 1.5px solid var(--sable);
+  color: var(--terre);
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   padding: 20px 22px;
@@ -330,7 +328,7 @@ nav {
 
 .char-count {
   font-size: 0.75rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   text-align: right;
   margin-top: 6px;
 }
@@ -343,7 +341,7 @@ nav {
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
   border-radius: 2px;
-  background:rgba(255,255,255,0.07);
+  background: white;
 }
 .upload-zone:hover { border-color: var(--ocre); background: var(--creme); }
 
@@ -353,13 +351,13 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 1.2rem;
   font-weight: 400;
-  color:white;
+  color: var(--terre);
   margin-bottom: 8px;
 }
 
 .upload-zone p {
   font-size: 0.85rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.5;
 }
 
@@ -460,7 +458,7 @@ nav {
 .btn-retour {
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   background: none;
   border: none;
   cursor: pointer;
@@ -468,7 +466,7 @@ nav {
   text-decoration: none;
   transition: color 0.2s;
 }
-.btn-retour:hover { color:white; }
+.btn-retour:hover { color: var(--terre); }
 
 .btn-valider {
   background: var(--ocre);
@@ -484,7 +482,7 @@ nav {
   transition: background 0.2s, transform 0.15s;
   border-radius: 2px;
 }
-.btn-valider:hover { background: #cc4a1a; transform: translateY(-1px); }
+.btn-valider:hover { background: #b87008; transform: translateY(-1px); }
 
 /* ── CONFIRMATION ── */
 #confirmation {
@@ -510,14 +508,14 @@ nav {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 400;
-  color:white;
+  color: var(--terre);
   margin-bottom: 16px;
   line-height: 1.2;
 }
 .confirm-title em { color: var(--ocre); font-style: italic; }
 .confirm-sub {
   font-size: 0.95rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.7;
   margin-bottom: 36px;
 }
@@ -545,8 +543,8 @@ nav {
 .btn-nouveau:hover { background: var(--brun); }
 .btn-accueil {
   background: none;
-  color:rgba(255,255,255,0.6);
-  border:1.5px solid rgba(255,255,255,0.3);
+  color: var(--muted);
+  border: 1.5px solid var(--sable);
   padding: 12px 28px;
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
@@ -558,7 +556,7 @@ nav {
   transition: border-color 0.2s, color 0.2s;
   border-radius: 2px;
 }
-.btn-accueil:hover { border-color:white; color:white; }
+.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
 
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(20px); }
@@ -576,15 +574,9 @@ footer {
 }
 .footer-text { font-size: 0.88rem; color: rgba(255,255,255,0.2); }
 </style>
-<script>
-// ── GARDE D'ACCÈS ──
-(function() {
-  if (!localStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
-    window.location.replace('index.html#compte');
-  }
-})();
-</script>
+
 <style id="nav-v2">
+
 #top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;}
 .nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
 .nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
@@ -614,73 +606,19 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-dot{opacity:1;}
 .bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
 .bn.active .bn-lbl{color:#FF6B35;}
-</style>
-<style id="fix-visibility">
-/* RESET COMPLET */
-html { box-sizing: border-box; }
-*, *::before, *::after { box-sizing: inherit; }
-body { 
-  background: #1A1A2E !important; 
-  color: white !important; 
-  font-family: 'Nunito', sans-serif !important; 
-  padding-bottom: 70px !important;
-  min-height: 100vh;
-  }
-/* Structure principale */
-#top-band { flex-shrink: 0 !important; }
-.page-header { 
-  flex-shrink: 0 !important;
-  height: auto !important;
-  min-height: unset !important;
-  background: #2c4a8a !important; 
-  color: white !important; 
-  border-bottom: 2px solid #FF6B35 !important;
-}
-.main-content { 
-  flex: 1 !important;
-  background: #1A1A2E !important;
-  min-height: 500px !important;
-}
-/* Textes */
-.header-title, .header-label, .header-sub, .step-badge,
-.form-section-title, .form-section-sub, .coords-affich,
-h1, h2, h3, p, span, label { color: white !important; }
-.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
-.step-pip { background: rgba(255,255,255,0.2) !important; }
-.step-pip.active { background: #FF6B35 !important; }
-/* Formulaire */
-.form-wrap { background: #1e2d50 !important; color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea,
-input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
-textarea, select {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important; border-radius: 6px !important;
-}
-input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
-input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
-select option { background: #2c4a8a; color: white; }
-/* Carte */
-.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
-#map { min-height: 400px !important; }
-.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
-/* Boutons */
-.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
-.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
-/* Footer */
-footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
-footer a { color: rgba(255,255,255,0.5) !important; }
-/* Inline styles v1 résiduels */
-[style*="#1e3a28"] { background-color: #2c4a8a !important; }
-[style*="#2e5a38"] { background-color: #3358a0 !important; }
-[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
+
 </style>
 </head>
 <body>
+<script>
+// ── GARDE D'ACCÈS ──
+(function() {
+  if (!localStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
+    window.location.replace('index.html#compte');
+  }
+})();
+</script>
+
 
 <!-- NAV -->
 <div id="top-band">
@@ -780,7 +718,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       <div class="step-pip active"></div>
       <div class="step-pip"></div>
     </div>
-    <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
+    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
   </div>
 </div>
 
@@ -789,7 +727,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
   <div class="recap-pin">📍</div>
   <div class="recap-info" id="recap-info">
     <strong id="recap-adresse">—</strong>
-    <span id="recap-dates" style="color:rgba(255,255,255,0.6);margin-left:12px;"></span>
+    <span id="recap-dates" style="color:var(--muted);margin-left:12px;"></span>
     <button onclick="effacerTout()" class="recap-edit" style="background:none;border:none;cursor:pointer;padding:0;">✕ Effacer tout</button>
   </div>
 </div>
@@ -818,143 +756,143 @@ footer a { color: rgba(255,255,255,0.5) !important; }
   </div>
 
   <!-- TÉMOIGNAGE POSTHUME -->
-  <div class="champ" style="background:rgba(255,255,255,0.05);border:1.5px solid rgba(255,255,255,0.3);border-left:3px solid var(--ocre);padding:20px 22px;border-radius:2px;">
-    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.6);margin-bottom:14px;">
+  <div class="champ" style="background:var(--parchemin);border:1.5px solid var(--sable);border-left:3px solid var(--ocre);padding:20px 22px;border-radius:2px;">
+    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;">
       Témoignage au nom d'une personne décédée <span style="font-size:0.72rem;letter-spacing:0.06em;text-transform:none;font-style:italic;">(optionnel)</span>
     </label>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;">
       <div>
-        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:7px;">Nom</label>
-        <input type="text" id="f-defunt-nom" placeholder="Ex : Benali" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Nom</label>
+        <input type="text" id="f-defunt-nom" placeholder="Ex : Benali" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
       </div>
       <div>
-        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:7px;">Prénom</label>
-        <input type="text" id="f-defunt-prenom" placeholder="Ex : Fatima" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Prénom</label>
+        <input type="text" id="f-defunt-prenom" placeholder="Ex : Fatima" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
       </div>
       <div>
-        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:7px;">Décédé(e) le</label>
-        <input type="date" id="f-defunt-deces" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+        <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Décédé(e) le</label>
+        <input type="date" id="f-defunt-deces" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
       </div>
     </div>
     <div>
-      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:7px;">Lien de parenté ou d'amitié</label>
-      <input type="text" id="f-defunt-lien" placeholder="Ex : Ma grand-mère, mon père, ma tante…" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Lien de parenté ou d'amitié</label>
+      <input type="text" id="f-defunt-lien" placeholder="Ex : Ma grand-mère, mon père, ma tante…" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
     </div>
   </div>
 
   <!-- COMPOSITION DU FOYER -->
   <div class="champ">
-    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.6);margin-bottom:14px;"><span data-i18n="e2SectionFoyer">Composition du foyer à cette époque</span></label>
+    <label style="display:block;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.14em;color:var(--muted);margin-bottom:14px;"><span data-i18n="e2SectionFoyer">Composition du foyer à cette époque</span></label>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-top:8px;">
 
       <!-- Célibataire -->
-      <div id="fi-celibataire" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-celibataire" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">🧍</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Celibataire">Célibataire</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Celibataire">Célibataire</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerCelibataire(-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="celibataire-check" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerCelibataire(1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerCelibataire(-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="celibataire-check" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerCelibataire(1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Conjoint·e -->
-      <div id="fi-conjoint" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-conjoint" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">💑</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Conjoint">Conjoint·e</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Conjoint">Conjoint·e</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('conjoint',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-conjoint" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('conjoint',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('conjoint',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-conjoint" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('conjoint',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Père -->
-      <div id="fi-pere" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-pere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👨</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Pere">Père</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Pere">Père</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('pere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-pere" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('pere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('pere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-pere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('pere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Mère -->
-      <div id="fi-mere" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-mere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👩</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Mere">Mère</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Mere">Mère</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('mere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-mere" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('mere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('mere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-mere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('mere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Enfants -->
-      <div id="fi-enfants" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-enfants" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👶</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Enfants">Enfant(s)</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Enfants">Enfant(s)</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('enfants',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-enfants" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('enfants',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('enfants',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-enfants" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('enfants',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Frère(s) -->
-      <div id="fi-frere" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-frere" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👦</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Freres">Frère(s)</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Freres">Frère(s)</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('frere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-frere" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('frere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('frere',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-frere" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('frere',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Sœur(s) -->
-      <div id="fi-soeur" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-soeur" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👧</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2Soeurs">Sœur(s)</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2Soeurs">Sœur(s)</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('soeur',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-soeur" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('soeur',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('soeur',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-soeur" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('soeur',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Grands-parents -->
-      <div id="fi-gp" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-gp" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">👴</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2GrandsParents">Gds-parents</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2GrandsParents">Gds-parents</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('gp',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-gp" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('gp',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('gp',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-gp" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('gp',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Petits-enfants -->
-      <div id="fi-pe" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-pe" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">🧒</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);"><span data-i18n="e2PetitsEnfants">Petits-enf.</span></span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;"><span data-i18n="e2PetitsEnfants">Petits-enf.</span></span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('pe',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-pe" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('pe',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('pe',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-pe" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('pe',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
       <!-- Autres -->
-      <div id="fi-autres" style="background:rgba(255,255,255,0.07);border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+      <div id="fi-autres" style="background:white;border:1.5px solid #c8d8b0;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
         <span style="font-size:1.3rem;line-height:1;">🧑</span>
-        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.6);">Autres</span>
+        <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:#7a9a72;">Autres</span>
         <div style="display:flex;align-items:center;gap:5px;">
-          <button type="button" onclick="changerFamille('autres',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
-          <span id="famille-autres" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:white;min-width:14px;text-align:center;">0</span>
-          <button type="button" onclick="changerFamille('autres',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid rgba(255,255,255,0.2);background:#1e2d50;color:white;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
+          <button type="button" onclick="changerFamille('autres',-1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">−</button>
+          <span id="famille-autres" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#1e3a28;min-width:14px;text-align:center;">0</span>
+          <button type="button" onclick="changerFamille('autres',1)" style="width:18px;height:18px;border-radius:50%;border:1px solid #c8d8b0;background:#f5f2e8;color:#1e3a28;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;">+</button>
         </div>
       </div>
 
@@ -981,7 +919,7 @@ footer a { color: rgba(255,255,255,0.5) !important; }
   </div>
 
   <div class="champ">
-    <label>Photos <span style="font-weight:300;font-size:0.78rem;color:rgba(255,255,255,0.6);">(optionnel · 4 max)</span></label>
+    <label>Photos <span style="font-weight:300;font-size:0.78rem;color:var(--muted);">(optionnel · 4 max)</span></label>
     <div class="upload-zone" onclick="document.getElementById('f-photos').click()">
       <div class="upload-icon">📷</div>
       <h3>Ajouter des photos</h3>
@@ -1000,16 +938,16 @@ footer a { color: rgba(255,255,255,0.5) !important; }
     <div id="reglement-scroll" onscroll="verifierScroll(this)" style="
       height:180px;
       overflow-y:scroll;
-      background:rgba(255,255,255,0.07);
-      border:1.5px solid rgba(255,255,255,0.3);
+      background:white;
+      border:1.5px solid var(--sable);
       border-radius:2px;
       padding:20px 22px;
       font-size:0.9rem;
       line-height:1.85;
-      color:white;
-      font-family:'Nunito',sans-serif;
+      color:var(--terre);
+      font-family:'Jost',sans-serif;
     ">
-      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;margin-bottom:16px;color:white;" data-i18n="e2ReglementTitre">Charte d'utilisation et Conditions Générales — Babelom</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:16px;color:var(--terre);" data-i18n="e2ReglementTitre">Charte d'utilisation et Conditions Générales — Babelom</p>
 
       <p style="margin-bottom:14px;"><strong data-i18n="e2Regl1Titre">1. Identité et authenticité</strong><br>
       <span data-i18n="e2Regl1">Seule votre propre identité peut être enregistrée. Vous vous engagez à renseigner des informations véridiques. Il est strictement interdit de déposer un témoignage au nom d'une personne vivante sans son consentement explicite. L'usurpation d'identité entraîne la suppression immédiate du compte et peut faire l'objet de poursuites judiciaires.</span></p>
@@ -1039,13 +977,13 @@ footer a { color: rgba(255,255,255,0.5) !important; }
       <span data-i18n="e2Regl9">Vous pouvez demander à tout moment la suppression de vos données personnelles et témoignages, conformément au RGPD, en écrivant à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f1939093949d9e9cc8b1969c90989ddf929e9c">[email&#160;protected]</a>. Vos informations sont publiées sans limitation de durée mais peuvent être retirées librement. Aucune information n'est transmise à des tiers à des fins commerciales.</span></p>
     </div>
 
-    <div id="reglement-hint" style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;margin-top:6px;text-align:right;">
+    <div id="reglement-hint" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin-top:6px;text-align:right;">
       <span data-i18n="e2ReglHint">↓ Faites défiler jusqu'en bas pour pouvoir accepter</span>
     </div>
 
     <div id="accepter-wrap" style="margin-top:14px;display:flex;align-items:center;gap:12px;opacity:0.35;pointer-events:none;transition:opacity 0.4s;">
       <input type="checkbox" id="cb-reglement" style="width:18px;height:18px;accent-color:var(--ocre);cursor:pointer;">
-      <label for="cb-reglement" style="font-size:0.9rem;color:white;cursor:pointer;line-height:1.5;">
+      <label for="cb-reglement" style="font-size:0.9rem;color:var(--terre);cursor:pointer;line-height:1.5;">
         <span data-i18n="e2ReglAccepter">J'ai lu et j'accepte la charte d'utilisation de Babelom</span>
       </label>
     </div>
@@ -1088,8 +1026,8 @@ footer a { color: rgba(255,255,255,0.5) !important; }
   </div>
   <div class="footer-text"><span data-i18n="footerText">La mémoire des lieux habités · Tous droits réservés</span></div>
   <div style="margin-top:10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-    <a href="mentions-legales.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Mentions légales</a>
-    <a href="confidentialite.html" style="font-size:0.72rem;color:rgba(255,255,255,0.6);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Confidentialité</a>
+    <a href="mentions-legales.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Mentions légales</a>
+    <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Confidentialité</a>
   </div>
 </footer>
 

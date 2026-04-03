@@ -5,7 +5,7 @@
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Confirmation de votre compte</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="player.js" defer></script>
@@ -22,17 +22,16 @@
 body {
   font-family: 'Nunito', sans-serif;
   background: var(--creme);
-  color:white;
+  color: var(--terre);
   min-height: 100vh;
   display: block;
-  
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
 }
 .carte {
-  background:rgba(255,255,255,0.07);
-  border:1.5px solid rgba(255,255,255,0.3);
+  background: white;
+  border: 1.5px solid var(--sable);
   border-radius: 4px;
   padding: 52px 48px;
   max-width: 480px;
@@ -55,7 +54,7 @@ h1 {
 h1 em { color: var(--ocre); font-style: italic; }
 p {
   font-size: 0.92rem;
-  color:rgba(255,255,255,0.6);
+  color: var(--muted);
   line-height: 1.7;
   margin-bottom: 12px;
 }
@@ -80,9 +79,10 @@ p {
 }
 .btn-ocre:hover { background: #b8720a; }
 .erreur { color: #c04040; font-size: 0.88rem; margin-top: 16px; }
-#etat-chargement { color:rgba(255,255,255,0.6); font-size: 0.88rem; }
+#etat-chargement { color: var(--muted); font-size: 0.88rem; }
 </style>
 <style id="nav-v2">
+
 #top-band{background:#2c4a8a!important;padding:8px 20px!important;display:flex!important;align-items:center!important;gap:12px!important;border-bottom:6px solid #FF6B35!important;position:sticky!important;top:0!important;z-index:1001!important;}
 .nav-circle{width:40px!important;height:40px!important;border-radius:50%!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important;}
 .nav-ib{display:flex!important;flex-direction:column!important;align-items:center!important;gap:3px!important;cursor:pointer!important;text-decoration:none!important;padding:2px 6px!important;}
@@ -112,70 +112,7 @@ body{padding-bottom:70px!important;}
 .bn.active .bn-dot{opacity:1;}
 .bn-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:#6B7A99;}
 .bn.active .bn-lbl{color:#FF6B35;}
-</style>
-<style id="fix-visibility">
-/* RESET COMPLET */
-html { box-sizing: border-box; }
-*, *::before, *::after { box-sizing: inherit; }
-body { 
-  background: #1A1A2E !important; 
-  color: white !important; 
-  font-family: 'Nunito', sans-serif !important; 
-  padding-bottom: 70px !important;
-  min-height: 100vh;
-  }
-/* Structure principale */
-#top-band { flex-shrink: 0 !important; }
-.page-header { 
-  flex-shrink: 0 !important;
-  height: auto !important;
-  min-height: unset !important;
-  background: #2c4a8a !important; 
-  color: white !important; 
-  border-bottom: 2px solid #FF6B35 !important;
-}
-.main-content { 
-  flex: 1 !important;
-  background: #1A1A2E !important;
-  min-height: 500px !important;
-}
-/* Textes */
-.header-title, .header-label, .header-sub, .step-badge,
-.form-section-title, .form-section-sub, .coords-affich,
-h1, h2, h3, p, span, label { color: white !important; }
-.header-title em, .nav-num, .step-badge { color: #FF6B35 !important; }
-.step-pip { background: rgba(255,255,255,0.2) !important; }
-.step-pip.active { background: #FF6B35 !important; }
-/* Formulaire */
-.form-wrap { background: #1e2d50 !important; color: white !important; }
-.champ label { color: rgba(255,255,255,0.8) !important; }
-.champ input, .champ select, .champ textarea,
-input:not([type="submit"]):not([type="button"]):not([type="radio"]):not([type="checkbox"]),
-textarea, select {
-  background: rgba(255,255,255,0.08) !important;
-  border: 1.5px solid rgba(255,255,255,0.3) !important;
-  color: white !important; border-radius: 6px !important;
-}
-input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4) !important; }
-input:focus, textarea:focus, select:focus { border-color: #FF6B35 !important; }
-select option { background: #2c4a8a; color: white; }
-/* Carte */
-.carte-wrap { background: #1e2d50 !important; min-height: 400px !important; }
-#map { min-height: 400px !important; }
-.carte-instruction { background: #2c4a8a !important; color: white !important; border-left-color: #FF6B35 !important; }
-/* Boutons */
-.btn-valider { background: #FF6B35 !important; color: white !important; border-radius: 6px !important; }
-.btn-retour { color: rgba(255,255,255,0.6) !important; }
-.upload-zone { border-color: rgba(255,255,255,0.25) !important; }
-.upload-zone p { color: rgba(255,255,255,0.5) !important; }
-.form-footer { border-top-color: rgba(255,255,255,0.12) !important; }
-/* Footer */
-footer { background: #2c4a8a !important; color: rgba(255,255,255,0.6) !important; border-top: 4px solid #FF6B35 !important; flex-shrink: 0 !important; }
-footer a { color: rgba(255,255,255,0.5) !important; }
-/* Inline styles v1 résiduels */
-[style*="#1e3a28"] { background-color: #2c4a8a !important; }
-[style*="#2e5a38"] { background-color: #3358a0 !important; }
-[style*="color:#7a9a72"], [style*="color: #7a9a72"] { color: rgba(255,255,255,0.65) !important; }
+
 </style>
 </head>
 <body>
