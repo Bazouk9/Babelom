@@ -838,11 +838,11 @@ body{padding-bottom:70px!important;}
 @keyframes dotAppear { from { opacity:0; transform:scale(0); } to { opacity:1; transform:scale(1); } }
 #dot-edinburgh { top:39.5%; left:44.1%; opacity:0; animation: dotAppear 0.5s 4.3s forwards; }
 #dot-essaouira { top:46.5%; left:42.0%; opacity:0; animation: dotAppear 0.5s 4.6s forwards; }
-#dot-sfax { top:45.5%; left:48.5%; opacity:0; animation: dotAppear 0.5s 5.0s forwards; }
-#dot-madagascar { top:64.0%; left:58.5%; opacity:0; animation: dotAppear 0.5s 5.3s forwards; }
+#dot-sucre { top:63.7%; left:27.5%; opacity:0; animation: dotAppear 0.5s 5.65s forwards; }
+#dot-ghanzi { top:64.5%; left:50.8%; opacity:0; animation: dotAppear 0.5s 4.55s forwards; }
 #dot-nelson { top:72.0%; left:89.0%; opacity:0; animation: dotAppear 0.5s 5.7s forwards; }
 #dot-riyad { top:49.0%; left:57.8%; opacity:0; animation: dotAppear 0.5s 6.0s forwards; }
-#dot-salto { top:67.5%; left:29.0%; opacity:0; animation: dotAppear 0.5s 6.4s forwards; }
+#dot-sucre { top:63.6%; left:27.4%; opacity:0; animation: dotAppear 0.5s 5.25s forwards; }
 #dot-lagos { top:55.5%; left:45.8%; opacity:0; animation: dotAppear 0.5s 6.7s forwards; }
 </style>
 </head>
@@ -912,18 +912,36 @@ body{padding-bottom:70px!important;}
       <button id="btn-menu-membre" onclick="toggleMenuMembre(event)" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;padding:5px 12px;border-radius:16px;display:flex;align-items:center;gap:6px;white-space:nowrap;">
         <span id="nav-user-name">Mon compte</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
       </button>
-      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;min-width:210px;z-index:9000;box-shadow:0 8px 24px rgba(0,0,0,0.3);overflow:hidden;">
-        <div style="background:#3358a0;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.1);">
-          <div id="menu-prenom" style="font-size:0.85rem;color:white;font-weight:700;"></div>
-          <div id="menu-email" style="font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:2px;"></div>
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;min-width:280px;z-index:9000;box-shadow:0 8px 24px rgba(0,0,0,0.4);overflow:hidden;font-family:'Nunito',sans-serif;">
+        <!-- En-tête membre -->
+        <div style="background:#3358a0;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div style="width:32px;height:32px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;flex-shrink:0;" id="menu-avatar">?</div>
+          <div>
+            <div id="menu-prenom" style="font-size:0.85rem;color:white;font-weight:700;"></div>
+            <div id="menu-email" style="font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:1px;"></div>
+          </div>
         </div>
-        <a href="etape1.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128205; Mes lieux</a>
-        <a href="temoignages.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128214; Mes temoignages</a>
-        <a href="messagerie.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128172; Messages</a>
-        <div style="border-top:1px solid rgba(255,255,255,0.1);"></div>
-        <div onclick="seDeconnecter();fermerMenuMembre();" style="padding:10px 16px;font-size:0.82rem;color:#FF8B94;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='none'">Deconnexion</div>
-      </div>
-    </div>
+        <!-- Mes lieux habités -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="toggleLieuxHistorique()" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">
+            <span style="font-size:0.82rem;color:white;font-weight:600;display:flex;align-items:center;gap:6px;">
+              🏠 Mes lieux habités
+              <span id="badge-nb-lieux" style="background:#FF6B35;color:white;font-size:0.62rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
+            </span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:rgba(255,255,255,0.5);">▾</span>
+          </div>
+          <div id="liste-lieux-hist" style="display:none;padding:0 12px 8px;max-height:200px;overflow-y:auto;">
+            <div id="lieux-loading" style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:6px 4px;">Chargement…</div>
+          </div>
+        </div>
+        <!-- Actions compte -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
+          <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🗑 Supprimer mon compte</div>
+        </div>
+        <!-- Déconnexion --><!-- Déconnexion -->
+        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">✕ Se déconnecter</div>
+      </div></div>
 
     <!-- Boutons Connexion/Inscrire (non connecté) -->
     <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
@@ -1087,11 +1105,11 @@ body{padding-bottom:70px!important;}
 
   <div class="map-dot" id="dot-edinburgh" title="Edimbourg"></div>
   <div class="map-dot" id="dot-essaouira" title="Essaouira"></div>
-  <div class="map-dot" id="dot-sfax" title="Sfax"></div>
-  <div class="map-dot" id="dot-madagascar" title="Madagascar"></div>
+  <div class="map-dot" id="dot-sucre" title="Sucre, Bolivie"></div>
+  <div class="map-dot" id="dot-ghanzi" title="Ghanzi, Botswana"></div>
   <div class="map-dot" id="dot-nelson" title="Nelson NZ"></div>
   <div class="map-dot" id="dot-riyad" title="Riyad"></div>
-  <div class="map-dot" id="dot-salto" title="Salto"></div>
+  <div class="map-dot" id="dot-sucre" title="Sucre, Bolivie"></div>
   <div class="map-dot" id="dot-lagos" title="Lagos"></div>
 </div>
 </section>
@@ -2207,6 +2225,222 @@ function toggleMenuMembre(e){e.stopPropagation();var d=document.getElementById('
 function fermerMenuMembre(){var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display='none';}
 document.addEventListener('click',function(e){var menu=document.getElementById('menu-membre-dropdown');var btn=document.getElementById('btn-menu-membre');if(menu&&btn&&!btn.contains(e.target))menu.style.display='none';});
 setTimeout(mettreAJourNav,100);
+</script>
+<script>
+// ── Helper session ──
+function babelomGetUser() {
+  try {
+    const raw = localStorage.getItem('babelom-user');
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    if (u.expires && Date.now() > u.expires) {
+      localStorage.removeItem('babelom-user');
+      return null;
+    }
+    return u;
+  } catch(e) { return null; }
+}
+
+// Vérifier session Supabase au chargement
+(async function() {
+  try {
+    const _sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data } = await _sb.auth.getSession();
+    if (data && data.session === null) {
+      // Session explicitement nulle (pas une erreur réseau) — déconnecter
+      localStorage.removeItem('babelom-user');
+    }
+    // Si erreur réseau : on garde l'utilisateur connecté
+  } catch(e) {}
+})();
+
+// Sync nav selon session — Menu D
+document.addEventListener('DOMContentLoaded', function() {
+  const user = babelomGetUser();
+  if (!user) return;
+  // Mettre à jour le menu membre v2
+  var nameEl = document.getElementById('nav-user-name');
+  var prenomEl = document.getElementById('menu-prenom');
+  var emailEl = document.getElementById('menu-email');
+  var avatarEl = document.getElementById('menu-avatar'); if (avatarEl && user.prenom) avatarEl.textContent = user.prenom[0].toUpperCase();
+  if (nameEl) nameEl.textContent = '\u{1F464} ' + user.prenom;
+  if (prenomEl) prenomEl.textContent = user.prenom + (user.nom ? ' ' + user.nom : '');
+  if (emailEl) emailEl.textContent = user.email || '';
+  chargerLieuxMembre(user);
+}););
+
+function toggleMenuMembre(e) {
+  e.stopPropagation();
+  const d = document.getElementById('menu-membre-dropdown');
+  if (d) d.style.display = d.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleLieuxHistorique() {
+  const liste = document.getElementById('liste-lieux-hist');
+  const arrow = document.getElementById('arrow-hist');
+  if (!liste) return;
+  const open = liste.style.display !== 'none';
+  liste.style.display = open ? 'none' : 'block';
+  if (arrow) arrow.textContent = open ? '▾' : '▴';
+}
+
+async function chargerLieuxMembre(user) {
+  try {
+    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { data, error } = await sb.from('temoignages')
+      .select('id, adresse, ville, pays, annee_de, annee_a, type_logement')
+      .eq('utilisateur_id', user.id)
+      .order('annee_de', { ascending: true });
+    const container = document.getElementById('lieux-loading');
+    const badge = document.getElementById('badge-nb-lieux');
+    if (!container) return;
+    if (error || !data || !data.length) {
+      if (badge) badge.textContent = '0';
+      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      return;
+    }
+    if (badge) badge.textContent = data.length;
+    const colors = ['#d4880a','#4a7a52','#2277cc','#e8335a','#7a4a8a'];
+    container.innerHTML = data.map(function(t, i) {
+      const lieu = [t.adresse, t.ville].filter(Boolean).join(', ');
+      const dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
+      const col = colors[i % colors.length];
+      return `<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:8px;" id="lieu-row-${t.id}">
+        <div style="width:6px;height:6px;border-radius:50%;background:${col};flex-shrink:0;"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.75rem;font-weight:500;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${lieu||'Lieu non précisé'}</div>
+          <div style="font-size:0.68rem;color:rgba(255,255,255,0.6);">${dates||''}${t.type_logement?' · '+t.type_logement:''}</div>
+        </div>
+        <div style="display:flex;gap:3px;flex-shrink:0;">
+          <button onclick="window.location.href='etape2.html?edit=${t.id}'" title="Modifier"
+            style="background:#d4880a;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:10px;cursor:pointer;">✏️</button>
+          <button onclick="supprimerLieu('${t.id}')" title="Supprimer"
+            style="background:#e05050;color:white;border:none;font-size:0.65rem;padding:2px 6px;border-radius:10px;cursor:pointer;">🗑</button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {}
+}
+
+async function supprimerLieu(id) {
+  if (!confirm('Supprimer ce souvenir définitivement ?')) return;
+  try {
+    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const { error } = await sb.from('temoignages').delete().eq('id', id);
+    if (!error) {
+      const row = document.getElementById('lieu-row-' + id);
+      if (row) row.remove();
+      const badge = document.getElementById('badge-nb-lieux');
+      if (badge) badge.textContent = parseInt(badge.textContent||'1') - 1;
+    }
+  } catch(e) {}
+}
+
+document.addEventListener('click', function(e) {
+  const d = document.getElementById('menu-membre-dropdown');
+  const btn = document.getElementById('btn-menu-membre');
+  if (d && btn && !d.contains(e.target) && !btn.contains(e.target)) d.style.display = 'none';
+});
+
+function fermerModale(id) {
+  document.getElementById(id).style.display = 'none';
+}
+</script>
+<div id="modale-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);padding:36px 40px;border-radius:4px;width:340px;font-family:'Nunito',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:white;margin-bottom:20px;">Modifier le mot de passe</div>
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Mot de passe actuel</label>
+    <input type="password" id="mdp-ancien" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;padding:9px 12px;border-radius:2px;font-family:'Nunito',sans-serif;margin-bottom:14px;">
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Nouveau mot de passe</label>
+    <input type="password" id="mdp-nouveau" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;padding:9px 12px;border-radius:2px;font-family:'Nunito',sans-serif;margin-bottom:14px;">
+    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.6);margin-bottom:6px;">Confirmer le nouveau mot de passe</label>
+    <input type="password" id="mdp-confirm" style="width:100%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;padding:9px 12px;border-radius:2px;font-family:'Nunito',sans-serif;margin-bottom:6px;">
+    <div id="mdp-msg" style="font-size:0.78rem;min-height:18px;margin-bottom:14px;color:#c04040;"></div>
+    <div style="display:flex;gap:10px;">
+      <button onclick="validerMdp()" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Nunito',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;">Enregistrer</button>
+      <button onclick="fermerModale('modale-mdp')" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+    </div>
+  </div>
+</div>
+<div id="modale-suppression" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);padding:36px 40px;border-radius:4px;width:380px;font-family:'Nunito',sans-serif;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:white;margin-bottom:12px;">Suppression des données</div>
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:12px;">Conformément au RGPD, vous pouvez demander la suppression complète de vos données personnelles et témoignages.</p>
+    <p style="font-size:0.82rem;color:#c04040;line-height:1.6;margin-bottom:20px;">⚠️ Cette action est <strong>irréversible</strong>. Tous vos témoignages et données seront définitivement effacés sous 30 jours.</p>
+    <p style="font-size:0.82rem;color:#c8d8b0;margin-bottom:20px;">Envoyez votre demande à <a href="/cdn-cgi/l/email-protection#caa8aba8afa6a5a78aada7aba3a6e4a9a5a7" style="color:#FF6B35;"><span class="__cf_email__" data-cfemail="187a797a7d747775587f75797174367b7775">[email&#160;protected]</span></a> avec l'objet <em>« Suppression données »</em>.</p>
+    <div style="display:flex;gap:10px;">
+      <a href="/cdn-cgi/l/email-protection#63010201060f0c0e23040e020a0f4d000c0e5c101601090600175e30161313110610100a0c0d43070c0d0da0ca061045010c071a5e290643100c160b020a1706430f024310161313110610100a0c0d43000c0e130fa0cb1706430706430e061043070c0d0da0ca061043130611100c0d0d060f0f06104306174317a0ca0e0c0a040d020406104310161143210201060f0c0e4d" style="flex:1;background:#c04040;color:white;border:none;padding:10px;font-family:'Nunito',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;text-align:center;">Envoyer la demande</a>
+      <button onclick="fermerModale('modale-suppression')" style="background:none;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:10px 14px;font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
+    </div>
+  </div>
+</div>
+<script>
+function validerMdp() {
+  const ancien = document.getElementById('mdp-ancien').value;
+  const nouveau = document.getElementById('mdp-nouveau').value;
+  const confirm = document.getElementById('mdp-confirm').value;
+  const msg = document.getElementById('mdp-msg');
+  if (!ancien || !nouveau || !confirm) { msg.style.color='#c04040'; msg.textContent='Veuillez remplir tous les champs.'; return; }
+  if (nouveau.length < 8) { msg.style.color='#c04040'; msg.textContent='Le nouveau mot de passe doit faire au moins 8 caractères.'; return; }
+  if (nouveau !== confirm) { msg.style.color='#c04040'; msg.textContent='Les mots de passe ne correspondent pas.'; return; }
+  msg.style.color = '#4a7a52';
+  msg.textContent = '✓ Mot de passe modifié avec succès.';
+  setTimeout(() => fermerModale('modale-mdp'), 1500);
+}
+</script>
+<!-- MODALE CONFIRMATION SUPPRESSION COMPTE -->
+<div id="modale-confirm-delete" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:#2c4a8a;border:1px solid rgba(255,107,53,0.4);border-radius:14px;padding:32px 28px;max-width:380px;width:90%;font-family:'Nunito',sans-serif;text-align:center;">
+    <div style="font-size:2.2rem;margin-bottom:12px;">⚠️</div>
+    <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:white;font-weight:700;margin-bottom:12px;">Supprimer mon compte</div>
+    <p style="font-size:0.88rem;color:rgba(255,255,255,0.75);line-height:1.6;margin-bottom:24px;">
+      Attention, cela entraînera la <strong style="color:#FF8B94;">suppression définitive</strong> de votre compte et de toutes vos données (lieux, témoignages, photos).<br><br>
+      Cette action est <strong>irréversible</strong>.
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;">
+      <button onclick="document.getElementById('modale-confirm-delete').style.display='none';" 
+        style="padding:10px 24px;border:1.5px solid rgba(255,255,255,0.3);background:none;color:white;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:600;">
+        Non, annuler
+      </button>
+      <button onclick="supprimerMonCompte();"
+        style="padding:10px 24px;background:#FF8B94;border:none;color:white;border-radius:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:700;">
+        Oui, supprimer
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function confirmerSuppressionCompte() {
+  document.getElementById('menu-membre-dropdown').style.display = 'none';
+  document.getElementById('modale-confirm-delete').style.display = 'flex';
+}
+
+async function supprimerMonCompte() {
+  var btn = event.target;
+  btn.textContent = 'Suppression...';
+  btn.disabled = true;
+  try {
+    // Supprimer les témoignages de l'utilisateur
+    var user = babelomGetUser();
+    if (user && typeof sb !== 'undefined') {
+      await sb.query('temoignages', { method: 'DELETE', filters: ['utilisateur_id=eq.' + user.id] });
+    }
+    // Déconnecter et vider le localStorage
+    localStorage.removeItem('babelom-user');
+    localStorage.removeItem('sb-qbxshawdxqochjsmoodl-auth-token');
+    // Message et redirection
+    document.getElementById('modale-confirm-delete').innerHTML = 
+      '<div style="background:#2c4a8a;border-radius:14px;padding:32px 28px;max-width:380px;width:90%;text-align:center;font-family:Nunito,sans-serif;">' +
+      '<div style="font-size:2rem;margin-bottom:12px;">✅</div>' +
+      '<div style="color:white;font-size:1rem;">Compte supprimé. À bientôt.</div></div>';
+    setTimeout(function() { window.location.href = 'index.html'; }, 2000);
+  } catch(e) {
+    btn.textContent = 'Oui, supprimer';
+    btn.disabled = false;
+    alert('Erreur lors de la suppression. Contactez-nous.');
+  }
+}
 </script>
 </body>
 </html>
