@@ -614,8 +614,14 @@ body{padding-bottom:70px!important;}
 <script>
 // ── GARDE D'ACCÈS ──
 (function() {
-  if (!localStorage.getItem("babelom-user") && !new URLSearchParams(window.location.search).get("admin")) {
-    window.location.replace('index.html#compte');
+  if (!localStorage.getItem('babelom-user') && !new URLSearchParams(window.location.search).get('admin')) {
+    // Afficher la modale de connexion au lieu de rediriger
+    document.addEventListener('DOMContentLoaded', function() {
+      var modale = document.getElementById('modale-cx');
+      if (modale) {
+        modale.style.display = 'flex';
+      }
+    });
   }
 })();
 </script>

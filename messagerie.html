@@ -164,21 +164,16 @@ body{padding-bottom:70px!important;}
 <body>
 <script>
 // ── GARDE D'ACCÈS ──
-(async function() {
-  if (new URLSearchParams(window.location.search).get("admin")) return;
-  const user = localStorage.getItem("babelom-user");
-  if (!user) { window.location.replace('index.html#compte'); return; }
-  // Vérifier session Supabase
-  try {
-    const _sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON) : null;
-    if (_sb) {
-      const { data } = await _sb.auth.getSession();
-      if (!data?.session) {
-        localStorage.removeItem('babelom-user');
-        window.location.replace('index.html#compte');
+(function() {
+  if (!localStorage.getItem('babelom-user') && !new URLSearchParams(window.location.search).get('admin')) {
+    // Afficher la modale de connexion au lieu de rediriger
+    document.addEventListener('DOMContentLoaded', function() {
+      var modale = document.getElementById('modale-cx');
+      if (modale) {
+        modale.style.display = 'flex';
       }
-    }
-  } catch(e) {}
+    });
+  }
 })();
 </script>
 
