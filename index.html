@@ -175,11 +175,11 @@ nav.scrolled {
 }
 
 .hero-subtitle {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   line-height: 1.8;
   color: var(--muted);
   max-width: 440px;
-  font-weight: 300;
+  font-weight: 600;
   margin-bottom: 40px;
   opacity: 0;
   animation: fadeUp 0.9s 0.6s forwards;
@@ -833,6 +833,18 @@ body{padding-bottom:70px!important;}
 <style>
 @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
 </style>
+<script src="player.js" defer></script>
+<style id="new-dots-css">
+@keyframes dotAppear { from { opacity:0; transform:scale(0); } to { opacity:1; transform:scale(1); } }
+#dot-edinburgh { top:18.9%; left:49.1%; opacity:0; animation: dotAppear 0.5s 4.3s forwards; }
+#dot-essaouira { top:32.5%; left:47.3%; opacity:0; animation: dotAppear 0.5s 4.6s forwards; }
+#dot-sfax { top:30.7%; left:53.0%; opacity:0; animation: dotAppear 0.5s 5.0s forwards; }
+#dot-madagascar { top:60.5%; left:63.2%; opacity:0; animation: dotAppear 0.5s 5.3s forwards; }
+#dot-nelson { top:72.9%; left:98.1%; opacity:0; animation: dotAppear 0.5s 5.7s forwards; }
+#dot-riyad { top:36.3%; left:63.0%; opacity:0; animation: dotAppear 0.5s 6.0s forwards; }
+#dot-salto { top:67.4%; left:33.9%; opacity:0; animation: dotAppear 0.5s 6.4s forwards; }
+#dot-lagos { top:46.4%; left:50.9%; opacity:0; animation: dotAppear 0.5s 6.7s forwards; }
+</style>
 </head>
 <body>
 
@@ -887,7 +899,23 @@ body{padding-bottom:70px!important;}
   <!-- Droite : Notre Projet + Connexion + S'inscrire + Langue -->
   <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
     <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
-      <div class="nav-circle" style="background:#6B5EA8;">
+      <div id="nav-user" style="display:none;align-items:center;gap:8px;position:relative;">
+  <button id="btn-menu-membre" onclick="toggleMenuMembre(event)" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;padding:5px 12px;border-radius:16px;display:flex;align-items:center;gap:6px;white-space:nowrap;">
+    <span id="nav-user-name">Mon compte</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
+  </button>
+  <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;min-width:210px;z-index:500;box-shadow:0 8px 24px rgba(0,0,0,0.3);overflow:hidden;">
+    <div style="background:#3358a0;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.1);">
+      <div id="menu-prenom" style="font-size:0.85rem;color:white;font-weight:700;"></div>
+      <div id="menu-email" style="font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:2px;"></div>
+    </div>
+    <a href="etape1.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128205; Mes lieux</a>
+    <a href="temoignages.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128214; Mes temoignages</a>
+    <a href="messagerie.html" style="display:block;padding:10px 16px;font-size:0.82rem;color:white;text-decoration:none;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='none'">&#128172; Messages</a>
+    <div style="border-top:1px solid rgba(255,255,255,0.1);"></div>
+    <div onclick="seDeconnecter();fermerMenuMembre();" style="padding:10px 16px;font-size:0.82rem;color:#FF8B94;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='none'">Deconnexion</div>
+  </div>
+</div>
+  <div class="nav-circle" style="background:#6B5EA8;">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/>
           <path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
@@ -919,10 +947,7 @@ body{padding-bottom:70px!important;}
       </div>
     </div>
     <!-- User connecté -->
-    <div id="nav-user" style="display:none;align-items:center;gap:8px;">
-      <span id="nav-user-name" style="font-size:0.78rem;font-weight:700;color:var(--turquoise);"></span>
-      <button id="nav-deco" onclick="seDeconnecter()" style="background:none;border:1px solid var(--rose);color:var(--rose);padding:4px 10px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;">✕</button>
-    </div>
+    
   </div>
 </div>
 
@@ -1019,9 +1044,9 @@ body{padding-bottom:70px!important;}
     <p class="hero-subtitle"><strong>
       Babelom est une archive vivante où chacun dépose la mémoire des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
     </strong></p>
-    <div id="hero-typewriter" style="margin-top:20px;font-family:'Courier New',monospace;font-size:1.05rem;font-weight:700;color:#2D6A4F;line-height:1.7;border-left:3px solid #2D6A4F;padding-left:14px;min-height:4em;">
+    <div id="hero-typewriter" style="margin-top:20px;font-family:'Courier New',monospace;font-size:1.2rem;font-weight:700;color:#2D6A4F;line-height:1.7;border-left:3px solid #2D6A4F;padding-left:14px;min-height:4em;">
   <span id="tw-quote"></span><span id="tw-cursor" style="color:#2D6A4F;animation:blink 0.65s step-end infinite;font-weight:300;">█</span>
-  <div id="tw-author" style="margin-top:6px;font-family:'Playfair Display',serif;font-size:0.78rem;font-weight:700;color:rgba(45,106,79,0.85);letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 1.2s ease;font-style:normal;">— Julien Green</div>
+  <div id="tw-author" style="margin-top:6px;font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:rgba(45,106,79,0.85);letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 1.2s ease;font-style:normal;">— Julien Green</div>
 </div>
 <script>
 (function(){
@@ -1058,7 +1083,7 @@ body{padding-bottom:70px!important;}
     </div>
     <div id="hero-map-preview"></div>
     <div class="hero-map-overlay"></div>
-  
+
   <div class="map-dot" id="dot-edinburgh" title="Edimbourg"></div>
   <div class="map-dot" id="dot-essaouira" title="Essaouira"></div>
   <div class="map-dot" id="dot-sfax" title="Sfax"></div>
@@ -1066,6 +1091,7 @@ body{padding-bottom:70px!important;}
   <div class="map-dot" id="dot-nelson" title="Nelson NZ"></div>
   <div class="map-dot" id="dot-riyad" title="Riyad"></div>
   <div class="map-dot" id="dot-salto" title="Salto"></div>
+  <div class="map-dot" id="dot-lagos" title="Lagos"></div>
 </div>
 </section>
 
