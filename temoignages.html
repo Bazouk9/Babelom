@@ -216,9 +216,9 @@ body{padding-bottom:70px!important;}
 </div>
 
 <!-- HEADER -->
-<div style="background:#1e3060;padding:40px 52px 36px;border-bottom:2px solid #FF6B35;">
-  <div style="font-size:0.82rem;text-transform:uppercase;letter-spacing:0.22em;color:rgba(255,255,255,0.5);margin-bottom:10px;">Étape 3 · Transmettre</div>
-  <p style="font-size:1rem;color:rgba(255,255,255,0.75);line-height:1.7;max-width:600px;">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
+<div style="background:#1e3060;padding:32px 52px 28px;border-bottom:2px solid #FF6B35;">
+  <div style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;letter-spacing:0.04em;">Archive <em style="color:#FF6B35;font-style:italic;">des souvenirs</em></div>
+  <p style="font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.6;margin-top:6px;">Votre souvenir rejoint l'archive. Accessible à vos enfants, à vos petits-enfants, aux chercheurs — pour toujours.</p>
 </div>
 
 <!-- TABLE -->
@@ -228,17 +228,67 @@ body{padding-bottom:70px!important;}
     <span class="table-count" id="table-count"></span>
   </div>
 
-  <!-- Filtres + bouton Rechercher -->
-  <div class="table-search">
-    <input type="text" id="f-cp"     placeholder="Code postal…"    onkeydown="if(event.key==='Enter')lancerRecherche()" style="width:130px;">
-    <input type="text" id="f-ville"  placeholder="Ville…"          onkeydown="if(event.key==='Enter')lancerRecherche()" style="width:150px;text-transform:uppercase;">
-    <input type="text" id="f-voie"   placeholder="Nom de voie…"    onkeydown="if(event.key==='Enter')lancerRecherche()" style="width:180px;">
-    <input type="text" id="f-nom"    placeholder="Nom de famille…" onkeydown="if(event.key==='Enter')lancerRecherche()" style="width:160px;text-transform:uppercase;">
-    <input type="text" id="f-prenom" placeholder="Prénom…"         onkeydown="if(event.key==='Enter')lancerRecherche()" style="width:130px;">
-    <button onclick="lancerRecherche()" id="btn-recherche" style="background:#FF6B35;color:white;border:none;border-radius:8px;padding:8px 20px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;">🔍 Rechercher</button>
-    <button onclick="reinitialiserRecherche()" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;">✕ Effacer</button>
+  <!-- Zones de recherche étiquetées -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:flex-end;">
+
+    <!-- Par ville -->
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par ville</label>
+      <input type="text" id="f-ville" placeholder="Ex : Paris, Lyon…"
+        onkeydown="if(event.key==='Enter')lancerRecherche()"
+        style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
+               color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
+               outline:none;width:190px;transition:border-color 0.2s;text-transform:uppercase;"
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+    </div>
+
+    <!-- Par rue -->
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par rue</label>
+      <input type="text" id="f-voie" placeholder="Ex : rue de la Paix…"
+        onkeydown="if(event.key==='Enter')lancerRecherche()"
+        style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
+               color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
+               outline:none;width:220px;transition:border-color 0.2s;"
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+    </div>
+
+    <!-- Par nom de famille -->
+    <div style="display:flex;flex-direction:column;gap:5px;">
+      <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par nom de famille</label>
+      <input type="text" id="f-nom" placeholder="Ex : DUPONT…"
+        onkeydown="if(event.key==='Enter')lancerRecherche()"
+        style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
+               color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
+               outline:none;width:190px;transition:border-color 0.2s;text-transform:uppercase;"
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+    </div>
+
+    <!-- Boutons -->
+    <div style="display:flex;gap:8px;align-items:flex-end;">
+      <button onclick="lancerRecherche()" id="btn-recherche"
+        style="background:#FF6B35;color:white;border:none;border-radius:8px;padding:9px 22px;
+               font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;
+               white-space:nowrap;transition:background 0.2s;"
+        onmouseover="this.style.background='#e55a26'" onmouseout="this.style.background='#FF6B35'">
+        🔍 Rechercher
+      </button>
+      <button onclick="reinitialiserRecherche()"
+        style="background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);
+               border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 14px;
+               font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;
+               transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(255,255,255,0.14)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">
+        ✕ Effacer
+      </button>
+    </div>
   </div>
-  <div id="search-hint" style="font-size:0.78rem;color:rgba(255,255,255,0.35);font-style:italic;margin-bottom:8px;">
+
+  <!-- Champs cachés toujours présents pour compatibilité JS -->
+  <input type="hidden" id="f-cp" value="">
+  <input type="hidden" id="f-prenom" value="">
+
+  <div id="search-hint" style="font-size:0.78rem;color:rgba(255,255,255,0.32);font-style:italic;margin-bottom:10px;">
     Renseignez un ou plusieurs champs puis cliquez sur Rechercher (ou appuyez sur Entrée).
   </div>
 
