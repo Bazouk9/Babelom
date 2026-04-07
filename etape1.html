@@ -759,7 +759,7 @@ async function chargerTemoignages() {
   try {
     var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages' +
       '?select=id,lat,lng,ville,adresse,identite_prenom,identite_nom,annee_de,annee_a,type_logement,texte,statut' +
-      '&statut=eq.publié&order=id';
+      '&order=id';
     var res = await fetch(url, {
       headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
     });
