@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Babelom — Témoignages</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script src="i18n.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -131,6 +131,11 @@ tbody td.vide:hover{background:transparent;}
 .btn-cancel{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;}
 body{padding-bottom:70px!important;}
 #bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#2c4a8a;border-top:6px solid #FF6B35;padding:6px 8px;display:flex;justify-content:space-around;z-index:1000;}
+@media (min-width: 768px) {
+  #bottom-nav { display: none !important; }
+  body { padding-bottom: 0 !important; }
+}
+
 .bn{display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;padding:3px 6px;border-radius:9px;cursor:pointer;}
 .bn.active{background:rgba(255,107,53,0.18);}
 .bn-dot{width:5px;height:5px;border-radius:50%;background:#FF6B35;opacity:0;margin:0 auto;}
@@ -431,7 +436,6 @@ function parseAdresse(adresse) {
 
 // Extraire le code postal de l'adresse ou d'un champ dédié
 function extractCP(t) {
-  if (t.code_postal) return t.code_postal;
   var adresse = t.adresse || '';
   var m = adresse.match(/\b(\d{4,5})\b/);
   return m ? m[1] : '';
@@ -441,32 +445,11 @@ async function chargerTemoignages() {
   var sb = getSb() || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
   var { data, error } = await sb
     .from('temoignages')
-    .select('id, identite_prenom, identite_nom, ville, pays, adresse, annee_de, annee_a, code_postal')
+    .select('id, identite_prenom, identite_nom, ville, pays, adresse, annee_de, annee_a')
     .order('ville', { ascending: true });
 
-  if (error) {
-    console.error('chargerTemoignages erreur:', error);
-    // Si RLS bloque (401/403), essayer en fetch direct avec anon key
-    try {
-      var url = SUPABASE_URL + '/rest/v1/temoignages'
-        + '?select=id,identite_prenom,identite_nom,ville,pays,adresse,annee_de,annee_a,code_postal'
-        + '&order=ville.asc';
-      var res = await fetch(url, {
-        headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
-      });
-      if (!res.ok) {
-        console.error('Fetch fallback HTTP', res.status, await res.text());
-        document.getElementById('table-body').innerHTML = '<tr><td colspan="7" class="vide" style="cursor:default;">Erreur de chargement (HTTP ' + res.status + '). Vérifiez les politiques RLS Supabase.</td></tr>';
-        return;
-      }
-      data = await res.json();
-    } catch(fe) {
-      document.getElementById('table-body').innerHTML = '<tr><td colspan="7" class="vide" style="cursor:default;">Erreur : ' + (error.message || fe.message) + '</td></tr>';
-      return;
-    }
-  }
-  if (!data) {
-    document.getElementById('table-body').innerHTML = '<tr><td colspan="7" class="vide" style="cursor:default;">Erreur de chargement.</td></tr>';
+  if (error || !data) {
+    document.getElementById('table-body').innerHTML = '<tr><td colspan="7" class="vide">Erreur de chargement.</td></tr>';
     return;
   }
 
