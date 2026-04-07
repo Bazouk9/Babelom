@@ -368,6 +368,18 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:#1e2d50;color:w
 </head>
 <body>
 
+<script>
+// Fonctions de base — définies avant les boutons HTML
+function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
+function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
+function setLang(c){var el=document.getElementById('lang-current');if(el)el.textContent=c;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}
+function switchTab(tab){
+  // Défini ici temporairement — sera surchargé par le script principal
+  if(window._switchTabImpl) window._switchTabImpl(tab);
+}
+document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
+</script>
 <!-- NAV -->
 <div id="top-band">
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
@@ -516,7 +528,7 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:#1e2d50;color:w
 <script>
 // ── GLOBALS ──
 var user = null;
-var sb   = null;
+var _msgSb = null;
 var currentTab = 'priv';
 var currentConvId = null;   // receiver_id pour privé, groupe_id pour groupe
 var currentConvType = null; // 'priv' | 'groupe'
@@ -528,9 +540,9 @@ var refreshInterval = null;
 
 // ── HELPERS ──
 function getSb() {
-  if (sb) return sb;
-  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
-  return sb;
+  if (_msgSb) return _msgSb;
+  _msgSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+  return _msgSb;
 }
 function babelomGetUser() {
   try {
@@ -682,7 +694,7 @@ async function initialiserMessagerie() {
 }
 
 // ── TABS ──
-function switchTab(tab) {
+window._switchTabImpl = function(tab) {
   currentTab = tab;
   ['priv','groupes','explorer'].forEach(function(t) {
     document.getElementById('tab-'+t).classList.toggle('active', t === tab);
@@ -1001,6 +1013,7 @@ async function envoyerMessage() {
   chargerMessages();
 }
 
+window._switchTabImpl = window._switchTabImpl; // alias
 // ── CRÉER UN GROUPE ──
 function ouvrirCreerGroupe() {
   document.getElementById('mg-msg').textContent = '';
