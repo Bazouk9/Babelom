@@ -1387,7 +1387,7 @@ window.addEventListener('load', function() {
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Mentions légales</span>
     </a>
-    <a href="mailto:babelom9@gmail.com" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+    <a href="#" onclick="event.preventDefault();ouvrirContact();" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Nous contacter</span>
     </a>
@@ -1416,7 +1416,7 @@ window.addEventListener('load', function() {
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 function validerAdmin() {
   const mdp = document.getElementById('admin-mdp').value;
@@ -2527,13 +2527,56 @@ async function supprimerMonCompte() {
     if(href === path){
       var circle = a.querySelector('.nav-circle');
       if(circle){
-        circle.style.outline = '3px solid white';
-        circle.style.outlineOffset = '2px';
-        circle.style.transition = 'outline 0.2s';
-      }
-    }
-  });
-})();
+        circle.style.outline = '3px solid white
+
+<!-- MODALE CONTACT -->
+<div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerContact()">
+  <div style="background:#1e2d50;border:1px solid #3358a0;padding:36px;max-width:500px;width:92%;border-radius:14px;max-height:90vh;overflow-y:auto;font-family:'Nunito',sans-serif;">
+    <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.2em;color:rgba(255,255,255,0.4);margin-bottom:8px;">Contact</div>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:white;margin-bottom:6px;">Nous <em style="color:#FF6B35;font-style:italic;">contacter</em></h3>
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.6;margin-bottom:22px;">Pour toute question ou suggestion, écrivez-nous à <a href="mailto:babelom9@gmail.com" style="color:#FF6B35;text-decoration:none;font-weight:700;">babelom9@gmail.com</a> ou utilisez ce formulaire.</p>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Nom &amp; Prénom *</label>
+      <input type="text" id="c-nom" placeholder="Votre nom" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Adresse e-mail *</label>
+      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Objet *</label>
+      <select id="c-objet" style="width:100%;background:#2c4a8a;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
+        <option value="">Choisir un objet…</option>
+        <option value="question">Question générale</option>
+        <option value="technique">Problème technique</option>
+        <option value="signalement">Signalement de contenu</option>
+        <option value="desinscription">Demande de désinscription</option>
+        <option value="suppression">Suppression de mes données</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.13em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Message *</label>
+      <textarea id="c-message" placeholder="Votre message…" rows="4" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;resize:none;line-height:1.6;" onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'"></textarea>
+    </div>
+    <div style="background:rgba(255,107,53,0.1);border-left:3px solid #FF6B35;padding:12px 16px;font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:20px;border-radius:0 8px 8px 0;">
+      <strong style="color:white;display:block;margin-bottom:4px;">Désinscription &amp; données personnelles</strong>
+      Pour toute demande RGPD, sélectionnez l'objet correspondant. Votre compte sera supprimé sous 7 jours ouvrés.
+    </div>
+    <div id="contact-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:12px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);">
+      <button onclick="fermerContact()" style="background:none;border:none;color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-size:0.82rem;cursor:pointer;">Annuler</button>
+      <button onclick="envoyerContact()" style="background:#FF6B35;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:8px;" onmouseover="this.style.background='#e55a26'" onmouseout="this.style.background='#FF6B35'">Envoyer →</button>
+    </div>
+  </div>
+</div>
+<script>
+function ouvrirContact(){document.getElementById('modale-contact').style.display='flex';}
+function fermerContact(){document.getElementById('modale-contact').style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
+async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs obligatoires.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>
+Objet : '+objet+'
+
+'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé. Nous vous répondrons à '+email+' dans les meilleurs délais.';setTimeout(fermerContact,3000);}else{fb.style.color='#FF8B94';fb.textContent='Erreur lors de l'envoi. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau. Réessayez.';}}
 </script>
 </body>
 </html>
