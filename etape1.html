@@ -1,439 +1,370 @@
+<!-- BABELOM-ETAPE1-20260403-203213 -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — Déposer un souvenir</title>
-<script src="supabase-config.js"></script>
-<script src="player.js" defer></script>
-<script src="i18n.js?v=2"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Babelom · Étape 1 · 20260403-203213</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="supabase-config.js"></script>
+  <script src="i18n.js?v=2"></script>
+  <style>
 :root {
-  --terre:    #1e3a28;
-  --brun:     #2e5a38;
-  --ocre:     #d4880a;
-  --sable:    #c8d8b0;
-  --parchemin:#e8e4d0;
-  --creme:    #f5f2e8;
-  --muted:    #7a9a72;
-  --sauge:    #d4880a;
-  --ardoise:  #4a7a52;
+  --orange:#FF6B35; --turquoise:#4ECDC4; --jaune:#FFD93D;
+  --vert:#6BCB77; --rose:#FF8B94; --nuit:#2c4a8a;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
+body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding-bottom:60px; }
+#top-band { background:#2c4a8a; padding:8px 20px; display:flex; align-items:center; gap:12px; border-bottom:6px solid #FF6B35; position:sticky; top:0; z-index:400; }
+.nav-circle { width:40px!important; height:40px!important; border-radius:50%!important; display:flex!important; align-items:center!important; justify-content:center!important; }
+.nav-lbl { font-size:0.52rem; font-weight:900; text-transform:uppercase; letter-spacing:0.08em; color:white; display:block; text-align:center; margin-top:3px; }
+.nav-ib { display:flex; flex-direction:column; align-items:center; text-decoration:none; padding:2px 4px; }
 
-body {
-  font-family: 'Jost', sans-serif;
-  background: var(--creme);
-  color: var(--terre);
-  min-height: 100vh;
+/* LAYOUT CRITIQUE */
+#layout {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 76px);
 }
-
-/* ── NAV ── */
-nav {
-  background: #1e3a28;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 52px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.nav-logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  list-style: none;
-}
-.nav-links a {
-  font-size: 0.82rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #c8dab0;
-  text-decoration: none;
-  font-weight: 400;
-  transition: color 0.2s;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-.nav-links a:hover { color: white; }
-.nav-links a .nav-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #d4880a;
-  line-height: 1;
-}
-.nav-links a:hover .nav-num { color: #e8a030; }
-.nav-links a.active { color: #d4880a; }
-
-/* ── HEADER DE PAGE ── */
-.page-header {
-  background: #1e3a28;
-  padding: 22px 52px 18px;
-  border-bottom: 1px solid #2e5a38;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 32px;
-}
-
-.step-badge {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3.2rem;
-  font-weight: 700;
-  color: #d4880a;
-  line-height: 1;
-  opacity: 0.9;
-}
-
-.header-content { flex: 1; }
-
-.header-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: #7a9a72;
-  margin-bottom: 4px;
-}
-
-.header-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  font-weight: 300;
-  color: #f5f2e8;
-  line-height: 1.2;
-  margin-bottom: 4px;
-}
-
-.header-title em { color: #d4880a; font-style: italic; }
-
-.header-sub {
-  font-size: 0.82rem;
-  color: #7a9a72;
-  line-height: 1.5;
-  max-width: 500px;
-}
-
-.header-steps {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.step-pip {
-  width: 32px;
-  height: 4px;
-  border-radius: 2px;
-  background: #2e5a38;
-}
-.step-pip.active { background: #d4880a; }
-
-/* ── CONTENU PRINCIPAL ── */
-.main-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 140px);
-}
-
-/* ── CARTE ── */
-.carte-wrap {
+#map-container {
+  width: 50%;
+  height: 100%;
+  flex-shrink: 0;
   position: relative;
+  background: #d4e8f0;
 }
 
-#map {
-  width: 100%;
-  height: 600px;
-  z-index: 1;
-  background: #f2efe6;
-}
-
-/* Popup Babelom */
-.popup-babelom .leaflet-popup-content-wrapper {
-  border-radius: 3px;
-  box-shadow: 0 6px 24px rgba(30,58,40,0.18);
-  border: 1.5px solid #c8d8b0;
-}
-.popup-babelom .leaflet-popup-content { margin: 16px 18px; }
-.popup-babelom .leaflet-popup-tip-container { display: block; }
-
-.carte-instruction {
-  position: absolute;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  padding: 10px 20px;
-  border-radius: 2px;
-  font-size: 0.85rem;
-  color: var(--terre);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  z-index: 500;
-  white-space: nowrap;
-  border-left: 3px solid var(--ocre);
-  transition: opacity 0.3s;
-}
-
-.carte-instruction.hidden { opacity: 0; pointer-events: none; }
-
-/* ── FORMULAIRE ── */
-.form-wrap {
-  background: var(--creme);
-  padding: 48px 52px;
+#form-container {
+  width: 50%;
+  height: 100%;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  background: #1e3060;
+  padding: 24px 28px;
 }
 
-.form-section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: var(--terre);
-  margin-bottom: 8px;
-}
+/* FORMULAIRE */
+.form-section-title-warn { background:#FF6B35; padding:12px 16px; border-radius:6px; font-size:0.84rem; line-height:1.5; margin-bottom:20px; }
+.form-section-title { font-family:'Playfair Display',serif; font-size:1.5rem; color:white; margin-bottom:6px; }
+.form-section-sub { font-size:0.85rem; color:rgba(255,255,255,0.6); margin-bottom:16px; }
+.coords-affich { font-size:0.78rem; color:rgba(255,255,255,0.5); font-style:italic; margin-bottom:14px; }
+.champ { margin-bottom:14px; }
+.champ label { display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.7); margin-bottom:5px; }
+.champ input, .champ select { width:100%; background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.2); color:white; font-family:'Nunito',sans-serif; font-size:0.88rem; padding:10px 12px; border-radius:6px; outline:none; box-sizing:border-box; transition:border-color 0.2s; }
+.champ input:focus, .champ select:focus { border-color:#FF6B35; }
+.champ input::placeholder { color:rgba(255,255,255,0.35); }
+.champ select option { background:#1e3060; color:white; }
+.champ-row { display:flex; gap:10px; }
+.champ-row > div { flex:1; }
+#f-num-voie { width:72px!important; flex-shrink:0!important; }
+#cp-suggestions, #voies-suggestions { position:absolute; top:100%; left:0; right:0; background:#1e3060; border:1.5px solid #FF6B35; border-top:none; border-radius:0 0 6px 6px; z-index:200; max-height:160px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,0.3); display:none; }
+#cp-suggestions div, #voies-suggestions div { padding:8px 12px; cursor:pointer; font-size:0.82rem; color:white; }
+#cp-suggestions div:hover, #voies-suggestions div:hover { background:rgba(255,255,255,0.1); }
+.btn-localiser { background:#2c4a8a; color:white; border:none; padding:8px 14px; font-family:'Nunito',sans-serif; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:6px; }
+.btn-localiser:hover { background:#3358a0; }
+.form-footer { display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1); }
+.btn-retour { color:rgba(255,255,255,0.5); text-decoration:none; font-size:0.8rem; }
+.btn-valider { background:#FF6B35; color:white; border:none; padding:10px 22px; font-family:'Nunito',sans-serif; font-size:0.82rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer; border-radius:8px; }
 
-.form-section-sub {
-  font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 36px;
-}
+/* Popup Leaflet */
+.popup-babelom .leaflet-popup-content-wrapper { border-radius:10px!important; padding:0!important; overflow:hidden!important; box-shadow:0 8px 32px rgba(0,0,0,0.25)!important; }
+.popup-babelom .leaflet-popup-content { margin:0!important; }
+.popup-babelom .leaflet-popup-close-button { color:white!important; z-index:10!important; top:6px!important; right:10px!important; }
 
-.coords-affich {
-  font-size: 0.78rem;
-  color: var(--muted);
-  font-style: italic;
-  margin-bottom: 28px;
-  min-height: 20px;
-  transition: color 0.3s;
+@media (max-width:768px) {
+  #layout { flex-direction:column; height:auto; }
+  #map-container { width:100%; height:45vh; }
+  #form-container { width:100%; height:auto; }
 }
-.coords-affich.placed { color: var(--ardoise); }
+  </style>
+</head>
+<body>
 
-.champ {
-  margin-bottom: 24px;
-}
+<!-- NAV -->
+<div id="top-band">
+  <!-- Favicon + Logo -->
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
+  </div>
 
-.champ label {
-  display: block;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--muted);
-  margin-bottom: 8px;
-  font-weight: 400;
-}
+  <!-- 5 ICÔNES nav -->
+  <div id="nav-icons" style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
+    <a href="index.html" class="nav-ib" style="margin-right:8px;">
+      <div class="nav-circle" style="background:#7C3AED;border:2px solid rgba(255,255,255,0.3);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </div>
+      <span class="nav-lbl" style="color:white;">Accueil</span>
+    </a>
+    <a href="etape1.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--orange);">
+        <svg width="20" height="20" viewBox="0 0 26 26"><path d="M3,6 L10,4 L16,7 L23,5 L23,20 L16,22 L10,19 L3,21 Z" fill="white" stroke="#CC4400" stroke-width="0.8"/><line x1="10" y1="4" x2="10" y2="19" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><line x1="16" y1="7" x2="16" y2="22" stroke="#CC4400" stroke-width="0.7" opacity="0.5"/><path d="M3,13 Q8,11 13,13 Q18,15 23,13" fill="none" stroke="#FFD93D" stroke-width="1.2"/><path d="M13,3 Q10,8 13,7 Q16,8 13,3Z" fill="#FFD700" stroke="#CC4400" stroke-width="0.5"/><circle cx="13" cy="5" r="1.8" fill="white"/></svg>
+      </div>
+      <span class="nav-lbl">Carte</span>
+    </a>
+    <a href="etape2.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--turquoise);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#2AA89A" stroke-width="0.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="11" x2="14" y2="11" stroke="#2AA89A" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Raconter</span>
+    </a>
+    <a href="temoignages.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--jaune);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6" fill="white" stroke="#B8860B" stroke-width="2"/><line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#B8860B" stroke-width="2.8" stroke-linecap="round"/></svg>
+      </div>
+      <span class="nav-lbl">Rechercher</span>
+    </a>
+    <a href="galerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--vert);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="white" stroke="#3A8A44" stroke-width="0.8"/><circle cx="8" cy="10" r="2.2" fill="#3A8A44" opacity="0.5"/><path d="M3,16 L8,11 L12,14 L16,10 L21,16Z" fill="#3A8A44" opacity="0.4"/></svg>
+      </div>
+      <span class="nav-lbl">Galerie</span>
+    </a>
+    <a href="messagerie.html" class="nav-ib">
+      <div class="nav-circle" style="background:var(--rose);">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M4,4 L20,4 L20,16 L12,16 L7,20 L7,16 L4,16 Z" fill="white" stroke="#CC4455" stroke-width="0.8"/><circle cx="8" cy="10" r="1.4" fill="#CC4455"/><circle cx="12" cy="10" r="1.4" fill="#CC4455"/><circle cx="16" cy="10" r="1.4" fill="#CC4455"/></svg>
+      </div>
+      <span class="nav-lbl">Messagerie</span>
+    </a>
+  </div>
 
-.champ input,
-.champ select,
-.champ textarea {
-  width: 100%;
-  background: white;
-  border: 1.5px solid var(--sable);
-  color: var(--terre);
-  font-family: 'Jost', sans-serif;
-  font-size: 0.95rem;
-  padding: 12px 16px;
-  outline: none;
-  transition: border-color 0.2s;
-  border-radius: 2px;
-}
+    <!-- Droite : Notre Projet + Auth + Langue -->
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+    
+    <!-- Notre Projet -->
+    <a href="notre-projet.html" class="nav-ib" style="text-decoration:none;padding:2px 8px;">
+      <div class="nav-circle" style="background:#7C3AED;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" stroke="white" stroke-width="1.5" fill="none"/></svg>
+      </div>
+      <span class="nav-lbl">Notre projet</span>
+    </a>
 
-.champ input:focus,
-.champ select:focus,
-.champ textarea:focus {
-  border-color: var(--ocre);
-}
+    <!-- Mon Compte (connecté) -->
+    <div id="nav-user" style="display:none;align-items:center;position:relative;z-index:200;">
+      <button id="btn-menu-membre" onclick="toggleMenuMembre(event)" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;padding:5px 12px;border-radius:16px;display:flex;align-items:center;gap:6px;white-space:nowrap;">
+        <span id="nav-user-name">Mon compte</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
+      </button>
+      <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:10px;min-width:280px;z-index:9000;box-shadow:0 8px 24px rgba(0,0,0,0.4);overflow:hidden;font-family:'Nunito',sans-serif;">
+        <!-- En-tête membre -->
+        <div style="background:#3358a0;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div style="width:32px;height:32px;border-radius:50%;background:#FF6B35;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:white;flex-shrink:0;" id="menu-avatar">?</div>
+          <div>
+            <div id="menu-prenom" style="font-size:0.85rem;color:white;font-weight:700;"></div>
+            <div id="menu-email" style="font-size:0.7rem;color:rgba(255,255,255,0.55);margin-top:1px;"></div>
+          </div>
+        </div>
+        <!-- Mes lieux habités -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="toggleLieuxHistorique()" style="padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+            <span style="font-size:0.82rem;color:white;font-weight:600;display:flex;align-items:center;gap:6px;">
+              🏠 Mes lieux habités
+              <span id="badge-nb-lieux" style="background:#FF6B35;color:white;font-size:0.62rem;font-weight:700;padding:1px 6px;border-radius:8px;">…</span>
+            </span>
+            <span id="arrow-hist" style="font-size:0.65rem;color:rgba(255,255,255,0.5);">▾</span>
+          </div>
+          <div id="liste-lieux-hist" style="display:none;padding:0 12px 8px;max-height:200px;overflow-y:auto;">
+            <div id="lieux-loading" style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:6px 4px;">Chargement…</div>
+          </div>
+        </div>
+        <!-- Actions compte -->
+        <div style="border-bottom:1px solid rgba(255,255,255,0.1);">
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;">🔑 Modifier le mot de passe</div>
+          <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);">🗑 Supprimer mon compte</div>
+        </div>
+        <!-- Déconnexion --><!-- Déconnexion -->
+        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;">✕ Se déconnecter</div>
+      </div></div>
 
-.champ textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+    <!-- Boutons Connexion/Inscrire (non connecté) -->
+    <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
+      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+      <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    </div>
 
-.champ-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+    <!-- Sélecteur langue -->
+    <div id="lang-select" style="position:relative;">
+      <button id="lang-btn" onclick="toggleLang()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.72rem;display:flex;align-items:center;gap:4px;">
+        &#127760; <span id="lang-current">FR</span> <span style="font-size:0.6rem;opacity:0.6;">&#9660;</span>
+      </button>
+      <div id="lang-dropdown" style="display:none;position:absolute;top:calc(100% + 6px);right:0;background:#2c4a8a;border:1px solid rgba(255,255,255,0.15);border-radius:8px;min-width:130px;z-index:9000;box-shadow:0 6px 20px rgba(0,0,0,0.3);overflow:hidden;">
+        <div class="lang-opt" onclick="setLang('FR')">Français</div>
+        <div class="lang-opt" onclick="setLang('EN')">English</div>
+        <div class="lang-opt" onclick="setLang('ES')">Español</div>
+        <div class="lang-opt" onclick="setLang('AR')">العربية</div>
+        <div class="lang-opt" onclick="setLang('DE')">Deutsch</div>
+        <div class="lang-opt" onclick="setLang('PT')">Português</div>
+        <div class="lang-opt" onclick="setLang('IT')">Italiano</div>
+        <div class="lang-opt" onclick="setLang('RU')">Русский</div>
+        <div class="lang-opt" onclick="setLang('ZH')">中文</div>
+      </div>
+    </div>
 
-.upload-zone {
-  border: 2px dashed var(--sable);
-  padding: 28px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  border-radius: 2px;
-}
-.upload-zone:hover { border-color: var(--ocre); background: white; }
-.upload-zone p { font-size: 0.85rem; color: var(--muted); margin-top: 8px; }
+  </div>
+</div>
 
-.photos-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-.photos-preview img {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 2px;
-}
+<!-- LAYOUT : carte + formulaire -->
+<div id="layout" style="display:flex;flex-direction:row;width:100%;">
+  <div id="map-container" style="width:50%;height:600px;flex-shrink:0;position:relative;background:#d4e8f0;">
+    <div id="map" style="width:100%;height:600px;"></div>
+  </div>
+  <div id="form-container" style="width:50%;height:600px;overflow-y:auto;background:#1e3060;padding:24px 28px;">
+    
+    <div class="form-section-title-warn">⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.</div>
 
-.form-footer {
-  margin-top: 36px;
-  padding-top: 24px;
-  border-top: 1px solid var(--sable);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
+    <div class="form-section-title">Racontez ce lieu</div>
+    <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
 
-.btn-retour {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.85rem;
-  color: var(--muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.btn-retour:hover { color: var(--terre); }
+    <div class="coords-affich" id="coords-affich">Aucun point placé pour l'instant</div>
 
-.btn-valider {
-  background: var(--ocre);
-  color: white;
-  border: none;
-  padding: 14px 36px;
-  font-family: 'Jost', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
-  border-radius: 2px;
-}
-.btn-valider:hover { background: #b87008; transform: translateY(-1px); }
-.btn-valider:disabled { background: var(--sable); color: var(--muted); cursor: not-allowed; transform: none; }
+    <div class="champ">
+      <label><span data-i18n="e1LabelPays">Pays *</span></label>
+      <input type="text" id="f-pays" placeholder="Ex : France, Algérie, Pologne…" data-i18n-ph="e1PhPays">
+    </div>
 
-/* ── CONFIRMATION ── */
-#confirmation {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(30,58,40,0.85);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-}
-#confirmation.visible { display: flex; }
+    <div class="champ champ-row">
+      <div style="flex:2;">
+        <label><span data-i18n="e1LabelVille">Ville *</span></label>
+        <input type="text" id="f-ville" placeholder="Ex : Lyon, Batna, Lublin…" data-i18n-ph="e1PhVille" oninput="majCodesPostaux(this.value)">
+      </div>
+      <div style="flex:1;">
+        <label>Code postal</label>
+        <div style="position:relative;">
+          <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
+            
+             oninput="filtrerCP(this.value)">
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#1e3060;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
+      </div>
+    </div>
 
-.confirm-card {
-  background: var(--creme);
-  padding: 64px 56px;
-  max-width: 520px;
-  text-align: center;
-  animation: fadeUp 0.5s ease forwards;
-}
+    <div class="champ">
+      <label><span data-i18n="e1LabelLieudit">Lieu-dit / Quartier</span></label>
+      <input type="text" id="f-lieudit" placeholder="Ex : La Croix-Rousse, Bab Ezzouar, Vieux-Port…" data-i18n-ph="e1PhLieudit">
+    </div>
 
-.confirm-icon {
-  font-size: 3rem;
-  margin-bottom: 24px;
-  display: block;
-}
+    <div class="champ">
+      <label>Adresse précise <span style="color:#FF6B35;">*</span></label>
+      <div style="display:flex;gap:10px;flex-wrap:nowrap;align-items:flex-start;margin-bottom:8px;">
+        <input type="text" id="f-num-voie" placeholder="N°">
+        <div style="position:relative;flex:1;min-width:200px;">
+          <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#1e3060;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:#2c4a8a;color:white;border:none;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:6px;white-space:nowrap;transition:background 0.2s;">📍 Localiser sur la carte</button>
+        <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
+      </div>
+    </div>
 
-.confirm-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 400;
-  color: var(--terre);
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
-.confirm-title em { color: var(--ocre); font-style: italic; }
+    <div class="champ champ-row">
+      <div>
+        <label><span data-i18n="e1LabelAncienNom">Ancien nom de la voie</span></label>
+        <input type="text" id="f-ancien-nom" placeholder="Ex : rue du Maréchal-Foch" data-i18n-ph="e1PhAncienNom">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelNouveauNom">Nouveau nom de la voie</span></label>
+        <input type="text" id="f-nouveau-nom" placeholder="Ex : avenue de la Libération" data-i18n-ph="e1PhNouveauNom">
+      </div>
+    </div>
 
-.confirm-sub {
-  font-size: 0.95rem;
-  color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: 36px;
-}
+    <div class="champ champ-row">
+      <div>
+        <label><span data-i18n="e1LabelArrivee">Année d'arrivée *</span></label>
+        <input type="number" id="f-de" placeholder="1988" min="1900" max="2025">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelDepart">Année de départ *</span></label>
+        <input type="number" id="f-a" placeholder="1994" min="1900" max="2025">
+      </div>
+    </div>
 
-.confirm-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
+    <div class="champ">
+      <label>Type de logement <span style="color:#FF6B35;">*</span></label>
+      <select id="f-type" onchange="toggleEtage(this.value)">
+        <option value="">Choisir…</option>
+        <option><span data-i18n="e1TypeAppt">Appartement</span></option>
+        <option><span data-i18n="e1TypeMaison">Maison</span></option>
+        <option><span data-i18n="e1TypeFamiliale">Maison familiale</span></option>
+        <option><span data-i18n="e1TypeEtudiant">Chambre d'étudiant</span></option>
+        <option><span data-i18n="e1TypeColoc">Colocation</span></option>
+        <option>Autre</option>
+      </select>
+    </div>
 
-.btn-nouveau {
-  background: var(--terre);
-  color: var(--creme);
-  border: none;
-  padding: 13px 28px;
-  font-family: 'Jost', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s;
-  border-radius: 2px;
-}
-.btn-nouveau:hover { background: var(--brun); }
+    <div class="champ champ-row" id="champ-etage" style="display:none;">
+      <div>
+        <label><span data-i18n="e1LabelEtage">Étage</span></label>
+        <input type="number" id="f-etage" placeholder="Ex : 3" min="0" max="100">
+      </div>
+      <div>
+        <label><span data-i18n="e1LabelEtagesTotal">Nombre total d'étages</span></label>
+        <input type="number" id="f-etages-total" placeholder="Ex : 6" min="1" max="100">
+      </div>
+    </div>
 
-.btn-accueil {
-  background: none;
-  color: var(--muted);
-  border: 1.5px solid var(--sable);
-  padding: 12px 28px;
-  font-family: 'Jost', sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  transition: border-color 0.2s, color 0.2s;
-  border-radius: 2px;
-}
-.btn-accueil:hover { border-color: var(--terre); color: var(--terre); }
+    
 
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
+    <div class="form-footer">
+      <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
+      <button class="btn-valider" id="btn-valider" onclick="allerEtape2()"><span data-i18n="e1BtnSuivant">Continuer → Étape 2</span></button>
+    </div>
+  
+  </div>
+</div>
 
-/* ── FOOTER ── */
-footer {
-  background: #1e3a28;
-  color: var(--muted);
-  padding: 32px 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.footer-text { font-size: 0.82rem; }
-</style>
-<script>
+<div id="zone-recherche-membres" style="display:none;">
+        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
+            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
+            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
+            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;">
+          </div>
+          <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
+        </div>
+
+<footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+  <!-- Logo -->
+  <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">
+    BABEL<span style="color:#FF6B35;">Om</span>
+  </a>
+  <!-- Liens centraux -->
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;">
+    <a href="confidentialite.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Confidentialité</span>
+    </a>
+    <a href="mentions-legales.html" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Mentions légales</span>
+    </a>
+    <a href="/cdn-cgi/l/email-protection#5d3f3c3f38313230641d3a303c3431733e3230" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.08);transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.16)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.8);">Nous contacter</span>
+    </a>
+    <span onclick="document.getElementById('modale-admin').style.display='flex';" style="display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 10px;border-radius:20px;background:rgba(255,255,255,0.04);">
+      <span style="font-size:0.9rem;color:rgba(255,255,255,0.3);">©</span>
+      <span style="font-size:0.55rem;font-weight:900;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.3);">Admin</span>
+    </span>
+  </div>
+  <!-- Droits -->
+  <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);text-align:right;flex-shrink:0;">La mémoire des lieux habités</div>
+</footer>
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── Helper session ──
 function babelomGetUser() {
   try {
@@ -451,7 +382,7 @@ function babelomGetUser() {
 // Vérifier session Supabase au chargement
 (async function() {
   try {
-    const _sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const _sb = { from: function(t){ return { select: async function(){ return {data:null,error:true}; }, delete: async function(){ return {error:null}; } }; } };
     const { data } = await _sb.auth.getSession();
     if (data && data.session === null) {
       // Session explicitement nulle (pas une erreur réseau) — déconnecter
@@ -475,7 +406,7 @@ function babelomGetUser() {
     badge.innerHTML = `
       <button id="btn-menu-membre" onclick="toggleMenuMembre(event)"
         style="background:none;border:1px solid rgba(212,136,10,0.4);color:#d4880a;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.06em;cursor:pointer;padding:4px 10px;border-radius:2px;display:flex;align-items:center;gap:6px;transition:background 0.2s;"
-        onmouseover="this.style.background='rgba(212,136,10,0.1)'" onmouseout="this.style.background='none'">
+       >
         👤 ${user.prenom} <span style="font-size:0.6rem;opacity:0.7;">▾</span>
       </button>
       <div id="menu-membre-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;width:270px;background:#f5f2e8;border:1px solid #c8d8b0;border-radius:2px;box-shadow:0 8px 24px rgba(0,0,0,0.18);z-index:2000;font-family:'Jost',sans-serif;overflow:hidden;">
@@ -499,12 +430,12 @@ function babelomGetUser() {
           </div>
         </div>
         <div style="border-bottom:1px solid #e0d8c0;">
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🚪 Désinscription du compte</div>
-          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;" onmouseover="this.style.background='#ede8d8'" onmouseout="this.style.background=''">🗑 Suppression des données</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;">🔑 Modifier le mot de passe</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-desinscription').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;">🚪 Désinscription du compte</div>
+          <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-suppression').style.display='flex';" style="padding:8px 14px;font-size:0.78rem;color:#1e3a28;display:flex;align-items:center;gap:8px;cursor:pointer;border-top:1px solid #ede8d8;">🗑 Suppression des données</div>
         </div>
         <div style="padding:8px 14px;">
-          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='#e05050'" onmouseout="this.style.color='#c04040'">✕ Se déconnecter</div>
+          <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="font-size:0.78rem;color:#c04040;cursor:pointer;display:flex;align-items:center;gap:6px;">✕ Se déconnecter</div>
         </div>
       </div>`;
     navLinks.appendChild(badge);
@@ -529,7 +460,7 @@ function toggleLieuxHistorique() {
 
 async function chargerLieuxMembre(user) {
   try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const sb = { from: function(t){ return { select: async function(){ return {data:null,error:true}; }, delete: async function(){ return {error:null}; } }; } };
     const { data, error } = await sb.from('temoignages')
       .select('id, adresse, ville, pays, annee_de, annee_a, type_logement')
       .eq('utilisateur_id', user.id)
@@ -568,7 +499,7 @@ async function chargerLieuxMembre(user) {
 async function supprimerLieu(id) {
   if (!confirm('Supprimer ce souvenir définitivement ?')) return;
   try {
-    const sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const sb = { from: function(t){ return { select: async function(){ return {data:null,error:true}; }, delete: async function(){ return {error:null}; } }; } };
     const { error } = await sb.from('temoignages').delete().eq('id', id);
     if (!error) {
       const row = document.getElementById('lieu-row-' + id);
@@ -589,52 +520,6 @@ function fermerModale(id) {
   document.getElementById(id).style.display = 'none';
 }
 </script>
-
-<!-- MODALE MODIFIER MOT DE PASSE -->
-<div id="modale-mdp" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:340px;font-family:'Jost',sans-serif;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:20px;">Modifier le mot de passe</div>
-    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Mot de passe actuel</label>
-    <input type="password" id="mdp-ancien" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:14px;">
-    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Nouveau mot de passe</label>
-    <input type="password" id="mdp-nouveau" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:14px;">
-    <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:#7a9a72;margin-bottom:6px;">Confirmer le nouveau mot de passe</label>
-    <input type="password" id="mdp-confirm" style="width:100%;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;padding:9px 12px;border-radius:2px;font-family:'Jost',sans-serif;margin-bottom:6px;">
-    <div id="mdp-msg" style="font-size:0.78rem;min-height:18px;margin-bottom:14px;color:#c04040;"></div>
-    <div style="display:flex;gap:10px;">
-      <button onclick="validerMdp()" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;">Enregistrer</button>
-      <button onclick="fermerModale('modale-mdp')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-    </div>
-  </div>
-</div>
-
-<!-- MODALE DÉSINSCRIPTION -->
-<div id="modale-desinscription" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:380px;font-family:'Jost',sans-serif;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:12px;">Désinscription du compte</div>
-    <p style="font-size:0.85rem;color:#7a9a72;line-height:1.6;margin-bottom:20px;">Votre compte sera désactivé dans un délai de <strong style="color:#c8d8b0;">7 jours ouvrés</strong>. Vos témoignages resteront visibles sauf demande explicite de suppression.</p>
-    <p style="font-size:0.82rem;color:#c8d8b0;margin-bottom:20px;">Pour confirmer, envoyez un email à <a href="/cdn-cgi/l/email-protection#c8aaa9aaada4a7a588afa5a9a1a4e6aba7a5" style="color:#d4880a;"><span class="__cf_email__" data-cfemail="f597949790999a98b59298949c99db969a98">[email&#160;protected]</span></a> avec l'objet <em>« Désinscription »</em>.</p>
-    <div style="display:flex;gap:10px;">
-      <a href="/cdn-cgi/l/email-protection#e587848780898a88a58288848c89cb868a88da9690878f808691d8a1264c968c8b9686978c95918c8a8bc3878a819cd8af80c5968a908d848c9180c58880c581264c968c8b9686978c9780c58190c5968c9180c5a7848780898a88cb" style="flex:1;background:#d4880a;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;text-align:center;">Envoyer la demande</a>
-      <button onclick="fermerModale('modale-desinscription')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-    </div>
-  </div>
-</div>
-
-<!-- MODALE SUPPRESSION DONNÉES -->
-<div id="modale-suppression" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:380px;font-family:'Jost',sans-serif;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:#f5f2e8;margin-bottom:12px;">Suppression des données</div>
-    <p style="font-size:0.85rem;color:#7a9a72;line-height:1.6;margin-bottom:12px;">Conformément au RGPD, vous pouvez demander la suppression complète de vos données personnelles et témoignages.</p>
-    <p style="font-size:0.82rem;color:#c04040;line-height:1.6;margin-bottom:20px;">⚠️ Cette action est <strong>irréversible</strong>. Tous vos témoignages et données seront définitivement effacés sous 30 jours.</p>
-    <p style="font-size:0.82rem;color:#c8d8b0;margin-bottom:20px;">Envoyez votre demande à <a href="/cdn-cgi/l/email-protection#caa8aba8afa6a5a78aada7aba3a6e4a9a5a7" style="color:#d4880a;"><span class="__cf_email__" data-cfemail="187a797a7d747775587f75797174367b7775">[email&#160;protected]</span></a> avec l'objet <em>« Suppression données »</em>.</p>
-    <div style="display:flex;gap:10px;">
-      <a href="/cdn-cgi/l/email-protection#63010201060f0c0e23040e020a0f4d000c0e5c101601090600175e30161313110610100a0c0d43070c0d0da0ca061045010c071a5e290643100c160b020a1706430f024310161313110610100a0c0d43000c0e130fa0cb1706430706430e061043070c0d0da0ca061043130611100c0d0d060f0f06104306174317a0ca0e0c0a040d020406104310161143210201060f0c0e4d" style="flex:1;background:#c04040;color:white;border:none;padding:10px;font-family:'Jost',sans-serif;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;text-decoration:none;text-align:center;">Envoyer la demande</a>
-      <button onclick="fermerModale('modale-suppression')" style="background:none;border:1px solid #4a7a52;color:#7a9a72;padding:10px 14px;font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;border-radius:2px;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-    </div>
-  </div>
-</div>
-
 <script>
 function validerMdp() {
   const ancien = document.getElementById('mdp-ancien').value;
@@ -649,341 +534,6 @@ function validerMdp() {
   setTimeout(() => fermerModale('modale-mdp'), 1500);
 }
 </script>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <a href="index.html" class="nav-logo">
-    <svg width="150" height="45" viewBox="0 0 148 44" style="overflow:visible;">
-      <path d="M16,40 Q16,40 4,24 A13,13 0 1,1 28,24 Q16,40 16,40 Z" fill="#d4880a" opacity="0.15"/>
-      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
-      <polyline points="8,19 16,9 24,19" fill="none" stroke="#f5f2e8" stroke-width="1.5" stroke-linejoin="round"/>
-      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#f5f2e8" stroke-width="1.3"/>
-      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
-      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
-        <tspan fill="#f5f2e8" font-size="26" font-weight="700">B</tspan><tspan fill="#f5f2e8">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
-      </text>
-    </svg>
-  </a>
-    <ul class="nav-links">
-    <li style="margin-left:28px;"><a href="index.html" style="color:#d4880a;" onmouseover="this.style.color='#e8a030'" onmouseout="this.style.color='#d4880a'">Accueil</a></li>
-    <li><a href="etape1.html" class="active"><span class="nav-num">01</span> <span data-i18n="nav1">La Carte</span></a></li>
-    <li class="membres-only" style="display:none;"><a href="etape2.html"><span class="nav-num">02</span> <span data-i18n="nav2">Racontez</span></a></li>
-    <li class="membres-only" style="display:none;"><a href="temoignages.html"><span class="nav-num">03</span> <span data-i18n="nav3">Transmettez</span></a></li>
-    <li class="membres-only" style="display:none;"><a href="messagerie.html"><span class="nav-num">04</span> <span data-i18n="nav4">La Messagerie</span></a></li>
-    <li class="membres-only" style="display:none;"><a href="galerie.html"><span class="nav-num">05</span> <span data-i18n="nav5">Galerie</span></a></li>
-  </ul>
-  <div style="margin-left:auto;display:flex;align-items:center;">
-    <select id="lang-select" onchange="babelomApply(this.value)" style="background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--creme);font-family:'Jost',sans-serif;font-size:0.75rem;padding:5px 8px;outline:none;border-radius:2px;cursor:pointer;letter-spacing:0.06em;">
-      <option value="fr">Français</option>
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="ar">العربية</option>
-      <option value="de">Deutsch</option>
-      <option value="he">עברית</option>
-      <option value="pt">Português</option>
-      <option value="it">Italiano</option>
-      <option value="ru">Русский</option>
-      <option value="zh">中文</option>
-    </select>
-  </div>
-</nav>
-
-<!-- HEADER -->
-<div class="page-header">
-  <div class="step-badge">01</div>
-  <div class="header-content">
-    <div class="header-label"><span data-i18n="e1HeaderLabel">Étape 1 sur 3 · Déposer un souvenir</span></div>
-    <h1 class="header-title"><span data-i18n="e1HeaderTitle">Placez votre lieu<br>sur <em>la carte</em></span></h1>
-    <p class="header-sub">Cliquez sur la carte à l'endroit exact où vous avez vécu — une rue, un quartier, un village. Puis racontez.</p>
-  </div>
-  <div>
-    <div class="header-steps" style="margin-bottom:8px;">
-      <div class="step-pip active"></div>
-      <div class="step-pip"></div>
-      <div class="step-pip"></div>
-    </div>
-    <div style="font-size:0.75rem;color:#7a9a72;letter-spacing:0.1em;text-transform:uppercase;">Localiser · Raconter · Transmettre</div>
-  </div>
-</div>
-
-<!-- CONTENU -->
-<div class="main-content">
-
-  <!-- CARTE -->
-  <div class="carte-wrap">
-    <div id="map" style="width:100%;height:600px;"></div>
-
-    <!-- BANDEAU INVITATION -->
-    <div style="
-      position:absolute;
-      bottom:0; left:0; right:0;
-      background:rgba(30,58,40,0.88);
-      backdrop-filter:blur(4px);
-      padding:12px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      z-index:500;
-    ">
-      <p style="font-family:'Jost',sans-serif;font-size:0.82rem;color:#e8e4d0;line-height:1.5;margin:0;">
-        <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour découvrir les souvenirs, les anecdotes et les photos derrière chaque point.
-      </p>
-      <a href="index.html#compte" style="
-        background:var(--ocre);
-        color:white;
-        text-decoration:none;
-        padding:7px 16px;
-        font-family:'Jost',sans-serif;
-        font-size:0.75rem;
-        text-transform:uppercase;
-        letter-spacing:0.1em;
-        border-radius:2px;
-        white-space:nowrap;
-        flex-shrink:0;
-        transition:background .2s;
-      " onmouseover="this.style.background='#b87008'" onmouseout="this.style.background='#d4880a'">Créer un compte</a>
-    </div>
-  </div>
-
-  <!-- FORMULAIRE -->
-  <div class="form-wrap">
-    <div style="
-      background: #d4880a;
-      padding: 14px 20px;
-      margin-bottom: 28px;
-      font-size: 0.88rem;
-      color: white;
-      line-height: 1.6;
-      border-radius: 2px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-    ">
-      ⚠️ Par mesure de confidentialité et de sécurité, nous vous conseillons de ne pas enregistrer votre adresse actuelle.
-    </div>
-
-    <div class="form-section-title">Racontez ce lieu</div>
-    <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
-
-    <div class="coords-affich" id="coords-affich">Aucun point placé pour l'instant</div>
-
-    <div class="champ">
-      <label><span data-i18n="e1LabelPays">Pays *</span></label>
-      <input type="text" id="f-pays" placeholder="Ex : France, Algérie, Pologne…" data-i18n-ph="e1PhPays">
-    </div>
-
-    <div class="champ champ-row">
-      <div style="flex:2;">
-        <label><span data-i18n="e1LabelVille">Ville *</span></label>
-        <input type="text" id="f-ville" placeholder="Ex : Lyon, Batna, Lublin…" data-i18n-ph="e1PhVille" oninput="majCodesPostaux(this.value)">
-      </div>
-      <div style="flex:1;">
-        <label>Code postal</label>
-        <div style="position:relative;">
-          <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
-            style="width:100%;box-sizing:border-box;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 12px;outline:none;border-radius:2px;transition:border-color 0.2s;"
-            onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'" oninput="filtrerCP(this.value)">
-          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="champ">
-      <label><span data-i18n="e1LabelLieudit">Lieu-dit / Quartier</span></label>
-      <input type="text" id="f-lieudit" placeholder="Ex : La Croix-Rousse, Bab Ezzouar, Vieux-Port…" data-i18n-ph="e1PhLieudit">
-    </div>
-
-    <div class="champ">
-      <label>Adresse précise <span style="color:#d4880a;">*</span></label>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
-        <input type="text" id="f-num-voie" placeholder="N°" style="width:70px;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 10px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-        <div style="position:relative;flex:1;min-width:200px;">
-          <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
-          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #d4880a;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <button type="button" onclick="geoLocaliserDepuisFormulaire()" style="background:var(--terre);color:var(--creme);border:none;padding:7px 14px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'">📍 Localiser sur la carte</button>
-        <span id="geo-msg" style="font-size:0.75rem;color:var(--muted);font-style:italic;"></span>
-      </div>
-    </div>
-
-    <div class="champ champ-row">
-      <div>
-        <label><span data-i18n="e1LabelAncienNom">Ancien nom de la voie</span></label>
-        <input type="text" id="f-ancien-nom" placeholder="Ex : rue du Maréchal-Foch" data-i18n-ph="e1PhAncienNom">
-      </div>
-      <div>
-        <label><span data-i18n="e1LabelNouveauNom">Nouveau nom de la voie</span></label>
-        <input type="text" id="f-nouveau-nom" placeholder="Ex : avenue de la Libération" data-i18n-ph="e1PhNouveauNom">
-      </div>
-    </div>
-
-    <div class="champ champ-row">
-      <div>
-        <label><span data-i18n="e1LabelArrivee">Année d'arrivée *</span></label>
-        <input type="number" id="f-de" placeholder="1988" min="1900" max="2025">
-      </div>
-      <div>
-        <label><span data-i18n="e1LabelDepart">Année de départ *</span></label>
-        <input type="number" id="f-a" placeholder="1994" min="1900" max="2025">
-      </div>
-    </div>
-
-    <div class="champ">
-      <label>Type de logement <span style="color:#d4880a;">*</span></label>
-      <select id="f-type" onchange="toggleEtage(this.value)">
-        <option value="">Choisir…</option>
-        <option><span data-i18n="e1TypeAppt">Appartement</span></option>
-        <option><span data-i18n="e1TypeMaison">Maison</span></option>
-        <option><span data-i18n="e1TypeFamiliale">Maison familiale</span></option>
-        <option><span data-i18n="e1TypeEtudiant">Chambre d'étudiant</span></option>
-        <option><span data-i18n="e1TypeColoc">Colocation</span></option>
-        <option>Autre</option>
-      </select>
-    </div>
-
-    <div class="champ champ-row" id="champ-etage" style="display:none;">
-      <div>
-        <label><span data-i18n="e1LabelEtage">Étage</span></label>
-        <input type="number" id="f-etage" placeholder="Ex : 3" min="0" max="100">
-      </div>
-      <div>
-        <label><span data-i18n="e1LabelEtagesTotal">Nombre total d'étages</span></label>
-        <input type="number" id="f-etages-total" placeholder="Ex : 6" min="1" max="100">
-      </div>
-    </div>
-
-    <div class="champ">
-      <label><span data-i18n="e1LabelVoisins">Souvenirs du voisinage sans citer de noms</span></label>
-      <input type="text" id="f-voisins" placeholder="Ex : Une atmosphère, des habitudes, des bruits…" data-i18n-ph="e1PhVoisins">
-    </div>
-
-    <div class="form-footer">
-      <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
-      <button class="btn-valider" id="btn-valider" onclick="allerEtape2()"><span data-i18n="e1BtnSuivant">Continuer → Étape 2</span></button>
-    </div>
-  </div>
-</div>
-
-  <!-- RECHERCHE MEMBRES -->
-  <div style="background:var(--parchemin);padding:20px 28px;border-bottom:1px solid var(--sable);">
-    <div style="max-width:900px;margin:0 auto;">
-      <div id="zone-recherche-non-inscrit" style="display:none;background:var(--sable);border-radius:2px;padding:16px 20px;text-align:center;">
-        <p style="font-family:'Jost',sans-serif;font-size:0.85rem;color:var(--terre);margin:0;">
-          <span style="color:#d4880a;font-weight:500;">Inscrivez-vous</span> pour vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse.
-        </p>
-        <a href="index.html#compte" style="display:inline-block;margin-top:10px;background:var(--ocre);color:white;text-decoration:none;padding:7px 18px;font-family:'Jost',sans-serif;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>
-      </div>
-      <div id="zone-recherche-membres" style="display:none;">
-        <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.18em;color:var(--muted);margin-bottom:10px;">🔍 Vérifier si une personne de votre connaissance a déjà déposé un souvenir à cette adresse</div>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;">
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par ville</span>
-            <input type="text" id="rech-ville" placeholder="Ex : Paris…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:160px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par rue</span>
-            <input type="text" id="rech-rue" placeholder="Ex : rue de la Paix…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:220px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-          </div>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <span style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--muted);">Par nom</span>
-            <input type="text" id="rech-nom" placeholder="Nom de famille…" oninput="rechercherMembres()" style="background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.85rem;padding:7px 12px;outline:none;border-radius:2px;width:180px;transition:border-color 0.2s;text-transform:uppercase;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-          </div>
-          <div id="rech-count" style="font-size:0.78rem;color:var(--muted);font-style:italic;padding-bottom:8px;"></div>
-        </div>
-        <div id="rech-resultats" style="margin-top:12px;"></div>
-      </div>
-    </div>
-  </div>
-
-<!-- CONFIRMATION -->
-<div id="confirmation">
-  <div class="confirm-card">
-    <span class="confirm-icon">🏠</span>
-    <h2 class="confirm-title">Votre souvenir<br>est <em>enregistré</em></h2>
-    <p class="confirm-sub">Il rejoint l'archive de Babelom. Un point de plus sur la carte du monde — une vie derrière ce point.</p>
-    <div class="confirm-actions">
-      <button class="btn-nouveau" onclick="nouveau()">Ajouter un autre lieu</button>
-      <a href="index.html" class="btn-accueil">Retour à l'accueil</a>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">
-    <svg width="120" height="34" viewBox="0 0 148 44" style="overflow:visible;">
-      <path d="M16,38 Q16,38 5,23 A12,12 0 1,1 27,23 Q16,38 16,38 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
-      <polyline points="8,19 16,9 24,19" fill="none" stroke="#c8d8b0" stroke-width="1.5" stroke-linejoin="round"/>
-      <rect x="10" y="19" width="12" height="9" fill="none" stroke="#c8d8b0" stroke-width="1.3"/>
-      <rect x="13" y="22" width="5" height="6" fill="none" stroke="#d4880a" stroke-width="1.1"/>
-      <text x="36" y="27" font-family="Cormorant Garamond, serif" font-size="22" font-weight="600" letter-spacing="2">
-        <tspan fill="#c8d8b0" font-size="26" font-weight="700">B</tspan><tspan fill="#c8d8b0">ABEL</tspan><tspan fill="#d4880a" font-size="26" font-weight="700">O</tspan><tspan fill="#d4880a">M</tspan>
-      </text>
-    </svg>
-  </div>
-  <button onclick="ouvrirContact()" style="background:none;border:1px solid rgba(200,216,176,0.4);color:#c8d8b0;padding:7px 16px;font-family:'Jost',sans-serif;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;" onmouseover="this.style.borderColor='#d4880a';this.style.color='#d4880a'" onmouseout="this.style.borderColor='rgba(200,216,176,0.4)';this.style.color='#c8d8b0'"><span data-i18n="navContact">✉ Nous contacter</span></button>
-  <div class="footer-text"><span data-i18n="footerText">La mémoire des lieux habités · Tous droits réservés</span></div>
-  <div style="margin-top:10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-    <a href="mentions-legales.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Mentions légales</a>
-    <a href="confidentialite.html" style="font-size:0.72rem;color:#7a9a72;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;" onmouseover="this.style.color='#d4880a'" onmouseout="this.style.color='#7a9a72'">Confidentialité</a>
-  </div>
-</footer>
-
-<!-- MODALE CONTACT -->
-<div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(30,58,40,0.78);z-index:3000;align-items:center;justify-content:center;">
-  <div style="background:var(--creme);padding:38px 36px;max-width:500px;width:92%;animation:fadeUp 0.3s ease;max-height:90vh;overflow-y:auto;">
-    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:var(--muted);margin-bottom:8px;">Contact</div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--terre);margin-bottom:6px;">Nous <em style="color:var(--ocre);font-style:italic;">contacter</em></h3>
-    <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:22px;">
-      Pour toute question, suggestion ou demande, écrivez-nous directement à
-      <a href="/cdn-cgi/l/email-protection#8ae8ebe8efe6e5e7caede7ebe3e6a4e9e5e7" style="color:var(--ocre);text-decoration:none;font-weight:500;"><span class="__cf_email__" data-cfemail="81e3e0e3e4edeeecc1e6ece0e8edafe2eeec">[email&#160;protected]</span></a>
-      ou utilisez ce formulaire.
-    </p>
-
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;"><span data-i18n="contactLabelNom">Nom & Prénom *</span></label>
-      <input type="text" id="c-nom" placeholder="Votre nom" data-i18n-ph="contactPhNom" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Adresse e-mail *</label>
-      <input type="email" id="c-email" placeholder="votre@email.com" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-    </div>
-    <div style="margin-bottom:12px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Objet *</label>
-      <select id="c-objet" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'">
-        <option value="">Choisir un objet…</option>
-        <option value="question">Question générale</option>
-        <option value="technique">Problème technique</option>
-        <option value="signalement">Signalement de contenu</option>
-        <option value="desinscription">Demande de désinscription</option>
-        <option value="suppression">Suppression de mes données</option>
-        <option value="autre">Autre</option>
-      </select>
-    </div>
-    <div style="margin-bottom:18px;">
-      <label style="display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.13em;color:var(--muted);margin-bottom:6px;">Message *</label>
-      <textarea id="c-message" placeholder="Votre message…" data-i18n-ph="contactPhMessage" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.88rem;padding:9px 13px;outline:none;border-radius:2px;resize:none;height:100px;line-height:1.6;transition:border-color 0.2s;" onfocus="this.style.borderColor='#d4880a'" onblur="this.style.borderColor='#c8d8b0'"></textarea>
-    </div>
-
-    <!-- Mention désinscription -->
-    <div style="background:var(--parchemin);border-left:3px solid var(--ocre);padding:12px 16px;font-size:0.8rem;color:var(--muted);line-height:1.6;margin-bottom:20px;border-radius:0 2px 2px 0;">
-      <strong style="color:var(--terre);display:block;margin-bottom:4px;">Désinscription & données personnelles</strong>
-      Pour toute demande de désinscription ou de suppression de vos données, sélectionnez l'objet correspondant ci-dessus. Votre compte et l'ensemble de vos témoignages seront supprimés dans un délai de 7 jours ouvrés. Conformément au RGPD, vous pouvez également écrire directement à <a href="/cdn-cgi/l/email-protection#a4c6c5c6c1c8cbc9e4c3c9c5cdc88ac7cbc9" style="color:var(--ocre);text-decoration:none;"><span class="__cf_email__" data-cfemail="e88a898a8d848785a88f85898184c68b8785">[email&#160;protected]</span></a>.
-    </div>
-
-    <div id="contact-msg" style="min-height:18px;font-size:0.8rem;margin-bottom:10px;"></div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--sable);">
-      <button onclick="fermerContact()" style="background:none;border:none;color:var(--muted);font-family:'Jost',sans-serif;font-size:0.82rem;cursor:pointer;"><span data-i18n="contactBtnAnnuler">Annuler</span></button>
-      <button onclick="envoyerContact()" style="background:var(--terre);color:var(--creme);border:none;padding:10px 24px;font-family:'Jost',sans-serif;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;" onmouseover="this.style.background='#2e5a38'" onmouseout="this.style.background='#1e3a28'"><span data-i18n="contactBtnEnvoyer">Envoyer →</span></button>
-    </div>
-  </div>
-</div>
-
 <script>
 var map = null;
 var marqueur = null, latLng = null;
@@ -1057,7 +607,13 @@ var currentTile = null;
 
 
 window.addEventListener('load', function() {
-  // Initialiser les icônes Leaflet ici (après chargement de la lib)
+  // Vérifier que Leaflet est bien chargé
+  if (typeof L === 'undefined') {
+    console.error('Leaflet non chargé - retry dans 1s');
+    setTimeout(function() { window.dispatchEvent(new Event('load')); }, 1000);
+    return;
+  }
+  console.log('Leaflet OK, init carte...');
   iconInscrit = L.divIcon({
     className: '',
     html: '<div style="width:12px;height:12px;border-radius:50%;background:#4a7a52;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.25);cursor:pointer;"></div>',
@@ -1069,7 +625,13 @@ window.addEventListener('load', function() {
     attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
   }).addTo(map);
   markersLayer = L.layerGroup().addTo(map);
-  setTimeout(function() { map.invalidateSize(); }, 400);
+  setTimeout(function() { map.invalidateSize(); }, 100);
+  setTimeout(function() { map.invalidateSize(); }, 500);
+  setTimeout(function() { map.invalidateSize(); }, 1500);
+  setTimeout(function() { 
+    map.invalidateSize(true);
+    console.log('Map size:', document.getElementById('map').offsetWidth, 'x', document.getElementById('map').offsetHeight);
+  }, 2000);
   renderMarkers();
   map.on('zoomend', renderMarkers);
 
@@ -1118,7 +680,7 @@ function afficherCPListe(liste) {
   var box = document.getElementById('cp-suggestions');
   if (!liste.length) { box.style.display='none'; return; }
   box.innerHTML = liste.map(function(cp){
-    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+cp+'</div>';
+    return '<div onclick="choisirCP(\''+cp+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;">'+cp+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1142,7 +704,7 @@ function filtrerVoies(val) {
   var matches = TYPES_VOIES.filter(function(v){ return v.toLowerCase().startsWith(val.toLowerCase()); });
   if (!matches.length) { box.style.display='none'; return; }
   box.innerHTML = matches.map(function(v){
-    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;" onmouseover="this.style.background=\'#f5f2e8\'" onmouseout="this.style.background=\'white\'">'+v+'</div>';
+    return '<div onclick="choisirVoie(\''+v+'\')" style="padding:8px 12px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.85rem;color:#1e3a28;border-bottom:1px solid #f0ece0;">'+v+'</div>';
   }).join('');
   box.style.display = 'block';
 }
@@ -1199,35 +761,34 @@ async function geoLocaliserDepuisFormulaire() {
 // Charger les témoignages réels depuis Supabase et les ajouter à la carte
 async function chargerTemoignages() {
   try {
-    const sbClient = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const { data, error } = await sbClient
-      .from('temoignages')
-      .select('id, lat, lng, ville, adresse, identite_prenom, identite_nom, annee_de, annee_a, type_logement, texte, statut, photos')
-      .not('lat', 'is', null)
-      .not('lng', 'is', null);
-
-    if (error || !data || !data.length) return;
-
+    var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages' +
+      '?select=id,lat,lng,ville,adresse,identite_prenom,identite_nom,annee_de,annee_a,type_logement,texte,statut' +
+      '&order=id';
+    var res = await fetch(url, {
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+    });
+    if (!res.ok) return;
+    var data = await res.json();
+    if (!data || !data.length) return;
+    // Ajouter les vrais témoignages aux inscrits existants
     data.forEach(function(t) {
-      var nom = (t.identite_prenom || '') + ' ' + (t.identite_nom ? t.identite_nom[0] + '.' : '');
-      var lieu = (t.adresse || '') + (t.ville ? ', ' + t.ville : '');
+      if (!t.lat || !t.lng) return;
       inscrits.push({
-        id:            t.id,
-        lat:           parseFloat(t.lat),
-        lng:           parseFloat(t.lng),
-        nom:           nom.trim() || 'Anonyme',
-        lieu:          lieu.trim() || 'Lieu inconnu',
-        ville:         t.ville || 'Autre',
-        type_logement: t.type_logement || '',
-        annee_de:      t.annee_de || '',
-        annee_a:       t.annee_a || '',
-        texte:         t.texte || '',
-        reel:          true
+        id: t.id,
+        lat: parseFloat(t.lat),
+        lng: parseFloat(t.lng),
+        nom: (t.identite_prenom || '') + ' ' + (t.identite_nom ? t.identite_nom[0] + '.' : ''),
+        lieu: t.adresse || t.ville || '',
+        ville: t.ville || '',
+        annee_de: t.annee_de,
+        annee_a: t.annee_a,
+        type_logement: t.type_logement,
+        texte: t.texte
       });
     });
     renderMarkers();
   } catch(e) {
-    console.warn('Impossible de charger les témoignages:', e.message);
+    console.log('Témoignages non chargés:', e);
   }
 }
 
@@ -1237,15 +798,27 @@ function buildPopup(p, isCluster, membres) {
   try { user = JSON.parse(localStorage.getItem('babelom-user')); } catch(e) {}
 
   if (isCluster) {
-    // Popup cluster : liste des inscrits de la ville
     var lignes = membres.map(function(m) {
-      return '<div style="font-size:0.8rem;color:#1e3a28;padding:4px 0;border-bottom:1px solid #e8e4d0;">👤 ' + m.nom + '</div>';
+      var lien = m.id ? 'temoignage.html?id=' + m.id : 'temoignages.html';
+      return '<a href="' + lien + '" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #eee;text-decoration:none;background:white;cursor:pointer;">' +
+        '<span style="font-size:1rem;flex-shrink:0;">&#128100;</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:0.82rem;font-weight:700;color:#1a2a5e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + m.nom + '</div>' +
+          '<div style="font-size:0.68rem;color:#5a6a9e;">' + (m.lieu || m.ville || '') + '</div>' +
+        '</div>' +
+        '<span style="color:#FF6B35;font-size:0.8rem;flex-shrink:0;">&#8594;</span>' +
+      '</a>';
     }).join('');
-    return '<div style="font-family:\'Jost\',sans-serif;min-width:200px;padding:4px 2px;">' +
-      '<div style="font-size:0.72rem;font-weight:600;color:#1e3a28;margin-bottom:2px;">📍 ' + membres[0].lieu + '</div>' +
-      '<div style="font-size:0.65rem;color:#7a9a72;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.1em;">' + membres.length + ' inscrits · zoom pour voir les adresses</div>' +
-      '<div style="height:1px;background:#c8d8b0;margin-bottom:8px;"></div>' +
-      lignes + '</div>';
+    return '<div style="font-family:Nunito,sans-serif;min-width:250px;border-radius:10px;overflow:hidden;">' +
+      '<div style="background:#2c4a8a;padding:12px 16px;">' +
+        '<div style="font-size:0.75rem;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.08em;">&#128205; ' + membres[0].lieu + '</div>' +
+        '<div style="font-size:0.65rem;color:rgba(255,255,255,0.6);margin-top:3px;">' + membres.length + ' membre' + (membres.length > 1 ? 's' : '') + '</div>' +
+      '</div>' +
+      '<div style="max-height:220px;overflow-y:auto;">' + lignes + '</div>' +
+      '<div style="padding:8px 12px;background:#f8f9ff;border-top:1px solid #e8eaf4;text-align:center;">' +
+        '<a href="temoignages.html" style="font-size:0.72rem;color:#2c4a8a;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.06em;">Voir tous les t&#233;moignages &#8594;</a>' +
+      '</div>' +
+    '</div>';
   }
 
   if (user) {
@@ -1298,7 +871,7 @@ function renderMarkers() {
       var rep = membres[0];
       var marker = L.marker([rep.lat, rep.lng], { icon: makeClusterIcon(membres.length) });
       marker.on('click', function() {
-        marker.bindPopup(buildPopup(null, true, membres), { maxWidth:260, className:'popup-babelom' }).openPopup();
+        marker.bindPopup(buildPopup(null, true, membres), { maxWidth:300, minWidth:260, className:'popup-babelom', autoClose:false, closeOnClick:false }).openPopup();
         // Zoom automatique sur la ville au clic
         map.flyTo([rep.lat, rep.lng], ZOOM_DETAIL + 1, { duration:1.2 });
       });
@@ -1308,7 +881,7 @@ function renderMarkers() {
       membres.forEach(function(p) {
         var marker = L.marker([p.lat, p.lng], { icon: iconInscrit });
         marker.on('click', function() {
-          marker.bindPopup(buildPopup(p, false, null), { maxWidth:260, className:'popup-babelom' }).openPopup();
+          marker.bindPopup(buildPopup(p, false, null), { maxWidth:280, minWidth:220, className:'popup-babelom', autoClose:false, closeOnClick:false }).openPopup();
         });
         markersLayer.addLayer(marker);
       });
@@ -1493,7 +1066,7 @@ function rechercherMembres() {
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#d4880a\'" onmouseout="this.style.borderColor=\'#c8d8b0\'">'
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;">'
       +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
   }).join('');
 }
@@ -1554,5 +1127,15 @@ function nouveau() {
   document.getElementById('instruction').classList.remove('hidden');
 }
 </script>
-</body>
-</html>
+
+<script id="nav-active">
+(function(){
+  var path = window.location.pathname.split('/').pop() || 'index.html';
+  if(path === '') path = 'index.html';
+  var links = document.querySelectorAll('.nav-ib');
+  links.forEach(function(a){
+    var href = (a.getAttribute('href') || '').split('?')[0];
+    if(href === path){
+      var circle = a.querySelector('.nav-circle');
+      if(circle){
+        circle.style.outline = '3px solid whit
