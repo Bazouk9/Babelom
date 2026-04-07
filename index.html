@@ -2266,7 +2266,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (nameEl) nameEl.textContent = '\u{1F464} ' + user.prenom;
   if (prenomEl) prenomEl.textContent = user.prenom + (user.nom ? ' ' + user.nom : '');
   if (emailEl) emailEl.textContent = user.email || '';
-  chargerLieuxMembre(user);
+  // Délai pour laisser Supabase restaurer le token de session
+  setTimeout(function() { chargerLieuxMembre(user); }, 500);
 });
 
 function toggleMenuMembre(e) {
@@ -2285,58 +2286,125 @@ function toggleLieuxHistorique() {
 }
 
 async function chargerLieuxMembre(user) {
+  var container = document.getElementById('lieux-loading');
+  var badge = document.getElementById('badge-nb-lieux');
   try {
-    var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages?select=id,adresse,ville,pays,annee_de,annee_a,type_logement&utilisateur_id=eq.' + user.id + '&order=annee_de';
+    // Récupérer le token de session (nécessaire pour les politiques RLS Supabase)
+    var token = SUPABASE_ANON;
+    try {
+      var _sbL = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+      var sess = await _sbL.auth.getSession();
+      if (sess.data && sess.data.session && sess.data.session.access_token) {
+        token = sess.data.session.access_token;
+      }
+    } catch(se) { console.warn('token session:', se); }
+
+    var url = SUPABASE_URL + '/rest/v1/temoignages'
+      + '?select=id,adresse,ville,pays,annee_de,annee_a,type_logement'
+      + '&utilisateur_id=eq.' + encodeURIComponent(user.id)
+      + '&order=annee_de.asc';
+
     var res = await fetch(url, {
-      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
     });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     var data = await res.json();
-    var container = document.getElementById('lieux-loading');
-    var badge = document.getElementById('badge-nb-lieux');
+
     if (!container) return;
-    if (!data || !data.length) {
+    if (!Array.isArray(data) || !data.length) {
       if (badge) badge.textContent = '0';
-      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:4px 0;">Aucun souvenir déposé.</div>';
+      container.innerHTML = '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-style:italic;padding:6px 4px;">'
+        + 'Aucun souvenir pour l\'instant. '
+        + '<a href="etape1.html" style="color:#FF6B35;">+ En ajouter un</a></div>';
       return;
     }
     if (badge) badge.textContent = data.length;
+
     var colors = ['#FF6B35','#4ECDC4','#FFD93D','#6BCB77','#FF8B94'];
     container.innerHTML = data.map(function(t, i) {
-      var lieu = [t.adresse, t.ville, t.pays].filter(Boolean).join(', ');
-      var dates = [t.annee_de, t.annee_a].filter(Boolean).join(' – ');
+      var lieu = [t.adresse, t.ville, t.pays].filter(Boolean).join(', ') || 'Lieu non précisé';
+      var dates = [t.annee_de, t.annee_a].filter(Boolean).join(' \u2013 ');
       var col = colors[i % colors.length];
-      return '<div style="padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:8px;" id="lieu-row-' + t.id + '">' +
-        '<div style="width:7px;height:7px;border-radius:50%;background:' + col + ';flex-shrink:0;"></div>' +
-        '<div style="flex:1;min-width:0;">' +
-          '<div style="font-size:0.75rem;font-weight:600;color:white;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + (lieu||'Lieu non précisé') + '</div>' +
-          '<div style="font-size:0.68rem;color:rgba(255,255,255,0.55);">' + (dates||'') + (t.type_logement?' · '+t.type_logement:'') + '</div>' +
-        '</div>' +
-        '<div style="display:flex;gap:3px;flex-shrink:0;">' +
-          '<button onclick="window.location.href='etape2.html?edit=' + t.id + ''" title="Modifier" style="background:#FF6B35;color:white;border:none;font-size:0.65rem;padding:2px 7px;border-radius:4px;cursor:pointer;">✏️</button>' +
-          '<button onclick="supprimerLieu('' + t.id + '')" title="Supprimer" style="background:#c04040;color:white;border:none;font-size:0.65rem;padding:2px 7px;border-radius:4px;cursor:pointer;">🗑</button>' +
-        '</div>' +
-      '</div>';
+      var id = String(t.id);
+      return '<div style="padding:8px 4px;border-bottom:1px solid rgba(255,255,255,0.08);'
+        + 'display:flex;align-items:flex-start;gap:8px;" id="lieu-row-' + id + '">'
+        + '<div style="width:8px;height:8px;border-radius:50%;background:' + col
+        + ';flex-shrink:0;margin-top:5px;"></div>'
+        + '<div style="flex:1;min-width:0;">'
+        + '<div style="font-size:0.78rem;font-weight:700;color:white;white-space:nowrap;'
+        + 'overflow:hidden;text-overflow:ellipsis;" title="' + lieu + '">' + lieu + '</div>'
+        + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:1px;">'
+        + (dates || '') + (t.type_logement ? ' \u00b7 ' + t.type_logement : '') + '</div>'
+        + '</div>'
+        + '<div style="display:flex;flex-direction:column;gap:3px;flex-shrink:0;margin-top:2px;">'
+        + '<button onclick="modifierLieu(\'' + id + '\')" '
+        + 'style="background:rgba(255,107,53,0.2);color:#FF6B35;border:1px solid rgba(255,107,53,0.4);'
+        + 'font-size:0.68rem;padding:3px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;">'
+        + '\u270f Modifier</button>'
+        + '<button onclick="supprimerLieu(\'' + id + '\')" '
+        + 'style="background:rgba(192,64,64,0.18);color:#FF8B94;border:1px solid rgba(192,64,64,0.35);'
+        + 'font-size:0.68rem;padding:3px 8px;border-radius:4px;cursor:pointer;white-space:nowrap;">'
+        + '\ud83d\uddd1 Suppr.</button>'
+        + '</div></div>';
     }).join('');
+
+    // Ouvrir la liste automatiquement
+    var liste = document.getElementById('liste-lieux-hist');
+    var arrow = document.getElementById('arrow-hist');
+    if (liste) liste.style.display = 'block';
+    if (arrow) arrow.textContent = '\u25b4';
+
   } catch(e) {
-    var container = document.getElementById('lieux-loading');
-    if (container) container.innerHTML = '<div style="font-size:0.75rem;color:#FF8B94;padding:4px 0;">Erreur de chargement.</div>';
+    console.error('chargerLieuxMembre:', e);
+    if (container) container.innerHTML = '<div style="font-size:0.75rem;color:#FF8B94;padding:4px 0;">'
+      + 'Erreur : ' + e.message + '</div>';
   }
 }
 
+function modifierLieu(id) {
+  var d = document.getElementById('menu-membre-dropdown');
+  if (d) d.style.display = 'none';
+  window.location.href = 'etape2.html?edit=' + id;
+}
+
 async function supprimerLieu(id) {
-  if (!confirm('Supprimer ce souvenir définitivement ?')) return;
+  if (!confirm('Supprimer définitivement ce souvenir ? Cette action est irréversible.')) return;
+  var row = document.getElementById('lieu-row-' + id);
+  if (row) { row.style.opacity = '0.4'; row.style.pointerEvents = 'none'; }
   try {
-    var res = await fetch('https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages?id=eq.' + id, {
+    var token = SUPABASE_ANON;
+    try {
+      var _sbD = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+      var sess = await _sbD.auth.getSession();
+      if (sess.data && sess.data.session && sess.data.session.access_token) {
+        token = sess.data.session.access_token;
+      }
+    } catch(se) {}
+    var res = await fetch(SUPABASE_URL + '/rest/v1/temoignages?id=eq.' + id, {
       method: 'DELETE',
-      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      }
     });
-    if (res.ok) {
-      var row = document.getElementById('lieu-row-' + id);
+    if (res.ok || res.status === 204) {
       if (row) row.remove();
       var badge = document.getElementById('badge-nb-lieux');
-      if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent||'1') - 1);
+      if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent || '1') - 1);
+    } else {
+      if (row) { row.style.opacity = '1'; row.style.pointerEvents = ''; }
+      var err = await res.json().catch(function(){return {};});
+      alert('Erreur suppression : ' + (err.message || 'HTTP ' + res.status));
     }
-  } catch(e) {}
+  } catch(e) {
+    if (row) { row.style.opacity = '1'; row.style.pointerEvents = ''; }
+    alert('Erreur réseau : ' + e.message);
+  }
 }
 
 document.addEventListener('click', function(e) {
