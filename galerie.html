@@ -403,9 +403,9 @@ async function chargerGalerie() {
   try {
     const sbClient = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     const { data, error } = await sbClient
-      .from('temoignages')
-      .select('id, photos, ville, pays, adresse, annee_de, annee_a, type_logement')
-      .order('annee_de', { ascending: false });
+      .from('galerie_photos')
+      .select('id, url, ville, pays, annee, created_at')
+      .order('created_at', { ascending: false });
 
     document.getElementById('galerie-loading').style.display = 'none';
 
@@ -414,26 +414,18 @@ async function chargerGalerie() {
       return;
     }
 
-    // Filtrer côté client — garder seulement les témoignages avec photos
-    tousLesTemoignages = data.filter(function(t) {
-      return t.photos && Array.isArray(t.photos) && t.photos.length > 0;
-    });
-
-    // Aplatir toutes les photos
+    // Aplatir les photos galerie_photos
     photosFlat = [];
     data.forEach(function(t) {
-      if (!t.photos || !t.photos.length) return;
-      t.photos.forEach(function(url) {
-        photosFlat.push({
-          url: url,
-          lieu: [t.adresse, t.ville, t.pays].filter(Boolean).join(', '),
-          ville: (t.ville || '').toLowerCase(),
-          pays:  (t.pays  || '').toLowerCase(),
-          annee_de: t.annee_de || 0,
-          annee_a:  t.annee_a  || 0,
-          dates: t.annee_de && t.annee_a ? t.annee_de + ' – ' + t.annee_a : '',
-          id: t.id,
-        });
+      photosFlat.push({
+        url: t.url,
+        lieu: [t.ville, t.pays].filter(Boolean).join(', '),
+        ville: (t.ville || '').toLowerCase(),
+        pays:  (t.pays  || '').toLowerCase(),
+        annee_de: t.annee || 0,
+        annee_a:  t.annee || 0,
+        dates: t.annee ? String(t.annee) : '',
+        id: t.id,
       });
     });
 
@@ -535,7 +527,7 @@ if (!user) {
 
 // Nav scroll
 window.addEventListener('scroll', function() {
-  document.getElementById('nav').style.boxShadow = window.scrollY > 30 ? '0 2px 12px rgba(0,0,0,0.25)' : '';
+  var navEl=document.getElementById('top-band');if(navEl)navEl.style.boxShadow = window.scrollY > 30 ? '0 2px 12px rgba(0,0,0,0.25)' : '';
 });
 </script>
 
