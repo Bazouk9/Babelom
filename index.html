@@ -2533,7 +2533,14 @@ async function supprimerMonCompte() {
     if(href === path){
       var circle = a.querySelector('.nav-circle');
       if(circle){
-        circle.style.outline = '3px solid white
+        circle.style.outline = '3px solid white';
+        circle.style.outlineOffset = '2px';
+      }
+    }
+  });
+})();
+</script>
+
 
 <!-- MODALE CONTACT -->
 <div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerContact()">
@@ -2579,10 +2586,7 @@ async function supprimerMonCompte() {
 <script>
 function ouvrirContact(){document.getElementById('modale-contact').style.display='flex';}
 function fermerContact(){document.getElementById('modale-contact').style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
-async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs obligatoires.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>
-Objet : '+objet+'
-
-'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé. Nous vous répondrons à '+email+' dans les meilleurs délais.';setTimeout(fermerContact,3000);}else{fb.style.color='#FF8B94';fb.textContent='Erreur lors de l\'envoi. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau. Réessayez.';}}
+async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs obligatoires.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé. Nous vous répondrons à '+email+' dans les meilleurs délais.';setTimeout(fermerContact,3000);}else{fb.style.color='#FF8B94';fb.textContent='Erreur lors de l\'envoi. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau. Réessayez.';}}
 </script>
 </body>
 </html>
