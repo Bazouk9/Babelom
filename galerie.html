@@ -233,33 +233,98 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 </div>
 
 <!-- HERO -->
-<div class="galerie-hero">
-  <div class="galerie-eyebrow">Mémoire collective des lieux habités</div>
-  <h1 class="galerie-title">Galerie des <em>lieux habités</em></h1>
-  <p class="galerie-sub">Les façades, les cours, les rues — images déposées par les membres de Babelom.</p>
+<div class="galerie-hero" style="background:#1e3060;padding:36px 52px 32px;border-bottom:2px solid #FF6B35;">
+
+  <!-- TITRE PAGE -->
+  <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:white;line-height:1.2;margin-bottom:6px;">
+    Album photo des <em style="color:#FF6B35;font-style:italic;">quartiers habités</em>
+  </h1>
+  <p style="font-size:0.85rem;color:rgba(255,255,255,0.45);margin-bottom:28px;line-height:1.6;">
+    Rues, places, quartiers, statues, jardins publics — lieux extérieurs uniquement · 2 photos maximum par membre
+  </p>
+
+  <!-- SOUS-TITRE DÉPÔT -->
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:#4ECDC4;margin-bottom:16px;letter-spacing:0.01em;">
+    Insérer une photo
+  </h2>
+
+  <!-- ZONE DÉPÔT -->
+  <div style="background:rgba(78,205,196,0.06);border:1.5px dashed rgba(78,205,196,0.3);border-radius:12px;padding:22px 24px;">
+    <!-- Upload -->
+    <div onclick="document.getElementById('g-photo-input').click()" style="display:flex;align-items:center;gap:16px;cursor:pointer;margin-bottom:20px;" id="g-upload-zone">
+      <div style="width:48px;height:48px;background:rgba(78,205,196,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5" fill="#4ECDC4" stroke="none"/><path d="M21 15l-5-5L5 21"/><path d="M12 7v4M10 9h4" stroke-width="1.5"/></svg>
+      </div>
+      <div>
+        <div style="font-size:0.92rem;font-weight:700;color:#4ECDC4;margin-bottom:3px;">Choisir une photo</div>
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);">JPG ou PNG · 5 Mo max · Lieu extérieur uniquement</div>
+      </div>
+      <button style="margin-left:auto;background:#4ECDC4;color:#1e2d50;border:none;border-radius:8px;padding:9px 20px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;flex-shrink:0;">+ Ajouter</button>
+    </div>
+    <input type="file" id="g-photo-input" accept="image/*" style="display:none" onchange="previewGaleriePhoto(this)">
+    <div id="g-photo-preview" style="display:none;margin-bottom:16px;">
+      <img id="g-photo-img" style="width:120px;height:90px;object-fit:cover;border-radius:8px;border:2px solid #4ECDC4;">
+    </div>
+
+    <!-- 3 PAVÉS obligatoires -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div>
+        <label style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Ville <span style="color:#FF6B35;">*</span></label>
+        <input type="text" id="g-depot-ville" placeholder="Ex : Paris" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 12px;outline:none;" onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Pays <span style="color:#FF6B35;">*</span></label>
+        <input type="text" id="g-depot-pays" placeholder="Ex : France" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 12px;outline:none;" onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+      </div>
+      <div>
+        <label style="display:block;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.5);margin-bottom:6px;">Année <span style="color:#FF6B35;">*</span></label>
+        <input type="number" id="g-depot-annee" placeholder="Ex : 1985" min="1900" max="2025" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);border-radius:8px;color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 12px;outline:none;" onfocus="this.style.borderColor='#4ECDC4'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+      </div>
+    </div>
+
+    <!-- Bouton valider -->
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button onclick="validerDepotPhoto()" style="background:#FF6B35;color:white;border:none;border-radius:8px;padding:11px 28px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;">Déposer ma photo →</button>
+      <div id="g-depot-msg" style="font-size:0.78rem;color:#4ECDC4;"></div>
+    </div>
+  </div>
 </div>
 
 <!-- FILTRES -->
-<div class="galerie-filtres">
-  <div>
-    <label>Par ville</label>
-    <input type="text" id="g-ville" placeholder="Ex : Paris…" oninput="filtrerGalerie()" style="width:160px;text-transform:uppercase;">
+<div style="background:#243b6e;padding:24px 52px 20px;border-bottom:1px solid rgba(255,255,255,0.08);">
+
+  <!-- SOUS-TITRE RECHERCHE -->
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:18px;letter-spacing:0.01em;">
+    Rechercher une <em style="color:#FFD93D;font-style:italic;">photo</em>
+  </h2>
+
+  <!-- PAVÉS COLORÉS -->
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.45);">Par ville</label>
+      <input type="text" id="g-ville" placeholder="Ex : Paris…" oninput="filtrerGalerie()"
+        style="background:#FF6B35;border:none;border-radius:8px;color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:160px;text-transform:uppercase;"
+        onfocus="this.style.boxShadow='0 0 0 3px rgba(255,107,53,0.4)'" onblur="this.style.boxShadow='none'">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.45);">Par pays</label>
+      <input type="text" id="g-pays" placeholder="Ex : France…" oninput="filtrerGalerie()"
+        style="background:#4ECDC4;border:none;border-radius:8px;color:#1e2d50;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:150px;text-transform:uppercase;font-weight:700;"
+        onfocus="this.style.boxShadow='0 0 0 3px rgba(78,205,196,0.4)'" onblur="this.style.boxShadow='none'">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.45);">Par période</label>
+      <select id="g-periode" onchange="filtrerGalerie()"
+        style="background:#FFD93D;border:none;border-radius:8px;color:#1e2d50;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:170px;font-weight:700;cursor:pointer;">
+        <option value="">— Toutes époques —</option>
+        <option value="avant1945">Avant 1945</option>
+        <option value="1945-1970">1945 – 1970</option>
+        <option value="1970-1990">1970 – 1990</option>
+        <option value="apres1990">Après 1990</option>
+      </select>
+    </div>
+    <div id="galerie-count" style="margin-left:auto;font-size:0.75rem;color:rgba(255,255,255,0.35);align-self:flex-end;padding-bottom:10px;"></div>
   </div>
-  <div>
-    <label>Par pays</label>
-    <input type="text" id="g-pays" placeholder="Ex : France…" oninput="filtrerGalerie()" style="width:140px;text-transform:uppercase;">
-  </div>
-  <div>
-    <label>Par période</label>
-    <select id="g-periode" onchange="filtrerGalerie()" style="width:160px;">
-      <option value="">— Toutes les époques —</option>
-      <option value="avant1945">Avant 1945</option>
-      <option value="1945-1970">1945 – 1970</option>
-      <option value="1970-1990">1970 – 1990</option>
-      <option value="apres1990">Après 1990</option>
-    </select>
-  </div>
-  <div id="galerie-count" style="margin-left:auto;"></div>
 </div>
 
 <!-- GRILLE -->
@@ -518,6 +583,92 @@ window.addEventListener('scroll', function() {
     }
   });
 })();
+</script>
+</body>
+</html>
+
+<script id="galerie-depot">
+function previewGaleriePhoto(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var preview = document.getElementById('g-photo-preview');
+  var img = document.getElementById('g-photo-img');
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    img.src = e.target.result;
+    preview.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function validerDepotPhoto() {
+  var ville  = document.getElementById('g-depot-ville').value.trim();
+  var pays   = document.getElementById('g-depot-pays').value.trim();
+  var annee  = document.getElementById('g-depot-annee').value.trim();
+  var input  = document.getElementById('g-photo-input');
+  var msg    = document.getElementById('g-depot-msg');
+
+  if (!ville || !pays || !annee) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = '⚠ Ville, Pays et Année sont obligatoires.';
+    return;
+  }
+  if (!input.files || !input.files[0]) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = '⚠ Veuillez choisir une photo.';
+    return;
+  }
+
+  var user = (function() {
+    try { var r = localStorage.getItem('babelom-user'); if (!r) return null; var u = JSON.parse(r); return u; } catch(e) { return null; }
+  })();
+  if (!user) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = '⚠ Connectez-vous pour déposer une photo.';
+    return;
+  }
+
+  msg.style.color = '#4ECDC4';
+  msg.textContent = 'Envoi en cours…';
+
+  try {
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+    var sess = await sb.auth.getSession();
+    var token = sess.data?.session?.access_token || SUPABASE_ANON;
+
+    var file = input.files[0];
+    var chemin = user.id + '/galerie/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
+    var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/galerie-photos/' + chemin, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + token, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file
+    });
+    if (!uploadRes.ok) throw new Error('Upload échoué');
+
+    var photoUrl = SUPABASE_URL + '/storage/v1/object/public/galerie-photos/' + chemin;
+
+    var { error } = await sb.from('galerie_photos').insert([{
+      utilisateur_id: user.id,
+      url: photoUrl,
+      ville: ville,
+      pays: pays,
+      annee: parseInt(annee)
+    }]);
+    if (error) throw new Error(error.message);
+
+    msg.style.color = '#6BCB77';
+    msg.textContent = '✓ Photo déposée ! Elle apparaîtra dans la galerie après validation.';
+    input.value = '';
+    document.getElementById('g-photo-preview').style.display = 'none';
+    document.getElementById('g-depot-ville').value = '';
+    document.getElementById('g-depot-pays').value = '';
+    document.getElementById('g-depot-annee').value = '';
+    setTimeout(function() { msg.textContent = ''; }, 4000);
+  } catch(e) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = 'Erreur : ' + e.message;
+  }
+}
 </script>
 </body>
 </html>
