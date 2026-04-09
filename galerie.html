@@ -622,7 +622,7 @@ async function sInscrire(){
   var msg=document.getElementById('msg-ins');
   if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}
   try{
-    var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});
+    var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom},options:{emailRedirectTo:'https://bazouk9.github.io/Babelom/confirmation.html'}})});
     var data=await res.json();
     if(!res.ok)throw new Error(data.error_description||'Erreur');
     if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecté !':'Vérifiez votre email.';}
