@@ -974,10 +974,13 @@ async function chargerMessages() {
     if (currentConvType === 'groupe' && !isMine) {
       senderLabel = '<div class="group-sender">Membre</div>';
     }
+    var btnSignaler = !isMine
+      ? '<button onclick="signalerMessage(\'' + m.id + '\',\'' + escHtml(m.texte).substring(0,40) + '\')" style="display:block;background:none;border:none;color:rgba(255,107,53,0.4);font-size:0.68rem;cursor:pointer;padding:2px 0;font-family:Nunito,sans-serif;" onmouseover="this.style.color=\'#FF6B35\'" onmouseout="this.style.color=\'rgba(255,107,53,0.4)\'">⚑ Signaler</button>'
+      : '';
     return '<div class="msg-bubble ' + cls + '">'
       + senderLabel
       + '<div class="bubble-text">' + escHtml(m.texte) + '</div>'
-      + '<div class="bubble-meta">' + timeAgo(m.created_at) + '</div>'
+      + '<div class="bubble-meta">' + timeAgo(m.created_at) + btnSignaler + '</div>'
       + '</div>';
   }).join('');
 
@@ -1077,6 +1080,66 @@ async function creerGroupe() {
     fermerModaleGroupe();
     switchTab('groupes');
   }, 800);
+}
+</script>
+
+<!-- MODALE SIGNALEMENT MESSAGE -->
+<div id="modale-sig-msg" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('modale-sig-msg').style.display='none'">
+  <div style="background:#1e2d50;border:1px solid #FF6B35;padding:28px;max-width:420px;width:92%;border-radius:14px;font-family:'Nunito',sans-serif;">
+    <h3 style="font-size:1.1rem;color:white;margin-bottom:6px;">Signaler ce message</h3>
+    <p id="sig-msg-apercu" style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:16px;font-style:italic;"></p>
+    <select id="sig-msg-raison" style="width:100%;background:#2c4a8a;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;border-radius:8px;margin-bottom:12px;outline:none;">
+      <option value="">Raison du signalement *</option>
+      <option value="haineux">Contenu haineux ou discriminatoire</option>
+      <option value="harcelement">Harcèlement ou menace</option>
+      <option value="spam">Spam ou contenu commercial</option>
+      <option value="vie_privee">Violation de la vie privée</option>
+      <option value="autre">Autre</option>
+    </select>
+    <div id="sig-msg-retour" style="min-height:16px;font-size:0.78rem;margin-bottom:12px;"></div>
+    <div style="display:flex;justify-content:space-between;">
+      <button onclick="document.getElementById('modale-sig-msg').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Nunito',sans-serif;">Annuler</button>
+      <button onclick="envoyerSignalementMsg()" style="background:#FF6B35;color:white;border:none;padding:9px 20px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Signaler</button>
+    </div>
+  </div>
+</div>
+
+<script id="signalement-msg-js">
+var _sigMsgId = null;
+
+function signalerMessage(msgId, apercu) {
+  _sigMsgId = msgId;
+  document.getElementById('sig-msg-apercu').textContent = '« ' + apercu + '… »';
+  document.getElementById('sig-msg-raison').value = '';
+  document.getElementById('sig-msg-retour').textContent = '';
+  document.getElementById('modale-sig-msg').style.display = 'flex';
+}
+
+async function envoyerSignalementMsg() {
+  var raison = document.getElementById('sig-msg-raison').value;
+  var retour = document.getElementById('sig-msg-retour');
+  if (!raison) { retour.style.color='#FF8B94'; retour.textContent='Choisissez une raison.'; return; }
+  retour.style.color='#4ECDC4'; retour.textContent='Envoi…';
+  try {
+    var res = await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',
+        subject:'[Babelom] ⚠ Signalement message',
+        from_name:'Système Babelom',
+        message:'Raison : '+raison+'\nID message : '+_sigMsgId+'\nURL : '+window.location.href
+      })
+    });
+    var data = await res.json();
+    if(data.success){
+      retour.style.color='#6BCB77';
+      retour.textContent='✓ Signalement envoyé.';
+      setTimeout(function(){document.getElementById('modale-sig-msg').style.display='none';},1800);
+    } else {
+      retour.style.color='#FF8B94'; retour.textContent='Erreur.';
+    }
+  } catch(e){ retour.style.color='#FF8B94'; retour.textContent='Erreur réseau.'; }
 }
 </script>
 </body>
