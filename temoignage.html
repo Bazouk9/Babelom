@@ -317,6 +317,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
     <div class="actions">
       <a href="etape1.html" class="btn-retour">← Retour à la carte</a>
       <a href="temoignages.html" class="btn-retour" style="background:var(--ocre);">Voir tous les souvenirs</a>
+      <button onclick="signalerContenu()" style="background:none;border:1px solid rgba(255,107,53,0.4);color:rgba(255,107,53,0.7);padding:9px 18px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.78rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='#FF6B35';this.style.color='#FF6B35'" onmouseout="this.style.borderColor='rgba(255,107,53,0.4)';this.style.color='rgba(255,107,53,0.7)'">⚑ Signaler ce contenu</button>
     </div>
     <div style="margin-top:24px;display:flex;gap:20px;">
       <a href="mentions-legales.html" style="font-size:0.72rem;color:var(--muted);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">Mentions légales</a>
@@ -512,7 +513,7 @@ if (!user) {
 }
 
 window.addEventListener('scroll', function(){
-  document.getElementById('nav').style.boxShadow = window.scrollY > 30 ? '0 2px 12px rgba(0,0,0,0.25)' : '';
+  var _nb=document.getElementById('top-band');if(_nb)_nb.style.boxShadow=window.scrollY>30?'0 2px 12px rgba(0,0,0,0.25)':'';
 });
 </script>
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
@@ -570,6 +571,76 @@ function toggleMenuMembre(e){if(e)e.stopPropagation();var d=document.getElementB
 document.addEventListener('click',function(e){var d=document.getElementById('menu-membre-dropdown');var btn=document.getElementById('btn-menu-membre');if(d&&btn&&!d.contains(e.target)&&!btn.contains(e.target))d.style.display='none';});
 function confirmerSuppressionCompte(){var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display='none';var m=document.getElementById('modale-confirm-delete');if(m)m.style.display='flex';}
 setTimeout(mettreAJourNav,100);
+</script>
+
+<!-- MODALE SIGNALEMENT -->
+<div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('modale-signalement').style.display='none'">
+  <div style="background:#1e2d50;border:1px solid #FF6B35;padding:32px;max-width:460px;width:92%;border-radius:14px;font-family:'Nunito',sans-serif;">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:white;margin-bottom:6px;">Signaler ce contenu</h3>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6;">Ce signalement sera transmis à l'équipe Babelom qui examinera le contenu sous 48h.</p>
+    <select id="sig-raison" style="width:100%;background:#2c4a8a;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;border-radius:8px;margin-bottom:12px;outline:none;">
+      <option value="">Raison du signalement *</option>
+      <option value="haineux">Contenu haineux ou discriminatoire</option>
+      <option value="harcelement">Harcèlement ou menace</option>
+      <option value="faux">Fausse identité ou information incorrecte</option>
+      <option value="spam">Spam ou contenu commercial</option>
+      <option value="vie_privee">Violation de la vie privée</option>
+      <option value="autre">Autre</option>
+    </select>
+    <textarea id="sig-detail" placeholder="Précisez si nécessaire (optionnel)" rows="3" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.15);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;border-radius:8px;resize:none;margin-bottom:16px;outline:none;"></textarea>
+    <div id="sig-msg" style="min-height:16px;font-size:0.78rem;margin-bottom:12px;"></div>
+    <div style="display:flex;justify-content:space-between;">
+      <button onclick="document.getElementById('modale-signalement').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-family:'Nunito',sans-serif;">Annuler</button>
+      <button onclick="envoyerSignalement()" style="background:#FF6B35;color:white;border:none;padding:10px 24px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Envoyer le signalement</button>
+    </div>
+  </div>
+</div>
+
+<script id="signalement-js">
+function signalerContenu() {
+  document.getElementById('sig-raison').value = '';
+  document.getElementById('sig-detail').value = '';
+  document.getElementById('sig-msg').textContent = '';
+  document.getElementById('modale-signalement').style.display = 'flex';
+}
+
+async function envoyerSignalement() {
+  var raison = document.getElementById('sig-raison').value;
+  var detail = document.getElementById('sig-detail').value.trim();
+  var msg    = document.getElementById('sig-msg');
+  if (!raison) { msg.style.color='#FF8B94'; msg.textContent='Veuillez choisir une raison.'; return; }
+  
+  msg.style.color = '#4ECDC4';
+  msg.textContent = 'Envoi en cours…';
+  
+  var url = window.location.href;
+  var temoignageId = new URLSearchParams(window.location.search).get('id') || 'inconnu';
+  
+  try {
+    var res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        access_key: '7428a95d-fc84-4a4b-8c08-b4e4382c7946',
+        subject: '[Babelom] ⚠ Signalement contenu #' + temoignageId,
+        from_name: 'Système Babelom',
+        message: 'Raison : ' + raison + '\nDétail : ' + (detail || 'aucun') + '\nURL : ' + url + '\nID témoignage : ' + temoignageId
+      })
+    });
+    var data = await res.json();
+    if (data.success) {
+      msg.style.color = '#6BCB77';
+      msg.textContent = '✓ Signalement envoyé. Merci.';
+      setTimeout(function(){ document.getElementById('modale-signalement').style.display='none'; }, 2000);
+    } else {
+      msg.style.color = '#FF8B94';
+      msg.textContent = 'Erreur. Réessayez.';
+    }
+  } catch(e) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = 'Erreur réseau.';
+  }
+}
 </script>
 </body>
 </html>
