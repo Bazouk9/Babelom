@@ -256,31 +256,55 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 const sbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
 async function confirmer() {
-  // Supabase envoie le token dans le hash de l'URL
-  const hash   = window.location.hash.substring(1);
-  const params = new URLSearchParams(hash);
-  const token  = params.get('access_token');
-  const type   = params.get('type');
+  // Supabase v2 envoie token_hash en query params (?token_hash=...&type=signup)
+  // Supabase v1 envoyait access_token dans le hash (#access_token=...)
+  // On gère les deux formats
 
-  if (!token) {
-    // Pas de token — peut-être déjà confirmé
-    document.getElementById('carte-chargement').style.display = 'none';
-    document.getElementById('carte-erreur').style.display = 'block';
-    return;
-  }
+  const searchParams = new URLSearchParams(window.location.search);
+  const hashParams   = new URLSearchParams(window.location.hash.substring(1));
 
-  if (type === 'signup' || type === 'email_change') {
-    const { data, error } = await sbAuth.auth.getUser(token);
-    if (error) {
-      document.getElementById('carte-chargement').style.display = 'none';
-      document.getElementById('carte-erreur').style.display = 'block';
-    } else {
+  const tokenHash   = searchParams.get('token_hash');
+  const type        = searchParams.get('type') || hashParams.get('type');
+  const accessToken = hashParams.get('access_token');
+
+  try {
+    if (tokenHash) {
+      // Format Supabase v2 — vérifier via verifyOtp
+      const { data, error } = await sbAuth.auth.verifyOtp({
+        token_hash: tokenHash,
+        type: type || 'signup',
+      });
+      if (error) throw error;
+
+      // Sauvegarder la session
+      if (data && data.user) {
+        const prenom = data.user.user_metadata?.prenom || data.user.email.split('@')[0];
+        localStorage.setItem('babelom-user', JSON.stringify({
+          id: data.user.id,
+          email: data.user.email,
+          prenom: prenom,
+          expires: Date.now() + 7200000
+        }));
+      }
       document.getElementById('carte-chargement').style.display = 'none';
       document.getElementById('carte-succes').style.display = 'block';
+
+    } else if (accessToken) {
+      // Format Supabase v1
+      const { data, error } = await sbAuth.auth.getUser(accessToken);
+      if (error) throw error;
+      document.getElementById('carte-chargement').style.display = 'none';
+      document.getElementById('carte-succes').style.display = 'block';
+
+    } else {
+      // Aucun token trouvé
+      document.getElementById('carte-chargement').style.display = 'none';
+      document.getElementById('carte-erreur').style.display = 'block';
     }
-  } else {
+  } catch(e) {
+    console.error('Erreur confirmation:', e);
     document.getElementById('carte-chargement').style.display = 'none';
-    document.getElementById('carte-succes').style.display = 'block';
+    document.getElementById('carte-erreur').style.display = 'block';
   }
 }
 
