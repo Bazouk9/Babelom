@@ -669,11 +669,11 @@ async function afficherImmeuble(v, t) {
   var voisinsMembers = {};
   if (t.adresse && t.ville) {
     try {
-      var adresseKey = t.adresse.split(' ').filter(function(w){return w.length > 2;}).join(' ');
+      var adresseKey = '%' + t.adresse.split(' ').filter(function(w){return w.length > 2;}).join('%') + '%';
       var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages'
         + '?select=identite_prenom,identite_nom,etage,voisins_immeuble,id'
-        + '&ville=ilike.' + encodeURIComponent('*' + t.ville + '*')
-        + '&adresse=ilike.' + encodeURIComponent('*' + adresseKey + '*')
+        + '&ville=ilike.' + encodeURIComponent('%' + t.ville + '%')
+        + '&adresse=ilike.' + encodeURIComponent(adresseKey)
         + '&id=neq.' + t.id;
       var res = await fetch(url, { headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON } });
       var membres = await res.json();
