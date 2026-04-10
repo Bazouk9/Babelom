@@ -1133,13 +1133,13 @@ function rechercherMembres() {
   count.textContent = filtres.length + ' souvenir' + (filtres.length>1?'s':'') + ' trouvé' + (filtres.length>1?'s':'');
 
   if (!filtres.length) {
-    res.innerHTML = '<div style="font-size:0.82rem;color:var(--muted);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
+    res.innerHTML = '<div style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-style:italic;">Aucun souvenir trouvé pour ces critères.</div>';
     return;
   }
 
   res.innerHTML = filtres.slice(0,8).map(function(p) {
-    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--sable);border-radius:2px;padding:6px 12px;margin:4px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.8rem;color:var(--terre);transition:border-color 0.2s;">'
-      +'<span style="color:#d4880a;">📍</span> '+p.nom+' · '+p.lieu+'</div>';
+    return '<div onclick="map.setView(['+p.lat+','+p.lng+'],15)" style="display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid #c0cce0;border-radius:6px;padding:6px 12px;margin:4px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:0.82rem;color:#1e2d50;transition:border-color 0.2s;">'
+      +'<span style="font-size:14px;">📍</span> <strong style="color:#FF6B35;">'+p.nom+'</strong> · '+p.lieu+'</div>';
   }).join('');
 }
 
