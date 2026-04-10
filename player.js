@@ -36,7 +36,7 @@ function creerLecteur() {
     </div>
     <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B9CC8" stroke-width="2"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54,8.46a5,5 0 0 1 0,7.07"/></svg>
-      <input type="range" id="bp-vol" min="0" max="1" step="0.05" value="0.65"
+      <input type="range" id="bp-vol" min="0" max="1" step="0.05" value="0.3"
         oninput="if(window._bpAudio)window._bpAudio.volume=this.value"
         style="width:60px;accent-color:#FF6B35;cursor:pointer;">
     </div>
@@ -53,7 +53,7 @@ function initPiste(autoplay) {
   var p = PLAYLIST[pisteIdx];
   audio = new Audio(p.src);
   window._bpAudio = audio;
-  audio.volume = parseFloat((document.getElementById('bp-vol')||{}).value||'0.65');
+  audio.volume = parseFloat((document.getElementById('bp-vol')||{}).value||'0.3');
   var t = parseFloat(localStorage.getItem('babelom-time')||'0');
   if (t > 0) audio.currentTime = t;
   var el = document.getElementById('bp-titre');
