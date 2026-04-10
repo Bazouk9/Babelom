@@ -321,7 +321,96 @@ body { font-family:'Nunito',sans-serif; background:#243B6E; color:white; padding
 
     
 
-    <div class="form-footer">
+
+    <!-- WIDGET IMMEUBLE -->
+    <div id="widget-immeuble" style="display:none;margin-top:24px;">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-bottom:10px;">Voisins — optionnel</div>
+      <div style="background:#e8edf5;border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:center;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:12px;color:#4a5a80;">Étages :</label>
+            <input type="range" id="wi-floors" min="2" max="8" value="4" step="1" style="width:80px;" oninput="document.getElementById('wi-fv').textContent=this.value;buildImmeuble()">
+            <span id="wi-fv" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">4</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:12px;color:#4a5a80;">Apparts/étage :</label>
+            <input type="range" id="wi-apts" min="2" max="5" value="3" step="1" style="width:80px;" oninput="document.getElementById('wi-av').textContent=this.value;buildImmeuble()">
+            <span id="wi-av" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">3</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:12px;color:#4a5a80;">Mon étage :</label>
+            <input type="range" id="wi-mf" min="1" max="8" value="2" step="1" style="width:80px;" oninput="document.getElementById('wi-mv').textContent=this.value;wMyFloor=parseInt(this.value);buildImmeuble()">
+            <span id="wi-mv" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">2</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:12px;color:#4a5a80;">Mon appart :</label>
+            <input type="range" id="wi-ma" min="1" max="5" value="2" step="1" style="width:80px;" oninput="document.getElementById('wi-mav').textContent=this.value;wMyApt=parseInt(this.value)-1;buildImmeuble()">
+            <span id="wi-mav" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">2</span>
+          </div>
+        </div>
+        <div id="wi-building" style="width:100%;max-width:540px;"></div>
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,107,53,0.18);border:1.5px solid #FF6B35;"></div>Vous</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:rgba(78,205,196,0.2);border:1.5px solid #4ECDC4;"></div>Membre Babelom</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:#dce6f5;border:1.5px solid #a0b8d8;"></div>Saisi / vide</div>
+        </div>
+        <div id="wi-modal" style="display:none;background:#f0f4fa;border:1px solid #c0cce0;border-radius:8px;padding:14px;margin-top:12px;width:100%;max-width:540px;">
+          <div id="wi-modal-title" style="font-size:11px;font-weight:700;color:#FF6B35;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;"></div>
+          <div id="wi-member-badge" style="display:none;background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.4);border-radius:6px;padding:6px 10px;font-size:11px;color:#0e8a7a;margin-bottom:8px;"></div>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+              <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#7a8aaa;">Nom</label>
+              <input type="text" id="wi-nom" placeholder="MARTIN" style="background:white;border:1.5px solid #c0cce0;border-radius:6px;color:#1e2d50;font-size:12px;padding:7px 10px;outline:none;text-transform:uppercase;width:100%;">
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+              <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#7a8aaa;">Prénom</label>
+              <input type="text" id="wi-prenom" placeholder="Jean" style="background:white;border:1.5px solid #c0cce0;border-radius:6px;color:#1e2d50;font-size:12px;padding:7px 10px;outline:none;width:100%;">
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="wiSave()" style="background:#FF6B35;color:white;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">Enregistrer</button>
+            <button onclick="wiClear()" style="background:white;color:#7a8aaa;border:1px solid #c0cce0;border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer;">Effacer</button>
+            <button onclick="wiClose()" style="background:white;color:#7a8aaa;border:1px solid #c0cce0;border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer;">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDGET MAISON -->
+    <div id="widget-maison" style="display:none;margin-top:24px;">
+      <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.45);margin-bottom:10px;">Voisins — optionnel</div>
+      <div style="background:#e8edf5;border-radius:10px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.18em;color:#8a9ab8;margin-bottom:12px;">Rue</div>
+        <div id="wm-row" style="display:flex;align-items:flex-end;justify-content:center;gap:0;width:100%;max-width:480px;"></div>
+        <div style="width:100%;max-width:480px;height:12px;background:#b0bcd0;border-radius:0 0 6px 6px;"></div>
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:rgba(255,107,53,0.18);border:1.5px solid #FF6B35;"></div>Vous</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:rgba(78,205,196,0.2);border:1.5px solid #4ECDC4;"></div>Membre Babelom</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:11px;color:#6a7a9a;"><div style="width:10px;height:10px;border-radius:2px;background:#dce6f5;border:1.5px solid #a0b8d8;"></div>Saisi / vide</div>
+        </div>
+        <div id="wm-modal" style="display:none;background:#f0f4fa;border:1px solid #c0cce0;border-radius:8px;padding:14px;margin-top:12px;width:100%;max-width:480px;">
+          <div id="wm-modal-title" style="font-size:11px;font-weight:700;color:#FF6B35;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;"></div>
+          <div id="wm-member-badge" style="display:none;background:rgba(78,205,196,0.15);border:1px solid rgba(78,205,196,0.4);border-radius:6px;padding:6px 10px;font-size:11px;color:#0e8a7a;margin-bottom:8px;"></div>
+          <div style="display:flex;gap:8px;margin-bottom:8px;">
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+              <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#7a8aaa;">Nom</label>
+              <input type="text" id="wm-nom" placeholder="MARTIN" style="background:white;border:1.5px solid #c0cce0;border-radius:6px;color:#1e2d50;font-size:12px;padding:7px 10px;outline:none;text-transform:uppercase;width:100%;">
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+              <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#7a8aaa;">Prénom</label>
+              <input type="text" id="wm-prenom" placeholder="Jean" style="background:white;border:1.5px solid #c0cce0;border-radius:6px;color:#1e2d50;font-size:12px;padding:7px 10px;outline:none;width:100%;">
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="wmSave()" style="background:#FF6B35;color:white;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">Enregistrer</button>
+            <button onclick="wmClear()" style="background:white;color:#7a8aaa;border:1px solid #c0cce0;border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer;">Effacer</button>
+            <button onclick="wmClose()" style="background:white;color:#7a8aaa;border:1px solid #c0cce0;border-radius:6px;padding:7px 12px;font-size:12px;cursor:pointer;">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <div class="form-footer">
       <a href="index.html" class="btn-retour">← Retour à l'accueil</a>
       <button class="btn-valider" id="btn-valider" onclick="allerEtape2()"><span data-i18n="e1BtnSuivant">Continuer → Étape 2</span></button>
     </div>
@@ -971,6 +1060,9 @@ if (_mc) _mc.addEventListener('click', function(e) { if (e.target === this) ferm
 function toggleEtage(val) {
   const afficher = ['Appartement','Chambre d\'étudiant','Colocation'].includes(val);
   document.getElementById('champ-etage').style.display = afficher ? 'grid' : 'none';
+  document.getElementById('widget-immeuble').style.display = afficher ? 'block' : 'none';
+  const isMaison = ['Maison','Maison familiale'].includes(val);
+  document.getElementById('widget-maison').style.display = isMaison ? 'block' : 'none';
 }
 
 // ── TRACES DE PAS ──
@@ -1119,6 +1211,8 @@ function allerEtape2() {
     etage: document.getElementById('f-etage').value,
     etagesTotal: document.getElementById('f-etages-total').value,
     voisins: document.getElementById('f-voisins') ? document.getElementById('f-voisins').value : '',
+    voisins_immeuble: window._voisinsImmeuble || null,
+    voisins_rue: window._voisinsRue || null,
   };
   localStorage.setItem('babelom-etape1', JSON.stringify(data));
   window.location.href = 'etape2.html';
@@ -1174,6 +1268,171 @@ setTimeout(mettreAJourNav,100);
 function ouvrirContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='flex';}
 function fermerContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
 async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
+
+// ═══════════════════════════════════════════
+// WIDGET IMMEUBLE
+// ═══════════════════════════════════════════
+var wImmData = {}, wMyFloor = 2, wMyApt = 1, wiKey = null;
+window._voisinsImmeuble = null;
+window._voisinsRue = null;
+
+function getUserNom() {
+  try { var u = JSON.parse(localStorage.getItem('babelom-user')||'{}'); return { nom: (u.nom||'').toUpperCase(), prenom: u.prenom||'' }; } catch(e) { return {nom:'VOUS',prenom:''}; }
+}
+
+function buildImmeuble() {
+  var floors = parseInt(document.getElementById('wi-floors').value);
+  var aptsN  = parseInt(document.getElementById('wi-apts').value);
+  var mf = parseInt(document.getElementById('wi-mf').value);
+  var ma = parseInt(document.getElementById('wi-ma').value) - 1;
+  if (mf > floors) { mf = floors; document.getElementById('wi-mf').value = mf; document.getElementById('wi-mv').textContent = mf; }
+  if (ma >= aptsN) { ma = aptsN-1; document.getElementById('wi-ma').value = ma+1; document.getElementById('wi-mav').textContent = ma+1; }
+  wMyFloor = mf; wMyApt = ma;
+  var me = getUserNom();
+
+  // toit
+  var html = '<div style="display:flex;justify-content:center;">'
+    + '<div style="width:0;height:0;border-left:'+(270)+'px solid transparent;border-right:270px solid transparent;border-bottom:32px solid #FF6B35;position:relative;">'
+    + '<div style="position:absolute;top:-18px;right:50px;width:14px;height:20px;background:#FF6B35;border-radius:2px 2px 0 0;"></div>'
+    + '</div></div>';
+  // facade
+  html += '<div style="background:#c8d4e8;border:2px solid #a0b0cc;border-radius:0 0 4px 4px;padding:10px 10px 0 10px;">';
+  for (var f = floors; f >= 1; f--) {
+    html += '<div style="display:flex;align-items:stretch;gap:5px;margin-bottom:7px;">';
+    html += '<div style="width:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#7a8aaa;font-weight:600;">'+f+'</div>';
+    for (var a = 0; a < aptsN; a++) {
+      var k = f+'-'+a, isMe = (f===wMyFloor && a===wMyApt), d = wImmData[k];
+      var bg = isMe ? 'rgba(255,107,53,0.18)' : 'rgba(78,205,196,0.0)';
+      var bc = isMe ? '#FF6B35' : '#a0b8d8';
+      var aptBg = isMe ? 'rgba(255,107,53,0.18)' : (d&&d.nom) ? 'rgba(78,205,196,0.12)' : '#dce6f5';
+      var aptBc = isMe ? '#FF6B35' : (d&&d.nom) ? '#4ECDC4' : '#a0b8d8';
+      var nomTxt = isMe ? (me.nom||'VOUS') : (d&&d.nom ? d.nom : '');
+      var prenomTxt = isMe ? me.prenom : (d&&d.prenom ? d.prenom : '');
+      var onclick = isMe ? '' : 'onclick="wiClick(''+k+'','+f+','+a+')"';
+      html += '<div style="flex:1;background:'+aptBg+';border:2px solid '+aptBc+';border-radius:4px;padding:5px 7px;min-height:58px;cursor:'+(isMe?'default':'pointer')+';display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;" '+onclick+'>';
+      html += '<div style="position:absolute;top:50%;left:50%;width:1px;height:70%;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
+      html += '<div style="position:absolute;top:50%;left:50%;width:70%;height:1px;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
+      if (nomTxt) html += '<div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1e2d50;position:relative;z-index:1;">'+nomTxt+'</div>';
+      if (prenomTxt) html += '<div style="font-size:10px;color:#4a5a80;margin-top:2px;position:relative;z-index:1;">'+prenomTxt+'</div>';
+      if (!nomTxt && !isMe) html += '<div style="font-size:10px;color:#9aaac0;font-style:italic;position:relative;z-index:1;">+ ajouter</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  // RDC
+  html += '<div style="background:#b8c8e0;border-top:1px solid #a0b0cc;padding:6px 8px;display:flex;align-items:flex-end;gap:5px;border-radius:0 0 2px 2px;">';
+  for (var a2 = 0; a2 < aptsN; a2++) {
+    if (a2 === Math.floor(aptsN/2)) {
+      html += '<div style="display:flex;justify-content:center;flex:0.6"><div style="width:34px;height:46px;background:#8a9ab8;border:2px solid #7a8aaa;border-radius:4px 4px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3px;">'
+        + '<div style="width:16px;height:9px;background:rgba(78,205,196,0.3);border:1px solid rgba(78,205,196,0.5);border-radius:2px;margin-bottom:3px;"></div>'
+        + '<div style="width:4px;height:4px;background:#FF6B35;border-radius:50%;"></div>'
+        + '</div></div>';
+    }
+    html += '<div style="flex:1;background:#dce6f5;border:2px solid #a0b8d8;border-radius:3px;height:32px;"></div>';
+  }
+  html += '</div></div>';
+
+  document.getElementById('wi-building').innerHTML = html;
+
+  // Sauvegarder état global
+  window._voisinsImmeuble = { floors: floors, aptsPerFloor: aptsN, myFloor: wMyFloor, myApt: wMyApt+1, data: wImmData };
+}
+
+function wiClick(k, f, a) {
+  wiKey = k; var d = wImmData[k]||{};
+  document.getElementById('wi-modal-title').textContent = 'Appartement N°'+f+'0'+(a+1)+' — Étage '+f;
+  document.getElementById('wi-member-badge').style.display = 'none';
+  document.getElementById('wi-nom').value = d.nom||'';
+  document.getElementById('wi-prenom').value = d.prenom||'';
+  document.getElementById('wi-modal').style.display = 'block';
+  document.getElementById('wi-nom').focus();
+}
+function wiSave() {
+  if (!wiKey) return;
+  var n = document.getElementById('wi-nom').value.trim().toUpperCase();
+  var p = document.getElementById('wi-prenom').value.trim();
+  wImmData[wiKey] = (n||p) ? {nom:n,prenom:p} : null;
+  wiClose(); buildImmeuble();
+}
+function wiClear() { if (wiKey) { wImmData[wiKey]=null; } wiClose(); buildImmeuble(); }
+function wiClose() { document.getElementById('wi-modal').style.display='none'; wiKey=null; }
+
+// ═══════════════════════════════════════════
+// WIDGET MAISON
+// ═══════════════════════════════════════════
+var wMaiData = { gauche: null, droite: null };
+var wmSide = null;
+window._voisinsRue = null;
+
+function buildMaison() {
+  var me = getUserNom();
+  var W = 120, WM = 140;
+  var row = document.getElementById('wm-row');
+  if (!row) return;
+
+  function houseHTML(w, isMe, side, data) {
+    var rH = Math.round(w*0.45), bH = Math.round(w*0.55), wS = Math.round(w*0.17), dW = Math.round(w*0.22), dH = Math.round(w*0.27);
+    var bg = isMe ? 'rgba(255,107,53,0.18)' : (data&&data.nom) ? 'rgba(78,205,196,0.12)' : '#dce6f5';
+    var bc = isMe ? '#FF6B35' : (data&&data.nom) ? '#4ECDC4' : '#a0b8d8';
+    var wb = isMe ? 'rgba(255,107,53,0.2)' : 'rgba(78,205,196,0.22)';
+    var wbc = isMe ? '#FF6B35' : '#4ECDC4';
+    var nomTxt = isMe ? (me.nom||'VOUS') : (data&&data.nom ? data.nom : '');
+    var prenomTxt = isMe ? (me.prenom||'') : (data&&data.prenom ? data.prenom : '');
+    var click = isMe ? '' : 'onclick="wmClick(''+side+'')"';
+    return '<div style="display:flex;flex-direction:column;align-items:center;cursor:'+(isMe?'default':'pointer')+';" '+click+'>'
+      +'<div style="width:0;height:0;border-left:'+Math.round(w/2)+'px solid transparent;border-right:'+Math.round(w/2)+'px solid transparent;border-bottom:'+rH+'px solid #FF6B35;"></div>'
+      +'<div style="width:'+w+'px;height:'+bH+'px;background:'+bg+';border:2px solid '+bc+';border-top:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;">'
+        +'<div style="display:flex;gap:5px;padding:7px 8px 3px;justify-content:center;">'
+          +'<div style="width:'+wS+'px;height:'+wS+'px;background:'+wb+';border:2px solid '+wbc+';border-radius:1px;"></div>'
+          +'<div style="width:'+wS+'px;height:'+wS+'px;background:'+wb+';border:2px solid '+wbc+';border-radius:1px;"></div>'
+        +'</div>'
+        +'<div style="width:'+dW+'px;height:'+dH+'px;background:#b0bcd0;border:2px solid '+bc+';border-bottom:none;border-radius:3px 3px 0 0;display:flex;align-items:center;justify-content:center;">'
+          +'<div style="width:4px;height:4px;background:#FF6B35;border-radius:50%;"></div>'
+        +'</div>'
+      +'</div>'
+      +'<div style="margin-top:5px;text-align:center;min-height:32px;display:flex;flex-direction:column;align-items:center;justify-content:center;">'
+        +(nomTxt ? '<div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1e2d50;">'+nomTxt+'</div>' : '<div style="font-size:10px;color:#9aaac0;font-style:italic;">+ ajouter</div>')
+        +(prenomTxt ? '<div style="font-size:10px;color:#4a5a80;margin-top:1px;">'+prenomTxt+'</div>' : '')
+      +'</div>'
+      +'<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.14em;color:#8a9ab8;">'+(isMe?'Votre maison':side==='gauche'?'← gauche':'droite →')+'</div>'
+    +'</div>';
+  }
+
+  function hedgeHTML(h) {
+    return '<div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:'+Math.round(h*0.28)+'px;margin:0 2px;">'
+      +'<div style="width:13px;height:'+Math.round(h*0.32)+'px;background:#6a9a5a;border:1px solid #4a7a3a;border-radius:2px;"></div>'
+    +'</div>';
+  }
+
+  row.innerHTML =
+    houseHTML(W, false, 'gauche', wMaiData.gauche) +
+    hedgeHTML(Math.round(W*0.55)) +
+    houseHTML(WM, true, 'centre', null) +
+    hedgeHTML(Math.round(WM*0.55)) +
+    houseHTML(W, false, 'droite', wMaiData.droite);
+
+  window._voisinsRue = { gauche: wMaiData.gauche, droite: wMaiData.droite };
+}
+
+function wmClick(side) {
+  wmSide = side; var d = wMaiData[side]||{};
+  document.getElementById('wm-modal-title').textContent = side==='gauche' ? 'Voisin de gauche' : 'Voisin de droite';
+  document.getElementById('wm-member-badge').style.display = 'none';
+  document.getElementById('wm-nom').value = d.nom||'';
+  document.getElementById('wm-prenom').value = d.prenom||'';
+  document.getElementById('wm-modal').style.display = 'block';
+  document.getElementById('wm-nom').focus();
+}
+function wmSave() {
+  if (!wmSide) return;
+  var n = document.getElementById('wm-nom').value.trim().toUpperCase();
+  var p = document.getElementById('wm-prenom').value.trim();
+  wMaiData[wmSide] = (n||p) ? {nom:n,prenom:p} : null;
+  wmClose(); buildMaison();
+}
+function wmClear() { if (wmSide) wMaiData[wmSide]=null; wmClose(); buildMaison(); }
+function wmClose() { document.getElementById('wm-modal').style.display='none'; wmSide=null; }
+
 </script>
 
 
