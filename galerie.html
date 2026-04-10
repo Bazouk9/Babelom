@@ -622,7 +622,7 @@ async function seConnecter(){
     var data=await res.json();
     if(!res.ok)throw new Error(data.error_description||'Erreur');
     var prenom=data.user&&data.user.user_metadata&&data.user.user_metadata.prenom?data.user.user_metadata.prenom:email.split('@')[0];
-    localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));
+    localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,token:data.access_token,expires:Date.now()+7200000}));
     if(msg){msg.style.color='#6BCB77';msg.textContent='Connecté !';}
     setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);
   }catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}
@@ -697,17 +697,10 @@ async function validerDepotPhoto() {
   msg.textContent = 'Envoi en cours…';
 
   try {
-    var sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
-    var sess = await sb.auth.getSession();
-    var token = sess.data?.session?.access_token;
-    if (!token) {
-      for (var k of Object.keys(localStorage)) {
-        if (k.includes('auth-token') || k.includes('supabase.auth')) {
-          try { var d = JSON.parse(localStorage.getItem(k)); token = d?.access_token || d?.session?.access_token || token; } catch(e){}
-        }
-      }
-    }
-    if (!token) throw new Error('Session expirée — reconnectez-vous puis réessayez.');
+    // Récupérer le token depuis babelom-user (sauvegardé à la connexion)
+    var token = null;
+    try { var _bu = JSON.parse(localStorage.getItem('babelom-user')); token = _bu?.token || null; } catch(e){}
+    if (!token) throw new Error('Session expirée — déconnectez-vous, reconnectez-vous puis réessayez.');
 
     var file = input.files[0];
     var chemin = user.id + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
