@@ -1060,9 +1060,13 @@ if (_mc) _mc.addEventListener('click', function(e) { if (e.target === this) ferm
 function toggleEtage(val) {
   const afficher = ['Appartement','Chambre d\'étudiant','Colocation'].includes(val);
   document.getElementById('champ-etage').style.display = afficher ? 'grid' : 'none';
-  document.getElementById('widget-immeuble').style.display = afficher ? 'block' : 'none';
+  const wi = document.getElementById('widget-immeuble');
+  wi.style.display = afficher ? 'block' : 'none';
+  if (afficher) { buildImmeuble(); setTimeout(function(){ wi.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100); }
   const isMaison = ['Maison','Maison familiale'].includes(val);
-  document.getElementById('widget-maison').style.display = isMaison ? 'block' : 'none';
+  const wm = document.getElementById('widget-maison');
+  wm.style.display = isMaison ? 'block' : 'none';
+  if (isMaison) { buildMaison(); setTimeout(function(){ wm.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 100); }
 }
 
 // ── TRACES DE PAS ──
