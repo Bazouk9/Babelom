@@ -505,8 +505,8 @@ function afficherTemoignage(t) {
   }
 
   // ── VOISINS ──
-  if (t.voisins_immeuble) afficherImmeuble(t.voisins_immeuble, t);
-  else if (t.voisins_rue) afficherMaison(t.voisins_rue, t);
+  if (t.voisins_immeuble || t.type_logement === 'Appartement') afficherImmeuble(t.voisins_immeuble, t);
+  else if (t.voisins_rue || ['Maison','Maison familiale'].includes(t.type_logement)) afficherMaison(t.voisins_rue, t);
 }
 
 function afficherErreur() {
@@ -651,21 +651,49 @@ async function envoyerSignalement() {
 // ═══════════════════════════════════════════
 // AFFICHAGE IMMEUBLE (lecture seule)
 // ═══════════════════════════════════════════
-function afficherImmeuble(v, t) {
-  if (!v) return;
+async function afficherImmeuble(v, t) {
   var section = document.getElementById('section-voisins');
   var contenu = document.getElementById('voisins-contenu');
   var title   = document.getElementById('section-voisins-title');
   section.style.display = 'block';
   title.textContent = "Voisins de l'immeuble";
 
-  var floors = v.floors || 4;
-  var aptsN  = v.aptsPerFloor || 3;
-  var myFloor= v.myFloor || 1;
-  var myAptN = (v.myApt || 1) - 1;
-  var data   = v.data || {};
-  var auteurNom    = [t.identite_nom, ''].join('').toUpperCase();
+  var floors = v ? (v.floors || 4) : 4;
+  var aptsN  = v ? (v.aptsPerFloor || 3) : 3;
+  var myFloor= v ? (v.myFloor || 1) : (t.etage ? parseInt(t.etage) : 1);
+  var myAptN = v ? ((v.myApt || 1) - 1) : 0;
+  var auteurNom    = (t.identite_nom || '').toUpperCase();
   var auteurPrenom = t.identite_prenom || '';
+
+  // Chercher les autres membres à la même adresse
+  var voisinsMembers = {};
+  if (t.adresse && t.ville) {
+    try {
+      var url = 'https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/temoignages'
+        + '?select=identite_prenom,identite_nom,etage,voisins_immeuble,id'
+        + '&statut=eq.valide'
+        + '&ville=eq.' + encodeURIComponent(t.ville.toUpperCase())
+        + '&adresse=ilike.' + encodeURIComponent('%' + t.adresse.split(' ').slice(-2).join(' ') + '%')
+        + '&id=neq.' + t.id;
+      var res = await fetch(url, { headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON } });
+      var membres = await res.json();
+      if (Array.isArray(membres)) {
+        membres.forEach(function(m) {
+          if (m.etage) {
+            var etageNum = parseInt(m.etage);
+            if (!voisinsMembers[etageNum]) voisinsMembers[etageNum] = [];
+            voisinsMembers[etageNum].push(m);
+          }
+        });
+        // Ajuster floors si un voisin est à un étage plus élevé
+        membres.forEach(function(m) {
+          if (m.etage && parseInt(m.etage) > floors) floors = parseInt(m.etage);
+        });
+      }
+    } catch(e) { console.log('Voisins non chargés', e); }
+  }
+
+  var data = (v && v.data) ? v.data : {};
 
   // toit orange
   var html = '<div style="background:#e8edf5;border-radius:10px;padding:16px;display:flex;flex-direction:column;align-items:center;">'
@@ -682,16 +710,27 @@ function afficherImmeuble(v, t) {
     for (var a = 0; a < aptsN; a++) {
       var k = f+'-'+a;
       var isMe = (f === myFloor && a === myAptN);
-      var d = data[k];
-      var bg = isMe ? 'rgba(255,107,53,0.18)' : (d&&d.nom) ? 'rgba(78,205,196,0.12)' : '#dce6f5';
-      var bc = isMe ? '#FF6B35' : (d&&d.nom) ? '#4ECDC4' : '#a0b8d8';
-      var nomTxt    = isMe ? auteurNom    : (d&&d.nom    ? d.nom    : '');
-      var prenomTxt = isMe ? auteurPrenom : (d&&d.prenom ? d.prenom : '');
+      // Voisin depuis données sauvegardées OU depuis recherche temps réel
+      var d = data[k] || null;
+      var voisinMembre = null;
+      if (!isMe && voisinsMembers[f]) {
+        // Placer le 1er voisin de cet étage dans la 1ère case libre, le 2ème dans la suivante, etc.
+        var idx = 0;
+        for (var aa = 0; aa < a; aa++) { if (aa !== myAptN) idx++; }
+        voisinMembre = voisinsMembers[f][idx] || null;
+      }
+      var hasVoisin = voisinMembre || (d && d.nom);
+      var bg = isMe ? 'rgba(255,107,53,0.18)' : hasVoisin ? 'rgba(78,205,196,0.12)' : '#dce6f5';
+      var bc = isMe ? '#FF6B35' : hasVoisin ? '#4ECDC4' : '#a0b8d8';
+      var nomTxt    = isMe ? auteurNom    : voisinMembre ? (voisinMembre.identite_nom||'').toUpperCase() : (d&&d.nom ? d.nom : '');
+      var prenomTxt = isMe ? auteurPrenom : voisinMembre ? (voisinMembre.identite_prenom||'') : (d&&d.prenom ? d.prenom : '');
+      var isMembre  = !isMe && !!voisinMembre;
       html += '<div style="flex:1;background:'+bg+';border:2px solid '+bc+';border-radius:4px;padding:5px 7px;min-height:58px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;">';
       html += '<div style="position:absolute;top:50%;left:50%;width:1px;height:70%;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
       html += '<div style="position:absolute;top:50%;left:50%;width:70%;height:1px;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
       if (nomTxt) html += '<div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1e2d50;position:relative;z-index:1;">'+nomTxt+'</div>';
       if (prenomTxt) html += '<div style="font-size:10px;color:#4a5a80;margin-top:2px;position:relative;z-index:1;">'+prenomTxt+'</div>';
+      if (isMembre) html += '<div style="font-size:9px;color:#0e8a7a;margin-top:2px;position:relative;z-index:1;">membre Babelom</div>';
       if (!nomTxt && !isMe) html += '<div style="font-size:10px;color:#b0bcd0;position:relative;z-index:1;">—</div>';
       html += '</div>';
     }
