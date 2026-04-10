@@ -702,6 +702,7 @@ async function validerDepotPhoto() {
     try { var _bu = JSON.parse(localStorage.getItem('babelom-user')); token = _bu?.token || null; } catch(e){}
     if (!token) throw new Error('Session expirée — déconnectez-vous, reconnectez-vous puis réessayez.');
 
+
     var file = input.files[0];
     var chemin = user.id + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
     var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/galerie-photos/' + chemin, {
@@ -716,14 +717,21 @@ async function validerDepotPhoto() {
 
     var photoUrl = SUPABASE_URL + '/storage/v1/object/public/galerie-photos/' + chemin;
 
-    var { error } = await sb.from('galerie_photos').insert([{
-      utilisateur_id: user.id,
-      url: photoUrl,
-      ville: ville,
-      pays: pays,
-      annee: parseInt(annee)
-    }]);
-    if (error) throw new Error(error.message);
+    // Insert en base via fetch REST (pas besoin du client Supabase)
+    var insertRes = await fetch(SUPABASE_URL + '/rest/v1/galerie_photos', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ utilisateur_id: user.id, url: photoUrl, ville: ville, pays: pays, annee: parseInt(annee) })
+    });
+    if (!insertRes.ok) {
+      var errInsert = await insertRes.text().catch(function(){return '';});
+      throw new Error('Enregistrement échoué (' + insertRes.status + ')' + (errInsert ? ' — ' + errInsert.slice(0,120) : ''));
+    }
 
     msg.style.color = '#6BCB77';
     msg.textContent = '✓ Photo déposée ! Elle apparaîtra dans la galerie après validation.';
