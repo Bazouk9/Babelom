@@ -261,7 +261,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   </div>
 
   <!-- SOUS-TITRE DÉPÔT -->
-  <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:#4ECDC4;margin-bottom:16px;letter-spacing:0.01em;">
+  <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:16px;letter-spacing:0.01em;">
     Insérer une photo
   </h2>
 
@@ -702,7 +702,7 @@ async function validerDepotPhoto() {
     var token = sess.data?.session?.access_token || SUPABASE_ANON;
 
     var file = input.files[0];
-    var chemin = user.id + '/galerie/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
+    var chemin = user.id + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
     var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/galerie-photos/' + chemin, {
       method: 'POST',
       headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + token, 'Content-Type': file.type, 'x-upsert': 'true' },
