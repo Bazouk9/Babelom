@@ -697,13 +697,21 @@ async function validerDepotPhoto() {
   msg.textContent = 'Envoi en cours…';
 
   try {
-    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+    var sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
     var sess = await sb.auth.getSession();
-    var token = sess.data?.session?.access_token || SUPABASE_ANON;
+    var token = sess.data?.session?.access_token;
+    if (!token) {
+      for (var k of Object.keys(localStorage)) {
+        if (k.includes('auth-token') || k.includes('supabase.auth')) {
+          try { var d = JSON.parse(localStorage.getItem(k)); token = d?.access_token || d?.session?.access_token || token; } catch(e){}
+        }
+      }
+    }
+    if (!token) throw new Error('Session expirée — reconnectez-vous puis réessayez.');
 
     var file = input.files[0];
     var chemin = user.id + '/' + Date.now() + '-' + file.name.replace(/[^a-zA-Z0-9.]/g,'_');
-    var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/galerie_photos/' + chemin, {
+    var uploadRes = await fetch(SUPABASE_URL + '/storage/v1/object/galerie-photos/' + chemin, {
       method: 'POST',
       headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + token, 'Content-Type': file.type, 'x-upsert': 'true' },
       body: file
@@ -713,7 +721,7 @@ async function validerDepotPhoto() {
       throw new Error('Upload échoué (' + uploadRes.status + ')' + (errBody ? ' — ' + errBody.slice(0,120) : ''));
     }
 
-    var photoUrl = SUPABASE_URL + '/storage/v1/object/public/galerie_photos/' + chemin;
+    var photoUrl = SUPABASE_URL + '/storage/v1/object/public/galerie-photos/' + chemin;
 
     var { error } = await sb.from('galerie_photos').insert([{
       utilisateur_id: user.id,
