@@ -845,7 +845,8 @@ async function chargerTemoignages() {
         annee_de: t.annee_de,
         annee_a: t.annee_a,
         type_logement: t.type_logement,
-        texte: t.texte
+        texte: t.texte,
+        reel: true
       });
     });
     renderMarkers();
@@ -1118,7 +1119,7 @@ function rechercherMembres() {
   if (!ville && !rue && !nom) { count.textContent=''; res.innerHTML=''; return; }
 
   const filtres = inscrits.filter(function(p) {
-    if (!p.reel) return false;
+    if (!p.reel) return false;  // Exclure les points fictifs de démonstration
     var ok = true;
     if (ville) ok = ok && (p.ville||'').toLowerCase().includes(ville);
     if (rue)   ok = ok && (p.lieu ||'').toLowerCase().includes(rue);
