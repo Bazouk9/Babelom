@@ -1514,5 +1514,28 @@ function effacerTout() {
   check();
 })();
 </script>
+<!-- MODALES AUTH -->
+<div id="modale-cx" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-cx')">
+  <div style="background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;">
+    <h3 style="font-size:1.2rem;color:#FF6B35;margin-bottom:16px;">Se connecter</h3>
+    <input type="email" id="cx-email" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Email">
+    <input type="password" id="cx-mdp" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Mot de passe">
+    <button onclick="seConnecter()" style="width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;background:#FF6B35;color:white;">Connexion</button>
+    <div id="msg-cx" style="margin-top:8px;font-size:0.75rem;color:#4ECDC4;"></div>
+    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
+    <button style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
+  </div>
+</div>
+<div id="modale-ins" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-ins')">
+  <div style="background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;">
+    <h3 style="font-size:1.2rem;color:#FF6B35;margin-bottom:16px;">Créer un compte</h3>
+    <input type="text" id="ins-prenom" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Prénom">
+    <input type="email" id="ins-email" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Email">
+    <input type="password" id="ins-mdp" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Mot de passe (8 car. min)">
+    <button onclick="sInscrire()" style="width:100%;padding:11px;border:none;border-radius:8px;font-size:0.78rem;font-weight:700;text-transform:uppercase;cursor:pointer;margin-top:4px;background:#4ECDC4;color:#2c4a8a;">S'inscrire</button>
+    <div id="msg-ins" style="margin-top:8px;font-size:0.75rem;color:#4ECDC4;"></div>
+    <button style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
+  </div>
+</div>
 </body>
 </html>
