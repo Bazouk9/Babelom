@@ -1308,7 +1308,7 @@ function buildImmeuble() {
       var aptBc = isMe ? '#FF6B35' : (d&&d.nom) ? '#4ECDC4' : '#a0b8d8';
       var nomTxt = isMe ? (me.nom||'VOUS') : (d&&d.nom ? d.nom : '');
       var prenomTxt = isMe ? me.prenom : (d&&d.prenom ? d.prenom : '');
-      var onclick = isMe ? '' : 'onclick="wiClick(''+k+'','+f+','+a+')"';
+      var onclick = isMe ? '' : 'onclick="wiClick(\'' + k + '\',' + f + ',' + a + ')"';
       html += '<div style="flex:1;background:'+aptBg+';border:2px solid '+aptBc+';border-radius:4px;padding:5px 7px;min-height:58px;cursor:'+(isMe?'default':'pointer')+';display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;" '+onclick+'>';
       html += '<div style="position:absolute;top:50%;left:50%;width:1px;height:70%;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
       html += '<div style="position:absolute;top:50%;left:50%;width:70%;height:1px;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
@@ -1378,7 +1378,7 @@ function buildMaison() {
     var wbc = isMe ? '#FF6B35' : '#4ECDC4';
     var nomTxt = isMe ? (me.nom||'VOUS') : (data&&data.nom ? data.nom : '');
     var prenomTxt = isMe ? (me.prenom||'') : (data&&data.prenom ? data.prenom : '');
-    var click = isMe ? '' : 'onclick="wmClick(''+side+'')"';
+    var click = isMe ? '' : 'onclick="wmClick(\'' + side + '\'  )"';
     return '<div style="display:flex;flex-direction:column;align-items:center;cursor:'+(isMe?'default':'pointer')+';" '+click+'>'
       +'<div style="width:0;height:0;border-left:'+Math.round(w/2)+'px solid transparent;border-right:'+Math.round(w/2)+'px solid transparent;border-bottom:'+rH+'px solid #FF6B35;"></div>'
       +'<div style="width:'+w+'px;height:'+bH+'px;background:'+bg+';border:2px solid '+bc+';border-top:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;">'
