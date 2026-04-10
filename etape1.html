@@ -836,7 +836,7 @@ function buildPopup(p, isCluster, membres) {
         p.photos.slice(0,4).map(function(url) {
           return '<div style="position:relative;width:58px;height:58px;border-radius:2px;overflow:hidden;flex-shrink:0;">' +
             '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none;" oncontextmenu="return false;">' +
-            '<div style="position:absolute;inset:0;z-index:2;" oncontextmenu="return false;" ondragstart="return false;"></div>' +
+            '<div style="position:absolute;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;z-index:2;" oncontextmenu="return false;" ondragstart="return false;"></div>' +
             '<div style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:0.5rem;color:rgba(255,255,255,0.8);font-weight:600;z-index:3;">© Babelom</div>' +
             '</div>';
         }).join('') + '</div>';
@@ -1170,7 +1170,7 @@ async function envoyerContact(){var nom=document.getElementById('c-nom').value.t
 </script>
 
 <!-- MODALES AUTH -->
-<div id="modale-cx" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-cx')">
+<div id="modale-cx" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-cx')">
   <div style="background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;">
     <h3 style="font-size:1.2rem;color:#FF6B35;margin-bottom:16px;">Se connecter</h3>
     <input type="email" id="cx-email" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Email">
@@ -1181,7 +1181,7 @@ async function envoyerContact(){var nom=document.getElementById('c-nom').value.t
     <button style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);padding:7px 14px;border-radius:8px;font-size:0.75rem;cursor:pointer;width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
   </div>
 </div>
-<div id="modale-ins" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-ins')">
+<div id="modale-ins" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerModale('modale-ins')">
   <div style="background:#2c4a8a;border:1px solid #3358a0;padding:28px 32px;border-radius:14px;width:340px;max-width:90vw;font-family:'Nunito',sans-serif;">
     <h3 style="font-size:1.2rem;color:#FF6B35;margin-bottom:16px;">Créer un compte</h3>
     <input type="text" id="ins-prenom" style="width:100%;padding:10px 14px;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.3);border-radius:8px;color:white;font-size:0.82rem;outline:none;margin-bottom:8px;" placeholder="Prénom">
@@ -1193,7 +1193,7 @@ async function envoyerContact(){var nom=document.getElementById('c-nom').value.t
   </div>
 </div>
 <!-- MODALE CONTACT -->
-<div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerContact()">
+<div id="modale-contact" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100vw;height:100vh;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerContact()">
   <div style="background:#1e2d50;border:1px solid #3358a0;padding:36px;max-width:500px;width:92%;border-radius:14px;font-family:'Nunito',sans-serif;">
     <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:white;margin-bottom:20px;">Nous <em style="color:#FF6B35;">contacter</em></h3>
     <input type="text" id="c-nom" placeholder="Nom & Prénom *" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;margin-bottom:10px;">
