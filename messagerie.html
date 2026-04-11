@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- BABELOM v2 — Messagerie -->
+<!-- BabelOm v2 — Messagerie -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — Messagerie</title>
+<title>BabelOm — Messagerie</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -385,7 +385,7 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
 <!-- NAV -->
 <div id="top-band">
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <img src="favicon.svg" width="28" height="28" alt="BabelOm" style="border-radius:4px;">
     <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:#FF6B35;">Om</span></a>
   </div>
   <div style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
@@ -470,7 +470,7 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
   <div class="chat-area" id="chat-area">
     <div class="chat-placeholder" id="chat-placeholder">
       <div style="font-size:3rem;opacity:0.2;">💬</div>
-      <h2>Messagerie Babelom</h2>
+      <h2>Messagerie BabelOm</h2>
       <p>Connectez-vous pour accéder à vos messages privés et aux groupes de votre quartier.</p>
       <button class="btn-compte" style="background:#FF6B35;color:white;padding:10px 24px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;margin-top:8px;" onclick="ouvrirModale('modale-cx')">Se connecter</button>
     </div>
@@ -660,7 +660,7 @@ function afficherEtatDeconnecte() {
   document.getElementById('chat-area').innerHTML = `
     <div class="chat-placeholder">
       <div style="font-size:3rem;opacity:0.2;">💬</div>
-      <h2>Messagerie Babelom</h2>
+      <h2>Messagerie BabelOm</h2>
       <p>Échangez en privé avec d'autres membres ou rejoignez des groupes par ville et quartier.</p>
       <button class="btn-compte" style="background:#FF6B35;color:white;padding:10px 24px;border-radius:8px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;margin-top:8px;" onclick="ouvrirModale('modale-cx')">Se connecter</button>
     </div>`;
@@ -996,8 +996,8 @@ async function envoyerMessage() {
   if (!texte || !currentConvId) return;
 
   // ── MODÉRATION ──
-  if (typeof BABELOM_MODERATION !== 'undefined') {
-    var check = BABELOM_MODERATION.verifier(texte, {type:'message'});
+  if (typeof BabelOm_MODERATION !== 'undefined') {
+    var check = BabelOm_MODERATION.verifier(texte, {type:'message'});
     if (!check.ok) {
       var msgErr = document.createElement('div');
       msgErr.style.cssText = 'background:#c04040;color:white;padding:8px 14px;border-radius:8px;font-size:0.82rem;margin:4px 0;';
@@ -1126,8 +1126,8 @@ async function envoyerSignalementMsg() {
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',
-        subject:'[Babelom] ⚠ Signalement message',
-        from_name:'Système Babelom',
+        subject:'[BabelOm] ⚠ Signalement message',
+        from_name:'Système BabelOm',
         message:'Raison : '+raison+'\nID message : '+_sigMsgId+'\nURL : '+window.location.href
       })
     });
