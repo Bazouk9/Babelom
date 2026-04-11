@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — La mémoire des lieux habités</title>
+<title>BabelOm — La mémoire des lieux habités</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
@@ -380,7 +380,7 @@ nav.scrolled {
 }
 
 #cta-final::before {
-  content: 'BABELOM';
+  content: 'BabelOm';
   position: absolute;
   font-family: 'Cormorant Garamond', serif;
   font-size: 22vw;
@@ -854,7 +854,7 @@ body{padding-bottom:70px!important;}
 <div id="top-band">
   <!-- Favicon + Logo -->
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <img src="favicon.svg" width="28" height="28" alt="BabelOm" style="border-radius:4px;">
     <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
   </div>
 
@@ -1063,7 +1063,7 @@ body{padding-bottom:70px!important;}
       habitée
     </h1>
     <p class="hero-subtitle"><strong>
-      Babelom est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
+      BabelOm est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
     </strong></p>
     <div id="hero-typewriter" style="margin-top:20px;font-family:'Courier New',monospace;font-size:1.2rem;font-weight:700;color:#2D6A4F;line-height:1.7;border-left:3px solid #2D6A4F;padding-left:14px;min-height:4em;">
   <span id="tw-quote"></span><span id="tw-cursor" style="color:#2D6A4F;animation:blink 0.65s step-end infinite;font-weight:300;">█</span>
@@ -1376,7 +1376,7 @@ window.addEventListener('load', function() {
 <script id="contact-clean">
 function ouvrirContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='flex';}
 function fermerContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
-async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
+async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[BabelOm Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
 </script>
 
 <!-- ══════════════ FOOTER ══════════════ -->
@@ -1401,14 +1401,14 @@ async function envoyerContact(){var nom=document.getElementById('c-nom').value.t
     </a>
     
   </div>
-  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 Babelom · Tous droits réservés</div>
+  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 BabelOm · Tous droits réservés</div>
 </footer>
 
 <!-- ACCÈS ADMIN (discret) -->
 <div id="modale-admin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;">
   <div style="background:#1e3a28;border:1px solid #2e5a38;padding:36px 40px;border-radius:4px;width:320px;font-family:'Jost',sans-serif;">
     <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:#d4880a;margin-bottom:6px;">Accès administrateur</div>
-    <div style="font-size:0.78rem;color:#7a9a72;margin-bottom:20px;letter-spacing:0.06em;">Babelom — espace réservé</div>
+    <div style="font-size:0.78rem;color:#7a9a72;margin-bottom:20px;letter-spacing:0.06em;">BabelOm — espace réservé</div>
     <input id="admin-mdp" type="password" placeholder="Mot de passe administrateur"
       style="width:100%;padding:10px 14px;background:#2e5a38;border:1px solid #4a7a52;color:#f5f2e8;font-family:'Jost',sans-serif;font-size:0.9rem;border-radius:2px;margin-bottom:12px;"
       onkeydown="if(event.key==='Enter')validerAdmin()">

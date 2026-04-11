@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- BABELOM v2 20260403-1003 -->
+<!-- BabelOm v2 20260403-1003 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — Témoignages</title>
+<title>BabelOm — Témoignages</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
 <script src="babelom-base.js"></script>
@@ -156,7 +156,7 @@ body{padding-bottom:70px!important;}
 <!-- NAV -->
 <div id="top-band">
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <img src="favicon.svg" width="28" height="28" alt="BabelOm" style="border-radius:4px;">
     <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:#FF6B35;">Om</span></a>
   </div>
   <div style="display:flex;align-items:center;gap:4px;flex:1;justify-content:center;flex-wrap:wrap;">
@@ -337,7 +337,7 @@ body{padding-bottom:70px!important;}
     
   </div>
   <div style="font-size:0.65rem;color:rgba(255,255,255,0.4);">La mémoire des lieux habités</div>
-  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 Babelom · Tous droits réservés</div>
+  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 BabelOm · Tous droits réservés</div>
 </footer>
 
 <!-- bottom-nav mobile -->
@@ -353,7 +353,7 @@ body{padding-bottom:70px!important;}
 <div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
   <div class="modale-box">
     <h3>Se connecter</h3>
-    <p style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:16px;">Accédez à votre espace Babelom</p>
+    <p style="font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:16px;">Accédez à votre espace BabelOm</p>
     <input id="cx-email" class="input-compte" type="email" placeholder="Adresse e-mail">
     <input id="cx-mdp"   class="input-compte" type="password" placeholder="Mot de passe">
     <div style="text-align:right;margin-bottom:8px;">
@@ -658,7 +658,7 @@ window.addEventListener('load', chargerTemoignages);
 <script id="contact-fns">
 function ouvrirContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='flex';}
 function fermerContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
-async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
+async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[BabelOm] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
 </script>
 </body>
 </html>
