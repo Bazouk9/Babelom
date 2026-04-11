@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- BABELOM v2 20260403-1003 -->
+<!-- BabelOm v2 20260403-1003 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — Témoignage</title>
+<title>BabelOm — Témoignage</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
 <script src="babelom-base.js"></script>
@@ -170,7 +170,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 <div id="top-band">
   <!-- Favicon + Logo -->
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <img src="favicon.svg" width="28" height="28" alt="BabelOm" style="border-radius:4px;">
     <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
   </div>
 
@@ -345,7 +345,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   <div class="lb-img-wrap">
     <img id="lb-photo" src="" alt="" oncontextmenu="return false;">
     <div class="lb-shield" oncontextmenu="return false;" ondragstart="return false;"></div>
-    <div class="lb-wm">© Babelom — reproduction interdite</div>
+    <div class="lb-wm">© BabelOm — reproduction interdite</div>
   </div>
   <div class="lb-controls">
     <button class="lb-btn" onclick="lbPrev()">‹</button>
@@ -412,7 +412,7 @@ function afficherTemoignage(t) {
 
   document.getElementById('hero-avatar').textContent = initiale;
   document.getElementById('hero-name').innerHTML = prenom + (nom ? ' <em>' + nom + '</em>' : '');
-  document.title = 'Babelom — ' + auteur;
+  document.title = 'BabelOm — ' + auteur;
 
   const adresseParts = [t.adresse, t.ville, t.pays].filter(Boolean);
   document.getElementById('hero-adresse').textContent = adresseParts.join(' · ');
@@ -456,7 +456,7 @@ function afficherTemoignage(t) {
       return '<div class="photo-protegee" onclick="ouvrirLightbox(' + JSON.stringify(t.photos) + ',' + i + ')">' +
         '<img src="' + url + '" alt="Photo ' + (i+1) + '" loading="lazy" oncontextmenu="return false;">' +
         '<div class="photo-shield" oncontextmenu="return false;" ondragstart="return false;"></div>' +
-        '<div class="photo-watermark">© Babelom</div>' +
+        '<div class="photo-watermark">© BabelOm</div>' +
         '</div>';
     }).join('');
   }
@@ -543,7 +543,7 @@ window.addEventListener('scroll', function(){
     </a>
     
   </div>
-  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 Babelom · Tous droits réservés</div>
+  <div style="font-size:0.65rem;color:rgba(255,255,255,0.35);text-align:right;flex-shrink:0;">© 2026 BabelOm · Tous droits réservés</div>
 </footer>
 <script id="nav-active">
 (function(){
@@ -583,7 +583,7 @@ setTimeout(mettreAJourNav,100);
 <div id="modale-signalement" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)document.getElementById('modale-signalement').style.display='none'">
   <div style="background:#1e2d50;border:1px solid #FF6B35;padding:32px;max-width:460px;width:92%;border-radius:14px;font-family:'Nunito',sans-serif;">
     <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:white;margin-bottom:6px;">Signaler ce contenu</h3>
-    <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6;">Ce signalement sera transmis à l'équipe Babelom qui examinera le contenu sous 48h.</p>
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6;">Ce signalement sera transmis à l'équipe BabelOm qui examinera le contenu sous 48h.</p>
     <select id="sig-raison" style="width:100%;background:#2c4a8a;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;border-radius:8px;margin-bottom:12px;outline:none;">
       <option value="">Raison du signalement *</option>
       <option value="haineux">Contenu haineux ou discriminatoire</option>
@@ -628,8 +628,8 @@ async function envoyerSignalement() {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
         access_key: '7428a95d-fc84-4a4b-8c08-b4e4382c7946',
-        subject: '[Babelom] ⚠ Signalement contenu #' + temoignageId,
-        from_name: 'Système Babelom',
+        subject: '[BabelOm] ⚠ Signalement contenu #' + temoignageId,
+        from_name: 'Système BabelOm',
         message: 'Raison : ' + raison + '\nDétail : ' + (detail || 'aucun') + '\nURL : ' + url + '\nID témoignage : ' + temoignageId
       })
     });
@@ -730,7 +730,7 @@ async function afficherImmeuble(v, t) {
       html += '<div style="position:absolute;top:50%;left:50%;width:70%;height:1px;background:rgba(0,0,0,0.05);transform:translate(-50%,-50%);"></div>';
       if (nomTxt) html += '<div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1e2d50;position:relative;z-index:1;">'+nomTxt+'</div>';
       if (prenomTxt) html += '<div style="font-size:10px;color:#4a5a80;margin-top:2px;position:relative;z-index:1;">'+prenomTxt+'</div>';
-      if (isMembre) html += '<div style="font-size:9px;color:#0e8a7a;margin-top:2px;position:relative;z-index:1;">membre Babelom</div>';
+      if (isMembre) html += '<div style="font-size:9px;color:#0e8a7a;margin-top:2px;position:relative;z-index:1;">membre BabelOm</div>';
       if (!nomTxt && !isMe) html += '<div style="font-size:10px;color:#b0bcd0;position:relative;z-index:1;">—</div>';
       html += '</div>';
     }

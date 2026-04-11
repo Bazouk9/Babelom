@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- BABELOM v2 20260403-1003 -->
+<!-- BabelOm v2 20260403-1003 -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Babelom — Galerie photos</title>
+<title>BabelOm — Galerie photos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="supabase-config.js"></script>
 <script src="babelom-base.js"></script>
@@ -148,7 +148,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
 <div id="top-band">
   <!-- Favicon + Logo -->
   <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
-    <img src="favicon.svg" width="28" height="28" alt="Babelom" style="border-radius:4px;">
+    <img src="favicon.svg" width="28" height="28" alt="BabelOm" style="border-radius:4px;">
     <a href="index.html" id="nav-logo" style="font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;">BABEL<span style="color:var(--orange);">Om</span></a>
   </div>
 
@@ -357,7 +357,7 @@ h1,h2,h3,p,span,label,div { color: inherit; }
   <div class="lb-img-wrap">
     <img id="lb-photo" src="" alt="" oncontextmenu="return false;">
     <div class="lb-shield" oncontextmenu="return false;" ondragstart="return false;"></div>
-    <div class="lb-wm">© Babelom — reproduction interdite</div>
+    <div class="lb-wm">© BabelOm — reproduction interdite</div>
   </div>
   <div id="lb-info"></div>
   <div class="lb-controls">
@@ -494,7 +494,7 @@ function afficherGrille() {
     return '<div class="galerie-item" onclick="ouvrirLightbox(' + i + ')">' +
       '<img src="' + p.url + '" alt="' + p.lieu + '" loading="lazy" oncontextmenu="return false;">' +
       '<div class="g-shield" oncontextmenu="return false;" ondragstart="return false;"></div>' +
-      '<div class="g-watermark">© Babelom</div>' +
+      '<div class="g-watermark">© BabelOm</div>' +
       '<div class="g-meta">' +
         '<div class="g-meta-lieu">' + (p.lieu || 'Lieu non précisé') + '</div>' +
         (p.dates ? '<div class="g-meta-dates">' + p.dates + '</div>' : '') +
@@ -536,7 +536,7 @@ var user = babelomGetUser();
 if (!user) {
   document.getElementById('galerie-loading').innerHTML =
     '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
-    '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté Babelom.</p>' +
+    '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté BabelOm.</p>' +
     '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
 } else {
   chargerGalerie();
@@ -569,7 +569,7 @@ window.addEventListener('scroll', function() {
     </a>
     
   </div>
-  <div style="font-size:0.65rem;color:rgba(255,255,255,0.75);text-align:right;flex-shrink:0;">© 2026 Babelom · Tous droits réservés</div>
+  <div style="font-size:0.65rem;color:rgba(255,255,255,0.75);text-align:right;flex-shrink:0;">© 2026 BabelOm · Tous droits réservés</div>
 </footer>
 <script id="nav-active">
 (function(){
