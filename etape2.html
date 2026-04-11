@@ -803,11 +803,11 @@ h1,h2,h3,p,span,label,div { color: inherit; }
       </div>
       <div>
         <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Décédé(e) le</label>
-        <input type="date" id="f-defunt-deces" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
+        <input type="date" id="f-defunt-deces" style="width:100%;background:white;border:1.5px solid #c0cce0;color:#1e2d50;font-family:'Nunito',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:6px;" placeholder="optionnel">
       </div>
     </div>
     <div>
-      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Lien de parenté ou d'amitié</label>
+      <label style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:7px;">Lien de parenté</label>
       <input type="text" id="f-defunt-lien" placeholder="Ex : Ma grand-mère, mon père, ma tante…" style="width:100%;background:white;border:1.5px solid var(--sable);color:var(--terre);font-family:'Jost',sans-serif;font-size:0.92rem;padding:10px 14px;outline:none;border-radius:2px;">
     </div>
   </div>
@@ -1438,7 +1438,7 @@ async function valider() {
 }
 
 function effacerTout() {
-  if (!confirm('Effacer tous les champs du formulaire ?')) return;
+  // Effacement direct sans confirmation
   // Champs texte et date
   document.querySelectorAll('input[type="text"], input[type="date"], input[type="email"], textarea').forEach(function(el) {
     el.value = '';
