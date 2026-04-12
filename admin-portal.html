@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>BabelOm — Portail Admin</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: 'Segoe UI', sans-serif; background: #0f1e14; color: #c8d8b0; height: 100vh; display: flex; flex-direction: column; }
+
+.toolbar {
+  background: #1e3a28;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #d4880a;
+  flex-shrink: 0;
+}
+
+.toolbar-title {
+  font-size: 0.8rem;
+  color: #d4880a;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-right: 16px;
+  font-weight: 600;
+}
+
+.btn-page {
+  background: #2e5a38;
+  border: 1px solid #4a7a52;
+  color: #c8d8b0;
+  padding: 7px 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.btn-page:hover { background: #3a6a44; color: white; }
+.btn-page.active { background: #d4880a; border-color: #d4880a; color: white; }
+
+.frame-wrap {
+  flex: 1;
+  position: relative;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+</style>
+
+<script src="babelom-base.js"></script>
+<script src="moderation.js"></script>
+</head>
+<body>
+
+<div class="toolbar">
+  <span class="toolbar-title">🏠 BabelOm Admin</span>
+  <button class="btn-page active" onclick="charger('index.html', this)">Accueil</button>
+  <button class="btn-page" onclick="charger('etape1.html', this)">01 · Carte</button>
+  <button class="btn-page" onclick="charger('etape2.html?admin=1', this)">02 · Racontez</button>
+  <button class="btn-page" onclick="charger('temoignages.html?admin=1', this)">03 · Transmettez</button>
+  <button class="btn-page" onclick="charger('messagerie.html?admin=1', this)">04 · Messagerie</button>
+</div>
+
+<div class="frame-wrap">
+  <iframe id="frame" src="index.html"></iframe>
+</div>
+
+<script>
+function charger(url, btn) {
+  document.getElementById('frame').src = url;
+  document.querySelectorAll('.btn-page').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+
+<script id="babelom-base">
+function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
+function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
+function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
+document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
+function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
+function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='\u{1F464} '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
+async function seConnecter(){var email=document.getElementById('cx-email')?document.getElementById('cx-email').value.trim():'';var mdp=document.getElementById('cx-mdp')?document.getElementById('cx-mdp').value:'';var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user&&data.user.user_metadata&&data.user.user_metadata.prenom?data.user.user_metadata.prenom:email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connect\u00e9 !';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+async function sInscrire(){var prenom=document.getElementById('ins-prenom')?document.getElementById('ins-prenom').value.trim():'';var email=document.getElementById('ins-email')?document.getElementById('ins-email').value.trim():'';var mdp=document.getElementById('ins-mdp')?document.getElementById('ins-mdp').value:'';var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom},options:{emailRedirectTo:'https://bazouk9.github.io/Babelom/confirmation.html'}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connect\u00e9 !':'V\u00e9rifiez votre email.';}if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+function toggleMenuMembre(e){if(e)e.stopPropagation();var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';}
+document.addEventListener('click',function(e){var d=document.getElementById('menu-membre-dropdown');var btn=document.getElementById('btn-menu-membre');if(d&&btn&&!d.contains(e.target)&&!btn.contains(e.target))d.style.display='none';});
+function confirmerSuppressionCompte(){var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display='none';var m=document.getElementById('modale-confirm-delete');if(m)m.style.display='flex';}
+setTimeout(mettreAJourNav,100);
+</script>
+</body>
+</html>
