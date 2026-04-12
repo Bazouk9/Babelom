@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   BABELOM — Fonctions de base partagées (babelom-base.js)
+   BabelOm — Fonctions de base partagées (babelom-base.js)
    Charger sur TOUTES les pages après supabase-config.js
 ═══════════════════════════════════════════════════════════════ */
 
@@ -127,7 +127,7 @@ async function envoyerContact(){
     var res=await fetch('https://api.web3forms.com/submit',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[Babelom] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})
+      body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[BabelOm] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})
     });
     var data=await res.json();
     if(data.success){
