@@ -312,7 +312,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
   </div>
   <div id="form-container" style="width:50%;height:600px;overflow-y:auto;background:#f5f2e8;padding:24px 28px;color:#1e3a28;">
     
-    <div class="form-section-title-warn">⚠️ Par mesure de confidentialité et de sécurité, n'enregistrez pas votre adresse actuelle mais uniquement vos anciennes adresses.</div>
+    <div class="form-section-title-warn" style="border:2px solid #FF6B35;border-left:6px solid #FF6B35;background:#fff9f5;border-radius:4px;padding:14px 16px;color:#1e3a28;font-size:0.92rem;font-weight:600;line-height:1.5;margin-bottom:20px;">⚠️ Par mesure de confidentialité et de sécurité, n'enregistrez pas votre adresse actuelle mais uniquement vos anciennes adresses.</div>
 
     <div class="form-section-title">Raconter ce lieu</div>
     <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
@@ -402,7 +402,15 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       </div>
       <div>
         <label><span data-i18n="e1LabelEtagesTotal">Nombre total d'étages</span></label>
-        <input type="number" id="f-etages-total" placeholder="Ex : 6" min="1" max="100">
+        <input type="number" id="f-etages-total" placeholder="Ex : 6" min="1" max="30" oninput="
+  var v = parseInt(this.value)||1;
+  if(v>30) v=30;
+  var wf = document.getElementById('wi-floors');
+  if(wf){ wf.max=v; if(parseInt(wf.value)>v){wf.value=v; document.getElementById('wi-fv').textContent=v;} }
+  var wm = document.getElementById('wi-mf');
+  if(wm){ wm.max=v; if(parseInt(wm.value)>v){wm.value=v; document.getElementById('wi-mv').textContent=v;} }
+  if(typeof buildImmeuble==='function') buildImmeuble();
+">
       </div>
     </div>
 
@@ -416,7 +424,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;flex-wrap:wrap;">
           <div style="display:flex;align-items:center;gap:8px;">
             <label style="font-size:12px;color:#4a5a80;">Étages :</label>
-            <input type="range" id="wi-floors" min="2" max="8" value="4" step="1" style="width:80px;" oninput="document.getElementById('wi-fv').textContent=this.value;buildImmeuble()">
+            <input type="range" id="wi-floors" min="1" max="30" value="4" step="1" style="width:80px;" oninput="document.getElementById('wi-fv').textContent=this.value;buildImmeuble()">
             <span id="wi-fv" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">4</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -426,7 +434,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <label style="font-size:12px;color:#4a5a80;">Mon étage :</label>
-            <input type="range" id="wi-mf" min="1" max="8" value="2" step="1" style="width:80px;" oninput="document.getElementById('wi-mv').textContent=this.value;wMyFloor=parseInt(this.value);buildImmeuble()">
+            <input type="range" id="wi-mf" min="1" max="30" value="2" step="1" style="width:80px;" oninput="document.getElementById('wi-mv').textContent=this.value;wMyFloor=parseInt(this.value);buildImmeuble()">
             <span id="wi-mv" style="font-size:13px;font-weight:600;color:#1e2d50;min-width:16px;">2</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -1005,7 +1013,7 @@ function buildPopup(p, isCluster, membres) {
       '<div style="font-size:0.78rem;color:#7a9a72;margin-bottom:10px;">📍 ' + p.lieu + '</div>' +
       '<div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>' +
       '<div style="font-size:0.8rem;color:#4a7a52;line-height:1.55;margin-bottom:12px;">🔒 Souvenirs, anecdotes et photos accessibles aux membres.</div>' +
-      '<a href="index.html#compte" style="display:block;text-align:center;background:#d4880a;color:white;text-decoration:none;padding:8px 14px;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Inscrivez-vous →</a>' +
+      '<a href="index.html#compte" style="display:block;text-align:center;background:#d4880a;color:white !important;text-decoration:none;padding:8px 14px;font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;border-radius:4px;">Inscrivez-vous →</a>' +
       '</div>';
   }
 }
