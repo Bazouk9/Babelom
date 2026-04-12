@@ -18,7 +18,7 @@
   --vert:#6BCB77; --rose:#FF8B94; --nuit:#2c4a8a; --nuit2:#3358a0;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{height:100%;font-family:'Nunito',sans-serif;background:#1e2d50;color:white;overflow:hidden;}
+html,body{height:100%;font-family:'Nunito',sans-serif;background:#F1F5E1;color:#2a3a10;overflow:hidden;}
 
 /* ── NAV ── */
 #top-band{background:#2c4a8a;padding:8px 20px;display:flex;align-items:center;gap:12px;border-bottom:6px solid #FF6B35;position:sticky;top:0;z-index:1001;flex-shrink:0;}
@@ -366,6 +366,43 @@ html,body{height:100%;font-family:'Nunito',sans-serif;background:#1e2d50;color:w
 }
 .acces-requis h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: white; }
 .acces-requis p { font-size: 0.85rem; line-height: 1.6; max-width: 360px; }
+</style>
+
+<style id="sauge-override">
+/* Couleur sauge BabelOm */
+body { background: #F1F5E1 !important; }
+.content, .temoignage-section, .anecdote-bloc, .meta-grid, .meta-item,
+.galerie-filtres, .galerie-section, .droits-grid, .droit-item,
+.info-block, .foyer-badge, .section-content, .page-content,
+.confirm-box, .hero-content {
+  color: #2a3a10 !important;
+}
+.content h1, .content h2, .content h3, .content p, .content li,
+.content span, .content label, .content div {
+  color: #2a3a10;
+}
+.meta-label { color: #4a6020 !important; }
+.meta-value { color: #2a3a10 !important; }
+.section-title { color: #FF6B35 !important; border-bottom-color: rgba(42,58,16,0.2) !important; }
+.anecdote-text { color: #2a3a10 !important; }
+.anecdote-label { color: #FF6B35 !important; }
+.anecdote-bloc { background: rgba(255,107,53,0.08) !important; border-left-color: #FF6B35 !important; }
+.foyer-badge { background: rgba(168,200,112,0.25) !important; border-color: #a8c870 !important; color: #2a3a10 !important; }
+.temoignage-texte { color: #2a3a10 !important; }
+.droit-item { background: rgba(168,200,112,0.15) !important; border-color: #a8c870 !important; }
+.droit-titre { color: #4ECDC4 !important; }
+.droit-desc { color: #2a3a10 !important; }
+.hero-adresse, .hero-tags { color: #4a6020 !important; }
+.galerie-sub, .galerie-eyebrow { color: #4a6020 !important; }
+.galerie-item .g-meta-lieu { color: #2a3a10 !important; }
+.galerie-item .g-meta-dates { color: #4a6020 !important; }
+.galerie-loading, .galerie-vide { color: #4a6020 !important; }
+.table-search input { background: white !important; color: #2a3a10 !important; border-color: #a8c870 !important; }
+#galerie-count { color: #4a6020 !important; }
+.strong { color: #2a3a10 !important; }
+strong { color: #2a3a10 !important; }
+a { color: #3a7020 !important; }
+a:hover { color: #FF6B35 !important; }
 </style>
 </head>
 <body>
