@@ -607,9 +607,19 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
         <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;">Rechercher un groupe</span>
       </div>
       <div style="padding:14px;">
+        <div style="font-size:0.72rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Mes groupes</div>
+        <div id="mes-groupes-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;min-height:40px;max-height:100px;overflow-y:auto;margin-bottom:10px;">
+          <div style="padding:10px;font-size:0.78rem;color:#7a9a72;text-align:center;">Connexion requise</div>
+        </div>
+        <div style="font-size:0.72rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;">Explorer tous les groupes</div>
         <input type="text" id="search-groupe" placeholder="Nom de ville ou de groupe…" oninput="chargerExplorer()" style="width:100%;background:white;border:1.5px solid #c8d8b0;border-radius:8px;padding:9px 12px;font-family:Nunito,sans-serif;font-size:0.82rem;color:#1e3a28;margin-bottom:10px;box-sizing:border-box;">
-        <div id="explorer-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;min-height:80px;max-height:200px;overflow-y:auto;">
+        <div id="explorer-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;min-height:60px;max-height:140px;overflow-y:auto;margin-bottom:10px;">
           <div style="padding:12px;font-size:0.8rem;color:#7a9a72;text-align:center;">Tapez pour explorer les groupes</div>
+        </div>
+        <div id="chat-area-groupe" style="background:white;border-radius:6px;border:1px solid #c8d8b0;min-height:100px;display:flex;flex-direction:column;">
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px;text-align:center;">
+            <p style="font-size:0.78rem;color:#7a9a72;">Sélectionnez un groupe pour voir les messages</p>
+          </div>
         </div>
       </div>
     </div>
@@ -912,8 +922,8 @@ function filtrerContacts() {
 
 // ── MES GROUPES ──
 async function chargerMesGroupes() {
-  var list = document.getElementById('sidebar-list');
-  list.innerHTML = '<div class="sidebar-empty" style="padding:20px;">Chargement…</div>';
+  var list = document.getElementById('mes-groupes-list') || document.getElementById('sidebar-list');
+  list.innerHTML = '<div style="padding:10px;font-size:0.78rem;color:#7a9a72;text-align:center;">Chargement…</div>';
 
   if (!mesGroupeIds.length) {
     list.innerHTML = '<div class="sidebar-empty">Vous n\'avez rejoint aucun groupe.<br>Explorez les groupes de votre ville dans l\'onglet "Explorer".</div>';
@@ -1054,7 +1064,7 @@ function ouvrirGroupe(groupeId, nom, ville) {
   currentConvId   = groupeId;
   currentConvType = 'groupe';
 
-  var area = document.getElementById('chat-area');
+  var area = document.getElementById('chat-area-groupe') || document.getElementById('chat-area');
   area.innerHTML = '<div class="chat-header">'
     + '<div class="chat-header-avatar group" style="background:#7C3AED;color:white;font-size:1.3rem;">🏘</div>'
     + '<div><div class="chat-header-name">' + escHtml(nom) + '</div><div class="chat-header-sub">Groupe · 📍 ' + escHtml(ville) + '</div></div>'
