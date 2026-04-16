@@ -610,16 +610,17 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
         </div>
         <div style="padding:8px 12px;display:flex;flex-direction:column;flex:1;gap:5px;overflow:hidden;">
           <div style="font-size:0.65rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;">Mes groupes</div>
-          <div id="mes-groupes-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:60px;overflow-y:auto;flex-shrink:0;">
+          <div id="mes-groupes-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:55px;overflow-y:auto;flex-shrink:0;">
             <div style="padding:8px;font-size:0.75rem;color:#7a9a72;text-align:center;">Connexion requise</div>
           </div>
-          <input type="text" id="search-groupe" placeholder="Explorer les groupes…" oninput="chargerExplorer()" style="background:white;border:1.5px solid #c8d8b0;border-radius:8px;padding:7px 10px;font-family:Nunito,sans-serif;font-size:0.82rem;color:#1e3a28;box-sizing:border-box;flex-shrink:0;">
-          <div id="explorer-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:60px;overflow-y:auto;flex-shrink:0;">
+          <input type="text" id="search-groupe" placeholder="Explorer les groupes…" oninput="chargerExplorer()" style="background:white;border:1.5px solid #c8d8b0;border-radius:8px;padding:6px 10px;font-family:Nunito,sans-serif;font-size:0.82rem;color:#1e3a28;box-sizing:border-box;flex-shrink:0;">
+          <div id="explorer-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:55px;overflow-y:auto;flex-shrink:0;">
             <div style="padding:8px;font-size:0.75rem;color:#7a9a72;text-align:center;">Tapez pour explorer</div>
           </div>
-          <div id="chat-area-groupe" style="background:white;border-radius:6px;border:1px solid #c8d8b0;flex:1;min-height:60px;display:flex;flex-direction:column;">
+          <!-- Zone conversation groupe — s'affiche au clic sur un groupe -->
+          <div id="chat-area-groupe" style="background:white;border-radius:6px;border:2px solid #7C3AED;flex:1;min-height:80px;display:flex;flex-direction:column;">
             <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;">
-              <p style="font-size:0.72rem;color:#7a9a72;">Sélectionnez un groupe</p>
+              <p style="font-size:0.72rem;color:#a080d0;">👆 Cliquez sur un groupe pour démarrer</p>
             </div>
           </div>
         </div>

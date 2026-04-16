@@ -19,6 +19,12 @@ const BABELOM_MODERATION = (function() {
     'je vais te tuer','je vais te crever','mort aux','à mort les',
     'nique ta mère','va te faire foutre','enculé','fdp','fils de pute',
     'salope','connasse','pute','putain de',
+    'enfoiré','enfoirée','enfoirés','enfoirées',
+    'ordure','raclure','pourriture','vermine','déchet','immondice',
+    'crétin','cretine','abruti','abrutie','imbécile','idiot','idiote',
+    'espèce de','ta gueule','ferme ta gueule','va te faire','va crever',
+    'je te hais','sale type','sale mec','sale gosse','sale gamine',
+    'batard','bâtard','bâtarde','batarde',
     // Contenu sexuel explicite
     'pornographie','porno','sexe explicite','pipe','fellation','sodomie',
     // Pédophilie
@@ -81,8 +87,8 @@ const BABELOM_MODERATION = (function() {
       message:   null,
     };
 
-    // 1. Qualité minimale
-    if (texte.trim().length < QUALITE.minChars) {
+    // 1. Qualité minimale (désactivée pour les messages privés)
+    if (!isMessage && texte.trim().length < QUALITE.minChars) {
       return { ok: false, niveau: 'qualite', message: 'Votre texte est trop court (minimum ' + QUALITE.minChars + ' caractères).' };
     }
     if (/(.)\1{6,}/.test(texte)) {
