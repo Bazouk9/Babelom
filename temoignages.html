@@ -77,23 +77,23 @@ thead th .sort-ico{margin-left:4px;opacity:0.4;font-size:0.6rem;}
 thead th.sorted .sort-ico{opacity:1;color:#FF6B35;}
 
 tbody tr{
-  border-bottom:1px solid rgba(255,255,255,0.07);
+  border-bottom:1px solid rgba(0,0,0,0.08);
   transition:background 0.15s;
   cursor:pointer;
 }
 tbody tr:hover{background:rgba(255,107,53,0.1);}
-tbody tr:nth-child(even){background:rgba(255,255,255,0.03);}
+tbody tr:nth-child(even){background:rgba(0,0,0,0.03);}
 tbody tr:nth-child(even):hover{background:rgba(255,107,53,0.1);}
 
 tbody td{
   padding:10px 14px;
   font-size:0.84rem;
-  color:rgba(255,255,255,0.85);
+  color:#2e3a28;
   vertical-align:middle;
 }
-tbody td.cp{font-family:'Courier New',monospace;color:#4ECDC4;font-size:0.8rem;}
-tbody td.ville{font-weight:700;color:white;text-transform:uppercase;font-size:0.78rem;letter-spacing:0.06em;}
-tbody td.nom{font-weight:600;color:white;}
+tbody td.cp{font-family:'Courier New',monospace;color:#1a7a5e;font-size:0.8rem;}
+tbody td.ville{font-weight:700;color:#1e3a28;text-transform:uppercase;font-size:0.78rem;letter-spacing:0.06em;}
+tbody td.nom{font-weight:600;color:#1e3a28;}
 tbody td.vide{text-align:center;padding:48px;color:var(--muted);font-style:italic;cursor:default;}
 tbody td.vide:hover{background:transparent;}
 
@@ -297,7 +297,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
 <!-- TABLE -->
 <div class="table-wrap">
-  <div class="table-titre">
+  <div class="table-titre" style="display:none;">
     <span>Archive des souvenirs</span>
     <span class="table-count" id="table-count"></span>
   </div>
