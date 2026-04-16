@@ -760,15 +760,15 @@ footer {
 ══════════════════════════════════ */
 #logo-maison-wrap {
   position: absolute;
-  bottom: 60px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
   gap: 16px;
-  z-index: 10;
+  z-index: 5;
   opacity: 0;
   animation: fadeIn 1s 0.3s forwards;
   pointer-events: none;
@@ -1031,78 +1031,80 @@ body{padding-bottom:70px!important;}
       <button id="tp-next" onclick="tpGo(tpCur+1)" style="position:absolute;right:-18px;top:45%;transform:translateY(-50%);z-index:10;background:#2c4a8a;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.9;">›</button>
     </div>
 
-    <!-- MAISON + PANNEAU (en bas à gauche de la colonne droite) -->
-    <div id="logo-maison-wrap">
-      <!-- PANNEAU À GAUCHE DE LA MAISON -->
-      <div style="flex-shrink:0;margin-bottom:10px;pointer-events:auto;">
-        <svg width="120" height="105" viewBox="0 0 120 105" xmlns="http://www.w3.org/2000/svg">
-          <rect x="55" y="52" width="8" height="48" rx="2" fill="#8B5E3C"/>
-          <rect x="57" y="52" width="3" height="48" fill="#c4854a" opacity="0.4"/>
-          <ellipse cx="59" cy="98" rx="14" ry="4" fill="#8B5E3C" opacity="0.35"/>
-          <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')" style="cursor:pointer;">
-            <polygon points="4,4 96,4 108,18 96,32 4,32" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
-            <text x="11" y="22" font-family="Jost,sans-serif" font-size="9.5" font-weight="900" fill="white">S'INSCRIRE →</text>
-            <circle cx="59" cy="18" r="4" fill="#c04010" opacity="0.5"/>
-            <circle cx="59" cy="18" r="2" fill="#7a2800"/>
-          </a>
-          <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')" style="cursor:pointer;">
-            <polygon points="116,40 24,40 12,54 24,68 116,68" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
-            <text x="10" y="58" font-family="Jost,sans-serif" font-size="8" font-weight="900" fill="white">← SE CONNECTER</text>
-            <circle cx="59" cy="54" r="4" fill="#1a3a20" opacity="0.5"/>
-            <circle cx="59" cy="54" r="2" fill="#0a2010"/>
-          </a>
-        </svg>
-      </div>
-      <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280" style="pointer-events:auto;">
-        <defs>
-          <clipPath id="clip-interieur">
-            <rect x="20" y="110" width="200" height="160"/>
-          </clipPath>
-          <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
-            <rect width="20" height="14" fill="#c8601a"/>
-            <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-            <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-            <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-          </pattern>
-          <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
-            <rect width="20" height="14" fill="#c8601a"/>
-            <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-            <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-            <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-          </pattern>
-        </defs>
-        <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
-        <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
-        <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
-        <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
-        <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
-        <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
-        <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
-        <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-        <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
-        <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-        <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-        <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-        <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-        <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-        <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-        <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-        <g clip-path="url(#clip-interieur)">
-          <g id="personnages"></g>
-        </g>
-        <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
-        <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
-        <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-      </svg>
     </div>
   </div>
+
+  <!-- MAISON + PANNEAU centrés sur toute la largeur du hero -->
+  <div id="logo-maison-wrap">
+    <div style="flex-shrink:0;margin-bottom:10px;pointer-events:auto;">
+      <svg width="120" height="105" viewBox="0 0 120 105" xmlns="http://www.w3.org/2000/svg">
+        <rect x="55" y="52" width="8" height="48" rx="2" fill="#8B5E3C"/>
+        <rect x="57" y="52" width="3" height="48" fill="#c4854a" opacity="0.4"/>
+        <ellipse cx="59" cy="98" rx="14" ry="4" fill="#8B5E3C" opacity="0.35"/>
+        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')" style="cursor:pointer;">
+          <polygon points="4,4 96,4 108,18 96,32 4,32" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
+          <text x="11" y="22" font-family="Jost,sans-serif" font-size="9.5" font-weight="900" fill="white">S'INSCRIRE →</text>
+          <circle cx="59" cy="18" r="4" fill="#c04010" opacity="0.5"/>
+          <circle cx="59" cy="18" r="2" fill="#7a2800"/>
+        </a>
+        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')" style="cursor:pointer;">
+          <polygon points="116,40 24,40 12,54 24,68 116,68" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
+          <text x="10" y="58" font-family="Jost,sans-serif" font-size="8" font-weight="900" fill="white">← SE CONNECTER</text>
+          <circle cx="59" cy="54" r="4" fill="#1a3a20" opacity="0.5"/>
+          <circle cx="59" cy="54" r="2" fill="#0a2010"/>
+        </a>
+      </svg>
+    </div>
+    <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280" style="pointer-events:auto;">
+      <defs>
+        <clipPath id="clip-interieur">
+          <rect x="20" y="110" width="200" height="160"/>
+        </clipPath>
+        <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+        <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
+          <rect width="20" height="14" fill="#c8601a"/>
+          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+        </pattern>
+      </defs>
+      <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+      <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+      <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
+      <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
+      <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+      <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+      <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+      <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
+      <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+      <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+      <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+      <g clip-path="url(#clip-interieur)">
+        <g id="personnages"></g>
+      </g>
+      <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+      <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
+      <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    </svg>
+  </div>
+
 </section>
 
 <!-- ══════════════ TABLE À PHOTOS ══════════════ -->
