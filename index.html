@@ -147,7 +147,8 @@ nav.scrolled {
   justify-content: center;
   padding: 60px 52px 40px;
   position: relative;
-  z-index: 2;
+  z-index: 3;
+  background: linear-gradient(to right, var(--creme) 60%, rgba(245,242,232,0.7) 85%, transparent 100%);
 }
 
 .hero-eyebrow {
@@ -248,14 +249,22 @@ nav.scrolled {
 .hero-right {
   position: relative;
   overflow: hidden;
+  height: 100%;
+  min-height: 100vh;
+  z-index: 3;
 }
 
 /* Carte décorative dans le hero */
 #hero-map-preview {
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: fadeIn 1.4s 0.6s forwards;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  z-index: 0;
 }
 
 .hero-map-overlay {
@@ -263,7 +272,7 @@ nav.scrolled {
   inset: 0;
   background: linear-gradient(to right, var(--creme) 0%, transparent 30%, transparent 70%, var(--creme) 100%),
               linear-gradient(to bottom, var(--creme) 0%, transparent 15%, transparent 85%, var(--creme) 100%);
-  z-index: 2;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -751,14 +760,15 @@ footer {
 ══════════════════════════════════ */
 #logo-maison-wrap {
   position: absolute;
-  top: 80px;
-  left: 0;
-  right: 0;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 100;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  z-index: 10;
   opacity: 0;
   animation: fadeIn 1s 0.3s forwards;
   pointer-events: none;
@@ -947,7 +957,7 @@ body{padding-bottom:70px!important;}
 
     <!-- Boutons Connexion/Inscrire (non connecté) -->
     <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
-      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
+      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Se connecter</button>
       <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
     </div>
 
@@ -972,107 +982,19 @@ body{padding-bottom:70px!important;}
   </div>
 </div>
 
+<!-- ══════════════ BANDEAU PHRASE ══════════════ -->
+<div style="background:#1e3a28;text-align:center;padding:7px 20px;position:sticky;top:62px;z-index:1000;border-bottom:1px solid rgba(212,136,10,0.25);">
+  <span style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;font-weight:700;color:white;letter-spacing:0.04em;">
+    Vos souvenirs méritent mieux que l'oubli. Le passé a besoin de vous.
+  </span>
+</div>
+
 <!-- ══════════════ HERO ══════════════ -->
 <section id="hero" style="position:relative;">
 
-  <!-- LOGO ANIMÉ MAISON -->
-  <div id="logo-maison-wrap" style="display:flex;align-items:flex-end;gap:16px;">
-    <!-- PANNEAU À GAUCHE DE LA MAISON -->
-    <div style="flex-shrink:0;margin-bottom:10px;">
-      <svg width="120" height="105" viewBox="0 0 120 105" xmlns="http://www.w3.org/2000/svg">
-        <rect x="55" y="52" width="8" height="48" rx="2" fill="#8B5E3C"/>
-        <rect x="57" y="52" width="3" height="48" fill="#c4854a" opacity="0.4"/>
-        <ellipse cx="59" cy="98" rx="14" ry="4" fill="#8B5E3C" opacity="0.35"/>
-        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')" style="cursor:pointer;">
-          <polygon points="4,4 96,4 108,18 96,32 4,32" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
-          <text x="11" y="22" font-family="Jost,sans-serif" font-size="9.5" font-weight="900" fill="white">S'INSCRIRE →</text>
-          <circle cx="59" cy="18" r="4" fill="#c04010" opacity="0.5"/>
-          <circle cx="59" cy="18" r="2" fill="#7a2800"/>
-        </a>
-        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')" style="cursor:pointer;">
-          <polygon points="116,40 24,40 12,54 24,68 116,68" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
-          <text x="22" y="58" font-family="Jost,sans-serif" font-size="9" font-weight="900" fill="white">← CONNEXION</text>
-          <circle cx="59" cy="54" r="4" fill="#1a3a20" opacity="0.5"/>
-          <circle cx="59" cy="54" r="2" fill="#0a2010"/>
-        </a>
-      </svg>
-    </div>
-    <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280">
-      <defs>
-        <clipPath id="clip-interieur">
-          <!-- sol à y=270, hauteur intérieure 130px -->
-          <rect x="20" y="110" width="200" height="160"/>
-        </clipPath>
-        <!-- motif tuiles brique avec contraste -->
-        <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
-          <rect width="20" height="14" fill="#c8601a"/>
-          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-        </pattern>
-        <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
-          <rect width="20" height="14" fill="#c8601a"/>
-          <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
-          <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
-          <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
-        </pattern>
-      </defs>
-
-      <!-- SOL -->
-      <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
-
-      <!-- MAISON : corps (y=110 à y=270, hauteur=160) -->
-      <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
-
-      <!-- TOIT rempli tuiles brique -->
-      <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
-      <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
-      <!-- ligne de faîtage -->
-      <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
-      <!-- contour toit -->
-      <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
-      <!-- ombre sous toit -->
-      <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
-
-      <!-- MAISON : porte élargie + recentrée -->
-      <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
-      <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
-      <!-- panneaux porte -->
-      <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-      <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
-
-      <!-- MAISON : fenêtre gauche haut (recentrée vers milieu) -->
-      <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre droite haut (recentrée vers milieu) -->
-      <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre gauche bas (recentrée) -->
-      <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- MAISON : fenêtre droite bas (recentrée) -->
-      <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
-      <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-      <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
-
-      <!-- PERSONNAGES — marchent sur y=270 (sol) -->
-      <g clip-path="url(#clip-interieur)">
-        <g id="personnages"></g>
-      </g>
-
-      <!-- CHEMINÉE (par-dessus le toit) -->
-      <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
-      <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
-      <!-- fumée -->
-      <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-    </svg>
-  </div>
+  <!-- CARTE LEAFLET EN FOND PLEIN ÉCRAN -->
+  <div id="hero-map-preview"></div>
+  <div class="hero-map-overlay"></div>
 
   <div class="hero-left">
     <p class="hero-eyebrow">Mémoire collective des lieux habités</p>
@@ -1086,61 +1008,107 @@ body{padding-bottom:70px!important;}
     <p class="hero-subtitle"><strong>
       BabelOm est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
     </strong></p>
-    <div id="hero-typewriter" style="margin-top:20px;font-family:'Courier New',monospace;font-size:1.2rem;font-weight:700;color:#2D6A4F;line-height:1.7;border-left:3px solid #2D6A4F;padding-left:14px;min-height:4em;">
-  <span id="tw-quote"></span><span id="tw-cursor" style="color:#2D6A4F;animation:blink 0.65s step-end infinite;font-weight:300;">█</span>
-  <div id="tw-author" style="margin-top:6px;font-family:'Playfair Display',serif;font-size:0.92rem;font-weight:700;color:rgba(45,106,79,0.85);letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:opacity 1.2s ease;font-style:normal;">— Julien Green</div>
-</div>
-<script>
-(function(){
-  var quote = "« On ne quitte jamais vraiment les lieux où l\'on a souffert ou aimé. »";
-  var i = 0;
-  var el = document.getElementById('tw-quote');
-  var author = document.getElementById('tw-author');
-  var cursor = document.getElementById('tw-cursor');
-  function type() {
-    if (i < quote.length) {
-      el.textContent += quote[i++];
-      setTimeout(type, i < 5 ? 80 : 38);
-    } else {
-      cursor.style.display = 'none';
-      setTimeout(function(){ author.style.opacity = '1'; }, 400);
-    }
-  }
-  window.addEventListener('load', function(){ setTimeout(type, 2000); });
-})();
-</script>
   </div>
 
   
   
 
   <div class="hero-right">
-    
+    <!-- POINTS SUR LA CARTE -->
+    <div class="map-dot" id="dot-edinburgh" title="Edimbourg"></div>
+    <div class="map-dot" id="dot-essaouira" title="Essaouira"></div>
+    <div class="map-dot" id="dot-sucre" title="Sucre, Bolivie"></div>
+    <div class="map-dot" id="dot-ghanzi" title="Ghanzi, Botswana"></div>
+    <div class="map-dot" id="dot-nelson" title="Nelson NZ"></div>
+    <div class="map-dot" id="dot-riyad" title="Riyad"></div>
+    <div class="map-dot" id="dot-lagos" title="Lagos"></div>
+
     <!-- DIAPORAMA CARTE POSTALE -->
-    <div id="table-photos-inline" style="position:absolute;top:12%;right:4%;z-index:20;width:320px;flex-shrink:0;">
+    <div id="table-photos-inline" style="position:absolute;top:8%;right:4%;z-index:20;width:320px;flex-shrink:0;">
       <button id="tp-prev" onclick="tpGo(tpCur-1)" style="position:absolute;left:-18px;top:45%;transform:translateY(-50%);z-index:10;background:#2c4a8a;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.9;">‹</button>
       <div id="tp-stack" onclick="tpGo(tpCur+1)" style="position:relative;width:310px;height:310px;margin:0 auto;cursor:pointer;"></div>
       <div id="tp-nav" style="text-align:center;margin-top:12px;"></div>
       <button id="tp-next" onclick="tpGo(tpCur+1)" style="position:absolute;right:-18px;top:45%;transform:translateY(-50%);z-index:10;background:#2c4a8a;color:white;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;opacity:0.9;">›</button>
     </div>
-    <div id="hero-map-preview"></div>
-    <div class="hero-map-overlay"></div>
 
-  <div class="map-dot" id="dot-edinburgh" title="Edimbourg"></div>
-  <div class="map-dot" id="dot-essaouira" title="Essaouira"></div>
-  <div class="map-dot" id="dot-sucre" title="Sucre, Bolivie"></div>
-  <div class="map-dot" id="dot-ghanzi" title="Ghanzi, Botswana"></div>
-  <div class="map-dot" id="dot-nelson" title="Nelson NZ"></div>
-  <div class="map-dot" id="dot-riyad" title="Riyad"></div>
-  <div class="map-dot" id="dot-sucre" title="Sucre, Bolivie"></div>
-  <div class="map-dot" id="dot-lagos" title="Lagos"></div>
-</div>
+    <!-- MAISON + PANNEAU (en bas à gauche de la colonne droite) -->
+    <div id="logo-maison-wrap">
+      <!-- PANNEAU À GAUCHE DE LA MAISON -->
+      <div style="flex-shrink:0;margin-bottom:10px;pointer-events:auto;">
+        <svg width="120" height="105" viewBox="0 0 120 105" xmlns="http://www.w3.org/2000/svg">
+          <rect x="55" y="52" width="8" height="48" rx="2" fill="#8B5E3C"/>
+          <rect x="57" y="52" width="3" height="48" fill="#c4854a" opacity="0.4"/>
+          <ellipse cx="59" cy="98" rx="14" ry="4" fill="#8B5E3C" opacity="0.35"/>
+          <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')" style="cursor:pointer;">
+            <polygon points="4,4 96,4 108,18 96,32 4,32" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
+            <text x="11" y="22" font-family="Jost,sans-serif" font-size="9.5" font-weight="900" fill="white">S'INSCRIRE →</text>
+            <circle cx="59" cy="18" r="4" fill="#c04010" opacity="0.5"/>
+            <circle cx="59" cy="18" r="2" fill="#7a2800"/>
+          </a>
+          <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')" style="cursor:pointer;">
+            <polygon points="116,40 24,40 12,54 24,68 116,68" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
+            <text x="10" y="58" font-family="Jost,sans-serif" font-size="8" font-weight="900" fill="white">← SE CONNECTER</text>
+            <circle cx="59" cy="54" r="4" fill="#1a3a20" opacity="0.5"/>
+            <circle cx="59" cy="54" r="2" fill="#0a2010"/>
+          </a>
+        </svg>
+      </div>
+      <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280" style="pointer-events:auto;">
+        <defs>
+          <clipPath id="clip-interieur">
+            <rect x="20" y="110" width="200" height="160"/>
+          </clipPath>
+          <pattern id="tuiles" x="0" y="0" width="20" height="14" patternUnits="userSpaceOnUse">
+            <rect width="20" height="14" fill="#c8601a"/>
+            <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+            <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+            <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+          </pattern>
+          <pattern id="tuiles2" x="10" y="14" width="20" height="14" patternUnits="userSpaceOnUse">
+            <rect width="20" height="14" fill="#c8601a"/>
+            <ellipse cx="10" cy="14" rx="11" ry="5" fill="#a84810"/>
+            <ellipse cx="10" cy="14" rx="9" ry="3.5" fill="#b85518"/>
+            <line x1="0" y1="0" x2="20" y2="0" stroke="#a84810" stroke-width="1" opacity="0.5"/>
+          </pattern>
+        </defs>
+        <line x1="10" y1="272" x2="230" y2="272" stroke="#c4854a" stroke-width="1.5" stroke-linecap="round" opacity="0.35"/>
+        <rect id="mur" x="20" y="110" width="200" height="160" fill="#f5f2e8" stroke="#1e3a28" stroke-width="2" rx="1"/>
+        <polygon id="toit-fond" points="8,112 120,30 232,112" fill="url(#tuiles)"/>
+        <polygon points="8,112 120,30 232,112" fill="url(#tuiles2)" opacity="0.9"/>
+        <line x1="120" y1="30" x2="120" y2="34" stroke="#8a3808" stroke-width="3" stroke-linecap="round"/>
+        <polyline id="toit" points="8,112 120,30 232,112" fill="none" stroke="#8a3808" stroke-width="2.2" stroke-linejoin="round"/>
+        <line x1="18" y1="113" x2="222" y2="113" stroke="#6a2806" stroke-width="4" opacity="0.35"/>
+        <rect id="porte" x="104" y="210" width="32" height="60" fill="#e8c89a" stroke="#1e3a28" stroke-width="1.8" rx="1"/>
+        <circle cx="132" cy="242" r="2.2" fill="#1e3a28"/>
+        <rect x="107" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+        <rect x="122" y="214" width="10" height="14" rx="1" fill="none" stroke="#1e3a28" stroke-width="1" opacity="0.5"/>
+        <rect x="42" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+        <line x1="59" y1="122" x2="59" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <line x1="42" y1="135" x2="76" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <rect x="164" y="122" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+        <line x1="181" y1="122" x2="181" y2="148" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <line x1="164" y1="135" x2="198" y2="135" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <rect x="42" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+        <line x1="59" y1="168" x2="59" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <line x1="42" y1="181" x2="76" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <rect x="164" y="168" width="34" height="26" fill="#d4e8f0" stroke="#1e3a28" stroke-width="1.5" rx="1"/>
+        <line x1="181" y1="168" x2="181" y2="194" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <line x1="164" y1="181" x2="198" y2="181" stroke="#1e3a28" stroke-width="1" opacity="0.6"/>
+        <g clip-path="url(#clip-interieur)">
+          <g id="personnages"></g>
+        </g>
+        <rect x="158" y="58" width="16" height="30" fill="#d4880a" stroke="#c07828" stroke-width="1.5"/>
+        <rect x="155" y="55" width="22" height="6" fill="#c07828" rx="1"/>
+        <path d="M166,54 Q161,44 166,34 Q171,24 166,14" fill="none" stroke="#9a8570" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════════ TABLE À PHOTOS ══════════════ -->
 <style>
 #table-photos-inline {
-  position: relative;
+  position: absolute !important;
 }
 
 #tp-stack {
@@ -1253,7 +1221,14 @@ var TP_PERSO = [
   { src:'photos/photo17.jpg' },
 ];
 
-var TP_UNSPLASH = []; // uniquement photos personnelles
+var TP_UNSPLASH = [
+  'https://images.unsplash.com/photo-1564078516393-cf04bd966897?w=600&q=80',
+  'https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=600&q=80',
+  'https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=600&q=80',
+  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
+  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80',
+  'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80',
+];
 
 // On teste chaque photo perso : si elle charge, on l'ajoute en tête
 var TP_URLS = TP_UNSPLASH.slice(); // commence avec les Unsplash
@@ -1362,7 +1337,7 @@ window.addEventListener('load', function() {
       d.className = i === n ? 'on' : '';
     });
     clearTimeout(tpTimer);
-    tpTimer = setTimeout(function() { tpGo(tpCur + 1); }, 3000);
+    tpTimer = setTimeout(function() { tpGo(tpCur + 1); }, 1500);
   }
 
   window.tpGo = function(n) {
@@ -1399,6 +1374,13 @@ function ouvrirContact(){var el=document.getElementById('modale-contact');if(el)
 function fermerContact(){var el=document.getElementById('modale-contact');if(el)el.style.display='none';['c-nom','c-email','c-message'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});var s=document.getElementById('c-objet');if(s)s.value='';var m=document.getElementById('contact-msg');if(m)m.textContent='';}
 async function envoyerContact(){var nom=document.getElementById('c-nom').value.trim();var email=document.getElementById('c-email').value.trim();var objet=document.getElementById('c-objet').value;var msg=document.getElementById('c-message').value.trim();var fb=document.getElementById('contact-msg');if(!nom||!email||!objet||!msg){fb.style.color='#FF8B94';fb.textContent='Veuillez remplir tous les champs.';return;}fb.style.color='#4ECDC4';fb.textContent='Envoi en cours…';try{var res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:'7428a95d-fc84-4a4b-8c08-b4e4382c7946',subject:'[BabelOm Contact] '+objet,from_name:nom,reply_to:email,message:'De : '+nom+' <'+email+'>\nObjet : '+objet+'\n\n'+msg})});var data=await res.json();if(data.success){fb.style.color='#6BCB77';fb.textContent='✓ Message envoyé !';setTimeout(fermerContact,2500);}else{fb.style.color='#FF8B94';fb.textContent='Erreur. Réessayez.';}}catch(e){fb.style.color='#FF8B94';fb.textContent='Erreur réseau.';}}
 </script>
+
+<!-- ══════════════ CITATION ══════════════ -->
+<div style="background:var(--terre);padding:14px 40px;text-align:center;border-bottom:1px solid rgba(212,136,10,0.2);">
+  <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;font-weight:700;color:white;white-space:nowrap;">
+    « On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé. »&nbsp;&nbsp;— Julien Green
+  </span>
+</div>
 
 <!-- ══════════════ FOOTER ══════════════ -->
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
@@ -2216,7 +2198,7 @@ function fermerLightbox() {
   <div class="modale-box"><h3>Se connecter</h3>
     <input type="email" id="cx-email" class="input-compte" placeholder="Email">
     <input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button>
+    <button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Se connecter</button>
     <div class="msg-compte" id="msg-cx"></div>
     <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
     <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
