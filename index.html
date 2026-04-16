@@ -976,7 +976,27 @@ body{padding-bottom:70px!important;}
 <section id="hero" style="position:relative;">
 
   <!-- LOGO ANIMÉ MAISON -->
-  <div id="logo-maison-wrap">
+  <div id="logo-maison-wrap" style="display:flex;align-items:flex-end;gap:16px;">
+    <!-- PANNEAU À GAUCHE DE LA MAISON -->
+    <div style="flex-shrink:0;margin-bottom:10px;">
+      <svg width="120" height="105" viewBox="0 0 120 105" xmlns="http://www.w3.org/2000/svg">
+        <rect x="55" y="52" width="8" height="48" rx="2" fill="#8B5E3C"/>
+        <rect x="57" y="52" width="3" height="48" fill="#c4854a" opacity="0.4"/>
+        <ellipse cx="59" cy="98" rx="14" ry="4" fill="#8B5E3C" opacity="0.35"/>
+        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')" style="cursor:pointer;">
+          <polygon points="4,4 96,4 108,18 96,32 4,32" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
+          <text x="11" y="22" font-family="Jost,sans-serif" font-size="9.5" font-weight="900" fill="white">S'INSCRIRE →</text>
+          <circle cx="59" cy="18" r="4" fill="#c04010" opacity="0.5"/>
+          <circle cx="59" cy="18" r="2" fill="#7a2800"/>
+        </a>
+        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')" style="cursor:pointer;">
+          <polygon points="116,40 24,40 12,54 24,68 116,68" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
+          <text x="22" y="58" font-family="Jost,sans-serif" font-size="9" font-weight="900" fill="white">← CONNEXION</text>
+          <circle cx="59" cy="54" r="4" fill="#1a3a20" opacity="0.5"/>
+          <circle cx="59" cy="54" r="2" fill="#0a2010"/>
+        </a>
+      </svg>
+    </div>
     <svg id="logo-svg" width="280" height="280" viewBox="0 0 240 280">
       <defs>
         <clipPath id="clip-interieur">
@@ -1062,28 +1082,6 @@ body{padding-bottom:70px!important;}
       de ceux qui l'ont<br>
       habitée
     </h1>
-
-    <!-- PANNEAU DIRECTION -->
-    <div style="margin:12px 0 4px;display:inline-block;">
-      <svg width="130" height="108" viewBox="0 0 130 108" xmlns="http://www.w3.org/2000/svg">
-        <rect x="60" y="54" width="9" height="50" rx="2" fill="#8B5E3C"/>
-        <rect x="62" y="54" width="3" height="50" fill="#c4854a" opacity="0.4"/>
-        <ellipse cx="64" cy="102" rx="16" ry="4" fill="#8B5E3C" opacity="0.35"/>
-        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-ins')">
-          <polygon points="4,4 102,4 116,20 102,36 4,36" fill="#FF6B35" stroke="#c04010" stroke-width="1.5"/>
-          <text x="12" y="24" font-family="Jost,sans-serif" font-size="10" font-weight="900" fill="white">S'INSCRIRE →</text>
-          <circle cx="64" cy="20" r="4" fill="#c04010" opacity="0.5"/>
-          <circle cx="64" cy="20" r="2" fill="#7a2800"/>
-        </a>
-        <a href="#" onclick="event.preventDefault();ouvrirModale('modale-cx')">
-          <polygon points="126,44 28,44 14,60 28,76 126,76" fill="#2e5a38" stroke="#1a3a20" stroke-width="1.5"/>
-          <text x="26" y="63" font-family="Jost,sans-serif" font-size="10" font-weight="900" fill="white">← SE CONNECTER</text>
-          <circle cx="64" cy="60" r="4" fill="#1a3a20" opacity="0.5"/>
-          <circle cx="64" cy="60" r="2" fill="#0a2010"/>
-        </a>
-      </svg>
-    </div>
-    <!-- FIN PANNEAU DIRECTION -->
 
     <p class="hero-subtitle"><strong>
       BabelOm est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
