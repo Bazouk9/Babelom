@@ -615,7 +615,7 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
   if (e.target === this) fermerLightbox();
 });
 
-// Contrôle accès membres
+// Contrôle accès membres — attendre que tous les scripts externes soient prêts
 function lancerGalerie() {
   var user = babelomGetUser();
   if (!user) {
@@ -628,11 +628,7 @@ function lancerGalerie() {
   }
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', lancerGalerie);
-} else {
-  lancerGalerie();
-}
+window.addEventListener('load', lancerGalerie);
 
 // Nav scroll
 window.addEventListener('scroll', function() {
