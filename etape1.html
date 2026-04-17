@@ -62,9 +62,9 @@ body { font-family:'Nunito',sans-serif; background:#f5f2e8; color:#1e3a28; paddi
 .champ-row { display:flex; gap:10px; }
 .champ-row > div { flex:1; }
 #f-num-voie { width:72px!important; flex-shrink:0!important; }
-#cp-suggestions, #voies-suggestions { position:absolute; top:100%; left:0; right:0; background:#1e3060; border:1.5px solid #FF6B35; border-top:none; border-radius:0 0 6px 6px; z-index:200; max-height:160px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,0.3); display:none; }
-#cp-suggestions div, #voies-suggestions div { padding:8px 12px; cursor:pointer; font-size:0.82rem; color:white; }
-#cp-suggestions div:hover, #voies-suggestions div:hover { background:rgba(255,255,255,0.1); }
+#cp-suggestions, #voies-suggestions { position:absolute; top:100%; left:0; right:0; background:white; border:1.5px solid #FF6B35; border-top:none; border-radius:0 0 6px 6px; z-index:200; max-height:160px; overflow-y:auto; box-shadow:0 4px 12px rgba(0,0,0,0.15); display:none; }
+#cp-suggestions div, #voies-suggestions div { padding:8px 12px; cursor:pointer; font-size:0.82rem; color:#1e3a28; }
+#cp-suggestions div:hover, #voies-suggestions div:hover { background:rgba(255,107,53,0.1); }
 .btn-localiser { background:#2c4a8a; color:white; border:none; padding:8px 14px; font-family:'Nunito',sans-serif; font-size:0.75rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border-radius:6px; }
 .btn-localiser:hover { background:#3358a0; }
 .form-footer { display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.1); }
@@ -355,7 +355,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
           <input type="text" id="f-cp" placeholder="Ex : 75015" maxlength="10"
             
              oninput="filtrerCP(this.value)">
-          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#1e3060;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="cp-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:200;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>
         </div>
       </div>
     </div>
@@ -371,7 +371,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
         <input type="text" id="f-num-voie" placeholder="N°">
         <div style="position:relative;flex:1;min-width:200px;">
           <input type="text" id="f-nom" placeholder="Ex : rue de la République" data-i18n-ph="e1PhAdresse" style="width:100%;box-sizing:border-box;" oninput="filtrerVoies(this.value)">
-          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:#1e3060;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+          <div id="voies-suggestions" style="display:none;position:absolute;top:100%;left:0;right:0;background:white;border:1.5px solid #FF6B35;border-top:none;border-radius:0 0 2px 2px;z-index:100;max-height:160px;overflow-y:auto;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>
         </div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
