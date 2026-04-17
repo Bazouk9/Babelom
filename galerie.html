@@ -492,6 +492,16 @@ var lbIdx = 0;
 
 async function chargerGalerie() {
   try {
+    // Attendre que Supabase soit disponible (max 3s)
+    var tentatives = 0;
+    while (!window.supabase && tentatives < 30) {
+      await new Promise(function(r){ setTimeout(r, 100); });
+      tentatives++;
+    }
+    if (!window.supabase) {
+      document.getElementById('galerie-loading').textContent = 'Erreur : connexion impossible.';
+      return;
+    }
     const sbClient = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     const { data, error } = await sbClient
       .from('galerie_photos')
@@ -606,14 +616,22 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
 });
 
 // Contrôle accès membres
-var user = babelomGetUser();
-if (!user) {
-  document.getElementById('galerie-loading').innerHTML =
-    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
-    '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté BabelOm.</p>' +
-    '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
+function lancerGalerie() {
+  var user = babelomGetUser();
+  if (!user) {
+    document.getElementById('galerie-loading').innerHTML =
+      '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
+      '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté BabelOm.</p>' +
+      '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
+  } else {
+    chargerGalerie();
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', lancerGalerie);
 } else {
-  chargerGalerie();
+  lancerGalerie();
 }
 
 // Nav scroll
