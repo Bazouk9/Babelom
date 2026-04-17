@@ -726,6 +726,7 @@ function timeAgo(ts) {
   return d.toLocaleDateString('fr-FR', {day:'numeric',month:'short'});
 }
 function escHtml(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;'); }
 
 function ouvrirModale(id) { document.getElementById(id).style.display = 'flex'; }
 function fermerModale(id) { document.getElementById(id).style.display = 'none'; }
@@ -907,7 +908,7 @@ function renderContacts(membres) {
     var nom = [m.identite_prenom, m.identite_nom].filter(Boolean).join(' ') || 'Membre';
     var ini = initials(nom);
     var isActive = currentConvType === 'priv' && currentConvId === m.utilisateur_id;
-    return '<div class="conv-item' + (isActive?' active':'') + '" onclick="ouvrirConvPrivee(\'' + m.utilisateur_id + '\',\'' + escHtml(nom) + '\',\'' + escHtml(m.ville||'') + '\')">'
+    return '<div class="conv-item' + (isActive?' active':'') + '" onclick="ouvrirConvPrivee(\'' + m.utilisateur_id + '\',\'' + escAttr(nom) + '\',\'' + escAttr(m.ville||'') + '\')">'
       + '<div class="item-avatar priv">' + ini + '</div>'
       + '<div class="item-info">'
         + '<div class="item-name">' + escHtml(nom) + '</div>'
@@ -945,7 +946,7 @@ async function chargerMesGroupes() {
 
   list.innerHTML = res.data.map(function(g) {
     var isActive = currentConvType === 'groupe' && currentConvId === g.id;
-    return '<div class="group-item' + (isActive?' active':'') + '" onclick="ouvrirGroupe(\'' + g.id + '\',\'' + escHtml(g.nom) + '\',\'' + escHtml(g.ville||'') + '\')">'
+    return '<div class="group-item' + (isActive?' active':'') + '" onclick="ouvrirGroupe(\'' + g.id + '\',\'' + escAttr(g.nom) + '\',\'' + escAttr(g.ville||'') + '\')">'
       + '<div class="item-avatar group">🏘</div>'
       + '<div class="item-info">'
         + '<div class="item-name">' + escHtml(g.nom) + '</div>'
