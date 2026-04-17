@@ -11,6 +11,37 @@
 <script src="supabase-config.js"></script>
 <script src="babelom-base.js"></script>
 <script src="moderation.js"></script>
+<script>
+// Modération intégrée — active même si moderation.js est absent
+if (typeof BABELOM_MODERATION === 'undefined') {
+  var MOTS_INTERDITS = [
+    'con','conne','connard','connasse','merde','putain','salop','salope',
+    'enculé','enculer','encule','foutre','niquer','nique','baise','baiser',
+    'bite','couille','couilles','chier','chiant','chiante','pute','salaud',
+    'bordel','cul','emmerde','emmerder','ta gueule','gueule','abruti',
+    'abrutie','imbécile','idiot','idiote','crétin','crétine','débile',
+    'pd','pédé','tapette','fdp','ntm','va te faire','fils de','batard',
+    'bâtard','bastard','nazi','hitler','viol','violer','tuer','tuer toi',
+    'suicide','mort','assassin','terroriste','bombe'
+  ];
+  BABELOM_MODERATION = {
+    verifier: function(texte, opts) {
+      var t = texte.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[0@]/g,'o').replace(/[1!|]/g,'i').replace(/3/g,'e').replace(/5/g,'s');
+      for (var i=0; i<MOTS_INTERDITS.length; i++) {
+        var mot = MOTS_INTERDITS[i];
+        var re = new RegExp('(^|\\s|[^a-z])' + mot + '($|\\s|[^a-z])', 'i');
+        if (re.test(' '+t+' ')) {
+          return { ok: false, message: '⚠️ Votre message contient un mot inapproprié. Merci de reformuler.' };
+        }
+      }
+      if (texte.length > 1000) return { ok: false, message: '⚠️ Message trop long (max 1000 caractères).' };
+      return { ok: true };
+    }
+  };
+}
+</script>
 <script src="i18n.js?v=2"></script>
 <style>
 :root {
@@ -1161,8 +1192,8 @@ async function envoyerMessage() {
   }
 
   // ── MODÉRATION ──
-  if (typeof BabelOm_MODERATION !== 'undefined') {
-    var check = BabelOm_MODERATION.verifier(texte, {type:'message'});
+  if (typeof BABELOM_MODERATION !== 'undefined') {
+    var check = BABELOM_MODERATION.verifier(texte, {type:'message'});
     if (!check.ok) {
       var msgErr = document.createElement('div');
       msgErr.style.cssText = 'background:#c04040;color:white;padding:8px 14px;border-radius:8px;font-size:0.82rem;margin:4px 0;';
