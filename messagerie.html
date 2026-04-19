@@ -1386,5 +1386,18 @@ function applyMsg(lang) {
 }
 window.addEventListener('DOMContentLoaded', function(){ applyMsg(localStorage.getItem('babelom-lang')||'fr'); });
 </script>
+<!-- Liens légaux footer -->
+<script>
+// Ajouter liens légaux si footer présent
+document.addEventListener('DOMContentLoaded', function() {
+  var footer = document.querySelector('footer');
+  if (footer) {
+    var legalDiv = document.createElement('div');
+    legalDiv.style.cssText = 'font-size:0.62rem;color:rgba(255,255,255,0.4);text-align:center;padding-top:4px;';
+    legalDiv.innerHTML = '<a href="confidentialite.html" style="color:rgba(255,255,255,0.5);text-decoration:none;margin:0 8px;">Confidentialité</a><a href="mentions-legales.html" style="color:rgba(255,255,255,0.5);text-decoration:none;margin:0 8px;">Mentions légales</a>';
+    footer.appendChild(legalDiv);
+  }
+});
+</script>
 </body>
 </html>

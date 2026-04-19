@@ -1381,9 +1381,9 @@ async function valider() {
   if (!texte) { alert('Veuillez écrire au moins quelques mots sur ce lieu.'); return; }
 
   // ── MODÉRATION ──
-  if (typeof BabelOm_MODERATION !== 'undefined') {
+  if (typeof BABELOM_MODERATION !== 'undefined') {
     const texte2 = document.getElementById('f-texte-2')?.value.trim() || '';
-    const check = BabelOm_MODERATION.verifier(texte + ' ' + texte2, {type:'temoignage'});
+    const check = BABELOM_MODERATION.verifier(texte + ' ' + texte2, {type:'temoignage'});
     if (!check.ok) {
       alert('⚠ ' + check.message);
       const btn = document.querySelector('button[onclick="valider()"]');
