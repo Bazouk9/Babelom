@@ -855,9 +855,26 @@ document.addEventListener('DOMContentLoaded', async function() {
   user = babelomGetUser();
   mettreAJourNav(user);
   if (user) {
-    // Vérifier session Supabase
-    var sess = await getSb().auth.getSession();
-    if (!sess.data.session) { user = null; localStorage.removeItem('babelom-user'); mettreAJourNav(null); afficherEtatDeconnecte(); return; }
+    try {
+      // Vérifier session Supabase — ne déconnecter que si le token local est aussi expiré
+      var sess = await getSb().auth.getSession();
+      if (!sess.data.session) {
+        // Session Supabase expirée — vérifier si le token local est encore valide
+        var raw = localStorage.getItem('babelom-user');
+        var u = raw ? JSON.parse(raw) : null;
+        var tokenExpired = !u || (u.expires && Date.now() > u.expires);
+        if (tokenExpired) {
+          user = null;
+          localStorage.removeItem('babelom-user');
+          mettreAJourNav(null);
+          afficherEtatDeconnecte();
+          return;
+        }
+        // Token local encore valide — on continue sans vérification Supabase
+      }
+    } catch(e) {
+      // Erreur réseau — on garde la session locale
+    }
     initialiserMessagerie();
   } else {
     afficherEtatDeconnecte();

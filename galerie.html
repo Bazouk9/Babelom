@@ -455,27 +455,42 @@ function babelomGetUser() {
 
 
 
-// Vérifier session Supabase au chargement
+// Vérifier session — résolution de la race condition avec lancerGalerie
+var _sessionChecked = false;
+var _sessionCheckResolve = null;
+var _sessionCheckPromise = new Promise(function(resolve) { _sessionCheckResolve = resolve; });
+
 (async function() {
   const stored = localStorage.getItem('babelom-user');
-  if (!stored) return;
+  if (!stored) { _sessionChecked = true; _sessionCheckResolve(); return; }
   try {
+    // Attendre que Supabase soit disponible (max 2s)
+    var tries = 0;
+    while (!window.supabase && tries < 20) {
+      await new Promise(function(r){ setTimeout(r, 100); });
+      tries++;
+    }
     const sbCheck = window.supabase
       ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON)
       : null;
     if (sbCheck) {
       const { data } = await sbCheck.auth.getSession();
+      // Ne supprimer que si la session est explicitement null ET que le token local est expiré
+      // Éviter de supprimer en cas d'erreur réseau ou de token encore valide localement
       if (!data || !data.session) {
-        localStorage.removeItem('babelom-user');
-        return;
+        const u = JSON.parse(stored);
+        const tokenExpired = u.expires && Date.now() > u.expires;
+        if (tokenExpired) {
+          localStorage.removeItem('babelom-user');
+        }
+        // Sinon on garde la session locale — l'utilisateur reste connecté
       }
     }
   } catch(e) {
-    try {
-      const u = JSON.parse(stored);
-      if (u.expires && Date.now() > u.expires) localStorage.removeItem('babelom-user');
-    } catch(e2) { localStorage.removeItem('babelom-user'); }
+    // Erreur réseau ou parsing — on garde la session locale, ne pas déconnecter
   }
+  _sessionChecked = true;
+  _sessionCheckResolve();
 })();
 
 // Protection globale
@@ -612,8 +627,10 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
   if (e.target === this) fermerLightbox();
 });
 
-// Contrôle accès membres — attendre que tous les scripts externes soient prêts
-function lancerGalerie() {
+// Contrôle accès membres — attendre que la vérification de session soit terminée
+async function lancerGalerie() {
+  // Attendre que la vérification de session async soit terminée
+  await _sessionCheckPromise;
   var user = babelomGetUser();
   if (!user) {
     document.getElementById('galerie-loading').innerHTML =
