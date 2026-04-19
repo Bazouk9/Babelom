@@ -278,8 +278,8 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       </div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     <!-- Sélecteur langue -->
     <div id="lang-select" style="position:relative;">
       <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
@@ -383,28 +383,28 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
   <!-- SOUS-TITRE RECHERCHE -->
   <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:white;margin-bottom:18px;letter-spacing:0.01em;">
-    Rechercher une <em style="color:#FFD93D;font-style:italic;">photo</em>
+    Rechercher une <em style="color:#FFD93D;font-style:italic;" id="gal-h2-em">photo</em>
   </h2>
 
   <!-- PAVÉS COLORÉS -->
   <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
     <div style="display:flex;flex-direction:column;gap:6px;">
-      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);">Par ville</label>
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);" id="gal-lbl-ville">Par ville</label>
       <input type="text" id="g-ville" placeholder="Ex : Paris…" oninput="filtrerGalerie()"
         style="background:white;border:2px solid #FF6B35;border-radius:8px;color:#1e3a28;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:160px;font-weight:700;"
         onfocus="this.style.borderColor='#c04010'" onblur="this.style.borderColor='#FF6B35'">
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;">
-      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);">Par pays</label>
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);" id="gal-lbl-pays">Par pays</label>
       <input type="text" id="g-pays" placeholder="Ex : France…" oninput="filtrerGalerie()"
         style="background:white;border:2px solid #4ECDC4;border-radius:8px;color:#1e3a28;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:150px;font-weight:700;"
         onfocus="this.style.borderColor='#2aa8a0'" onblur="this.style.borderColor='#4ECDC4'">
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;">
-      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);">Par période</label>
+      <label style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.82);" id="gal-lbl-periode">Par période</label>
       <select id="g-periode" onchange="filtrerGalerie()"
         style="background:white;border:2px solid #FFD93D;border-radius:8px;color:#1e3a28;font-family:'Nunito',sans-serif;font-size:0.85rem;padding:10px 14px;outline:none;width:170px;font-weight:700;cursor:pointer;">
-        <option value="">— Toutes époques —</option>
+        <option value="" id="gal-opt-all">— Toutes époques —</option>
         <option value="avant1945">Avant 1945</option>
         <option value="1945-1970">1945 – 1970</option>
         <option value="1970-1990">1970 – 1990</option>
@@ -737,6 +737,28 @@ document.addEventListener('click',function(e){var d=document.getElementById('men
 setTimeout(mettreAJourNav, 100);
 </script>
 
+
+<script>
+var GAL_TEXTS = {
+  fr:{h2:'une ', h2em:'photo', ville:'Par ville', pays:'Par pays', periode:'Par période', allEpoques:'— Toutes époques —', loading:'Chargement des photos…', vide:'Aucune photo pour ces critères.'},
+  en:{h2:'a ', h2em:'photo', ville:'By city', pays:'By country', periode:'By period', allEpoques:'— All periods —', loading:'Loading photos…', vide:'No photos for these criteria.'},
+  pt:{h2:'uma ', h2em:'foto', ville:'Por cidade', pays:'Por país', periode:'Por período', allEpoques:'— Todas as épocas —', loading:'Carregando fotos…', vide:'Nenhuma foto para estes critérios.'},
+  he:{h2:'', h2em:'תמונות', ville:'לפי עיר', pays:'לפי מדינה', periode:'לפי תקופה', allEpoques:'— כל התקופות —', loading:'טוען תמונות…', vide:'אין תמונות לקריטריונים אלה.'},
+  ar:{h2:'', h2em:'صور', ville:'حسب المدينة', pays:'حسب البلد', periode:'حسب الفترة', allEpoques:'— جميع الحقب —', loading:'جارٍ تحميل الصور…', vide:'لا توجد صور لهذه المعايير.'},
+  it:{h2:'una ', h2em:'foto', ville:'Per città', pays:'Per paese', periode:'Per periodo', allEpoques:'— Tutte le epoche —', loading:'Caricamento foto…', vide:'Nessuna foto per questi criteri.'},
+  ru:{h2:'', h2em:'фотографии', ville:'По городу', pays:'По стране', periode:'По периоду', allEpoques:'— Все эпохи —', loading:'Загрузка фото…', vide:'Нет фотографий для этих критериев.'},
+};
+function applyGal(lang) {
+  var t = GAL_TEXTS[lang] || GAL_TEXTS['fr'];
+  function s(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+  s('gal-h2-em', t.h2em);
+  s('gal-lbl-ville', t.ville); s('gal-lbl-pays', t.pays); s('gal-lbl-periode', t.periode);
+  s('gal-opt-all', t.allEpoques);
+  var ld = document.getElementById('galerie-loading');
+  if (ld && ld.textContent.indexOf('Chargement') !== -1) ld.textContent = t.loading;
+}
+window.addEventListener('DOMContentLoaded', function(){ applyGal(localStorage.getItem('babelom-lang')||'fr'); });
+</script>
 </body>
 </html>
 
@@ -834,6 +856,28 @@ async function validerDepotPhoto() {
     msg.textContent = 'Erreur : ' + e.message;
   }
 }
+</script>
+
+<script>
+var GAL_TEXTS = {
+  fr:{h2:'une ', h2em:'photo', ville:'Par ville', pays:'Par pays', periode:'Par période', allEpoques:'— Toutes époques —', loading:'Chargement des photos…', vide:'Aucune photo pour ces critères.'},
+  en:{h2:'a ', h2em:'photo', ville:'By city', pays:'By country', periode:'By period', allEpoques:'— All periods —', loading:'Loading photos…', vide:'No photos for these criteria.'},
+  pt:{h2:'uma ', h2em:'foto', ville:'Por cidade', pays:'Por país', periode:'Por período', allEpoques:'— Todas as épocas —', loading:'Carregando fotos…', vide:'Nenhuma foto para estes critérios.'},
+  he:{h2:'', h2em:'תמונות', ville:'לפי עיר', pays:'לפי מדינה', periode:'לפי תקופה', allEpoques:'— כל התקופות —', loading:'טוען תמונות…', vide:'אין תמונות לקריטריונים אלה.'},
+  ar:{h2:'', h2em:'صور', ville:'حسب المدينة', pays:'حسب البلد', periode:'حسب الفترة', allEpoques:'— جميع الحقب —', loading:'جارٍ تحميل الصور…', vide:'لا توجد صور لهذه المعايير.'},
+  it:{h2:'una ', h2em:'foto', ville:'Per città', pays:'Per paese', periode:'Per periodo', allEpoques:'— Tutte le epoche —', loading:'Caricamento foto…', vide:'Nessuna foto per questi criteri.'},
+  ru:{h2:'', h2em:'фотографии', ville:'По городу', pays:'По стране', periode:'По периоду', allEpoques:'— Все эпохи —', loading:'Загрузка фото…', vide:'Нет фотографий для этих критериев.'},
+};
+function applyGal(lang) {
+  var t = GAL_TEXTS[lang] || GAL_TEXTS['fr'];
+  function s(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+  s('gal-h2-em', t.h2em);
+  s('gal-lbl-ville', t.ville); s('gal-lbl-pays', t.pays); s('gal-lbl-periode', t.periode);
+  s('gal-opt-all', t.allEpoques);
+  var ld = document.getElementById('galerie-loading');
+  if (ld && ld.textContent.indexOf('Chargement') !== -1) ld.textContent = t.loading;
+}
+window.addEventListener('DOMContentLoaded', function(){ applyGal(localStorage.getItem('babelom-lang')||'fr'); });
 </script>
 </body>
 </html>

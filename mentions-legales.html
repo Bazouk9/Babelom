@@ -237,8 +237,8 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       </div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     <!-- Sélecteur langue -->
     <div id="lang-select" style="position:relative;">
       <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
@@ -265,53 +265,205 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 </div>
 
 <div class="hero">
-  <div class="hero-eyebrow">Informations légales</div>
-  <h1 class="hero-title">Mentions légales</h1>
+  <div class="hero-eyebrow" id="ml-eyebrow">Informations légales</div>
+  <h1 class="hero-title" id="ml-title">Mentions légales</h1>
 </div>
 
 <div class="content">
 
-  <h2>1. Éditeur du site</h2>
+  <h2 id="ml-h1">1. Éditeur du site</h2>
   <div class="info-block">
-    <p><strong>Nom du site :</strong> BabelOm</p>
+    <p><strong id="ml-nom-label">Nom du site :</strong> BabelOm</p>
     <p><strong>URL :</strong> <a href="https://bazouk9.github.io/Babelom/">https://bazouk9.github.io/Babelom/</a></p>
-    <p><strong>Responsable de publication :</strong> Freha Elbaz</p>
+    <p><strong id="ml-resp-label">Responsable de publication :</strong> Freha Elbaz</p>
     <p><strong>Contact :</strong> <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a></p>
-    <p><strong>Statut :</strong> Projet personnel à but non lucratif</p>
+    <p><strong id="ml-statut-label">Statut :</strong> <span id="ml-statut">Projet personnel à but non lucratif</span></p>
   </div>
 
-  <h2>2. Hébergement</h2>
+  <h2 id="ml-h2">2. Hébergement</h2>
   <div class="info-block">
-    <p><strong>Hébergeur du site :</strong> GitHub Pages</p>
-    <p><strong>Société :</strong> GitHub, Inc. — 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis</p>
+    <p><strong id="ml-host1-label">Hébergeur du site :</strong> GitHub Pages</p>
+    <p><strong id="ml-soc-label">Société :</strong> GitHub, Inc. — 88 Colin P Kelly Jr St, San Francisco, CA 94107, États-Unis</p>
     <p><strong>Site :</strong> <a href="https://pages.github.com" target="_blank">pages.github.com</a></p>
   </div>
   <div class="info-block">
-    <p><strong>Base de données :</strong> Supabase</p>
-    <p><strong>Société :</strong> Supabase Inc. — 970 Toa Payoh North, Singapour</p>
+    <p><strong id="ml-db-label">Base de données :</strong> Supabase</p>
+    <p><strong id="ml-soc2-label">Société :</strong> Supabase Inc. — 970 Toa Payoh North, Singapour</p>
     <p><strong>Site :</strong> <a href="https://supabase.com" target="_blank">supabase.com</a></p>
   </div>
 
-  <h2>3. Propriété intellectuelle</h2>
-  <p>L'ensemble du site BabelOm — sa structure, son design, son code source, ses textes et ses éléments graphiques — est protégé par le droit d'auteur et fait l'objet d'un dépôt de droits d'auteur auprès de <strong>Copyright.fr</strong>.</p>
-  <p>Toute reproduction, représentation, modification ou exploitation, totale ou partielle, de ce site sans autorisation expresse est interdite et constitue une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.</p>
-  <p>Les témoignages, textes et photos déposés par les membres restent la propriété intellectuelle de leurs auteurs. En les déposant sur BabelOm, les membres accordent à BabelOm une licence non exclusive d'utilisation dans le cadre du projet de mémoire collective, conformément aux Conditions Générales d'Utilisation.</p>
+  <h2 id="ml-h3">3. Propriété intellectuelle</h2>
+  <p id="ml-pi1">L'ensemble du site BabelOm est protégé par le droit d'auteur et fait l'objet d'un dépôt de droits d'auteur auprès de <strong>Copyright.fr</strong>.</p>
+  <p id="ml-pi2">Toute reproduction ou exploitation sans autorisation est interdite et constitue une contrefaçon.</p>
+  <p id="ml-pi3">Les témoignages, textes et photos déposés par les membres restent la propriété intellectuelle de leurs auteurs.</p>
 
-  <h2>4. Responsabilité</h2>
-  <p>BabelOm s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, BabelOm ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à disposition sur ce site.</p>
-  <p>BabelOm ne saurait être tenu responsable des dommages directs ou indirects résultant de l'accès au site ou de l'utilisation des informations qu'il contient.</p>
-  <p>Les contenus déposés par les membres (témoignages, photos, messages) relèvent de leur seule responsabilité. BabelOm se réserve le droit de supprimer tout contenu contraire aux Conditions Générales d'Utilisation ou à la loi française.</p>
+  <h2 id="ml-h4">4. Responsabilité</h2>
+  <p id="ml-resp1">BabelOm s'efforce d'assurer l'exactitude des informations diffusées sur ce site.</p>
+  <p id="ml-resp2">BabelOm ne saurait être tenu responsable des dommages résultant de l'accès au site.</p>
+  <p id="ml-resp3">Les contenus déposés par les membres relèvent de leur seule responsabilité.</p>
 
-  <h2>5. Droit applicable</h2>
-  <p>Le présent site et ses mentions légales sont soumis au droit français. Tout litige relatif à l'utilisation de ce site sera de la compétence exclusive des tribunaux français.</p>
+  <h2 id="ml-h5">5. Droit applicable</h2>
+  <p id="ml-droit">Le présent site est soumis au droit français. Tout litige sera de la compétence exclusive des tribunaux français.</p>
 
-  <h2>6. Contact</h2>
-  <p>Pour toute question relative aux mentions légales ou au site BabelOm, vous pouvez nous contacter à l'adresse suivante : <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a></p>
+  <h2 id="ml-h6">6. Contact</h2>
+  <p id="ml-contact">Pour toute question, vous pouvez nous contacter à : <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a></p>
 
-  <p style="margin-top:36px;font-size:0.82rem;color:var(--muted);font-style:italic;">Mentions légales mises à jour en mars 2026.</p>
+  <p style="margin-top:36px;font-size:0.82rem;color:var(--muted);font-style:italic;" id="ml-date">Mentions légales mises à jour en mars 2026.</p>
 
 </div>
 
+<script>
+var ML_TEXTS = {
+  fr: {
+    eyebrow:'Informations légales', title:'Mentions légales',
+    h1:'1. Éditeur du site', h2:'2. Hébergement', h3:'3. Propriété intellectuelle',
+    h4:'4. Responsabilité', h5:'5. Droit applicable', h6:'6. Contact',
+    nomLabel:'Nom du site :', respLabel:'Responsable de publication :',
+    statutLabel:'Statut :', statut:'Projet personnel à but non lucratif',
+    host1Label:'Hébergeur du site :', socLabel:'Société :', soc2Label:'Société :',
+    dbLabel:'Base de données :',
+    pi1:'L'ensemble du site BabelOm est protégé par le droit d'auteur et fait l'objet d'un dépôt de droits d'auteur auprès de Copyright.fr.',
+    pi2:'Toute reproduction ou exploitation sans autorisation est interdite et constitue une contrefaçon.',
+    pi3:'Les témoignages, textes et photos déposés par les membres restent la propriété intellectuelle de leurs auteurs.',
+    resp1:'BabelOm s'efforce d'assurer l'exactitude des informations diffusées sur ce site.',
+    resp2:'BabelOm ne saurait être tenu responsable des dommages résultant de l'accès au site.',
+    resp3:'Les contenus déposés par les membres relèvent de leur seule responsabilité.',
+    droit:'Le présent site est soumis au droit français. Tout litige sera de la compétence exclusive des tribunaux français.',
+    contact:'Pour toute question, vous pouvez nous contacter à : babelom9@gmail.com',
+    date:'Mentions légales mises à jour en mars 2026.',
+  },
+  en: {
+    eyebrow:'Legal Information', title:'Legal Notice',
+    h1:'1. Publisher', h2:'2. Hosting', h3:'3. Intellectual Property',
+    h4:'4. Liability', h5:'5. Applicable Law', h6:'6. Contact',
+    nomLabel:'Site name:', respLabel:'Publication manager:',
+    statutLabel:'Status:', statut:'Personal non-profit project',
+    host1Label:'Site host:', socLabel:'Company:', soc2Label:'Company:',
+    dbLabel:'Database:',
+    pi1:'The entire BabelOm website is protected by copyright and has been registered with Copyright.fr.',
+    pi2:'Any reproduction or use without authorization is prohibited.',
+    pi3:'Testimonies, texts and photos submitted by members remain the intellectual property of their authors.',
+    resp1:'BabelOm strives to ensure the accuracy of information on this site.',
+    resp2:'BabelOm cannot be held responsible for damages resulting from access to the site.',
+    resp3:'Content submitted by members is their sole responsibility.',
+    droit:'This site is governed by French law. Any dispute will be subject to the exclusive jurisdiction of French courts.',
+    contact:'For any questions, contact us at: babelom9@gmail.com',
+    date:'Legal notice last updated March 2026.',
+  },
+  pt: {
+    eyebrow:'Informações legais', title:'Aviso Legal',
+    h1:'1. Editor do site', h2:'2. Hospedagem', h3:'3. Propriedade intelectual',
+    h4:'4. Responsabilidade', h5:'5. Lei aplicável', h6:'6. Contato',
+    nomLabel:'Nome do site:', respLabel:'Responsável pela publicação:',
+    statutLabel:'Status:', statut:'Projeto pessoal sem fins lucrativos',
+    host1Label:'Hospedeiro do site:', socLabel:'Empresa:', soc2Label:'Empresa:',
+    dbLabel:'Banco de dados:',
+    pi1:'Todo o site BabelOm é protegido por direitos autorais registrados no Copyright.fr.',
+    pi2:'Qualquer reprodução ou uso sem autorização é proibido.',
+    pi3:'Depoimentos, textos e fotos enviados pelos membros permanecem propriedade intelectual de seus autores.',
+    resp1:'BabelOm se esforça para garantir a precisão das informações neste site.',
+    resp2:'O BabelOm não pode ser responsabilizado por danos resultantes do acesso ao site.',
+    resp3:'Os conteúdos enviados pelos membros são de sua exclusiva responsabilidade.',
+    droit:'Este site é regido pela lei francesa. Qualquer litígio será de competência exclusiva dos tribunais franceses.',
+    contact:'Para qualquer dúvida, entre em contato: babelom9@gmail.com',
+    date:'Aviso legal atualizado em março de 2026.',
+  },
+  he: {
+    eyebrow:'מידע משפטי', title:'הצהרה משפטית',
+    h1:'1. מפרסם האתר', h2:'2. אירוח', h3:'3. קניין רוחני',
+    h4:'4. אחריות', h5:'5. דין חל', h6:'6. יצירת קשר',
+    nomLabel:'שם האתר:', respLabel:'אחראי פרסום:',
+    statutLabel:'סטטוס:', statut:'פרויקט אישי ללא מטרות רווח',
+    host1Label:'מארח האתר:', socLabel:'חברה:', soc2Label:'חברה:',
+    dbLabel:'מסד נתונים:',
+    pi1:'האתר BabelOm כולו מוגן בזכויות יוצרים ורשום ב-Copyright.fr.',
+    pi2:'כל שכפול או שימוש ללא אישור אסור.',
+    pi3:'עדויות, טקסטים ותמונות שהגישו חברים נשארים קניין רוחני של מחבריהם.',
+    resp1:'BabelOm שואף להבטיח את דיוק המידע באתר זה.',
+    resp2:'BabelOm לא יישא באחריות לנזקים הנובעים מגישה לאתר.',
+    resp3:'תכנים שהגישו חברים הם באחריותם הבלעדית.',
+    droit:'אתר זה כפוף לחוק הצרפתי. כל סכסוך יהיה בסמכות בתי המשפט הצרפתיים.',
+    contact:'לכל שאלה, צור קשר: babelom9@gmail.com',
+    date:'ההצהרה המשפטית עודכנה במרץ 2026.',
+  },
+  ar: {
+    eyebrow:'معلومات قانونية', title:'الإشعار القانوني',
+    h1:'1. ناشر الموقع', h2:'2. الاستضافة', h3:'3. الملكية الفكرية',
+    h4:'4. المسؤولية', h5:'5. القانون المطبق', h6:'6. الاتصال',
+    nomLabel:'اسم الموقع:', respLabel:'مسؤول النشر:',
+    statutLabel:'الحالة:', statut:'مشروع شخصي غير ربحي',
+    host1Label:'مضيف الموقع:', socLabel:'شركة:', soc2Label:'شركة:',
+    dbLabel:'قاعدة البيانات:',
+    pi1:'يخضع موقع BabelOm بأكمله لحقوق النشر المسجلة في Copyright.fr.',
+    pi2:'يُحظر أي تكاثر أو استخدام بدون إذن.',
+    pi3:'الشهادات والنصوص والصور التي يرسلها الأعضاء تبقى ملكاً فكرياً لأصحابها.',
+    resp1:'يسعى BabelOm لضمان دقة المعلومات في هذا الموقع.',
+    resp2:'لا يمكن مساءلة BabelOm عن الأضرار الناجمة عن الوصول إلى الموقع.',
+    resp3:'المحتوى المُرسل من الأعضاء يقع على عاتق مسؤوليتهم وحدهم.',
+    droit:'يخضع هذا الموقع للقانون الفرنسي. أي نزاع سيخضع للاختصاص القضائي الفرنسي.',
+    contact:'لأي سؤال، تواصل معنا: babelom9@gmail.com',
+    date:'الإشعار القانوني محدث في مارس 2026.',
+  },
+  it: {
+    eyebrow:'Informazioni legali', title:'Note legali',
+    h1:'1. Editore del sito', h2:'2. Hosting', h3:'3. Proprietà intellettuale',
+    h4:'4. Responsabilità', h5:'5. Legge applicabile', h6:'6. Contatto',
+    nomLabel:'Nome del sito:', respLabel:'Responsabile della pubblicazione:',
+    statutLabel:'Status:', statut:'Progetto personale senza scopo di lucro',
+    host1Label:'Host del sito:', socLabel:'Società:', soc2Label:'Società:',
+    dbLabel:'Database:',
+    pi1:'L'intero sito BabelOm è protetto dal diritto d'autore e registrato presso Copyright.fr.',
+    pi2:'Qualsiasi riproduzione o utilizzo senza autorizzazione è vietato.',
+    pi3:'Testimonianze, testi e foto inviati dai membri restano proprietà intellettuale dei loro autori.',
+    resp1:'BabelOm si impegna a garantire l'accuratezza delle informazioni su questo sito.',
+    resp2:'BabelOm non può essere ritenuto responsabile dei danni derivanti dall'accesso al sito.',
+    resp3:'I contenuti inviati dai membri sono di loro esclusiva responsabilità.',
+    droit:'Questo sito è soggetto alla legge francese. Qualsiasi controversia sarà di competenza esclusiva dei tribunali francesi.',
+    contact:'Per qualsiasi domanda, contattaci: babelom9@gmail.com',
+    date:'Note legali aggiornate a marzo 2026.',
+  },
+  ru: {
+    eyebrow:'Правовая информация', title:'Правовые сведения',
+    h1:'1. Издатель сайта', h2:'2. Хостинг', h3:'3. Интеллектуальная собственность',
+    h4:'4. Ответственность', h5:'5. Применимое право', h6:'6. Контакт',
+    nomLabel:'Название сайта:', respLabel:'Ответственный за публикацию:',
+    statutLabel:'Статус:', statut:'Личный некоммерческий проект',
+    host1Label:'Хостинг сайта:', socLabel:'Компания:', soc2Label:'Компания:',
+    dbLabel:'База данных:',
+    pi1:'Весь сайт BabelOm защищён авторскими правами, зарегистрированными на Copyright.fr.',
+    pi2:'Любое воспроизведение или использование без разрешения запрещено.',
+    pi3:'Свидетельства, тексты и фотографии, представленные участниками, остаются их интеллектуальной собственностью.',
+    resp1:'BabelOm стремится обеспечить точность информации на этом сайте.',
+    resp2:'BabelOm не несёт ответственности за ущерб, возникший в результате доступа к сайту.',
+    resp3:'Контент, представленный участниками, является их исключительной ответственностью.',
+    droit:'Этот сайт регулируется французским законодательством. Любые споры подпадают под исключительную юрисдикцию французских судов.',
+    contact:'По любым вопросам свяжитесь с нами: babelom9@gmail.com',
+    date:'Правовые сведения обновлены в марте 2026.',
+  },
+};
+
+function applyMlTexts(lang) {
+  var t = ML_TEXTS[lang] || ML_TEXTS['fr'];
+  var map = {
+    'ml-eyebrow':'eyebrow','ml-title':'title',
+    'ml-h1':'h1','ml-h2':'h2','ml-h3':'h3','ml-h4':'h4','ml-h5':'h5','ml-h6':'h6',
+    'ml-nom-label':'nomLabel','ml-resp-label':'respLabel',
+    'ml-statut-label':'statutLabel','ml-statut':'statut',
+    'ml-host1-label':'host1Label','ml-soc-label':'socLabel','ml-soc2-label':'soc2Label',
+    'ml-db-label':'dbLabel',
+    'ml-pi1':'pi1','ml-pi2':'pi2','ml-pi3':'pi3',
+    'ml-resp1':'resp1','ml-resp2':'resp2','ml-resp3':'resp3',
+    'ml-droit':'droit','ml-contact':'contact','ml-date':'date',
+  };
+  Object.keys(map).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && t[map[id]]) el.textContent = t[map[id]];
+  });
+}
+window.addEventListener('DOMContentLoaded', function() {
+  applyMlTexts(localStorage.getItem('babelom-lang') || 'fr');
+});
+</script>
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
   <!-- Logo -->
   <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">

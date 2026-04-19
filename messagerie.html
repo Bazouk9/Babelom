@@ -546,8 +546,8 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
       <div class="nav-circle" style="background:#6B5EA8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/><path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1.2" fill="white"/></svg></div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     <div id="lang-select" style="position:relative;">
       <button onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
         🌐 <span id="lang-current">FR</span>
@@ -589,7 +589,7 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
         <div style="width:30px;height:30px;border-radius:50%;background:#4ECDC4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         </div>
-        <div style="font-family:'Playfair Display',serif;font-size:0.95rem;color:#1e3a28;font-weight:700;">Conversations privées</div>
+        <div style="font-family:'Playfair Display',serif;font-size:0.95rem;color:#1e3a28;font-weight:700;" id="msg-col-priv">Conversations privées</div>
         <div style="flex:1;height:1px;background:#c8d8b0;"></div>
       </div>
 
@@ -600,14 +600,14 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
           <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;">Conversation</span>
         </div>
         <div style="padding:8px 12px;display:flex;flex-direction:column;flex:1;gap:6px;overflow:hidden;">
-          <div style="font-size:0.65rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;">Contact</div>
+          <div style="font-size:0.65rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;" id="msg-lbl-contact">Contact</div>
           <div id="sidebar-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:90px;overflow-y:auto;flex-shrink:0;">
             <div style="padding:10px;font-size:0.78rem;color:#7a9a72;text-align:center;">Connexion requise</div>
           </div>
           <div id="chat-area" style="background:white;border-radius:6px;border:1px solid #c8d8b0;flex:1;min-height:80px;display:flex;flex-direction:column;">
             <div id="chat-placeholder" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;text-align:center;">
               <div style="font-size:1.2rem;opacity:0.2;">💬</div>
-              <p style="font-size:0.72rem;color:#7a9a72;margin-top:4px;">Sélectionnez un contact</p>
+              <p style="font-size:0.72rem;color:#7a9a72;margin-top:4px;" id="msg-placeholder-priv">Sélectionnez un contact</p>
             </div>
           </div>
         </div>
@@ -617,10 +617,10 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
       <div style="background:#e8e4d0;border-radius:10px;border:1.5px solid #c8d8b0;overflow:hidden;flex-shrink:0;">
         <div style="background:#2c4a8a;padding:7px 14px;display:flex;align-items:center;gap:8px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;">Rechercher une personne</span>
+          <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;" id="msg-lbl-search">Rechercher une personne</span>
         </div>
         <div style="padding:8px 12px;">
-          <input type="text" id="search-input" placeholder="Nom ou ville…" oninput="filtrerContacts()" style="width:100%;background:white;border:1.5px solid #c8d8b0;border-radius:8px;padding:7px 10px;font-family:Nunito,sans-serif;font-size:0.82rem;color:#1e3a28;margin-bottom:6px;box-sizing:border-box;">
+          <input type="text" id="search-input" placeholder="Nom ou ville…" data-i18n-ph="m4SearchPh" id="msg-search-input" oninput="filtrerContacts()" style="width:100%;background:white;border:1.5px solid #c8d8b0;border-radius:8px;padding:7px 10px;font-family:Nunito,sans-serif;font-size:0.82rem;color:#1e3a28;margin-bottom:6px;box-sizing:border-box;">
           <div id="search-results" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:70px;overflow-y:auto;">
             <div style="padding:8px;font-size:0.75rem;color:#7a9a72;text-align:center;">Tapez pour rechercher</div>
           </div>
@@ -660,10 +660,10 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
       <div style="background:#e8e4d0;border-radius:10px;border:1.5px solid #c8d8b0;overflow:hidden;flex:1;min-height:500px;display:flex;flex-direction:column;">
         <div style="background:#7C3AED;padding:7px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;">Rejoindre / Conversation groupe</span>
+          <span style="font-size:0.72rem;font-weight:900;text-transform:uppercase;letter-spacing:0.12em;color:white;" id="msg-lbl-groupe">Rejoindre / Conversation groupe</span>
         </div>
         <div style="padding:8px 12px;display:flex;flex-direction:column;flex:1;gap:5px;overflow:hidden;">
-          <div style="font-size:0.65rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;flex-shrink:0;">Mes groupes</div>
+          <div style="font-size:0.65rem;color:#7a9a72;text-transform:uppercase;letter-spacing:0.1em;flex-shrink:0;" id="msg-lbl-mesgrp">Mes groupes</div>
           <div id="mes-groupes-list" style="background:white;border-radius:6px;border:1px solid #c8d8b0;max-height:120px;overflow-y:auto;flex-shrink:0;">
             <div style="padding:8px;font-size:0.75rem;color:#7a9a72;text-align:center;">Connexion requise</div>
           </div>
@@ -1363,6 +1363,28 @@ async function envoyerSignalementMsg() {
     }
   } catch(e){ retour.style.color='#FF8B94'; retour.textContent='Erreur réseau.'; }
 }
+</script>
+
+<script>
+var MSG_TEXTS = {
+  fr:{colPriv:'Conversations privées', lblContact:'Contact', phPriv:'Sélectionnez un contact', lblSearch:'Rechercher une personne', lblGroupe:'Rejoindre / Conversation groupe', lblMesGrp:'Mes groupes', phSearch:'Nom ou ville…'},
+  en:{colPriv:'Private conversations', lblContact:'Contact', phPriv:'Select a contact', lblSearch:'Search a person', lblGroupe:'Join / Group conversation', lblMesGrp:'My groups', phSearch:'Name or city…'},
+  pt:{colPriv:'Conversas privadas', lblContact:'Contato', phPriv:'Selecione um contato', lblSearch:'Pesquisar uma pessoa', lblGroupe:'Entrar / Conversa de grupo', lblMesGrp:'Meus grupos', phSearch:'Nome ou cidade…'},
+  he:{colPriv:'שיחות פרטיות', lblContact:'איש קשר', phPriv:'בחר איש קשר', lblSearch:'חפש אדם', lblGroupe:'הצטרף / שיחת קבוצה', lblMesGrp:'הקבוצות שלי', phSearch:'שם או עיר…'},
+  ar:{colPriv:'المحادثات الخاصة', lblContact:'جهة اتصال', phPriv:'اختر جهة اتصال', lblSearch:'البحث عن شخص', lblGroupe:'انضم / محادثة جماعية', lblMesGrp:'مجموعاتي', phSearch:'اسم أو مدينة…'},
+  it:{colPriv:'Conversazioni private', lblContact:'Contatto', phPriv:'Seleziona un contatto', lblSearch:'Cerca una persona', lblGroupe:'Unisciti / Conversazione di gruppo', lblMesGrp:'I miei gruppi', phSearch:'Nome o città…'},
+  ru:{colPriv:'Личные беседы', lblContact:'Контакт', phPriv:'Выберите контакт', lblSearch:'Поиск человека', lblGroupe:'Присоединиться / Групповая беседа', lblMesGrp:'Мои группы', phSearch:'Имя или город…'},
+};
+function applyMsg(lang) {
+  var t = MSG_TEXTS[lang] || MSG_TEXTS['fr'];
+  function s(id, val) { var el=document.getElementById(id); if(el) el.textContent=val; }
+  function sp(id, val) { var el=document.getElementById(id); if(el) el.placeholder=val; }
+  s('msg-col-priv', t.colPriv); s('msg-lbl-contact', t.lblContact);
+  s('msg-placeholder-priv', t.phPriv); s('msg-lbl-search', t.lblSearch);
+  s('msg-lbl-groupe', t.lblGroupe); s('msg-lbl-mesgrp', t.lblMesGrp);
+  sp('msg-search-input', t.phSearch);
+}
+window.addEventListener('DOMContentLoaded', function(){ applyMsg(localStorage.getItem('babelom-lang')||'fr'); });
 </script>
 </body>
 </html>

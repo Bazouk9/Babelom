@@ -169,6 +169,10 @@ const BabelOm_TRANSLATIONS = {
     confTitle:'Email confirmé !',
     confSub:'Votre compte BabelOm est activé.',
     confBtn:'Accéder au site →',
+    // ── BOUTONS NAV ──
+    navBtnCx:'Se connecter',
+    navBtnIns:"S'inscrire",
+    bandeauPhrase:'Vos souvenirs méritent mieux que l\'oubli. Le passé a besoin de vous.',
   },
 
   en: {
@@ -293,6 +297,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'Send', m4BtnAnnuler:'Cancel', m4PhMessage:'Write a message…',
     m4Vide:'Select a conversation',
     confTitle:'Email confirmed!', confSub:'Your BabelOm account is activated.', confBtn:'Go to the site →',
+    navBtnCx:'Sign in', navBtnIns:'Sign up',
+    bandeauPhrase:'Your memories deserve better than oblivion. The past needs you.',
   },
 
   pt: {
@@ -415,6 +421,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'Enviar', m4BtnAnnuler:'Cancelar', m4PhMessage:'Escreva uma mensagem…',
     m4Vide:'Selecione uma conversa',
     confTitle:'E-mail confirmado!', confSub:'Sua conta BabelOm está ativada.', confBtn:'Ir para o site →',
+    navBtnCx:'Entrar', navBtnIns:'Inscrever-se',
+    bandeauPhrase:'Suas memórias merecem mais do que o esquecimento. O passado precisa de você.',
   },
 
   he: {
@@ -537,6 +545,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'שלח', m4BtnAnnuler:'ביטול', m4PhMessage:'כתוב הודעה…',
     m4Vide:'בחר שיחה',
     confTitle:'אימייל אושר!', confSub:'חשבון הבבלום שלך פעיל.', confBtn:'כניסה לאתר ←',
+    navBtnCx:'כניסה', navBtnIns:'הרשמה',
+    bandeauPhrase:'הזיכרונות שלך ראויים ליותר מאשר שכחה. העבר זקוק לך.',
   },
 
   ar: {
@@ -659,6 +669,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'إرسال', m4BtnAnnuler:'إلغاء', m4PhMessage:'اكتب رسالة…',
     m4Vide:'اختر محادثة',
     confTitle:'تم تأكيد البريد الإلكتروني!', confSub:'تم تفعيل حسابك في بابيلوم.', confBtn:'الذهاب إلى الموقع ←',
+    navBtnCx:'دخول', navBtnIns:'تسجيل',
+    bandeauPhrase:'ذكرياتك تستحق أكثر من النسيان. الماضي يحتاج إليك.',
   },
 
   it: {
@@ -781,6 +793,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'Invia', m4BtnAnnuler:'Annulla', m4PhMessage:'Scrivi un messaggio…',
     m4Vide:'Seleziona una conversazione',
     confTitle:'Email confermata!', confSub:'Il tuo account BabelOm è attivato.', confBtn:'Vai al sito →',
+    navBtnCx:'Accedi', navBtnIns:'Iscriviti',
+    bandeauPhrase:'I tuoi ricordi meritano di più dell\'oblio. Il passato ha bisogno di te.',
   },
 
   ru: {
@@ -903,6 +917,8 @@ const BabelOm_TRANSLATIONS = {
     m4BtnEnvoyer:'Отправить', m4BtnAnnuler:'Отмена', m4PhMessage:'Напишите сообщение…',
     m4Vide:'Выберите разговор',
     confTitle:'Email подтверждён!', confSub:'Ваш аккаунт BabelOm активирован.', confBtn:'Перейти на сайт →',
+    navBtnCx:'Войти', navBtnIns:'Регистрация',
+    bandeauPhrase:'Ваши воспоминания заслуживают большего, чем забвение. Прошлое нуждается в вас.',
   },
 
 };
@@ -936,6 +952,11 @@ function babelomApply(lang) {
   // Synchroniser le sélecteur de langue si présent
   const sel = document.getElementById('lang-select');
   if (sel && sel.value !== lang) sel.value = lang;
+
+  // Appliquer les textes spécifiques à chaque page
+  if (typeof babelomApplyPageTexts === 'function') {
+    babelomApplyPageTexts(lang);
+  }
 }
 
 // Appliquer au chargement
@@ -943,3 +964,135 @@ document.addEventListener('DOMContentLoaded', function() {
   const saved = localStorage.getItem('babelom-lang') || 'fr';
   babelomApply(saved);
 });
+
+// ── TRADUCTIONS SPÉCIFIQUES PAR PAGE (textes codés en dur) ──
+function babelomApplyPageTexts(lang) {
+  var t = BabelOm_TRANSLATIONS[lang] || BabelOm_TRANSLATIONS['fr'];
+  var page = window.location.pathname.split('/').pop() || 'index.html';
+
+  // ── HELPER ──
+  function setText(sel, key) {
+    var el = document.querySelector(sel);
+    if (el && t[key]) el.innerHTML = t[key];
+  }
+  function setPlaceholder(sel, key) {
+    var el = document.querySelector(sel);
+    if (el && t[key]) el.placeholder = t[key];
+  }
+  function setTexts(pairs) {
+    pairs.forEach(function(p) { setText(p[0], p[1]); });
+  }
+
+  // ── INDEX ──
+  if (page === 'index.html' || page === '') {
+    setText('.hero-eyebrow', 'heroEyebrow');
+    setText('.hero-title', 'heroTitle');
+    var sub = document.querySelector('.hero-subtitle strong');
+    if (!sub) sub = document.querySelector('.hero-subtitle');
+    if (sub && t['heroSubtitle']) sub.innerHTML = t['heroSubtitle'];
+    // Boutons nav connexion/inscription
+    var btnCx = document.querySelector('.btn-cx');
+    if (btnCx) btnCx.textContent = t['btnLogin'] ? t['btnLogin'].replace(' →','') : 'Se connecter';
+    var btnIns = document.querySelector('.btn-ins');
+    if (btnIns) btnIns.textContent = t['firstVisit'] || "S'inscrire";
+    // Modales
+    var mCxTitle = document.querySelector('#modale-cx .modale-box h3');
+    if (mCxTitle) mCxTitle.innerHTML = t['loginTitle'] || 'Se connecter';
+    var mInsTitle = document.querySelector('#modale-ins .modale-box h3');
+    if (mInsTitle) mInsTitle.innerHTML = t['createAccount'] || 'Créer un compte';
+    // Placeholders modales
+    setPlaceholder('#cx-email', 'labelEmail');
+    setPlaceholder('#cx-mdp', 'labelMdpLogin');
+    setPlaceholder('#ins-prenom', 'placeholderPrenom');
+    setPlaceholder('#ins-email', 'labelEmail');
+    setPlaceholder('#ins-mdp', 'placeholderMdp');
+    // Boutons modales
+    var btnCxSubmit = document.querySelector('#modale-cx .btn-compte');
+    if (btnCxSubmit) btnCxSubmit.textContent = t['btnLogin'] || 'Se connecter →';
+    var btnInsSubmit = document.querySelector('#modale-ins .btn-compte');
+    if (btnInsSubmit) btnInsSubmit.textContent = t['btnCreate'] || "Créer mon compte →";
+    // Bandeau phrase
+    var bandeau = document.querySelector('#bandeau-phrase');
+    if (bandeau) bandeau.textContent = t['bandeauPhrase'] || 'Vos souvenirs méritent mieux que l\'oubli. Le passé a besoin de vous.';
+  }
+
+  // ── ÉTAPE 1 ──
+  if (page === 'etape1.html') {
+    var warn = document.querySelector('.form-section-title-warn');
+    if (warn && t['e1Confidentialite']) warn.innerHTML = t['e1Confidentialite'];
+    var sub = document.querySelector('.form-section-sub');
+    if (sub) sub.textContent = 'Quelques informations suffisent — le reste, c\'est votre mémoire.';
+    setPlaceholder('#f-pays', 'e1PhPays');
+    setPlaceholder('#f-ville', 'e1PhVille');
+    setPlaceholder('#f-lieudit', 'e1PhLieudit');
+    setPlaceholder('#f-ancien-nom', 'e1PhAncienNom');
+    setPlaceholder('#f-nouveau-nom', 'e1PhNouveauNom');
+    // bouton Se connecter nav
+    var btnCx = document.querySelector('#top-band-btns .btn-cx');
+    if (btnCx) btnCx.textContent = t['confBtn'] ? 'Se connecter' : 'Se connecter';
+  }
+
+  // ── ÉTAPE 2 ──
+  if (page === 'etape2.html') {
+    // Les labels sont déjà instrumentés avec data-i18n
+    // On ajoute les éléments manquants
+    var confirmTitle = document.querySelector('.confirm-title');
+    if (confirmTitle && t['e2Succes']) confirmTitle.innerHTML = t['e2Succes'];
+  }
+
+  // ── TEMOIGNAGES ──
+  if (page === 'temoignages.html') {
+    var headerTitle = document.querySelector('[style*="Archive"] em');
+    var headerDiv = document.querySelector('[style*="1.6rem"][style*="color:white"]');
+    if (headerDiv && t['t3HeaderTitle']) headerDiv.innerHTML = t['t3HeaderTitle'].replace('<em>', '<em style="color:#FF6B35;font-style:italic;">');
+    var headerSub = document.querySelector('[style*="rgba(255,255,255,0.5)"][style*="margin-top:6px"]');
+    if (headerSub) headerSub.textContent = t['t3HeaderLabel'] || 'Les témoignages';
+  }
+
+  // ── GALERIE ──
+  if (page === 'galerie.html') {
+    var h2 = document.querySelector('[style*="Rechercher une"]');
+    if (!h2) h2 = document.querySelector('h2[style*="color:white"]');
+    // Labels filtres
+    var labels = document.querySelectorAll('.galerie-filtres label, [style*="Par ville"], [style*="Par pays"], [style*="Par période"]');
+    // Loading text
+    var loading = document.getElementById('galerie-loading');
+    if (loading && loading.textContent.trim() === 'Chargement des photos…') {
+      loading.textContent = t['t3Chargement'] || 'Chargement des photos…';
+    }
+  }
+
+  // ── MESSAGERIE ──
+  if (page === 'messagerie.html') {
+    var convTitle = document.querySelector('[style*="Conversations privées"]');
+    if (convTitle && t['m4HeaderLabel']) {
+      // garder le style, juste changer le texte du div texte
+      var textNode = convTitle.querySelector('div[style*="Playfair"]');
+      if (textNode) textNode.textContent = 'Conversations ' + (lang === 'fr' ? 'privées' : lang === 'en' ? 'Private' : lang === 'pt' ? 'Conversas' : lang === 'ar' ? 'المحادثات' : lang === 'he' ? 'שיחות' : lang === 'it' ? 'Conversazioni' : lang === 'ru' ? 'Беседы' : 'privées');
+    }
+    setPlaceholder('#search-input', 'm4SearchPh');
+    // placeholder zone message
+    var msgInput = document.querySelector('.chat-input');
+    if (msgInput) msgInput.placeholder = t['m4PhMessage'] || 'Écrivez un message…';
+  }
+
+  // ── CONFIRMATION ──
+  if (page === 'confirmation.html') {
+    var title = document.querySelector('.carte h1');
+    if (title && t['confTitle']) title.innerHTML = t['confTitle'].replace('!', ' <em>!</em>') || title.innerHTML;
+    var sub = document.querySelector('.carte p');
+    if (sub && t['confSub']) sub.textContent = t['confSub'];
+    var btn = document.querySelector('.carte .btn');
+    if (btn && t['confBtn']) btn.textContent = t['confBtn'];
+  }
+
+  // ── BOUTONS NAV COMMUNS (toutes pages) ──
+  var btnCxAll = document.querySelector('#top-band-btns .btn-cx');
+  if (btnCxAll) btnCxAll.textContent = lang === 'fr' ? 'Se connecter' : lang === 'en' ? 'Sign in' : lang === 'pt' ? 'Entrar' : lang === 'he' ? 'כניסה' : lang === 'ar' ? 'دخول' : lang === 'it' ? 'Accedi' : lang === 'ru' ? 'Войти' : 'Se connecter';
+  var btnInsAll = document.querySelector('#top-band-btns .btn-ins');
+  if (btnInsAll) btnInsAll.textContent = lang === 'fr' ? "S'inscrire" : lang === 'en' ? 'Sign up' : lang === 'pt' ? 'Inscrever-se' : lang === 'he' ? 'הרשמה' : lang === 'ar' ? 'التسجيل' : lang === 'it' ? 'Iscriviti' : lang === 'ru' ? 'Регистрация' : "S'inscrire";
+
+  // ── RTL pour AR et HE ──
+  var isRtl = ['ar', 'he'].includes(lang);
+  document.documentElement.style.direction = isRtl ? 'rtl' : 'ltr';
+}

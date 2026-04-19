@@ -245,8 +245,8 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       </div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     <!-- Sélecteur langue -->
     <div id="lang-select" style="position:relative;">
       <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
@@ -273,29 +273,29 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 </div>
 
 <div class="hero">
-  <div class="hero-eyebrow">RGPD & Protection des données</div>
-  <h1 class="hero-title">Politique de confidentialité</h1>
-  <p class="hero-sub">Conformément au Règlement Général sur la Protection des Données (RGPD) — UE 2016/679</p>
+  <div class="hero-eyebrow" id="conf-eyebrow">RGPD & Protection des données</div>
+  <h1 class="hero-title" id="conf-title">Politique de confidentialité</h1>
+  <p class="hero-sub" id="conf-sub">Conformément au Règlement Général sur la Protection des Données (RGPD) — UE 2016/679</p>
 </div>
 
-<div class="content">
+<div class="content" id="conf-content">
 
-  <h2>1. Responsable du traitement</h2>
+  <h2 id="conf-h1">1. Responsable du traitement</h2>
   <div class="info-block">
-    <p><strong>Responsable :</strong> Freha Elbaz — Projet BabelOm</p>
+    <p><strong id="conf-resp-label">Responsable :</strong> Freha Elbaz — Projet BabelOm</p>
     <p><strong>Contact :</strong> <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a></p>
     <p><strong>Site :</strong> <a href="https://bazouk9.github.io/Babelom/">https://bazouk9.github.io/Babelom/</a></p>
   </div>
 
-  <h2>2. Données collectées</h2>
-  <h3>Données d'inscription</h3>
-  <ul>
+  <h2 id="conf-h2">2. Données collectées</h2>
+  <h3 id="conf-h2a">Données d'inscription</h3>
+  <ul id="conf-list-inscription">
     <li>Prénom et nom de famille</li>
     <li>Adresse e-mail</li>
     <li>Mot de passe (chiffré, jamais accessible en clair)</li>
   </ul>
-  <h3>Données de témoignage</h3>
-  <ul>
+  <h3 id="conf-h2b">Données de témoignage</h3>
+  <ul id="conf-list-temoignage">
     <li>Adresses postales de lieux habités (passés)</li>
     <li>Années d'occupation</li>
     <li>Composition du foyer (données agrégées, sans noms de tiers)</li>
@@ -303,84 +303,255 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
     <li>Photos uploadées volontairement</li>
     <li>Coordonnées géographiques (latitude/longitude) des lieux</li>
   </ul>
-  <h3>Données techniques</h3>
-  <ul>
+  <h3 id="conf-h2c">Données techniques</h3>
+  <ul id="conf-list-tech">
     <li>Données de session (token d'authentification, stocké localement dans le navigateur)</li>
     <li>Aucun cookie tiers, aucune publicité, aucun traceur analytique</li>
   </ul>
 
-  <h2>3. Finalités du traitement</h2>
-  <p>Les données collectées sont utilisées exclusivement pour :</p>
-  <ul>
+  <h2 id="conf-h3">3. Finalités du traitement</h2>
+  <p id="conf-finalite-intro">Les données collectées sont utilisées exclusivement pour :</p>
+  <ul id="conf-list-finalite">
     <li>Gérer les comptes membres et l'authentification</li>
     <li>Afficher les témoignages sur la carte et dans les pages du site</li>
     <li>Permettre la recherche de lieux habités entre membres</li>
     <li>Contribuer à un projet de mémoire collective à but non lucratif</li>
   </ul>
-  <p><strong>BabelOm ne vend, ne loue et ne partage aucune donnée personnelle à des tiers à des fins commerciales.</strong></p>
+  <p><strong id="conf-no-sell">BabelOm ne vend, ne loue et ne partage aucune donnée personnelle à des tiers à des fins commerciales.</strong></p>
 
-  <h2>4. Base légale du traitement</h2>
-  <ul>
+  <h2 id="conf-h4">4. Base légale du traitement</h2>
+  <ul id="conf-list-base">
     <li><strong>Consentement</strong> — l'inscription et le dépôt de témoignage sont volontaires</li>
     <li><strong>Intérêt légitime</strong> — constitution d'une archive de mémoire collective non commerciale</li>
     <li><strong>Exécution du contrat</strong> — gestion du compte membre conformément aux CGU acceptées</li>
   </ul>
 
-  <h2>5. Durée de conservation</h2>
-  <ul>
+  <h2 id="conf-h5">5. Durée de conservation</h2>
+  <ul id="conf-list-duree">
     <li><strong>Compte membre</strong> — conservé jusqu'à demande de suppression par le membre</li>
     <li><strong>Témoignages</strong> — conservés sans limitation de durée sauf demande explicite</li>
     <li><strong>Photos</strong> — conservées tant que le témoignage est actif</li>
     <li><strong>Données de session</strong> — expiration automatique après 8 heures</li>
   </ul>
 
-  <h2>6. Vos droits</h2>
-  <div class="droits-grid">
-    <div class="droit-item">
-      <div class="droit-titre">Droit d'accès</div>
-      <div class="droit-desc">Obtenir une copie de toutes vos données personnelles détenues par BabelOm.</div>
-    </div>
-    <div class="droit-item">
-      <div class="droit-titre">Droit de rectification</div>
-      <div class="droit-desc">Corriger ou mettre à jour vos données inexactes ou incomplètes.</div>
-    </div>
-    <div class="droit-item">
-      <div class="droit-titre">Droit à l'effacement</div>
-      <div class="droit-desc">Demander la suppression complète de votre compte et de vos données.</div>
-    </div>
-    <div class="droit-item">
-      <div class="droit-titre">Droit à la portabilité</div>
-      <div class="droit-desc">Recevoir vos données dans un format structuré et lisible par machine.</div>
-    </div>
-    <div class="droit-item">
-      <div class="droit-titre">Droit d'opposition</div>
-      <div class="droit-desc">Vous opposer au traitement de vos données pour des raisons légitimes.</div>
-    </div>
-    <div class="droit-item">
-      <div class="droit-titre">Droit de limitation</div>
-      <div class="droit-desc">Demander la suspension temporaire du traitement de vos données.</div>
-    </div>
+  <h2 id="conf-h6">6. Vos droits</h2>
+  <div class="droits-grid" id="conf-droits-grid">
+    <div class="droit-item"><div class="droit-titre" id="dr1t">Droit d'accès</div><div class="droit-desc" id="dr1d">Obtenir une copie de toutes vos données personnelles détenues par BabelOm.</div></div>
+    <div class="droit-item"><div class="droit-titre" id="dr2t">Droit de rectification</div><div class="droit-desc" id="dr2d">Corriger ou mettre à jour vos données inexactes ou incomplètes.</div></div>
+    <div class="droit-item"><div class="droit-titre" id="dr3t">Droit à l'effacement</div><div class="droit-desc" id="dr3d">Demander la suppression complète de votre compte et de vos données.</div></div>
+    <div class="droit-item"><div class="droit-titre" id="dr4t">Droit à la portabilité</div><div class="droit-desc" id="dr4d">Recevoir vos données dans un format structuré et lisible par machine.</div></div>
+    <div class="droit-item"><div class="droit-titre" id="dr5t">Droit d'opposition</div><div class="droit-desc" id="dr5d">Vous opposer au traitement de vos données pour des raisons légitimes.</div></div>
+    <div class="droit-item"><div class="droit-titre" id="dr6t">Droit de limitation</div><div class="droit-desc" id="dr6d">Demander la suspension temporaire du traitement de vos données.</div></div>
   </div>
-  <p>Pour exercer ces droits, écrivez à : <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a> avec l'objet <em>« Exercice de droits RGPD »</em>. Nous répondrons dans un délai de 30 jours.</p>
-  <p>Vous disposez également du droit de déposer une réclamation auprès de la <strong>CNIL</strong> : <a href="https://www.cnil.fr" target="_blank">cnil.fr</a></p>
+  <p id="conf-droits-contact">Pour exercer ces droits, écrivez à : <a href="mailto:babelom9@gmail.com" style="color:#4ECDC4;">babelom9@gmail.com</a> avec l'objet <em>« Exercice de droits RGPD »</em>. Nous répondrons dans un délai de 30 jours.</p>
+  <p id="conf-cnil">Vous disposez également du droit de déposer une réclamation auprès de la <strong>CNIL</strong> : <a href="https://www.cnil.fr" target="_blank">cnil.fr</a></p>
 
-  <h2>7. Sécurité des données</h2>
-  <p>Vos données sont hébergées sur les serveurs de <strong>Supabase</strong> (infrastructure sécurisée, chiffrement SSL/TLS). Les mots de passe sont hashés et jamais stockés en clair. L'accès aux données est limité au responsable du traitement.</p>
-  <p>BabelOm ne peut cependant garantir une sécurité absolue et recommande à ses membres de ne pas partager d'informations sensibles (coordonnées bancaires, numéros de téléphone) dans leurs témoignages.</p>
+  <h2 id="conf-h7">7. Sécurité des données</h2>
+  <p id="conf-secu1">Vos données sont hébergées sur les serveurs de <strong>Supabase</strong> (infrastructure sécurisée, chiffrement SSL/TLS). Les mots de passe sont hashés et jamais stockés en clair.</p>
+  <p id="conf-secu2">BabelOm ne peut cependant garantir une sécurité absolue et recommande à ses membres de ne pas partager d'informations sensibles dans leurs témoignages.</p>
 
-  <h2>8. Cookies et traceurs</h2>
-  <p>BabelOm n'utilise <strong>aucun cookie tiers</strong>, aucun outil de tracking analytique (Google Analytics, etc.) et aucune publicité. La seule donnée stockée localement est le token de session Supabase dans le <code>localStorage</code> de votre navigateur, nécessaire au fonctionnement de l'authentification.</p>
+  <h2 id="conf-h8">8. Cookies et traceurs</h2>
+  <p id="conf-cookies">BabelOm n'utilise <strong>aucun cookie tiers</strong>, aucun outil de tracking analytique et aucune publicité. La seule donnée stockée localement est le token de session Supabase dans le <code>localStorage</code>.</p>
 
-  <h2>9. Transferts internationaux</h2>
-  <p>Les données sont hébergées sur les serveurs de Supabase (Singapour) et GitHub (États-Unis), sous couverture des garanties appropriées (clauses contractuelles types de la Commission européenne). Aucun transfert commercial de données n'est effectué.</p>
+  <h2 id="conf-h9">9. Transferts internationaux</h2>
+  <p id="conf-transferts">Les données sont hébergées sur les serveurs de Supabase (Singapour) et GitHub (États-Unis), sous couverture des garanties appropriées. Aucun transfert commercial de données n'est effectué.</p>
 
-  <h2>10. Modifications</h2>
-  <p>Cette politique de confidentialité peut être mise à jour. La date de dernière mise à jour figure en bas de page. En continuant à utiliser BabelOm après modification, vous acceptez la nouvelle version.</p>
+  <h2 id="conf-h10">10. Modifications</h2>
+  <p id="conf-modifs">Cette politique de confidentialité peut être mise à jour. En continuant à utiliser BabelOm après modification, vous acceptez la nouvelle version.</p>
 
-  <p style="margin-top:36px;font-size:0.82rem;color:var(--muted);font-style:italic;">Politique de confidentialité mise à jour en mars 2026.</p>
+  <p style="margin-top:36px;font-size:0.82rem;color:var(--muted);font-style:italic;" id="conf-date">Politique de confidentialité mise à jour en mars 2026.</p>
 
 </div>
 
+<script>
+// Traduction confidentialite.html
+var CONF_TEXTS = {
+  fr: {
+    eyebrow: 'RGPD & Protection des données',
+    title: 'Politique de confidentialité',
+    sub: 'Conformément au Règlement Général sur la Protection des Données (RGPD) — UE 2016/679',
+    h1:'1. Responsable du traitement', h2:'2. Données collectées', h2a:'Données d'inscription',
+    h2b:'Données de témoignage', h2c:'Données techniques',
+    h3:'3. Finalités du traitement', h4:'4. Base légale du traitement',
+    h5:'5. Durée de conservation', h6:'6. Vos droits',
+    h7:'7. Sécurité des données', h8:'8. Cookies et traceurs',
+    h9:'9. Transferts internationaux', h10:'10. Modifications',
+    finIntro:'Les données collectées sont utilisées exclusivement pour :',
+    noSell:'BabelOm ne vend, ne loue et ne partage aucune donnée personnelle à des tiers à des fins commerciales.',
+    droitsContact:'Pour exercer ces droits, écrivez à babelom9@gmail.com. Nous répondrons dans un délai de 30 jours.',
+    date:'Politique de confidentialité mise à jour en mars 2026.',
+    dr1t:'Droit d'accès', dr1d:'Obtenir une copie de toutes vos données personnelles détenues par BabelOm.',
+    dr2t:'Droit de rectification', dr2d:'Corriger ou mettre à jour vos données inexactes ou incomplètes.',
+    dr3t:'Droit à l'effacement', dr3d:'Demander la suppression complète de votre compte et de vos données.',
+    dr4t:'Droit à la portabilité', dr4d:'Recevoir vos données dans un format structuré et lisible par machine.',
+    dr5t:'Droit d'opposition', dr5d:'Vous opposer au traitement de vos données pour des raisons légitimes.',
+    dr6t:'Droit de limitation', dr6d:'Demander la suspension temporaire du traitement de vos données.',
+  },
+  en: {
+    eyebrow: 'GDPR & Data Protection',
+    title: 'Privacy Policy',
+    sub: 'In accordance with the General Data Protection Regulation (GDPR) — EU 2016/679',
+    h1:'1. Data Controller', h2:'2. Data Collected', h2a:'Registration data',
+    h2b:'Testimony data', h2c:'Technical data',
+    h3:'3. Purposes of Processing', h4:'4. Legal Basis',
+    h5:'5. Retention Period', h6:'6. Your Rights',
+    h7:'7. Data Security', h8:'8. Cookies & Trackers',
+    h9:'9. International Transfers', h10:'10. Updates',
+    finIntro:'Collected data is used exclusively for:',
+    noSell:'BabelOm does not sell, rent or share any personal data with third parties for commercial purposes.',
+    droitsContact:'To exercise your rights, write to babelom9@gmail.com. We will respond within 30 days.',
+    date:'Privacy policy last updated March 2026.',
+    dr1t:'Right of access', dr1d:'Obtain a copy of all your personal data held by BabelOm.',
+    dr2t:'Right of rectification', dr2d:'Correct or update your inaccurate or incomplete data.',
+    dr3t:'Right to erasure', dr3d:'Request the complete deletion of your account and data.',
+    dr4t:'Right to portability', dr4d:'Receive your data in a structured, machine-readable format.',
+    dr5t:'Right to object', dr5d:'Object to the processing of your data for legitimate reasons.',
+    dr6t:'Right to restriction', dr6d:'Request temporary suspension of the processing of your data.',
+  },
+  pt: {
+    eyebrow: 'RGPD & Proteção de Dados',
+    title: 'Política de Privacidade',
+    sub: 'Em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD) — UE 2016/679',
+    h1:'1. Responsável pelo tratamento', h2:'2. Dados coletados', h2a:'Dados de registro',
+    h2b:'Dados de depoimento', h2c:'Dados técnicos',
+    h3:'3. Finalidades do tratamento', h4:'4. Base legal',
+    h5:'5. Período de retenção', h6:'6. Seus direitos',
+    h7:'7. Segurança dos dados', h8:'8. Cookies e rastreadores',
+    h9:'9. Transferências internacionais', h10:'10. Atualizações',
+    finIntro:'Os dados coletados são utilizados exclusivamente para:',
+    noSell:'O BabelOm não vende, aluga nem compartilha dados pessoais com terceiros para fins comerciais.',
+    droitsContact:'Para exercer seus direitos, escreva para babelom9@gmail.com. Responderemos em 30 dias.',
+    date:'Política de privacidade atualizada em março de 2026.',
+    dr1t:'Direito de acesso', dr1d:'Obter uma cópia de todos os seus dados pessoais detidos pelo BabelOm.',
+    dr2t:'Direito de retificação', dr2d:'Corrigir ou atualizar seus dados inexatos ou incompletos.',
+    dr3t:'Direito ao apagamento', dr3d:'Solicitar a exclusão completa de sua conta e dados.',
+    dr4t:'Direito à portabilidade', dr4d:'Receber seus dados em formato estruturado e legível por máquina.',
+    dr5t:'Direito de oposição', dr5d:'Opor-se ao tratamento de seus dados por razões legítimas.',
+    dr6t:'Direito de limitação', dr6d:'Solicitar a suspensão temporária do tratamento de seus dados.',
+  },
+  he: {
+    eyebrow: 'GDPR והגנת מידע',
+    title: 'מדיניות פרטיות',
+    sub: 'בהתאם לתקנת הגנת המידע הכללית (GDPR) — האיחוד האירופי 2016/679',
+    h1:'1. אחראי על הנתונים', h2:'2. נתונים שנאספים', h2a:'נתוני הרשמה',
+    h2b:'נתוני עדות', h2c:'נתונים טכניים',
+    h3:'3. מטרות העיבוד', h4:'4. בסיס משפטי',
+    h5:'5. תקופת שמירה', h6:'6. הזכויות שלך',
+    h7:'7. אבטחת מידע', h8:'8. עוגיות ומעקב',
+    h9:'9. העברות בינלאומיות', h10:'10. עדכונים',
+    finIntro:'הנתונים שנאספים משמשים אך ורק ל:',
+    noSell:'BabelOm אינו מוכר, משכיר או משתף נתונים אישיים עם צדדים שלישיים למטרות מסחריות.',
+    droitsContact:'לממש את זכויותיך, כתוב ל-babelom9@gmail.com. נענה תוך 30 יום.',
+    date:'מדיניות פרטיות עודכנה במרץ 2026.',
+    dr1t:'זכות גישה', dr1d:'קבל עותק של כל הנתונים האישיים שלך המוחזקים על ידי BabelOm.',
+    dr2t:'זכות תיקון', dr2d:'תקן או עדכן את הנתונים שגויים או חלקיים שלך.',
+    dr3t:'זכות למחיקה', dr3d:'בקש מחיקה מלאה של חשבונך ונתוניך.',
+    dr4t:'זכות לניידות', dr4d:'קבל את הנתונים שלך בפורמט מובנה וקריא למכונה.',
+    dr5t:'זכות להתנגדות', dr5d:'התנגד לעיבוד הנתונים שלך מסיבות לגיטימיות.',
+    dr6t:'זכות להגבלה', dr6d:'בקש השעיה זמנית של עיבוד הנתונים שלך.',
+  },
+  ar: {
+    eyebrow: 'اللائحة العامة لحماية البيانات والخصوصية',
+    title: 'سياسة الخصوصية',
+    sub: 'وفقاً للائحة العامة لحماية البيانات (GDPR) — الاتحاد الأوروبي 2016/679',
+    h1:'1. المتحكم في البيانات', h2:'2. البيانات المجمعة', h2a:'بيانات التسجيل',
+    h2b:'بيانات الشهادة', h2c:'البيانات التقنية',
+    h3:'3. أغراض المعالجة', h4:'4. الأساس القانوني',
+    h5:'5. مدة الاحتفاظ', h6:'6. حقوقك',
+    h7:'7. أمان البيانات', h8:'8. ملفات تعريف الارتباط',
+    h9:'9. التحويلات الدولية', h10:'10. التحديثات',
+    finIntro:'البيانات المجمعة تستخدم حصراً من أجل:',
+    noSell:'بابيلوم لا يبيع أو يؤجر أو يشارك أي بيانات شخصية مع أطراف ثالثة لأغراض تجارية.',
+    droitsContact:'لممارسة حقوقك، اكتب إلى babelom9@gmail.com. سنرد خلال 30 يوماً.',
+    date:'سياسة الخصوصية محدثة في مارس 2026.',
+    dr1t:'حق الوصول', dr1d:'الحصول على نسخة من جميع بياناتك الشخصية المحتفظ بها من قبل بابيلوم.',
+    dr2t:'حق التصحيح', dr2d:'تصحيح أو تحديث بياناتك غير الدقيقة أو غير المكتملة.',
+    dr3t:'حق الحذف', dr3d:'طلب الحذف الكامل لحسابك وبياناتك.',
+    dr4t:'حق قابلية النقل', dr4d:'استلام بياناتك بتنسيق منظم وقابل للقراءة آلياً.',
+    dr5t:'حق الاعتراض', dr5d:'الاعتراض على معالجة بياناتك لأسباب مشروعة.',
+    dr6t:'حق التقييد', dr6d:'طلب تعليق مؤقت لمعالجة بياناتك.',
+  },
+  it: {
+    eyebrow: 'GDPR & Protezione dei Dati',
+    title: 'Informativa sulla Privacy',
+    sub: 'In conformità con il Regolamento Generale sulla Protezione dei Dati (GDPR) — UE 2016/679',
+    h1:'1. Titolare del trattamento', h2:'2. Dati raccolti', h2a:'Dati di registrazione',
+    h2b:'Dati della testimonianza', h2c:'Dati tecnici',
+    h3:'3. Finalità del trattamento', h4:'4. Base giuridica',
+    h5:'5. Periodo di conservazione', h6:'6. I tuoi diritti',
+    h7:'7. Sicurezza dei dati', h8:'8. Cookie e tracker',
+    h9:'9. Trasferimenti internazionali', h10:'10. Aggiornamenti',
+    finIntro:'I dati raccolti sono utilizzati esclusivamente per:',
+    noSell:'BabelOm non vende, affitta né condivide dati personali con terzi per fini commerciali.',
+    droitsContact:'Per esercitare questi diritti, scrivi a babelom9@gmail.com. Risponderemo entro 30 giorni.',
+    date:'Informativa sulla privacy aggiornata a marzo 2026.',
+    dr1t:'Diritto di accesso', dr1d:'Ottenere una copia di tutti i tuoi dati personali detenuti da BabelOm.',
+    dr2t:'Diritto di rettifica', dr2d:'Correggere o aggiornare i tuoi dati inesatti o incompleti.',
+    dr3t:'Diritto alla cancellazione', dr3d:'Richiedere la cancellazione completa del tuo account e dati.',
+    dr4t:'Diritto alla portabilità', dr4d:'Ricevere i tuoi dati in un formato strutturato e leggibile da macchina.',
+    dr5t:'Diritto di opposizione', dr5d:'Opporsi al trattamento dei tuoi dati per ragioni legittime.',
+    dr6t:'Diritto di limitazione', dr6d:'Richiedere la sospensione temporanea del trattamento dei tuoi dati.',
+  },
+  ru: {
+    eyebrow: 'GDPR и защита данных',
+    title: 'Политика конфиденциальности',
+    sub: 'В соответствии с Общим регламентом по защите данных (GDPR) — ЕС 2016/679',
+    h1:'1. Контролёр данных', h2:'2. Собираемые данные', h2a:'Данные регистрации',
+    h2b:'Данные свидетельств', h2c:'Технические данные',
+    h3:'3. Цели обработки', h4:'4. Правовая основа',
+    h5:'5. Срок хранения', h6:'6. Ваши права',
+    h7:'7. Безопасность данных', h8:'8. Файлы cookie и трекеры',
+    h9:'9. Международные передачи', h10:'10. Изменения',
+    finIntro:'Собираемые данные используются исключительно для:',
+    noSell:'BabelOm не продаёт, не сдаёт в аренду и не передаёт персональные данные третьим лицам в коммерческих целях.',
+    droitsContact:'Для реализации прав напишите на babelom9@gmail.com. Мы ответим в течение 30 дней.',
+    date:'Политика конфиденциальности обновлена в марте 2026.',
+    dr1t:'Право доступа', dr1d:'Получить копию всех ваших персональных данных, хранимых BabelOm.',
+    dr2t:'Право на исправление', dr2d:'Исправить или обновить неточные или неполные данные.',
+    dr3t:'Право на удаление', dr3d:'Запросить полное удаление вашего аккаунта и данных.',
+    dr4t:'Право на переносимость', dr4d:'Получить данные в структурированном машиночитаемом формате.',
+    dr5t:'Право на возражение', dr5d:'Возразить против обработки ваших данных по законным причинам.',
+    dr6t:'Право на ограничение', dr6d:'Запросить временное приостановление обработки ваших данных.',
+  },
+};
+
+function applyConfTexts(lang) {
+  var t = CONF_TEXTS[lang] || CONF_TEXTS['fr'];
+  var map = {
+    'conf-eyebrow':'eyebrow','conf-title':'title','conf-sub':'sub',
+    'conf-h1':'h1','conf-h2':'h2','conf-h2a':'h2a','conf-h2b':'h2b','conf-h2c':'h2c',
+    'conf-h3':'h3','conf-h4':'h4','conf-h5':'h5','conf-h6':'h6',
+    'conf-h7':'h7','conf-h8':'h8','conf-h9':'h9','conf-h10':'h10',
+    'conf-finalite-intro':'finIntro','conf-no-sell':'noSell',
+    'conf-droits-contact':'droitsContact','conf-date':'date',
+    'dr1t':'dr1t','dr1d':'dr1d','dr2t':'dr2t','dr2d':'dr2d',
+    'dr3t':'dr3t','dr3d':'dr3d','dr4t':'dr4t','dr4d':'dr4d',
+    'dr5t':'dr5t','dr5d':'dr5d','dr6t':'dr6t','dr6d':'dr6d',
+  };
+  Object.keys(map).forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && t[map[id]]) el.textContent = t[map[id]];
+  });
+}
+
+window.addEventListener('DOMContentLoaded', function() {
+  var lang = localStorage.getItem('babelom-lang') || 'fr';
+  applyConfTexts(lang);
+});
+
+// Hook into babelomApply for live switching
+var _origApply = window.babelomApply;
+if (typeof _origApply === 'function') {
+  window.babelomApply = function(lang) {
+    _origApply(lang);
+    applyConfTexts(lang);
+  };
+} else {
+  document.addEventListener('babelomLangChange', function(e) {
+    applyConfTexts(e.detail);
+  });
+}
+</script>
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
   <!-- Logo -->
   <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">

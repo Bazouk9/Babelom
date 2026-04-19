@@ -746,8 +746,8 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       </div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Connexion</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     <!-- Sélecteur langue -->
     <div id="lang-select" style="position:relative;">
       <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
@@ -783,176 +783,185 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
 <section id="hero-projet">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Qui sommes-nous &amp; pourquoi BabelOm</div>
-    <h1 class="hero-title">Notre <em>projet</em></h1>
+    <div class="hero-eyebrow" id="np-eyebrow">Qui sommes-nous &amp; pourquoi BabelOm</div>
+    <h1 class="hero-title" id="np-title">Notre <em id="np-title-em">projet</em></h1>
     <div class="hero-line"></div>
   </div>
 </section>
 
-<!-- Texte extrait de l'index -->
+<!-- Texte manifeste -->
 <section style="background:#e8e4d0;padding:36px 52px;border-bottom:2px solid #c8d8b0;max-width:900px;margin:0 auto;border-radius:0;">
-  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:#d4880a;margin-bottom:16px;font-family:'Nunito',sans-serif;">Le projet</div>
+  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.2em;color:#d4880a;margin-bottom:16px;font-family:'Nunito',sans-serif;" id="np-leprojet">Le projet</div>
   <div class="manifeste-text" style="font-family:'Cormorant Garamond',serif;font-size:1.18rem;line-height:1.9;color:#1e3a28;">
-    <p style="margin-bottom:14px;">Nous naissons quelque part. Nous grandissons quelque part. Nous partons, revenons, repartons. <em>Chaque lieu laisse une empreinte</em> — dans nos corps, dans notre façon de parler, dans ce que nous appelons chez nous.</p>
-    <p style="margin-bottom:14px;">Pourtant, ces traces disparaissent. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?</p>
-    <p style="margin-bottom:14px;"><strong style="color:#1e3a28;">BabelOm est né de cette question.</strong> C'est une carte mondiale où chacun peut épingler les lieux où il a habité — avec ses dates, ses anecdotes, ses photos. Un point sur la carte. <em style="color:#d4880a;">Une vie derrière ce point.</em></p>
-    <p>Ensemble, nous construisons <em>une mémoire collective des lieux habités</em> — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.</p>
+    <p style="margin-bottom:14px;" id="np-p1">Nous naissons quelque part. Nous grandissons quelque part. Nous partons, revenons, repartons. <em>Chaque lieu laisse une empreinte</em> — dans nos corps, dans notre façon de parler, dans ce que nous appelons chez nous.</p>
+    <p style="margin-bottom:14px;" id="np-p2">Pourtant, ces traces disparaissent. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?</p>
+    <p style="margin-bottom:14px;" id="np-p3"><strong style="color:#1e3a28;">BabelOm est né de cette question.</strong> C'est une carte mondiale où chacun peut épingler les lieux où il a habité — avec ses dates, ses anecdotes, ses photos. Un point sur la carte. <em style="color:#d4880a;">Une vie derrière ce point.</em></p>
+    <p id="np-p4">Ensemble, nous construisons <em>une mémoire collective des lieux habités</em> — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.</p>
   </div>
 </section>
 
 <!-- CTA -->
-  <div class="cta-rejoindre">
-    <p style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:#1e3a28;margin-bottom:10px;line-height:1.4;">Vos souvenirs méritent mieux que l'oubli.</p>
-    <p style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;font-style:italic;color:#1a1a1a;margin-bottom:24px;line-height:1.4;">Le passé a besoin de vous&nbsp;!</p>
-    <a href="index.html#compte" class="btn-rejoindre">Rejoignez BabelOm →</a>
-  </div>
+<div class="cta-rejoindre">
+  <p style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:#1e3a28;margin-bottom:10px;line-height:1.4;" id="np-cta1">Vos souvenirs méritent mieux que l'oubli.</p>
+  <p style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;font-style:italic;color:#1a1a1a;margin-bottom:24px;line-height:1.4;" id="np-cta2">Le passé a besoin de vous&nbsp;!</p>
+  <a href="index.html#compte" class="btn-rejoindre" id="np-cta-btn">Rejoignez BabelOm →</a>
+</div>
 
-<!-- CONTENU -->
+<!-- VALEURS -->
 <div id="contenu">
-
-  <!-- §1 -->
-  <div class="paragraphe">
-    <p class="para-texte">
-      Nous naissons <strong>quelque part</strong>. Nous grandissons <strong>quelque part</strong>. Nous partons, revenons, repartons. Chaque lieu laisse une empreinte — dans nos corps, dans notre façon de parler, dans ce que nous appelons <em>chez nous</em>.
-    </p>
-  </div>
-
-  <!-- §2 -->
-  <div class="paragraphe">
-    <p class="para-texte">
-      Pourtant, ces traces <strong>disparaissent</strong>. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?
-    </p>
-  </div>
-
-  <!-- §3 accent -->
-  <div class="para-accent">
-    <p class="para-texte">
-      <strong>BabelOm est né de cette question.</strong> C'est une carte mondiale où chacun peut épingler les lieux où il a habité — avec ses dates, ses anecdotes, ses photos. <em>Un point sur la carte. Une vie derrière ce point.</em>
-    </p>
-  </div>
-
-  <!-- §4 -->
-  <div class="paragraphe">
-    <p class="para-texte">
-      Ensemble, nous construisons une <strong>mémoire collective des lieux habités</strong> — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.
-    </p>
-  </div>
-
-  <!-- Valeurs -->
   <div class="valeurs">
     <div class="valeur">
       <div class="valeur-icon" style="background:rgba(255,107,53,0.15);">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M21,10c0,7-9,13-9,13S3,17 3,10a9,9 0 0,1 18,0z"/><circle cx="12" cy="10" r="3"/></svg>
       </div>
-      <div class="valeur-titre">Ancrage</div>
-      <div class="valeur-desc">Chaque lieu habité mérite d'être mémorisé et transmis</div>
+      <div class="valeur-titre" id="np-v1t">Ancrage</div>
+      <div class="valeur-desc" id="np-v1d">Chaque lieu habité mérite d'être mémorisé et transmis</div>
     </div>
     <div class="valeur">
       <div class="valeur-icon" style="background:rgba(78,205,196,0.15);">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ECDC4" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
       </div>
-      <div class="valeur-titre">International</div>
-      <div class="valeur-desc">Des témoignages du monde entier, en 10 langues</div>
+      <div class="valeur-titre" id="np-v2t">International</div>
+      <div class="valeur-desc" id="np-v2d">Des témoignages du monde entier, en 7 langues</div>
     </div>
     <div class="valeur">
       <div class="valeur-icon" style="background:rgba(255,217,61,0.15);">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFD93D" stroke-width="2"><path d="M17,21v-2a4,4 0 0,0-4-4H5a4,4 0 0,0-4,4v2"/><circle cx="9" cy="7" r="4"/><path d="M23,21v-2a4,4 0 0,0-3-3.87"/><path d="M16,3.13a4,4 0 0,1 0,7.75"/></svg>
       </div>
-      <div class="valeur-titre">Collectif</div>
-      <div class="valeur-desc">Une archive construite par et pour les générations futures</div>
+      <div class="valeur-titre" id="np-v3t">Collectif</div>
+      <div class="valeur-desc" id="np-v3d">Une archive construite par et pour les générations futures</div>
     </div>
   </div>
 
   <!-- Citation -->
   <div class="citation-finale">
     <div class="citation-guillemets">❝</div>
-    <p class="citation-texte">On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé.</p>
+    <p class="citation-texte" id="np-citation">On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé.</p>
     <div class="citation-auteur">— Julien Green</div>
   </div>
-
 </div>
 
-<!-- FOOTER -->
+<script>
+var NP_TEXTS = {
+  fr:{
+    eyebrow:'Qui sommes-nous & pourquoi BabelOm', title:'Notre', titleEm:'projet',
+    leprojet:'Le projet',
+    p1:'Nous naissons quelque part. Nous grandissons quelque part. Nous partons, revenons, repartons. Chaque lieu laisse une empreinte — dans nos corps, dans notre façon de parler, dans ce que nous appelons chez nous.',
+    p2:'Pourtant, ces traces disparaissent. Les maisons changent de locataires, les quartiers se transforment, les familles se dispersent. Dans cent ans, qui saura que vous avez vécu là ?',
+    p3:'BabelOm est né de cette question. C'est une carte mondiale où chacun peut épingler les lieux où il a habité — avec ses dates, ses anecdotes, ses photos. Un point sur la carte. Une vie derrière ce point.',
+    p4:'Ensemble, nous construisons une mémoire collective des lieux habités — pour les chercheurs, pour les familles, pour les générations qui n'ont pas encore de mémoire à transmettre.',
+    cta1:'Vos souvenirs méritent mieux que l'oubli.', cta2:'Le passé a besoin de vous !',
+    ctaBtn:'Rejoignez BabelOm →',
+    v1t:'Ancrage', v1d:'Chaque lieu habité mérite d'être mémorisé et transmis',
+    v2t:'International', v2d:'Des témoignages du monde entier, en 7 langues',
+    v3t:'Collectif', v3d:'Une archive construite par et pour les générations futures',
+    citation:'On ne quitte jamais vraiment les lieux où l'on a souffert ou aimé.',
+  },
+  en:{
+    eyebrow:'Who we are & why BabelOm', title:'Our', titleEm:'project',
+    leprojet:'The project',
+    p1:'We are born somewhere. We grow up somewhere. We leave, come back, leave again. Every place leaves a mark — in our bodies, in how we speak, in what we call home.',
+    p2:'Yet these traces disappear. Houses change tenants, neighbourhoods transform, families disperse. In a hundred years, who will know you lived there?',
+    p3:'BabelOm was born from this question. It is a world map where everyone can pin the places they have lived — with dates, anecdotes, photos. A dot on the map. A life behind that dot.',
+    p4:'Together, we build a collective memory of inhabited places — for researchers, for families, for generations who have no memory yet to pass on.',
+    cta1:'Your memories deserve better than oblivion.', cta2:'The past needs you!',
+    ctaBtn:'Join BabelOm →',
+    v1t:'Roots', v1d:'Every inhabited place deserves to be remembered and passed on',
+    v2t:'International', v2d:'Testimonies from around the world, in 7 languages',
+    v3t:'Collective', v3d:'An archive built by and for future generations',
+    citation:'One never really leaves the places where one has suffered or loved.',
+  },
+  pt:{
+    eyebrow:'Quem somos & por que BabelOm', title:'Nosso', titleEm:'projeto',
+    leprojet:'O projeto',
+    p1:'Nascemos em algum lugar. Crescemos em algum lugar. Partimos, voltamos, partimos de novo. Cada lugar deixa uma marca — em nossos corpos, na forma como falamos, no que chamamos de lar.',
+    p2:'No entanto, esses rastros desaparecem. As casas mudam de inquilinos, os bairros se transformam, as famílias se dispersam. Daqui a cem anos, quem saberá que você viveu lá?',
+    p3:'BabelOm nasceu dessa pergunta. É um mapa mundial onde cada um pode marcar os lugares onde morou — com datas, histórias, fotos. Um ponto no mapa. Uma vida por trás desse ponto.',
+    p4:'Juntos, construímos uma memória coletiva dos lugares habitados — para pesquisadores, famílias, gerações que ainda não têm memória para transmitir.',
+    cta1:'Suas memórias merecem mais do que o esquecimento.', cta2:'O passado precisa de você!',
+    ctaBtn:'Junte-se ao BabelOm →',
+    v1t:'Raízes', v1d:'Cada lugar habitado merece ser lembrado e transmitido',
+    v2t:'Internacional', v2d:'Depoimentos de todo o mundo, em 7 idiomas',
+    v3t:'Coletivo', v3d:'Um arquivo construído por e para as gerações futuras',
+    citation:'Nunca se abandona realmente os lugares onde se sofreu ou se amou.',
+  },
+  he:{
+    eyebrow:'מי אנחנו ומדוע בבלום', title:'הפרויקט', titleEm:'שלנו',
+    leprojet:'הפרויקט',
+    p1:'אנחנו נולדים במקום כלשהו. אנחנו גדלים במקום כלשהו. אנחנו עוזבים, חוזרים, עוזבים שוב. כל מקום משאיר חותם — בגופינו, באופן שבו אנחנו מדברים, במה שאנחנו מכנים בית.',
+    p2:'אך עקבות אלה נעלמים. הבתים מחליפים שוכרים, השכונות משתנות, המשפחות מתפזרות. בעוד מאה שנה, מי ידע שחייתם שם?',
+    p3:'בבלום נולד מהשאלה הזו. זהו מפה עולמית שבה כל אחד יכול לסמן את המקומות שבהם גר — עם תאריכים, סיפורים, תמונות. נקודה על המפה. חיים מאחורי הנקודה הזו.',
+    p4:'יחד אנחנו בונים זיכרון קולקטיבי של מקומות מאוכלסים — למחקרנים, למשפחות, לדורות שעדיין אין להם זיכרון להעביר.',
+    cta1:'הזיכרונות שלך ראויים ליותר מאשר שכחה.', cta2:'העבר זקוק לך!',
+    ctaBtn:'הצטרף לבבלום →',
+    v1t:'שורשים', v1d:'כל מקום מאוכלס ראוי להיזכר ולהועבר',
+    v2t:'בינלאומי', v2d:'עדויות מרחבי העולם, ב-7 שפות',
+    v3t:'קולקטיבי', v3d:'ארכיון שנבנה על ידי ולמען הדורות הבאים',
+    citation:'לעולם לא עוזבים באמת את המקומות שבהם סבלו או אהבו.',
+  },
+  ar:{
+    eyebrow:'من نحن ولماذا بابيلوم', title:'مشروعنا', titleEm:'',
+    leprojet:'المشروع',
+    p1:'نولد في مكان ما. ننشأ في مكان ما. نغادر، نعود، نغادر من جديد. كل مكان يترك أثراً — في أجسادنا، في طريقة كلامنا، في ما نسميه بيتنا.',
+    p2:'ومع ذلك، تختفي هذه الآثار. تتغير المنازل ساكنيها، تتحول الأحياء، تتفرق العائلات. بعد مائة سنة، من سيعلم أنك عشت هناك؟',
+    p3:'وُلد بابيلوم من هذا السؤال. إنه خريطة عالمية حيث يمكن لكل شخص تحديد الأماكن التي سكن فيها — مع التواريخ والقصص والصور. نقطة على الخريطة. حياة خلف هذه النقطة.',
+    p4:'معاً، نبني ذاكرة جماعية للأماكن المسكونة — للباحثين، للعائلات، للأجيال التي لا تملك بعد ذكريات لتنقلها.',
+    cta1:'ذكرياتك تستحق أكثر من النسيان.', cta2:'الماضي يحتاج إليك!',
+    ctaBtn:'انضم إلى بابيلوم →',
+    v1t:'جذور', v1d:'كل مكان مسكون يستحق أن يُحفظ ويُنقل',
+    v2t:'دولي', v2d:'شهادات من جميع أنحاء العالم، بـ7 لغات',
+    v3t:'جماعي', v3d:'أرشيف مبني من الأجيال وللأجيال القادمة',
+    citation:'لا يغادر المرء أبداً حقاً الأماكن التي عانى فيها أو أحب.',
+  },
+  it:{
+    eyebrow:'Chi siamo & perché BabelOm', title:'Il nostro', titleEm:'progetto',
+    leprojet:'Il progetto',
+    p1:'Nasciamo da qualche parte. Cresciamo da qualche parte. Partiamo, torniamo, ripartiamo. Ogni luogo lascia un'impronta — nei nostri corpi, nel modo in cui parliamo, in ciò che chiamiamo casa.',
+    p2:'Eppure queste tracce scompaiono. Le case cambiano inquilini, i quartieri si trasformano, le famiglie si disperdono. Fra cent'anni, chi saprà che avete vissuto lì?',
+    p3:'BabelOm è nato da questa domanda. È una mappa mondiale dove ognuno può fissare i luoghi in cui ha vissuto — con date, aneddoti, foto. Un punto sulla mappa. Una vita dietro quel punto.',
+    p4:'Insieme, costruiamo una memoria collettiva dei luoghi abitati — per i ricercatori, per le famiglie, per le generazioni che non hanno ancora ricordi da trasmettere.',
+    cta1:'I tuoi ricordi meritano di più dell'oblio.', cta2:'Il passato ha bisogno di te!',
+    ctaBtn:'Unisciti a BabelOm →',
+    v1t:'Radici', v1d:'Ogni luogo abitato merita di essere ricordato e trasmesso',
+    v2t:'Internazionale', v2d:'Testimonianze da tutto il mondo, in 7 lingue',
+    v3t:'Collettivo', v3d:'Un archivio costruito da e per le generazioni future',
+    citation:'Non si abbandonano mai davvero i luoghi dove si è sofferto o amato.',
+  },
+  ru:{
+    eyebrow:'Кто мы и почему BabelOm', title:'Наш', titleEm:'проект',
+    leprojet:'Проект',
+    p1:'Мы рождаемся где-то. Мы растём где-то. Мы уезжаем, возвращаемся, уезжаем снова. Каждое место оставляет след — в наших телах, в нашей речи, в том, что мы называем домом.',
+    p2:'Но эти следы исчезают. Дома меняют жильцов, кварталы преображаются, семьи рассеиваются. Через сто лет кто будет знать, что вы жили там?',
+    p3:'BabelOm родился из этого вопроса. Это карта мира, где каждый может отметить места, где он жил — с датами, историями, фотографиями. Точка на карте. Жизнь за этой точкой.',
+    p4:'Вместе мы строим коллективную память об обитаемых местах — для исследователей, семей, поколений, у которых ещё нет воспоминаний для передачи.',
+    cta1:'Ваши воспоминания заслуживают большего, чем забвение.', cta2:'Прошлое нуждается в вас!',
+    ctaBtn:'Присоединитесь к BabelOm →',
+    v1t:'Корни', v1d:'Каждое обитаемое место заслуживает памяти и передачи',
+    v2t:'Международный', v2d:'Свидетельства со всего мира, на 7 языках',
+    v3t:'Коллективный', v3d:'Архив, созданный для будущих поколений',
+    citation:'Никогда по-настоящему не покидаешь места, где страдал или любил.',
+  },
+};
 
-
-
-<!-- MODALE CONNEXION -->
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
-  <div class="modale-box">
-    <h3 style="margin-bottom:4px;">Se connecter</h3>
-    <p style="font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;">Accédez à votre espace BabelOm</p>
-    <input type="email" id="cx-email" class="input-compte" placeholder="Email">
-    <input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:var(--orange);color:white;" onclick="seConnecter()">Connexion →</button>
-    <div class="msg-compte" id="msg-cx"></div>
-    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore membre ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
-    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
-  </div>
-</div>
-
-<!-- MODALE INSCRIPTION -->
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')">
-  <div class="modale-box">
-    <h3 style="margin-bottom:4px;">Créer un compte</h3>
-    <p style="font-size:0.72rem;color:#8B9CC8;margin-bottom:16px;">Rejoignez l'archive BabelOm</p>
-    <input type="text" id="ins-prenom" class="input-compte" placeholder="Prénom">
-    <input type="email" id="ins-email" class="input-compte" placeholder="Email">
-    <input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe (6 car. min.)">
-    <button class="btn-compte" style="background:var(--turquoise);color:var(--nuit);" onclick="sInscrire()">S'inscrire →</button>
-    <div class="msg-compte" id="msg-ins"></div>
-    <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Déjà membre ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-ins');ouvrirModale('modale-cx')">Se connecter</span></div>
-    <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
-  </div>
-</div>
-
-<!-- MODALE ADMIN -->
-<div id="modale-admin" class="modale-overlay">
-  <div class="modale-box">
-    <h3>Accès administrateur</h3>
-    <p>BabelOm — espace réservé</p>
-    <input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe admin">
-    <div class="modale-actions">
-      <button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button>
-      <button class="btn-valid" onclick="validerAdmin()">Accéder →</button>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><p>Accedez a votre espace</p><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:var(--orange);color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore ? <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><p>Rejoignez BabelOm</p><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:var(--turquoise);color:var(--nuit);" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Acces admin</h3><input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe"><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button><button class="btn-compte" style="background:var(--orange);color:white;flex:1;" onclick="validerAdmin()">Acceder</button></div></div></div>
-
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><p>Accedez a votre espace</p><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><div style="margin-top:10px;text-align:center;font-size:0.72rem;color:#8B9CC8;">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S inscrire</span></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><p>Rejoignez BabelOm</p><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Acces admin</h3><input type="password" id="admin-mdp" class="input-compte" placeholder="Mot de passe"><div style="display:flex;gap:8px;margin-top:8px;"><button class="btn-cancel" onclick="document.getElementById('modale-admin').style.display='none'">Annuler</button><button class="btn-compte" style="background:#FF6B35;color:white;flex:1;" onclick="validerAdmin()">Acceder</button></div></div></div>
-
-
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>S'inscrire</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Acceder</button></div></div>
-
-
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>Creer un compte</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Acceder</button></div></div>
-
-
-
-
-<div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')"><div class="modale-box"><h3>Se connecter</h3><input type="email" id="cx-email" class="input-compte" placeholder="Email"><input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Connexion</button><div class="msg-compte" id="msg-cx"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button></div></div>
-<div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')"><div class="modale-box"><h3>S'inscrire</h3><input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom"><input type="email" id="ins-email" class="input-compte" placeholder="Email"><input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe"><button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire</button><div class="msg-compte" id="msg-ins"></div><button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button></div></div>
-<div id="modale-admin" class="modale-overlay" onclick="if(event.target===this)this.style.display='none'"><div class="modale-box"><h3>Admin</h3><input type="password" id="admin-mdp" class="input-compte"><button class="btn-compte" style="background:#FF6B35;color:white;width:100%;margin-top:8px;" onclick="validerAdmin()">Acceder</button></div></div>
-<!-- Scripts v1 du head (déplacés ici pour éviter erreurs de parsing) -->
-
-<!-- Scripts v1 du body (logique métier) -->
-
-<!-- Auth v2 -->
-
-
+function applyNpTexts(lang) {
+  var t = NP_TEXTS[lang] || NP_TEXTS['fr'];
+  function s(id, val) { var el=document.getElementById(id); if(el && val!==undefined) el.textContent=val; }
+  s('np-eyebrow', t.eyebrow);
+  var tEl = document.getElementById('np-title');
+  if (tEl) tEl.childNodes[0].textContent = t.title + ' ';
+  s('np-title-em', t.titleEm || t.title);
+  s('np-leprojet', t.leprojet);
+  s('np-p1', t.p1); s('np-p2', t.p2); s('np-p3', t.p3); s('np-p4', t.p4);
+  s('np-cta1', t.cta1); s('np-cta2', t.cta2); s('np-cta-btn', t.ctaBtn);
+  s('np-v1t', t.v1t); s('np-v1d', t.v1d);
+  s('np-v2t', t.v2t); s('np-v2d', t.v2d);
+  s('np-v3t', t.v3t); s('np-v3d', t.v3d);
+  s('np-citation', t.citation);
+}
+window.addEventListener('DOMContentLoaded', function() {
+  applyNpTexts(localStorage.getItem('babelom-lang') || 'fr');
+});
+</script>
 
 <footer style="background:#2c4a8a;border-top:6px solid #FF6B35;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
   <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:900;color:white;text-decoration:none;letter-spacing:0.04em;flex-shrink:0;">

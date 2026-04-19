@@ -957,8 +957,8 @@ body{padding-bottom:70px!important;}
 
     <!-- Boutons Connexion/Inscrire (non connecté) -->
     <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
-      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')">Se connecter</button>
-      <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')">S'inscrire</button>
+      <button class="top-btn btn-cx" data-i18n="navBtnCx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+      <button class="top-btn btn-ins" data-i18n="navBtnIns" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
     </div>
 
     <!-- Sélecteur langue -->
@@ -982,7 +982,7 @@ body{padding-bottom:70px!important;}
 
 <!-- ══════════════ BANDEAU PHRASE ══════════════ -->
 <div style="background:#1e3a28;text-align:center;padding:7px 20px;position:sticky;top:62px;z-index:1000;border-bottom:1px solid rgba(212,136,10,0.25);">
-  <span style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;font-weight:700;color:white;letter-spacing:0.04em;">
+  <span id="bandeau-phrase" data-i18n="bandeauPhrase" style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-style:italic;font-weight:700;color:white;letter-spacing:0.04em;">
     Vos souvenirs méritent mieux que l'oubli. Le passé a besoin de vous.
   </span>
 </div>
@@ -995,17 +995,10 @@ body{padding-bottom:70px!important;}
   <div class="hero-map-overlay"></div>
 
   <div class="hero-left">
-    <p class="hero-eyebrow">Mémoire collective des lieux habités</p>
-    <h1 class="hero-title">
-      Chaque maison<br>
-      garde <em>la trace</em><br>
-      de ceux qui l'ont<br>
-      habitée
-    </h1>
+    <p class="hero-eyebrow" data-i18n="heroEyebrow">Mémoire collective des lieux habités</p>
+    <h1 class="hero-title" data-i18n="heroTitle">Chaque maison<br>garde <em>la trace</em><br>de ceux qui l'ont<br>habitée</h1>
 
-    <p class="hero-subtitle"><strong>
-      BabelOm est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.
-    </strong></p>
+    <p class="hero-subtitle" data-i18n="heroSubtitle">BabelOm est une archive vivante où chacun dépose les souvenirs des lieux où il a vécu — pour que les murs n'oublient pas, et que les générations futures sachent.</p>
   </div>
 
   
@@ -2191,21 +2184,21 @@ function fermerLightbox() {
 </script>
 <!-- MODALES AUTH -->
 <div id="modale-cx" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-cx')">
-  <div class="modale-box"><h3>Se connecter</h3>
-    <input type="email" id="cx-email" class="input-compte" placeholder="Email">
-    <input type="password" id="cx-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#FF6B35;color:white;" onclick="seConnecter()">Se connecter</button>
+  <div class="modale-box"><h3 data-i18n="loginTitle">Se connecter</h3>
+    <input type="email" id="cx-email" class="input-compte" data-i18n-ph="labelEmail" placeholder="Email">
+    <input type="password" id="cx-mdp" class="input-compte" data-i18n-ph="labelMdpLogin" placeholder="Mot de passe">
+    <button class="btn-compte" data-i18n="btnLogin" style="background:#FF6B35;color:white;" onclick="seConnecter()">Se connecter →</button>
     <div class="msg-compte" id="msg-cx"></div>
     <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
     <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
   </div>
 </div>
 <div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')">
-  <div class="modale-box"><h3>Creer un compte</h3>
-    <input type="text" id="ins-prenom" class="input-compte" placeholder="Prenom">
-    <input type="email" id="ins-email" class="input-compte" placeholder="Email">
-    <input type="password" id="ins-mdp" class="input-compte" placeholder="Mot de passe">
-    <button class="btn-compte" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire</button>
+  <div class="modale-box"><h3 data-i18n="createAccount">Créer un compte</h3>
+    <input type="text" id="ins-prenom" class="input-compte" data-i18n-ph="placeholderPrenom" placeholder="Prénom">
+    <input type="email" id="ins-email" class="input-compte" data-i18n-ph="labelEmail" placeholder="Email">
+    <input type="password" id="ins-mdp" class="input-compte" data-i18n-ph="placeholderMdp" placeholder="Mot de passe">
+    <button class="btn-compte" data-i18n="btnCreate" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire →</button>
     <div class="msg-compte" id="msg-ins"></div>
     <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
   </div>
