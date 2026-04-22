@@ -79,6 +79,17 @@ async function seConnecter(){
     if(!res.ok)throw new Error(data.error_description||'Erreur');
     var prenom=data.user&&data.user.user_metadata&&data.user.user_metadata.prenom?data.user.user_metadata.prenom:email.split('@')[0];
     localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));
+    // Stocker aussi le token Supabase pour les pages qui en ont besoin (RLS)
+    var sbKey='sb-qbxshawdxqochjsmoodl-auth-token';
+    if(data.access_token){
+      localStorage.setItem(sbKey,JSON.stringify({
+        access_token:data.access_token,
+        refresh_token:data.refresh_token||'',
+        expires_at:Math.floor(Date.now()/1000)+(data.expires_in||3600),
+        token_type:'bearer',
+        user:data.user
+      }));
+    }
     if(msg){msg.style.color='#6BCB77';msg.textContent='Connect\u00e9 !';}
     setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);
   }catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}

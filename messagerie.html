@@ -753,7 +753,32 @@ var contactsCache = [];
 var refreshInterval = null;
 
 // ── HELPERS ──
+function getSbToken() {
+  // Récupérer le JWT depuis le localStorage Supabase (clé sb-*-auth-token)
+  try {
+    var keys = Object.keys(localStorage);
+    for (var i = 0; i < keys.length; i++) {
+      if (keys[i].startsWith('sb-') && keys[i].endsWith('-auth-token')) {
+        var data = JSON.parse(localStorage.getItem(keys[i]));
+        if (data && data.access_token) return data.access_token;
+      }
+    }
+  } catch(e) {}
+  return null;
+}
+
 function getSb() {
+  // Créer un nouveau client à chaque appel pour injecter le token frais
+  var token = getSbToken();
+  if (token) {
+    // Client authentifié avec le JWT Supabase — permet les opérations RLS
+    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      global: { headers: { Authorization: 'Bearer ' + token } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    });
+    return sb;
+  }
+  // Fallback : client anonyme
   if (_msgSb) return _msgSb;
   _msgSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
   return _msgSb;
