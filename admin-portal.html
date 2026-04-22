@@ -57,6 +57,84 @@ body { font-family: 'Segoe UI', sans-serif; background: #0f1e14; color: #c8d8b0;
 .admin-badge { background: #d4880a; color: white; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 10px; letter-spacing: 0.08em; }
 .frame-wrap { flex: 1; position: relative; }
 iframe { width: 100%; height: 100%; border: none; display: block; }
+
+/* ── DASHBOARD STATS ── */
+#stats-panel {
+  display: none;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+  background: #0f1e14;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: #1e3a28;
+  border: 1px solid #4a7a52;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+.stat-icon { font-size: 2rem; margin-bottom: 8px; }
+.stat-value {
+  font-size: 2.2rem; font-weight: 900;
+  color: #d4880a; font-family: 'Segoe UI', sans-serif;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.12em; color: rgba(200,216,176,0.6);
+}
+.stat-sub {
+  font-size: 0.68rem; color: rgba(200,216,176,0.4);
+  margin-top: 4px;
+}
+.stats-section-title {
+  font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.15em; color: #d4880a;
+  margin: 24px 0 12px; font-weight: 600;
+  border-bottom: 1px solid #2e5a38; padding-bottom: 8px;
+}
+.stats-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.82rem; margin-bottom: 24px;
+}
+.stats-table th {
+  background: #1e3a28; color: #d4880a;
+  padding: 10px 14px; text-align: left;
+  font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.1em; font-weight: 600;
+}
+.stats-table td {
+  padding: 9px 14px; border-bottom: 1px solid rgba(74,122,82,0.3);
+  color: #c8d8b0;
+}
+.stats-table tr:hover td { background: rgba(74,122,82,0.1); }
+.stats-refresh {
+  background: #2e5a38; border: 1px solid #4a7a52;
+  color: #c8d8b0; padding: 6px 14px; border-radius: 6px;
+  font-size: 0.75rem; cursor: pointer; margin-left: 8px;
+}
+.stats-refresh:hover { background: #3a6a44; }
+.stats-header {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 20px;
+}
+.stats-title {
+  font-size: 1.1rem; color: white; font-weight: 600;
+}
+.stats-updated {
+  font-size: 0.7rem; color: rgba(200,216,176,0.4);
+}
+.badge-actif { background: rgba(107,203,119,0.2); color: #6BCB77; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; }
+.badge-inactif { background: rgba(255,139,148,0.2); color: #FF8B94; padding: 2px 8px; border-radius: 10px; font-size: 0.68rem; }
 </style>
 </head>
 <body>
@@ -86,10 +164,87 @@ iframe { width: 100%; height: 100%; border: none; display: block; }
     <button class="btn-page" onclick="charger('temoignages.html?admin=1', this)">03 · Témoignages</button>
     <button class="btn-page" onclick="charger('galerie.html?admin=1', this)">04 · Galerie</button>
     <button class="btn-page" onclick="charger('messagerie.html?admin=1', this)">05 · Messagerie</button>
+    <button class="btn-page" id="btn-stats" onclick="afficherStats(this)">📊 Statistiques</button>
     <button class="btn-deco" onclick="deconnexionAdmin()">✕ Déconnexion</button>
   </div>
-  <div class="frame-wrap">
+  <div class="frame-wrap" id="frame-wrap">
     <iframe id="frame" src="index.html"></iframe>
+  </div>
+
+  <!-- ══ PANNEAU STATISTIQUES ══ -->
+  <div id="stats-panel">
+    <div class="stats-header">
+      <div class="stats-title">📊 Tableau de bord BabelOm</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="stats-updated" id="stats-updated">Chargement…</span>
+        <button class="stats-refresh" onclick="chargerStats()">↻ Actualiser</button>
+      </div>
+    </div>
+
+    <!-- Compteurs principaux -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="s-users">—</div>
+        <div class="stat-label">Membres inscrits</div>
+        <div class="stat-sub" id="s-users-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📍</div>
+        <div class="stat-value" id="s-temos">—</div>
+        <div class="stat-label">Témoignages déposés</div>
+        <div class="stat-sub" id="s-temos-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🖼️</div>
+        <div class="stat-value" id="s-photos">—</div>
+        <div class="stat-label">Photos galerie</div>
+        <div class="stat-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💬</div>
+        <div class="stat-value" id="s-messages">—</div>
+        <div class="stat-label">Messages envoyés</div>
+        <div class="stat-sub" id="s-msg-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="s-groupes">—</div>
+        <div class="stat-label">Groupes créés</div>
+        <div class="stat-sub" id="s-grp-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-value" id="s-pays">—</div>
+        <div class="stat-label">Pays représentés</div>
+        <div class="stat-sub"></div>
+      </div>
+    </div>
+
+    <!-- Derniers inscrits -->
+    <div class="stats-section-title">👤 Derniers membres inscrits</div>
+    <table class="stats-table">
+      <thead><tr>
+        <th>Email</th><th>Prénom</th><th>Inscrit le</th><th>Statut</th>
+      </tr></thead>
+      <tbody id="t-users"><tr><td colspan="4" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
+    </table>
+
+    <!-- Derniers témoignages -->
+    <div class="stats-section-title">📍 Derniers témoignages</div>
+    <table class="stats-table">
+      <thead><tr>
+        <th>Lieu</th><th>Ville</th><th>Pays</th><th>Période</th><th>Déposé le</th>
+      </tr></thead>
+      <tbody id="t-temos"><tr><td colspan="5" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
+    </table>
+
+    <!-- Top villes -->
+    <div class="stats-section-title">🏙️ Top villes les plus mémorisées</div>
+    <table class="stats-table">
+      <thead><tr><th>Ville</th><th>Pays</th><th>Nb témoignages</th></tr></thead>
+      <tbody id="t-villes"><tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
+    </table>
   </div>
 </div>
 
@@ -198,11 +353,7 @@ async function deconnexionAdmin() {
   document.getElementById('adm-btn').textContent = 'Accéder au portail →';
 }
 
-function charger(url, btn) {
-  document.getElementById('frame').src = url;
-  document.querySelectorAll('.btn-page').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-}
+// charger() définie dans le bloc stats ci-dessous
 
 // Vérifier si déjà connecté admin au chargement
 window.addEventListener('DOMContentLoaded', async function() {
@@ -224,6 +375,141 @@ window.addEventListener('DOMContentLoaded', async function() {
   // Pas de session admin valide — afficher écran de connexion
   document.getElementById('login-screen').style.display = 'flex';
 });
+
+// ══════════════════════════════════════════════════════
+// STATISTIQUES ADMIN
+// ══════════════════════════════════════════════════════
+
+function afficherStats(btn) {
+  // Basculer entre iframe et panel stats
+  var panel = document.getElementById('stats-panel');
+  var frameWrap = document.getElementById('frame-wrap');
+  var isShowing = panel.style.display === 'flex';
+
+  document.querySelectorAll('.btn-page').forEach(function(b) { b.classList.remove('active'); });
+
+  if (isShowing) {
+    panel.style.display = 'none';
+    frameWrap.style.display = 'block';
+  } else {
+    panel.style.display = 'flex';
+    frameWrap.style.display = 'none';
+    btn.classList.add('active');
+    chargerStats();
+  }
+}
+
+function charger(url, btn) {
+  // Masquer le panel stats si on clique sur une autre page
+  document.getElementById('stats-panel').style.display = 'none';
+  document.getElementById('frame-wrap').style.display = 'block';
+  document.getElementById('frame').src = url;
+  document.querySelectorAll('.btn-page').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+async function chargerStats() {
+  var sb = getSbAdmin();
+  var now = new Date().toLocaleString('fr-FR');
+  document.getElementById('stats-updated').textContent = 'Mis à jour : ' + now;
+
+  try {
+    // ── Compteurs ──
+    var [users, temos, photos, msgs, msgsGrp, groupes] = await Promise.all([
+      sb.from('temoignages').select('*', {count:'exact', head:true}),
+      sb.from('temoignages').select('*', {count:'exact', head:true}),
+      sb.from('galerie_photos').select('*', {count:'exact', head:true}),
+      sb.from('messages').select('*', {count:'exact', head:true}),
+      sb.from('groupe_messages').select('*', {count:'exact', head:true}),
+      sb.from('groupes').select('*', {count:'exact', head:true}),
+    ]);
+
+    // Compter les users via auth (nécessite service_role — on compte via temoignages distinctement)
+    var usersCount = await sb.from('temoignages').select('utilisateur_id').then(function(r) {
+      if (!r.data) return 0;
+      return new Set(r.data.map(function(t){ return t.utilisateur_id; })).size;
+    });
+
+    // Pays distincts
+    var paysRes = await sb.from('temoignages').select('pays');
+    var paysUniques = paysRes.data ? new Set(paysRes.data.map(function(t){ return t.pays; }).filter(Boolean)).size : 0;
+
+    document.getElementById('s-users').textContent = usersCount || '0';
+    document.getElementById('s-temos').textContent = temos.count || '0';
+    document.getElementById('s-photos').textContent = photos.count || '0';
+    document.getElementById('s-messages').textContent = ((msgs.count||0) + (msgsGrp.count||0));
+    document.getElementById('s-msg-sub').textContent = (msgs.count||0) + ' privés · ' + (msgsGrp.count||0) + ' groupes';
+    document.getElementById('s-groupes').textContent = groupes.count || '0';
+    document.getElementById('s-pays').textContent = paysUniques || '0';
+
+    // ── Derniers témoignages ──
+    var temosData = await sb.from('temoignages')
+      .select('nom_lieu, ville, pays, annee_debut, annee_fin, created_at')
+      .order('created_at', {ascending: false})
+      .limit(8);
+
+    var tTemos = document.getElementById('t-temos');
+    if (temosData.data && temosData.data.length) {
+      tTemos.innerHTML = temosData.data.map(function(t) {
+        var date = new Date(t.created_at).toLocaleDateString('fr-FR');
+        var periode = (t.annee_debut || '?') + ' – ' + (t.annee_fin || 'auj.');
+        return '<tr><td>' + (t.nom_lieu||'—') + '</td><td>' + (t.ville||'—') +
+               '</td><td>' + (t.pays||'—') + '</td><td>' + periode +
+               '</td><td>' + date + '</td></tr>';
+      }).join('');
+    } else {
+      tTemos.innerHTML = '<tr><td colspan="5" style="color:rgba(200,216,176,0.4)">Aucun témoignage</td></tr>';
+    }
+
+    // ── Top villes ──
+    var villesData = await sb.from('temoignages').select('ville, pays');
+    if (villesData.data && villesData.data.length) {
+      var villeCounts = {};
+      villesData.data.forEach(function(t) {
+        if (!t.ville) return;
+        var key = t.ville + '||' + (t.pays||'');
+        villeCounts[key] = (villeCounts[key] || 0) + 1;
+      });
+      var sorted = Object.entries(villeCounts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 8);
+      document.getElementById('t-villes').innerHTML = sorted.map(function(v) {
+        var parts = v[0].split('||');
+        return '<tr><td>' + parts[0] + '</td><td>' + (parts[1]||'—') +
+               '</td><td><strong style="color:#d4880a">' + v[1] + '</strong></td></tr>';
+      }).join('');
+    } else {
+      document.getElementById('t-villes').innerHTML = '<tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Aucune donnée</td></tr>';
+    }
+
+    // ── Derniers utilisateurs (via témoignages) ──
+    var usersData = await sb.from('temoignages')
+      .select('utilisateur_id, prenom, created_at')
+      .order('created_at', {ascending: false})
+      .limit(8);
+
+    var tUsers = document.getElementById('t-users');
+    if (usersData.data && usersData.data.length) {
+      // Dédupliquer par utilisateur_id
+      var seen = {};
+      var unique = usersData.data.filter(function(u) {
+        if (seen[u.utilisateur_id]) return false;
+        seen[u.utilisateur_id] = true;
+        return true;
+      });
+      tUsers.innerHTML = unique.map(function(u) {
+        var date = new Date(u.created_at).toLocaleDateString('fr-FR');
+        return '<tr><td>—</td><td>' + (u.prenom||'—') +
+               '</td><td>' + date + '</td><td><span class="badge-actif">Actif</span></td></tr>';
+      }).join('');
+    } else {
+      tUsers.innerHTML = '<tr><td colspan="4" style="color:rgba(200,216,176,0.4)">Aucun membre</td></tr>';
+    }
+
+  } catch(e) {
+    console.error('Erreur stats:', e);
+    document.getElementById('stats-updated').textContent = 'Erreur de chargement';
+  }
+}
+
 </script>
 
 </body>
