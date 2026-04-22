@@ -546,8 +546,10 @@ document.addEventListener('click',function(e){var ls=document.getElementById('la
       <div class="nav-circle" style="background:#6B5EA8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/><path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1.2" fill="white"/></svg></div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
+    <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
+      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+      <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
+    </div>
     <div id="lang-select" style="position:relative;">
       <button onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
         🌐 <span id="lang-current">FR</span>
@@ -789,23 +791,7 @@ document.addEventListener('click', function(e) {
   if (ls && !ls.contains(e.target)) { var d=document.getElementById('lang-dropdown'); if(d) d.style.display='none'; }
 });
 
-// ── AUTH ──
-function mettreAJourNav(u) {
-  var btnCx  = document.querySelector('.btn-cx');
-  var btnIns = document.querySelector('.btn-ins');
-  var navUser = document.getElementById('nav-user');
-  var navName = document.getElementById('nav-user-name');
-  if (u) {
-    if (btnCx)  btnCx.style.display  = 'none';
-    if (btnIns) btnIns.style.display = 'none';
-    if (navUser) navUser.style.display = 'flex';
-    if (navName) navName.textContent = u.prenom || u.email;
-  } else {
-    if (btnCx)  btnCx.style.display  = '';
-    if (btnIns) btnIns.style.display = '';
-    if (navUser) navUser.style.display = 'none';
-  }
-}
+// ── AUTH — mettreAJourNav est fournie par babelom-base.js via #top-band-btns ──
 
 async function seConnecter() {
   var email = document.getElementById('cx-email').value.trim();
@@ -820,7 +806,7 @@ async function seConnecter() {
     localStorage.setItem('babelom-user', JSON.stringify(s));
     fermerModale('modale-cx');
     user = s;
-    mettreAJourNav(s);
+    mettreAJourNav();
     initialiserMessagerie();
   } catch(e) {
     msg.style.color = '#FF8B94';
@@ -846,14 +832,14 @@ async function seDeconnecter() {
   await getSb().auth.signOut().catch(function(){});
   localStorage.removeItem('babelom-user');
   user = null;
-  mettreAJourNav(null);
+  mettreAJourNav();
   afficherEtatDeconnecte();
 }
 
 // ── INITIALISATION ──
 document.addEventListener('DOMContentLoaded', async function() {
   user = babelomGetUser();
-  mettreAJourNav(user);
+  mettreAJourNav(); // version babelom-base.js — gère #top-band-btns et #nav-user
   if (user) {
     initialiserMessagerie();
   } else {
