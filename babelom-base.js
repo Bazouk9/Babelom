@@ -78,7 +78,7 @@ async function seConnecter(){
     var data=await res.json();
     if(!res.ok)throw new Error(data.error_description||'Erreur');
     var prenom=data.user&&data.user.user_metadata&&data.user.user_metadata.prenom?data.user.user_metadata.prenom:email.split('@')[0];
-    localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));
+    localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,token:data.access_token||'',expires:Date.now()+7200000}));
     // Stocker aussi le token Supabase pour les pages qui en ont besoin (RLS)
     var sbKey='sb-qbxshawdxqochjsmoodl-auth-token';
     if(data.access_token){

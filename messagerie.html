@@ -755,7 +755,15 @@ var refreshInterval = null;
 
 // ── HELPERS ──
 function getSbToken() {
-  // Récupérer le JWT depuis le localStorage Supabase (clé sb-*-auth-token)
+  // Priorité 1 : token stocké directement dans babelom-user (le plus fiable)
+  try {
+    var bu = localStorage.getItem('babelom-user');
+    if (bu) {
+      var u = JSON.parse(bu);
+      if (u && u.token) return u.token;
+    }
+  } catch(e) {}
+  // Priorité 2 : token dans le localStorage Supabase natif (sb-*-auth-token)
   try {
     var keys = Object.keys(localStorage);
     for (var i = 0; i < keys.length; i++) {
