@@ -31,7 +31,8 @@ var MOTS_INTERDITS_EXTRA = [
 
 var _MODERATION_ORIG = (typeof BABELOM_MODERATION !== 'undefined') ? BABELOM_MODERATION : null;
 
-BABELOM_MODERATION = {
+// Wrapper séparé — ne réassigne PAS la const BABELOM_MODERATION de moderation.js
+var BABELOM_MODERATION_EXTRA = {
   verifier: function(texte, opts) {
     // Filtre original d'abord
     if (_MODERATION_ORIG) {
@@ -1091,7 +1092,19 @@ async function chargerExplorer() {
 async function rejoindreGroupe(groupeId, btn) {
   btn.disabled = true;
   btn.textContent = '…';
-  var res = await getSb().from('groupe_membres').insert([{groupe_id: groupeId, user_id: user.id, role: 'membre'}]);
+  // Insertion via fetch direct avec JWT
+  var token = getSbToken();
+  var joinRes = await fetch(SUPABASE_URL + '/rest/v1/groupe_membres', {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({groupe_id: groupeId, user_id: user.id, role: 'membre'})
+  });
+  var res = { error: joinRes.ok ? null : { message: 'Erreur ' + joinRes.status } };
   if (res.error) {
     btn.disabled = false;
     btn.textContent = 'Rejoindre';
@@ -1221,8 +1234,8 @@ async function envoyerMessage() {
   }
 
   // ── MODÉRATION ──
-  if (typeof BABELOM_MODERATION !== 'undefined') {
-    var check = BABELOM_MODERATION.verifier(texte, {type:'message'});
+  if (typeof BABELOM_MODERATION_EXTRA !== 'undefined') {
+    var check = BABELOM_MODERATION_EXTRA.verifier(texte, {type:'message'});
     if (!check.ok) {
       var msgErr = document.createElement('div');
       msgErr.style.cssText = 'background:#c04040;color:white;padding:8px 14px;border-radius:8px;font-size:0.82rem;margin:4px 0;';
@@ -1239,23 +1252,31 @@ async function envoyerMessage() {
   input.value = '';
   input.style.height = 'auto';
 
-  var res;
+  // Insertion via fetch direct avec JWT pour respecter les RLS Supabase
+  var token = getSbToken();
+  var headers = {
+    'apikey': SUPABASE_ANON,
+    'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
+    'Content-Type': 'application/json',
+    'Prefer': 'return=minimal'
+  };
+  var fetchRes;
   if (currentConvType === 'priv') {
-    res = await getSb().from('messages').insert([{
-      sender_id:   user.id,
-      receiver_id: currentConvId,
-      texte:       texte
-    }]);
+    fetchRes = await fetch(SUPABASE_URL + '/rest/v1/messages', {
+      method: 'POST', headers: headers,
+      body: JSON.stringify({ sender_id: user.id, receiver_id: currentConvId, texte: texte })
+    });
   } else {
-    res = await getSb().from('groupe_messages').insert([{
-      groupe_id: currentConvId,
-      sender_id: user.id,
-      texte:     texte
-    }]);
+    fetchRes = await fetch(SUPABASE_URL + '/rest/v1/groupe_messages', {
+      method: 'POST', headers: headers,
+      body: JSON.stringify({ groupe_id: currentConvId, sender_id: user.id, texte: texte })
+    });
   }
 
-  if (res.error) {
-    alert('Erreur envoi : ' + res.error.message);
+  if (!fetchRes.ok) {
+    var errTxt = await fetchRes.text().catch(function(){ return ''; });
+    var errMsg = ''; try { errMsg = JSON.parse(errTxt).message || errTxt; } catch(e) { errMsg = errTxt; }
+    alert('Erreur envoi : ' + errMsg.slice(0, 120));
     return;
   }
   chargerMessages();
@@ -1284,20 +1305,35 @@ async function creerGroupe() {
   msg.style.color = '#4ECDC4';
   msg.textContent = 'Création en cours…';
 
-  var res = await getSb().from('groupes').insert([{
-    nom:        nom,
-    ville:      ville || null,
-    description: desc || null,
-    createur_id: user.id
-  }]).select();
+  // Insertion via fetch direct avec JWT pour respecter les RLS Supabase
+  var token = getSbToken();
+  var res = await fetch(SUPABASE_URL + '/rest/v1/groupes', {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify({
+      nom:         nom,
+      ville:       ville || null,
+      description: desc || null,
+      createur_id: user.id
+    })
+  });
 
-  if (res.error) {
+  if (!res.ok) {
+    var errTxt = await res.text().catch(function(){ return ''; });
+    var errMsg = '';
+    try { errMsg = JSON.parse(errTxt).message || errTxt; } catch(e) { errMsg = errTxt; }
     msg.style.color = '#FF8B94';
-    msg.textContent = 'Erreur : ' + res.error.message;
+    msg.textContent = 'Erreur : ' + errMsg.slice(0, 120);
     return;
   }
 
-  var newGroupe = res.data[0];
+  var data = await res.json();
+  var newGroupe = Array.isArray(data) ? data[0] : data;
   if (!mesGroupeIds.includes(newGroupe.id)) mesGroupeIds.push(newGroupe.id);
 
   msg.textContent = '✓ Groupe créé !';
