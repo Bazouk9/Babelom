@@ -255,8 +255,10 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       <div class="nav-circle" style="background:#6B5EA8;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/><path d="M9,9 Q9,6 12,6 Q15,6 15,9 Q15,11 12,13" stroke="white" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1.2" fill="white"/></svg></div>
       <span class="nav-lbl">Notre projet</span>
     </a>
-    <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
-    <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
+    <div id="top-band-btns" style="display:flex;align-items:center;gap:6px;">
+      <button class="top-btn btn-cx" onclick="ouvrirModale('modale-cx')" data-i18n="navBtnCx">Se connecter</button>
+      <button class="top-btn btn-ins" onclick="ouvrirModale('modale-ins')" data-i18n="navBtnIns">S'inscrire</button>
+    </div>
     <div id="lang-select" style="position:relative;">
       <button id="lang-btn" onclick="toggleLang()" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:5px 10px;border-radius:18px;font-family:'Nunito',sans-serif;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2,12 L22,12"/><path d="M12,2 Q6,12 12,22 Q18,12 12,2"/></svg>
