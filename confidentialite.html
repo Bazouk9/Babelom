@@ -362,6 +362,14 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
   <p style="margin-top:36px;font-size:0.82rem;color:var(--muted);font-style:italic;" id="conf-date">Politique de confidentialité mise à jour en mars 2026.</p>
 
+  <div style="margin-top:24px;padding:16px 20px;background:rgba(255,255,255,0.06);border-radius:8px;border:1px solid rgba(255,255,255,0.12);">
+    <p style="font-size:0.82rem;color:rgba(255,255,255,0.7);margin-bottom:10px;">🍪 <strong style="color:white;">Préférences cookies</strong> — Vous pouvez modifier votre choix à tout moment.</p>
+    <button onclick="localStorage.removeItem('babelom-cookies-consent'); if(typeof babelomShowCookieBanner==='function') babelomShowCookieBanner();"
+      style="background:#FF6B35;color:white;border:none;border-radius:18px;padding:7px 18px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer;">
+      Modifier mes préférences
+    </button>
+  </div>
+
 </div>
 
 <script>

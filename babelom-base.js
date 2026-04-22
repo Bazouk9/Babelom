@@ -316,3 +316,210 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 
 })();
+
+// ═══════════════════════════════════════════════════════════════
+// BANNIÈRE COOKIES RGPD — injectée sur toutes les pages
+// Stockage : localStorage uniquement, aucun cookie tiers
+// ═══════════════════════════════════════════════════════════════
+
+(function() {
+
+  var CONSENT_KEY = 'babelom-cookies-consent';
+  var CONSENT_VERSION = '1'; // incrémenter pour forcer réaffichage
+
+  // Textes multilingues
+  var COOKIE_TEXTS = {
+    fr: {
+      title: '🍪 Cookies & confidentialité',
+      body: 'BabelOm utilise uniquement le <strong>stockage local</strong> (localStorage) pour votre session de connexion. <strong>Aucun cookie tiers, aucun traceur, aucune publicité.</strong>',
+      accept: 'Accepter',
+      decline: 'Continuer sans accepter',
+      link: 'En savoir plus',
+    },
+    en: {
+      title: '🍪 Cookies & Privacy',
+      body: 'BabelOm uses only <strong>local storage</strong> (localStorage) for your login session. <strong>No third-party cookies, no trackers, no advertising.</strong>',
+      accept: 'Accept',
+      decline: 'Continue without accepting',
+      link: 'Learn more',
+    },
+    pt: {
+      title: '🍪 Cookies & Privacidade',
+      body: 'BabelOm usa apenas <strong>armazenamento local</strong> (localStorage) para sua sessão. <strong>Sem cookies de terceiros, sem rastreadores, sem publicidade.</strong>',
+      accept: 'Aceitar',
+      decline: 'Continuar sem aceitar',
+      link: 'Saiba mais',
+    },
+    he: {
+      title: '🍪 עוגיות ופרטיות',
+      body: 'BabelOm משתמש רק ב<strong>אחסון מקומי</strong> (localStorage) עבור הפעלת ההתחברות שלך. <strong>אין עוגיות צד שלישי, אין מעקב, אין פרסום.</strong>',
+      accept: 'קבל',
+      decline: 'המשך ללא קבלה',
+      link: 'מידע נוסף',
+    },
+    ar: {
+      title: '🍪 ملفات تعريف الارتباط والخصوصية',
+      body: 'يستخدم بابيلوم فقط <strong>التخزين المحلي</strong> (localStorage) لجلسة تسجيل الدخول الخاصة بك. <strong>لا توجد ملفات تعريف ارتباط من طرف ثالث، ولا متتبعات، ولا إعلانات.</strong>',
+      accept: 'قبول',
+      decline: 'المتابعة بدون قبول',
+      link: 'معرفة المزيد',
+    },
+    it: {
+      title: '🍪 Cookie & Privacy',
+      body: 'BabelOm utilizza solo il <strong>localStorage</strong> per la tua sessione di accesso. <strong>Nessun cookie di terze parti, nessun tracker, nessuna pubblicità.</strong>',
+      accept: 'Accetta',
+      decline: 'Continua senza accettare',
+      link: 'Scopri di più',
+    },
+    ru: {
+      title: '🍪 Файлы cookie и конфиденциальность',
+      body: 'BabelOm использует только <strong>localStorage</strong> для вашей сессии. <strong>Никаких сторонних cookie, трекеров или рекламы.</strong>',
+      accept: 'Принять',
+      decline: 'Продолжить без принятия',
+      link: 'Узнать больше',
+    },
+  };
+
+  function getLang() {
+    try {
+      var saved = localStorage.getItem('babelom-lang');
+      if (saved && COOKIE_TEXTS[saved]) return saved;
+    } catch(e) {}
+    var bl = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+    return COOKIE_TEXTS[bl] ? bl : 'fr';
+  }
+
+  function hasConsent() {
+    try {
+      var c = localStorage.getItem(CONSENT_KEY);
+      if (!c) return false;
+      var obj = JSON.parse(c);
+      return obj && obj.version === CONSENT_VERSION;
+    } catch(e) { return false; }
+  }
+
+  function saveConsent(accepted) {
+    try {
+      localStorage.setItem(CONSENT_KEY, JSON.stringify({
+        version: CONSENT_VERSION,
+        accepted: accepted,
+        date: new Date().toISOString()
+      }));
+    } catch(e) {}
+  }
+
+  function hideBanner() {
+    var el = document.getElementById('babelom-cookie-banner');
+    if (el) {
+      el.style.transform = 'translateY(120%)';
+      el.style.opacity = '0';
+      setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 400);
+    }
+  }
+
+  function showBanner() {
+    var lang = getLang();
+    var t = COOKIE_TEXTS[lang] || COOKIE_TEXTS['fr'];
+    var isRtl = ['ar', 'he'].includes(lang);
+
+    // CSS de la bannière
+    var style = document.createElement('style');
+    style.id = 'babelom-cookie-css';
+    style.textContent = [
+      '#babelom-cookie-banner {',
+      '  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99999;',
+      '  background: #1a2a50; border-top: 3px solid #FF6B35;',
+      '  padding: 14px 24px; box-shadow: 0 -4px 24px rgba(0,0,0,0.35);',
+      '  font-family: Nunito, sans-serif; font-size: 0.84rem; color: rgba(255,255,255,0.92);',
+      '  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;',
+      '  justify-content: space-between;',
+      '  transition: transform 0.35s ease, opacity 0.35s ease;',
+      '  direction: ' + (isRtl ? 'rtl' : 'ltr') + ';',
+      '}',
+      '#babelom-cookie-banner .cb-text { flex: 1; min-width: 220px; line-height: 1.5; }',
+      '#babelom-cookie-banner .cb-text strong { color: #FFD93D; font-weight: 700; }',
+      '#babelom-cookie-banner .cb-title { font-family: "Playfair Display", serif; font-size: 1rem; font-weight: 600; margin-bottom: 4px; color: white; }',
+      '#babelom-cookie-banner .cb-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; flex-shrink: 0; }',
+      '#babelom-cookie-accept {',
+      '  background: #FF6B35; color: white; border: none; border-radius: 20px;',
+      '  padding: 8px 20px; font-family: Nunito, sans-serif; font-size: 0.8rem;',
+      '  font-weight: 700; cursor: pointer; white-space: nowrap;',
+      '  transition: background 0.2s;',
+      '}',
+      '#babelom-cookie-accept:hover { background: #e05520; }',
+      '#babelom-cookie-decline {',
+      '  background: transparent; color: rgba(255,255,255,0.55);',
+      '  border: 1px solid rgba(255,255,255,0.25); border-radius: 20px;',
+      '  padding: 7px 16px; font-family: Nunito, sans-serif; font-size: 0.78rem;',
+      '  cursor: pointer; white-space: nowrap; transition: all 0.2s;',
+      '}',
+      '#babelom-cookie-decline:hover { border-color: rgba(255,255,255,0.6); color: rgba(255,255,255,0.85); }',
+      '#babelom-cookie-link {',
+      '  color: #4ECDC4; font-size: 0.76rem; text-decoration: none;',
+      '  white-space: nowrap; opacity: 0.85;',
+      '}',
+      '#babelom-cookie-link:hover { opacity: 1; text-decoration: underline; }',
+      '@media (max-width: 600px) {',
+      '  #babelom-cookie-banner { padding: 12px 16px; }',
+      '  #babelom-cookie-banner .cb-actions { width: 100%; justify-content: flex-end; }',
+      '}'
+    ].join('\n');
+    document.head.appendChild(style);
+
+    // HTML de la bannière
+    var banner = document.createElement('div');
+    banner.id = 'babelom-cookie-banner';
+
+    var textDiv = document.createElement('div');
+    textDiv.className = 'cb-text';
+    var titleDiv = document.createElement('div');
+    titleDiv.className = 'cb-title';
+    titleDiv.textContent = t.title;
+    var bodyDiv = document.createElement('div');
+    bodyDiv.innerHTML = t.body;
+    textDiv.appendChild(titleDiv);
+    textDiv.appendChild(bodyDiv);
+
+    var actions = document.createElement('div');
+    actions.className = 'cb-actions';
+
+    var btnAccept = document.createElement('button');
+    btnAccept.id = 'babelom-cookie-accept';
+    btnAccept.textContent = t.accept;
+    btnAccept.onclick = function() { saveConsent(true); hideBanner(); };
+
+    var btnDecline = document.createElement('button');
+    btnDecline.id = 'babelom-cookie-decline';
+    btnDecline.textContent = t.decline;
+    btnDecline.onclick = function() { saveConsent(false); hideBanner(); };
+
+    var lien = document.createElement('a');
+    lien.id = 'babelom-cookie-link';
+    lien.href = 'confidentialite.html';
+    lien.textContent = t.link;
+
+    actions.appendChild(btnDecline);
+    actions.appendChild(btnAccept);
+    actions.appendChild(lien);
+
+    banner.appendChild(textDiv);
+    banner.appendChild(actions);
+
+    document.body.appendChild(banner);
+  }
+
+  // Afficher uniquement si pas encore décidé
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!hasConsent()) {
+      // Léger délai pour ne pas bloquer le rendu initial
+      setTimeout(showBanner, 600);
+    }
+  });
+
+  // Exposer pour permettre réaffichage si besoin (ex: lien dans confidentialite.html)
+  window.babelomShowCookieBanner = showBanner;
+  window.babelomCookieConsent = function() {
+    try { var c = localStorage.getItem(CONSENT_KEY); return c ? JSON.parse(c) : null; } catch(e) { return null; }
+  };
+
+})();
