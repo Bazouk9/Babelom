@@ -753,44 +753,67 @@ var allGroupes = [];
 var contactsCache = [];
 var refreshInterval = null;
 
-// ── HELPERS ──
+// ── CLIENT SUPABASE UNIQUE avec persistSession ──
+// Ce client persiste la session dans localStorage au format natif sb-*
+var _sbClient = null;
+function getSb() {
+  if (!_sbClient) {
+    _sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { persistSession: true, autoRefreshToken: true, storageKey: 'sb-babelom-auth' }
+    });
+  }
+  return _sbClient;
+}
+
 function getSbToken() {
-  // Priorité 1 : token stocké directement dans babelom-user (le plus fiable)
+  // Priorité 1 : token dans babelom-user (stocké par babelom-base.js lors du login)
   try {
-    var bu = localStorage.getItem('babelom-user');
-    if (bu) {
-      var u = JSON.parse(bu);
-      if (u && u.token) return u.token;
-    }
+    var bu = JSON.parse(localStorage.getItem('babelom-user') || 'null');
+    if (bu && bu.token) return bu.token;
   } catch(e) {}
   // Priorité 2 : token dans le localStorage Supabase natif (sb-*-auth-token)
   try {
     var keys = Object.keys(localStorage);
     for (var i = 0; i < keys.length; i++) {
-      if (keys[i].startsWith('sb-') && keys[i].endsWith('-auth-token')) {
-        var data = JSON.parse(localStorage.getItem(keys[i]));
-        if (data && data.access_token) return data.access_token;
+      if (keys[i].indexOf('-auth-token') !== -1 || keys[i].indexOf('sb-babelom-auth') !== -1) {
+        var d = JSON.parse(localStorage.getItem(keys[i]) || 'null');
+        if (d && d.access_token) return d.access_token;
       }
     }
   } catch(e) {}
   return null;
 }
 
-function getSb() {
-  // Créer un nouveau client à chaque appel pour injecter le token frais
+// Fonction d'insertion RLS-safe : fetch direct avec JWT ou re-auth si token absent
+async function sbInsert(table, payload) {
   var token = getSbToken();
-  if (token) {
-    // Client authentifié avec le JWT Supabase — permet les opérations RLS
-    var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
-      global: { headers: { Authorization: 'Bearer ' + token } },
-      auth: { persistSession: false, autoRefreshToken: false }
-    });
-    return sb;
+  // Si pas de token, tenter refresh via SDK
+  if (!token) {
+    try {
+      var sess = await getSb().auth.getSession();
+      if (sess.data && sess.data.session) token = sess.data.session.access_token;
+    } catch(e) {}
   }
-  // Fallback : client anonyme
-  if (_msgSb) return _msgSb;
-  _msgSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
-  return _msgSb;
+  if (!token) {
+    return { ok: false, error: 'Session expirée. Déconnectez-vous et reconnectez-vous.' };
+  }
+  var res = await fetch(SUPABASE_URL + '/rest/v1/' + table, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) {
+    var txt = await res.text().catch(function(){ return ''; });
+    var msg = txt; try { msg = JSON.parse(txt).message || txt; } catch(e) {}
+    return { ok: false, error: msg.slice(0, 150) };
+  }
+  var data = await res.json().catch(function(){ return []; });
+  return { ok: true, data: Array.isArray(data) ? data : [data] };
 }
 function babelomGetUser() {
   try {
@@ -836,7 +859,8 @@ async function seConnecter() {
     var res = await getSb().auth.signInWithPassword({email, password:mdp});
     if (res.error) throw res.error;
     var u = res.data.user;
-    var s = {id:u.id, email:u.email, prenom:u.user_metadata?.prenom||'', nom:u.user_metadata?.nom||'', expires:Date.now()+7*86400000};
+    var accessToken = res.data.session ? res.data.session.access_token : '';
+    var s = {id:u.id, email:u.email, prenom:u.user_metadata?.prenom||'', nom:u.user_metadata?.nom||'', token: accessToken, expires:Date.now()+7*86400000};
     localStorage.setItem('babelom-user', JSON.stringify(s));
     fermerModale('modale-cx');
     user = s;
@@ -893,6 +917,20 @@ function afficherEtatDeconnecte() {
 }
 
 async function initialiserMessagerie() {
+  // Tenter de récupérer/rafraîchir le token si absent
+  if (!getSbToken()) {
+    try {
+      var sess = await getSb().auth.getSession();
+      if (sess.data && sess.data.session && sess.data.session.access_token) {
+        // Mettre à jour babelom-user avec le token récupéré
+        var bu = babelomGetUser();
+        if (bu) {
+          bu.token = sess.data.session.access_token;
+          localStorage.setItem('babelom-user', JSON.stringify(bu));
+        }
+      }
+    } catch(e) {}
+  }
   // Récupérer les villes du membre (depuis ses témoignages)
   var res = await getSb().from('temoignages').select('ville').eq('utilisateur_id', user.id);
   if (res.data && res.data.length) {
@@ -1100,19 +1138,8 @@ async function chargerExplorer() {
 async function rejoindreGroupe(groupeId, btn) {
   btn.disabled = true;
   btn.textContent = '…';
-  // Insertion via fetch direct avec JWT
-  var token = getSbToken();
-  var joinRes = await fetch(SUPABASE_URL + '/rest/v1/groupe_membres', {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_ANON,
-      'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
-    },
-    body: JSON.stringify({groupe_id: groupeId, user_id: user.id, role: 'membre'})
-  });
-  var res = { error: joinRes.ok ? null : { message: 'Erreur ' + joinRes.status } };
+  var joinRes = await sbInsert('groupe_membres', {groupe_id: groupeId, user_id: user.id, role: 'membre'});
+  var res = { error: joinRes.ok ? null : { message: joinRes.error } };
   if (res.error) {
     btn.disabled = false;
     btn.textContent = 'Rejoindre';
@@ -1260,31 +1287,14 @@ async function envoyerMessage() {
   input.value = '';
   input.style.height = 'auto';
 
-  // Insertion via fetch direct avec JWT pour respecter les RLS Supabase
-  var token = getSbToken();
-  var headers = {
-    'apikey': SUPABASE_ANON,
-    'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
-    'Content-Type': 'application/json',
-    'Prefer': 'return=minimal'
-  };
-  var fetchRes;
+  var sendRes;
   if (currentConvType === 'priv') {
-    fetchRes = await fetch(SUPABASE_URL + '/rest/v1/messages', {
-      method: 'POST', headers: headers,
-      body: JSON.stringify({ sender_id: user.id, receiver_id: currentConvId, texte: texte })
-    });
+    sendRes = await sbInsert('messages', { sender_id: user.id, receiver_id: currentConvId, texte: texte });
   } else {
-    fetchRes = await fetch(SUPABASE_URL + '/rest/v1/groupe_messages', {
-      method: 'POST', headers: headers,
-      body: JSON.stringify({ groupe_id: currentConvId, sender_id: user.id, texte: texte })
-    });
+    sendRes = await sbInsert('groupe_messages', { groupe_id: currentConvId, sender_id: user.id, texte: texte });
   }
-
-  if (!fetchRes.ok) {
-    var errTxt = await fetchRes.text().catch(function(){ return ''; });
-    var errMsg = ''; try { errMsg = JSON.parse(errTxt).message || errTxt; } catch(e) { errMsg = errTxt; }
-    alert('Erreur envoi : ' + errMsg.slice(0, 120));
+  if (!sendRes.ok) {
+    alert('Erreur envoi : ' + sendRes.error);
     return;
   }
   chargerMessages();
@@ -1313,35 +1323,15 @@ async function creerGroupe() {
   msg.style.color = '#4ECDC4';
   msg.textContent = 'Création en cours…';
 
-  // Insertion via fetch direct avec JWT pour respecter les RLS Supabase
-  var token = getSbToken();
-  var res = await fetch(SUPABASE_URL + '/rest/v1/groupes', {
-    method: 'POST',
-    headers: {
-      'apikey': SUPABASE_ANON,
-      'Authorization': 'Bearer ' + (token || SUPABASE_ANON),
-      'Content-Type': 'application/json',
-      'Prefer': 'return=representation'
-    },
-    body: JSON.stringify({
-      nom:         nom,
-      ville:       ville || null,
-      description: desc || null,
-      createur_id: user.id
-    })
+  var insertRes = await sbInsert('groupes', {
+    nom: nom, ville: ville || null, description: desc || null, createur_id: user.id
   });
-
-  if (!res.ok) {
-    var errTxt = await res.text().catch(function(){ return ''; });
-    var errMsg = '';
-    try { errMsg = JSON.parse(errTxt).message || errTxt; } catch(e) { errMsg = errTxt; }
+  if (!insertRes.ok) {
     msg.style.color = '#FF8B94';
-    msg.textContent = 'Erreur : ' + errMsg.slice(0, 120);
+    msg.textContent = 'Erreur : ' + insertRes.error;
     return;
   }
-
-  var data = await res.json();
-  var newGroupe = Array.isArray(data) ? data[0] : data;
+  var newGroupe = insertRes.data[0];
   if (!mesGroupeIds.includes(newGroupe.id)) mesGroupeIds.push(newGroupe.id);
 
   msg.textContent = '✓ Groupe créé !';
