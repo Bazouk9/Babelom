@@ -4,97 +4,227 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>BabelOm — Portail Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: 'Segoe UI', sans-serif; background: #0f1e14; color: #c8d8b0; height: 100vh; display: flex; flex-direction: column; }
 
+/* ── ÉCRAN DE CONNEXION ── */
+#login-screen {
+  display: flex; align-items: center; justify-content: center;
+  height: 100vh; background: #0f1e14;
+}
+.login-box {
+  background: #1e3a28; border: 1px solid #4a7a52; border-radius: 12px;
+  padding: 40px; width: 360px; max-width: 90vw; text-align: center;
+}
+.login-box h1 {
+  font-size: 1.4rem; color: #d4880a; margin-bottom: 6px; letter-spacing: 0.1em;
+}
+.login-box p { font-size: 0.8rem; color: rgba(200,216,176,0.6); margin-bottom: 28px; }
+.login-input {
+  width: 100%; padding: 11px 14px; background: rgba(255,255,255,0.07);
+  border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; color: white;
+  font-size: 0.88rem; outline: none; margin-bottom: 10px;
+  font-family: 'Segoe UI', sans-serif;
+}
+.login-input:focus { border-color: #d4880a; }
+.login-btn {
+  width: 100%; padding: 12px; background: #d4880a; color: white; border: none;
+  border-radius: 8px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; cursor: pointer; transition: background 0.2s;
+}
+.login-btn:hover { background: #b8720a; }
+.login-btn:disabled { background: #4a7a52; cursor: not-allowed; }
+#login-msg { margin-top: 12px; font-size: 0.8rem; min-height: 18px; color: #FF8B94; }
+.login-forgot {
+  margin-top: 14px; font-size: 0.72rem; color: rgba(200,216,176,0.4);
+  cursor: default;
+}
+
+/* ── PORTAIL ADMIN ── */
+#admin-screen { display: none; flex-direction: column; height: 100vh; }
 .toolbar {
-  background: #1e3a28;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 2px solid #d4880a;
-  flex-shrink: 0;
+  background: #1e3a28; padding: 10px 20px; display: flex;
+  align-items: center; gap: 8px; border-bottom: 2px solid #d4880a; flex-shrink: 0;
 }
-
-.toolbar-title {
-  font-size: 0.8rem;
-  color: #d4880a;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-right: 16px;
-  font-weight: 600;
-}
-
-.btn-page {
-  background: #2e5a38;
-  border: 1px solid #4a7a52;
-  color: #c8d8b0;
-  padding: 7px 16px;
-  font-size: 0.78rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: all 0.15s;
-}
+.toolbar-title { font-size: 0.8rem; color: #d4880a; letter-spacing: 0.15em; text-transform: uppercase; margin-right: 16px; font-weight: 600; }
+.btn-page { background: #2e5a38; border: 1px solid #4a7a52; color: #c8d8b0; padding: 7px 16px; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: 3px; transition: all 0.15s; }
 .btn-page:hover { background: #3a6a44; color: white; }
 .btn-page.active { background: #d4880a; border-color: #d4880a; color: white; }
-
-.frame-wrap {
-  flex: 1;
-  position: relative;
-}
-
-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
+.btn-deco { margin-left: auto; background: none; border: 1px solid #FF8B94; color: #FF8B94; padding: 5px 14px; border-radius: 6px; font-size: 0.72rem; cursor: pointer; }
+.admin-badge { background: #d4880a; color: white; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 10px; letter-spacing: 0.08em; }
+.frame-wrap { flex: 1; position: relative; }
+iframe { width: 100%; height: 100%; border: none; display: block; }
 </style>
-
-<script src="babelom-base.js"></script>
-<script src="moderation.js"></script>
 </head>
 <body>
 
-<div class="toolbar">
-  <span class="toolbar-title">🏠 BabelOm Admin</span>
-  <button class="btn-page active" onclick="charger('index.html', this)">Accueil</button>
-  <button class="btn-page" onclick="charger('etape1.html', this)">01 · Carte</button>
-  <button class="btn-page" onclick="charger('etape2.html?admin=1', this)">02 · Racontez</button>
-  <button class="btn-page" onclick="charger('temoignages.html?admin=1', this)">03 · Transmettez</button>
-  <button class="btn-page" onclick="charger('messagerie.html?admin=1', this)">04 · Messagerie</button>
+<!-- ══ ÉCRAN CONNEXION ADMIN ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>🔐 Admin BabelOm</h1>
+    <p>Accès réservé aux administrateurs</p>
+    <input type="email"    id="adm-email" class="login-input" placeholder="Adresse e-mail admin">
+    <input type="password" id="adm-mdp"   class="login-input" placeholder="Mot de passe"
+           onkeydown="if(event.key==='Enter') connexionAdmin()">
+    <button class="login-btn" id="adm-btn" onclick="connexionAdmin()">Accéder au portail →</button>
+    <div id="login-msg"></div>
+    <div class="login-forgot">Seuls les comptes avec le rôle administrateur peuvent accéder.</div>
+  </div>
 </div>
 
-<div class="frame-wrap">
-  <iframe id="frame" src="index.html"></iframe>
+<!-- ══ PORTAIL ADMIN ══ -->
+<div id="admin-screen">
+  <div class="toolbar">
+    <span class="toolbar-title">🏠 BabelOm Admin</span>
+    <span class="admin-badge" id="admin-name">Admin</span>
+    <button class="btn-page active" onclick="charger('index.html', this)">Accueil</button>
+    <button class="btn-page" onclick="charger('etape1.html', this)">01 · Carte</button>
+    <button class="btn-page" onclick="charger('etape2.html?admin=1', this)">02 · Racontez</button>
+    <button class="btn-page" onclick="charger('temoignages.html?admin=1', this)">03 · Témoignages</button>
+    <button class="btn-page" onclick="charger('galerie.html?admin=1', this)">04 · Galerie</button>
+    <button class="btn-page" onclick="charger('messagerie.html?admin=1', this)">05 · Messagerie</button>
+    <button class="btn-deco" onclick="deconnexionAdmin()">✕ Déconnexion</button>
+  </div>
+  <div class="frame-wrap">
+    <iframe id="frame" src="index.html"></iframe>
+  </div>
 </div>
 
 <script>
+var _adminSb = null;
+
+function getSbAdmin() {
+  if (!_adminSb) {
+    _adminSb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: { persistSession: true, storageKey: 'sb-admin-auth' }
+    });
+  }
+  return _adminSb;
+}
+
+// ── Vérification du rôle admin via Supabase ──
+// Le rôle est stocké dans user_metadata.is_admin = true
+// (à définir dans le dashboard Supabase : Authentication > Users > Edit user)
+async function verifierAdmin(userId, accessToken) {
+  try {
+    // Méthode 1 : vérifier user_metadata directement depuis le token
+    var payload = JSON.parse(atob(accessToken.split('.')[1]));
+    if (payload && payload.user_metadata && payload.user_metadata.is_admin === true) {
+      return true;
+    }
+    // Méthode 2 : vérifier dans une table 'admins' si elle existe
+    var res = await fetch(SUPABASE_URL + '/rest/v1/admins?user_id=eq.' + userId + '&select=user_id', {
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + accessToken
+      }
+    });
+    if (res.ok) {
+      var data = await res.json();
+      if (data && data.length > 0) return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+async function connexionAdmin() {
+  var email = document.getElementById('adm-email').value.trim();
+  var mdp   = document.getElementById('adm-mdp').value;
+  var msg   = document.getElementById('login-msg');
+  var btn   = document.getElementById('adm-btn');
+
+  if (!email || !mdp) {
+    msg.textContent = 'Email et mot de passe requis.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Vérification…';
+  msg.style.color = '#4ECDC4';
+  msg.textContent = 'Connexion en cours…';
+
+  try {
+    // 1. Authentification Supabase
+    var res = await getSbAdmin().auth.signInWithPassword({ email: email, password: mdp });
+    if (res.error) throw new Error('Email ou mot de passe incorrect.');
+
+    var user        = res.data.user;
+    var session     = res.data.session;
+    var accessToken = session.access_token;
+    var prenom      = user.user_metadata?.prenom || user.email.split('@')[0];
+
+    // 2. Vérification rôle admin
+    var isAdmin = await verifierAdmin(user.id, accessToken);
+    if (!isAdmin) {
+      await getSbAdmin().auth.signOut();
+      throw new Error('Accès refusé — compte non administrateur.');
+    }
+
+    // 3. Accès accordé
+    msg.style.color = '#6BCB77';
+    msg.textContent = '✓ Accès accordé';
+    document.getElementById('admin-name').textContent = '👤 ' + prenom;
+
+    setTimeout(function() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'flex';
+    }, 600);
+
+  } catch(e) {
+    msg.style.color = '#FF8B94';
+    msg.textContent = e.message || 'Erreur de connexion.';
+    btn.disabled = false;
+    btn.textContent = 'Accéder au portail →';
+  }
+}
+
+async function deconnexionAdmin() {
+  await getSbAdmin().auth.signOut().catch(function(){});
+  // Vider les tokens
+  try {
+    Object.keys(localStorage).forEach(function(k) {
+      if (k.indexOf('sb-admin-auth') !== -1) localStorage.removeItem(k);
+    });
+  } catch(e) {}
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('adm-email').value = '';
+  document.getElementById('adm-mdp').value = '';
+  document.getElementById('login-msg').textContent = '';
+  document.getElementById('adm-btn').disabled = false;
+  document.getElementById('adm-btn').textContent = 'Accéder au portail →';
+}
+
 function charger(url, btn) {
   document.getElementById('frame').src = url;
-  document.querySelectorAll('.btn-page').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.btn-page').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
 }
+
+// Vérifier si déjà connecté admin au chargement
+window.addEventListener('DOMContentLoaded', async function() {
+  try {
+    var sess = await getSbAdmin().auth.getSession();
+    if (sess.data && sess.data.session) {
+      var user  = sess.data.session.user;
+      var token = sess.data.session.access_token;
+      var prenom = user.user_metadata?.prenom || user.email.split('@')[0];
+      var isAdmin = await verifierAdmin(user.id, token);
+      if (isAdmin) {
+        document.getElementById('admin-name').textContent = '👤 ' + prenom;
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-screen').style.display = 'flex';
+        return;
+      }
+    }
+  } catch(e) {}
+  // Pas de session admin valide — afficher écran de connexion
+  document.getElementById('login-screen').style.display = 'flex';
+});
 </script>
 
-<script id="babelom-base">
-function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
-function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
-function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
-function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
-document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
-function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='\u{1F464} '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
-async function seConnecter(){var email=document.getElementById('cx-email')?document.getElementById('cx-email').value.trim():'';var mdp=document.getElementById('cx-mdp')?document.getElementById('cx-mdp').value:'';var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user&&data.user.user_metadata&&data.user.user_metadata.prenom?data.user.user_metadata.prenom:email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connect\u00e9 !';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-async function sInscrire(){var prenom=document.getElementById('ins-prenom')?document.getElementById('ins-prenom').value.trim():'';var email=document.getElementById('ins-email')?document.getElementById('ins-email').value.trim():'';var mdp=document.getElementById('ins-mdp')?document.getElementById('ins-mdp').value:'';var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom},options:{emailRedirectTo:'https://bazouk9.github.io/Babelom/confirmation.html'}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connect\u00e9 !':'V\u00e9rifiez votre email.';}if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
-function toggleMenuMembre(e){if(e)e.stopPropagation();var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';}
-document.addEventListener('click',function(e){var d=document.getElementById('menu-membre-dropdown');var btn=document.getElementById('btn-menu-membre');if(d&&btn&&!d.contains(e.target)&&!btn.contains(e.target))d.style.display='none';});
-function confirmerSuppressionCompte(){var d=document.getElementById('menu-membre-dropdown');if(d)d.style.display='none';var m=document.getElementById('modale-confirm-delete');if(m)m.style.display='flex';}
-setTimeout(mettreAJourNav,100);
-</script>
 </body>
 </html>

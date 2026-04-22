@@ -880,7 +880,7 @@ async function sInscrire() {
   var msg    = document.getElementById('ins-msg');
   if (!prenom||!nom||!email||!mdp) { msg.textContent='Champs requis.'; return; }
   try {
-    var res = await getSb().auth.signUp({email, password:mdp, options:{data:{prenom,nom}, emailRedirectTo:'https://bazouk9.github.io/Babelom/confirmation.html'}});
+    var res = await getSb().auth.signUp({email, password:mdp, options:{data:{prenom,nom}, emailRedirectTo:'https://babelom.com/confirmation.html'}});
     if (res.error) throw res.error;
     msg.textContent = '✓ Vérifiez votre e-mail pour confirmer.';
   } catch(e) { msg.style.color='#FF8B94'; msg.textContent=e.message; }

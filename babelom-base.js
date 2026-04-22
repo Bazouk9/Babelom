@@ -41,6 +41,13 @@ function mettreAJourNav(){
 
 function seDeconnecter(){
   localStorage.removeItem('babelom-user');
+  // Nettoyer aussi le token Supabase natif
+  try {
+    var keys = Object.keys(localStorage);
+    keys.forEach(function(k){
+      if(k.indexOf('-auth-token')!==-1 || k==='sb-babelom-auth') localStorage.removeItem(k);
+    });
+  } catch(e){}
   mettreAJourNav();
 }
 
@@ -106,7 +113,7 @@ async function sInscrire(){
     var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{
       method:'POST',
       headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},
-      body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom},options:{emailRedirectTo:'https://bazouk9.github.io/Babelom/confirmation.html'}})
+      body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom},options:{emailRedirectTo:'https://babelom.com/confirmation.html'}})
     });
     var data=await res.json();
     if(!res.ok)throw new Error(data.error_description||'Erreur');
