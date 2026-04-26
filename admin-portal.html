@@ -219,6 +219,18 @@ iframe { width: 100%; height: 100%; border: none; display: block; }
         <div class="stat-label">Pays représentés</div>
         <div class="stat-sub"></div>
       </div>
+      <div class="stat-card" style="border-color:#d4880a;">
+        <div class="stat-icon">👁️</div>
+        <div class="stat-value" id="s-visites">—</div>
+        <div class="stat-label">Visites totales</div>
+        <div class="stat-sub" id="s-visites-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value" id="s-visites-jour">—</div>
+        <div class="stat-label">Visites aujourd'hui</div>
+        <div class="stat-sub" id="s-visites-semaine"></div>
+      </div>
     </div>
 
     <!-- Derniers inscrits -->
@@ -244,6 +256,20 @@ iframe { width: 100%; height: 100%; border: none; display: block; }
     <table class="stats-table">
       <thead><tr><th>Ville</th><th>Pays</th><th>Nb témoignages</th></tr></thead>
       <tbody id="t-villes"><tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
+    </table>
+
+    <!-- Top pages visitées -->
+    <div class="stats-section-title">👁️ Pages les plus visitées</div>
+    <table class="stats-table">
+      <thead><tr><th>Page</th><th>Nb visites</th><th>% du total</th></tr></thead>
+      <tbody id="t-pages"><tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
+    </table>
+
+    <!-- Visites par jour (7 derniers jours) -->
+    <div class="stats-section-title">📈 Visites des 7 derniers jours</div>
+    <table class="stats-table">
+      <thead><tr><th>Date</th><th>Nb visites</th></tr></thead>
+      <tbody id="t-visites-jours"><tr><td colspan="2" style="color:rgba(200,216,176,0.4)">Chargement…</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -415,13 +441,14 @@ async function chargerStats() {
 
   try {
     // ── Compteurs ──
-    var [users, temos, photos, msgs, msgsGrp, groupes] = await Promise.all([
+    var [users, temos, photos, msgs, msgsGrp, groupes, visites] = await Promise.all([
       sb.from('temoignages').select('*', {count:'exact', head:true}),
       sb.from('temoignages').select('*', {count:'exact', head:true}),
       sb.from('galerie_photos').select('*', {count:'exact', head:true}),
       sb.from('messages').select('*', {count:'exact', head:true}),
       sb.from('groupe_messages').select('*', {count:'exact', head:true}),
       sb.from('groupes').select('*', {count:'exact', head:true}),
+      sb.from('visites').select('*', {count:'exact', head:true}),
     ]);
 
     // Compter les users via auth (nécessite service_role — on compte via temoignages distinctement)
@@ -441,6 +468,73 @@ async function chargerStats() {
     document.getElementById('s-msg-sub').textContent = (msgs.count||0) + ' privés · ' + (msgsGrp.count||0) + ' groupes';
     document.getElementById('s-groupes').textContent = groupes.count || '0';
     document.getElementById('s-pays').textContent = paysUniques || '0';
+
+    // ── Visites ──
+    var visitesTot = visites.count || 0;
+    document.getElementById('s-visites').textContent = visitesTot;
+
+    // Visites aujourd'hui
+    var today = new Date().toISOString().slice(0, 10);
+    var visitesAujourdhui = await sb.from('visites')
+      .select('*', {count:'exact', head:true})
+      .gte('created_at', today + 'T00:00:00Z');
+    document.getElementById('s-visites-jour').textContent = visitesAujourdhui.count || '0';
+
+    // Visites cette semaine
+    var semaine = new Date(Date.now() - 7*24*60*60*1000).toISOString();
+    var visitesSemaine = await sb.from('visites')
+      .select('*', {count:'exact', head:true})
+      .gte('created_at', semaine);
+    document.getElementById('s-visites-semaine').textContent = 'Cette semaine : ' + (visitesSemaine.count || '0');
+    document.getElementById('s-visites-sub').textContent = 'Depuis le lancement';
+
+    // ── Top pages visitées ──
+    var pagesData = await sb.from('visites').select('page');
+    if (pagesData.data && pagesData.data.length) {
+      var pageCounts = {};
+      pagesData.data.forEach(function(v) {
+        pageCounts[v.page] = (pageCounts[v.page] || 0) + 1;
+      });
+      var sortedPages = Object.entries(pageCounts).sort(function(a,b){ return b[1]-a[1]; }).slice(0,8);
+      var total = pagesData.data.length;
+      document.getElementById('t-pages').innerHTML = sortedPages.map(function(p) {
+        var pct = Math.round(p[1]/total*100);
+        var bar = '█'.repeat(Math.round(pct/10)) + '░'.repeat(10-Math.round(pct/10));
+        return '<tr><td>' + p[0] + '</td><td><strong style="color:#d4880a">' + p[1] +
+               '</strong></td><td style="font-family:monospace;color:rgba(200,216,176,0.5)">' +
+               bar + ' ' + pct + '%</td></tr>';
+      }).join('');
+    } else {
+      document.getElementById('t-pages').innerHTML = '<tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Aucune visite enregistrée</td></tr>';
+    }
+
+    // ── Visites par jour (7 derniers jours) ──
+    var sept = new Date(Date.now() - 6*24*60*60*1000).toISOString().slice(0,10);
+    var visitesJours = await sb.from('visites')
+      .select('created_at')
+      .gte('created_at', sept + 'T00:00:00Z')
+      .order('created_at', {ascending: true});
+    if (visitesJours.data && visitesJours.data.length) {
+      var jourCounts = {};
+      for (var d=0; d<7; d++) {
+        var dd = new Date(Date.now() - (6-d)*24*60*60*1000).toISOString().slice(0,10);
+        jourCounts[dd] = 0;
+      }
+      visitesJours.data.forEach(function(v) {
+        var j = v.created_at.slice(0,10);
+        if (jourCounts[j] !== undefined) jourCounts[j]++;
+      });
+      document.getElementById('t-visites-jours').innerHTML = Object.entries(jourCounts).map(function(j) {
+        var dateObj = new Date(j[0]);
+        var label = dateObj.toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'});
+        var bar = '█'.repeat(Math.min(j[1], 20));
+        return '<tr><td>' + label + '</td><td><span style="color:#d4880a;font-weight:700">' +
+               j[1] + '</span> <span style="color:rgba(200,216,176,0.3);font-family:monospace">' +
+               bar + '</span></td></tr>';
+      }).join('');
+    } else {
+      document.getElementById('t-visites-jours').innerHTML = '<tr><td colspan="2" style="color:rgba(200,216,176,0.4)">Aucune visite cette semaine</td></tr>';
+    }
 
     // ── Derniers témoignages ──
     var temosData = await sb.from('temoignages')

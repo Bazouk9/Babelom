@@ -324,6 +324,35 @@ document.addEventListener('DOMContentLoaded',function(){
 
 })();
 
+
+// ═══════════════════════════════════════════════════════════════
+// COMPTEUR DE VISITES — enregistre chaque visite dans Supabase
+// Sans données personnelles — juste la page visitée + timestamp
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  try {
+    // Ne compter qu'une fois par session (pas à chaque rechargement)
+    var sessionKey = 'babelom-visite-' + window.location.pathname;
+    if (sessionStorage.getItem(sessionKey)) return;
+    sessionStorage.setItem(sessionKey, '1');
+
+    // Enregistrer après 2 secondes (visiteur réel, pas un bot)
+    setTimeout(function() {
+      var page = window.location.pathname.split('/').pop() || 'index';
+      page = page.replace('.html', '') || 'index';
+
+      fetch('https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/visites', {
+        method: 'POST',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFieHNoYXdkeHFvY2hqc21vb2RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQxMTIsImV4cCI6MjA4ODgzMDExMn0.SuCjjsBKOeuPyg8m1ZUb2h9XLtxZ5O5rf48GUolo3zM',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ page: page })
+      }).catch(function(){}); // Silencieux si erreur réseau
+    }, 2000);
+  } catch(e) {}
+})();
+
 // ═══════════════════════════════════════════════════════════════
 // BANNIÈRE COOKIES RGPD — injectée sur toutes les pages
 // Stockage : localStorage uniquement, aucun cookie tiers
