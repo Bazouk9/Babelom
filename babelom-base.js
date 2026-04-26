@@ -331,25 +331,27 @@ document.addEventListener('DOMContentLoaded',function(){
 // ═══════════════════════════════════════════════════════════════
 (function() {
   try {
-    // Ne compter qu'une fois par session (pas à chaque rechargement)
-    var sessionKey = 'babelom-visite-' + window.location.pathname;
-    if (sessionStorage.getItem(sessionKey)) return;
-    sessionStorage.setItem(sessionKey, '1');
+    var page = (window.location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
-    // Enregistrer après 2 secondes (visiteur réel, pas un bot)
+    // Anti-doublon : 1 visite max par page toutes les 30 minutes
+    var storageKey = 'bv-' + page;
+    var lastVisit = parseInt(localStorage.getItem(storageKey) || '0');
+    var now = Date.now();
+    if (now - lastVisit < 30 * 60 * 1000) return; // Moins de 30 min = pas de doublon
+    localStorage.setItem(storageKey, now);
+
+    // Enregistrer après 3 secondes (visiteur réel, pas un bot)
     setTimeout(function() {
-      var page = window.location.pathname.split('/').pop() || 'index';
-      page = page.replace('.html', '') || 'index';
-
       fetch('https://qbxshawdxqochjsmoodl.supabase.co/rest/v1/visites', {
         method: 'POST',
         headers: {
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFieHNoYXdkeHFvY2hqc21vb2RsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyNTQxMTIsImV4cCI6MjA4ODgzMDExMn0.SuCjjsBKOeuPyg8m1ZUb2h9XLtxZ5O5rf48GUolo3zM',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
         },
         body: JSON.stringify({ page: page })
-      }).catch(function(){}); // Silencieux si erreur réseau
-    }, 2000);
+      }).catch(function(){});
+    }, 3000);
   } catch(e) {}
 })();
 
