@@ -299,6 +299,24 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
   /* ── Contenu général ── */
   body { padding-bottom: 70px !important; }
 }
+  /* Dropdown langue — toujours visible au dessus de tout */
+  #lang-dropdown {
+    position: fixed !important;
+    top: 52px !important;
+    right: 8px !important;
+    z-index: 99999 !important;
+    left: auto !important;
+  }
+
+  /* Nav scrollable sans couper le dropdown */
+  #top-band {
+    overflow: visible !important;
+  }
+  #nav-icons {
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+  }
+  #nav-icons::-webkit-scrollbar { display: none !important; }
 </style>
 </head>
 <body>

@@ -880,6 +880,21 @@ body{padding-bottom:70px!important;}
 /* ══════════════════════════════════════════
    OPTIMISATION MOBILE — Navigation compacte
    ══════════════════════════════════════════ */
+
+  /* ── Anti-clignotement diaporama ── */
+  #tp-stack {
+    will-change: contents !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+  }
+  #tp-stack img {
+    will-change: transform, opacity !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+  #table-photos-inline {
+    /* Masquer le diaporama sur très petit écran pour éviter flash */
+    display: none !important;
+  }
 @media (max-width: 600px) {
 
   /* ── Top band compact ── */
@@ -887,11 +902,25 @@ body{padding-bottom:70px!important;}
     padding: 5px 8px !important;
     gap: 4px !important;
     flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+    overflow: visible !important;
     -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* Nav icons scrollable sans couper le dropdown langue */
+  #nav-icons {
+    overflow-x: auto !important;
     scrollbar-width: none !important;
   }
-  #top-band::-webkit-scrollbar { display: none !important; }
+  #nav-icons::-webkit-scrollbar { display: none !important; }
+
+  /* Dropdown langue — toujours visible au dessus de tout */
+  #lang-dropdown {
+    position: fixed !important;
+    top: 52px !important;
+    right: 8px !important;
+    z-index: 99999 !important;
+    left: auto !important;
+  }
 
   /* ── Logo plus petit ── */
   #nav-logo {
