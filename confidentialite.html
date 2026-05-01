@@ -206,6 +206,100 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
   <meta name="twitter:title" content="Confidentialité — BabelOm">
   <meta name="twitter:description" content="Politique de confidentialité et protection des données personnelles sur BabelOm.">
   <meta name="twitter:image" content="https://babelom.com/photos/photo1.jpg">
+
+<style id="mobile-responsive">
+/* ══════════════════════════════════════════
+   OPTIMISATION MOBILE — Navigation compacte
+   ══════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* ── Top band compact ── */
+  #top-band {
+    padding: 5px 8px !important;
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  #top-band::-webkit-scrollbar { display: none !important; }
+
+  /* ── Logo plus petit ── */
+  #nav-logo {
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* ── Icônes nav plus petites ── */
+  #nav-icons {
+    flex-wrap: nowrap !important;
+    gap: 2px !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+  }
+  #nav-icons::-webkit-scrollbar { display: none !important; }
+
+  .nav-circle {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .nav-circle svg, .nav-circle img {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  .nav-lbl {
+    font-size: 0.42rem !important;
+  }
+  .nav-ib {
+    padding: 1px 2px !important;
+    gap: 1px !important;
+    min-width: 36px !important;
+  }
+
+  /* ── Boutons auth ── */
+  #top-band-btns {
+    flex-shrink: 0 !important;
+    gap: 4px !important;
+  }
+  .btn-cx, .btn-ins, .top-btn {
+    padding: 5px 8px !important;
+    font-size: 0.62rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── Sélecteur langue ── */
+  #lang-select {
+    padding: 4px 6px !important;
+    font-size: 0.65rem !important;
+  }
+
+  /* ── Nom utilisateur connecté ── */
+  #nav-user-name {
+    font-size: 0.62rem !important;
+    max-width: 70px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  /* ── Bottom nav ── */
+  #bottom-nav {
+    padding: 4px 4px !important;
+  }
+  #bottom-nav .nav-circle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  #bottom-nav .nav-lbl {
+    font-size: 0.44rem !important;
+  }
+
+  /* ── Contenu général ── */
+  body { padding-bottom: 70px !important; }
+}
+</style>
 </head>
 <body>
 
