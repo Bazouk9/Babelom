@@ -879,80 +879,102 @@ body{padding-bottom:70px!important;}
 <style id="mobile-responsive">
 @media (max-width: 600px) {
 
-  /* ── Top band compact ── */
+  /* ══════════════════════════
+     NAV — 1 ligne compacte
+  ══════════════════════════ */
   #top-band {
-    padding: 5px 8px !important;
-    gap: 4px !important;
+    padding: 4px 6px !important;
+    gap: 3px !important;
     flex-wrap: nowrap !important;
     overflow: visible !important;
   }
-
-  /* ── Nav icons scrollable ── */
-  #nav-icons {
-    overflow-x: auto !important;
-    scrollbar-width: none !important;
-    flex-wrap: nowrap !important;
-    gap: 2px !important;
-    justify-content: flex-start !important;
-  }
-  #nav-icons::-webkit-scrollbar { display: none !important; }
-
-  /* ── Logo plus petit ── */
   #nav-logo {
-    font-size: 0.85rem !important;
+    font-size: 0.78rem !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
   }
-
-  /* ── Icônes plus petites ── */
-  .nav-circle {
-    width: 30px !important;
-    height: 30px !important;
-  }
-  .nav-circle svg { width: 14px !important; height: 14px !important; }
-  .nav-lbl { font-size: 0.42rem !important; }
-  .nav-ib {
-    padding: 1px 2px !important;
+  #nav-icons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
     gap: 1px !important;
-    min-width: 36px !important;
+    flex: 1 !important;
+    justify-content: flex-start !important;
   }
-
-  /* ── Boutons auth ── */
-  #top-band-btns { flex-shrink: 0 !important; gap: 4px !important; }
+  #nav-icons::-webkit-scrollbar { display: none !important; }
+  .nav-circle {
+    width: 28px !important;
+    height: 28px !important;
+  }
+  .nav-circle svg { width: 13px !important; height: 13px !important; }
+  .nav-lbl { font-size: 0.38rem !important; }
+  .nav-ib { padding: 1px 1px !important; gap: 1px !important; min-width: 32px !important; }
+  #top-band-btns { flex-shrink: 0 !important; gap: 3px !important; }
   .btn-cx, .btn-ins, .top-btn {
-    padding: 5px 8px !important;
-    font-size: 0.62rem !important;
+    padding: 4px 6px !important;
+    font-size: 0.58rem !important;
     white-space: nowrap !important;
   }
-
-  /* ── Sélecteur langue ── */
-  #lang-select { padding: 4px 6px !important; font-size: 0.65rem !important; }
-
-  /* ── Dropdown langue — position fixe pour éviter coupure overflow ── */
-  #lang-dropdown {
-    position: fixed !important;
-    top: 52px !important;
-    right: 8px !important;
-    left: auto !important;
-    z-index: 99999 !important;
-  }
-
-  /* ── Nom utilisateur ── */
+  #lang-select { font-size: 0.6rem !important; }
   #nav-user-name {
-    font-size: 0.62rem !important;
-    max-width: 70px !important;
+    font-size: 0.58rem !important;
+    max-width: 60px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
   }
 
-  /* ── Bottom nav ── */
-  #bottom-nav { padding: 4px !important; }
-  #bottom-nav .nav-circle { width: 32px !important; height: 32px !important; }
-  #bottom-nav .nav-lbl { font-size: 0.44rem !important; }
+  /* Dropdown langue — position fixe */
+  #lang-dropdown {
+    position: fixed !important;
+    top: 48px !important;
+    right: 6px !important;
+    left: auto !important;
+    z-index: 99999 !important;
+  }
 
-  /* ── Contenu ── */
-  body { padding-bottom: 70px !important; }
+  /* ══════════════════════════
+     HERO — colonne unique
+  ══════════════════════════ */
+  #hero {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+  .hero-left {
+    padding: 24px 20px 16px !important;
+    background: var(--creme) !important;
+  }
+  .hero-right { display: none !important; }
+
+  /* Masquer le diaporama sur mobile — évite clignotement */
+  #table-photos-inline { display: none !important; }
+
+  /* Textes hero adaptés */
+  .hero-eyebrow { font-size: 0.7rem !important; margin-bottom: 10px !important; }
+  .hero-title   { font-size: 1.6rem !important; margin-bottom: 12px !important; }
+  .hero-subtitle{ font-size: 0.9rem !important; margin-bottom: 20px !important; }
+  .hero-actions { flex-direction: column !important; gap: 8px !important; }
+  .hero-actions a, .hero-actions button {
+    width: 100% !important; text-align: center !important;
+  }
+  .hero-quote { margin-top: 20px !important; font-size: 1rem !important; }
+
+  /* ══════════════════════════
+     BANDEAU PHRASE
+  ══════════════════════════ */
+  #bandeau-phrase {
+    font-size: 0.85rem !important;
+    padding: 12px 16px !important;
+  }
+
+  /* ══════════════════════════
+     BOTTOM NAV
+  ══════════════════════════ */
+  #bottom-nav { padding: 4px !important; }
+  #bottom-nav .nav-circle { width: 30px !important; height: 30px !important; }
+  #bottom-nav .nav-lbl { font-size: 0.42rem !important; }
+  body { padding-bottom: 65px !important; }
 }
 </style>
 </head>
