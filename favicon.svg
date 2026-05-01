@@ -1,8 +1,101 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
-  <rect width="36" height="36" fill="#1e3a28" rx="4"/>
-  <path d="M18,32 Q18,32 10,20 A9,9 0 1,1 26,20 Q18,32 18,32 Z" fill="#d4880a" opacity="0.3"/>
-  <path d="M18,30 Q18,30 11,19 A8,8 0 1,1 25,19 Q18,30 18,30 Z" fill="none" stroke="#d4880a" stroke-width="1.5"/>
-  <polyline points="14,17 18,12 22,17" fill="none" stroke="#f5f2e8" stroke-width="1.2" stroke-linejoin="round"/>
-  <rect x="15" y="17" width="6" height="5" fill="none" stroke="#f5f2e8" stroke-width="1"/>
-  <rect x="17" y="19" width="2.5" height="3" fill="#d4880a"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+
+  <!-- Forme indicateur de lieu (goutte à l'envers) -->
+  <defs>
+    <clipPath id="pin-clip">
+      <!-- Goutte à l'envers : cercle en haut, pointe en bas -->
+      <path d="M400,60 
+               C220,60 100,190 100,360 
+               C100,530 280,650 400,760 
+               C520,650 700,530 700,360 
+               C700,190 580,60 400,60 Z"/>
+    </clipPath>
+    <radialGradient id="bg-grad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#1a4a28"/>
+      <stop offset="100%" stop-color="#0a1f12"/>
+    </radialGradient>
+    <linearGradient id="toit-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8a030" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#8a5500" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="mur-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8a5500" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#d4880a" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#8a5500" stop-opacity="0.4"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Contour extérieur de la goutte (bordure dorée) -->
+  <path d="M400,30 
+           C200,30 70,175 70,360 
+           C70,545 270,665 400,780 
+           C530,665 730,545 730,360 
+           C730,175 600,30 400,30 Z"
+        fill="#d4880a" opacity="0.9"/>
+
+  <!-- Remplissage intérieur vert foncé -->
+  <path d="M400,52 
+           C212,52 92,192 92,360 
+           C92,528 284,645 400,758 
+           C516,645 708,528 708,360 
+           C708,192 588,52 400,52 Z"
+        fill="url(#bg-grad)"/>
+
+  <!-- Anneau décoratif intérieur -->
+  <path d="M400,72 
+           C224,72 112,205 112,360 
+           C112,515 296,628 400,738 
+           C504,628 688,515 688,360 
+           C688,205 576,72 400,72 Z"
+        fill="none" stroke="#d4880a" stroke-width="2" opacity="0.25"/>
+
+  <!-- MAISON clipée dans la goutte -->
+  <g clip-path="url(#pin-clip)">
+
+    <!-- Cheminée -->
+    <rect x="490" y="210" width="36" height="72" rx="3" fill="#c07a00"/>
+    <rect x="484" y="202" width="48" height="14" rx="4" fill="#d4880a"/>
+
+    <!-- Toit -->
+    <polygon points="400,170 578,318 222,318" fill="#d4880a"/>
+    <polygon points="400,170 578,318 222,318" fill="url(#toit-grad)"/>
+
+    <!-- Murs -->
+    <rect x="232" y="316" width="336" height="222" rx="4" fill="#c07a00"/>
+    <rect x="232" y="316" width="336" height="222" rx="4" fill="url(#mur-grad)"/>
+
+    <!-- Porte -->
+    <rect x="352" y="418" width="96" height="120" rx="8" fill="#0a1f12"/>
+    <rect x="352" y="418" width="96" height="120" rx="8" fill="none" stroke="#d4880a" stroke-width="3"/>
+    <path d="M352,444 Q400,410 448,444" fill="none" stroke="#d4880a" stroke-width="2.5" opacity="0.6"/>
+    <circle cx="438" cy="480" r="6" fill="#d4880a"/>
+
+    <!-- Fenêtre gauche -->
+    <rect x="258" y="356" width="78" height="68" rx="5" fill="#0a1f12"/>
+    <rect x="258" y="356" width="78" height="68" rx="5" fill="none" stroke="#d4880a" stroke-width="3"/>
+    <line x1="297" y1="356" x2="297" y2="424" stroke="#d4880a" stroke-width="2"/>
+    <line x1="258" y1="390" x2="336" y2="390" stroke="#d4880a" stroke-width="2"/>
+    <rect x="262" y="360" width="31" height="27" rx="3" fill="#d4880a" opacity="0.08"/>
+
+    <!-- Fenêtre droite -->
+    <rect x="464" y="356" width="78" height="68" rx="5" fill="#0a1f12"/>
+    <rect x="464" y="356" width="78" height="68" rx="5" fill="none" stroke="#d4880a" stroke-width="3"/>
+    <line x1="503" y1="356" x2="503" y2="424" stroke="#d4880a" stroke-width="2"/>
+    <line x1="464" y1="390" x2="542" y2="390" stroke="#d4880a" stroke-width="2"/>
+    <rect x="468" y="360" width="31" height="27" rx="3" fill="#d4880a" opacity="0.08"/>
+
+    <!-- Sol -->
+    <line x1="180" y1="538" x2="620" y2="538" stroke="#d4880a" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+
+    <!-- Texte BABELOM plus petit, centré en bas de la forme -->
+    <text x="400" y="626"
+      font-family="Georgia, serif"
+      font-size="46"
+      font-weight="bold"
+      fill="#d4880a"
+      text-anchor="middle"
+      letter-spacing="6">BABELOM</text>
+
+  </g>
+
 </svg>
