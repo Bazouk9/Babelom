@@ -879,9 +879,9 @@ body{padding-bottom:70px!important;}
 <style id="mobile-responsive">
 @media (max-width: 600px) {
 
-  /* ══════════════════════════
-     NAV — 1 ligne compacte
-  ══════════════════════════ */
+  /* ══════════════════════════════════
+     NAV — 1 ligne compacte scrollable
+  ══════════════════════════════════ */
   #top-band {
     padding: 4px 6px !important;
     gap: 3px !important;
@@ -889,92 +889,141 @@ body{padding-bottom:70px!important;}
     overflow: visible !important;
   }
   #nav-logo {
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
   }
+  /* Zone icônes scrollable horizontalement */
   #nav-icons {
     display: flex !important;
     flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+    overflow-x: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
-    gap: 1px !important;
-    flex: 1 !important;
-    justify-content: flex-start !important;
+    gap: 0px !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
   }
   #nav-icons::-webkit-scrollbar { display: none !important; }
+
   .nav-circle {
-    width: 28px !important;
-    height: 28px !important;
+    width: 26px !important;
+    height: 26px !important;
+    flex-shrink: 0 !important;
   }
-  .nav-circle svg { width: 13px !important; height: 13px !important; }
-  .nav-lbl { font-size: 0.38rem !important; }
-  .nav-ib { padding: 1px 1px !important; gap: 1px !important; min-width: 32px !important; }
-  #top-band-btns { flex-shrink: 0 !important; gap: 3px !important; }
+  .nav-circle svg { width: 12px !important; height: 12px !important; }
+  .nav-lbl { font-size: 0.36rem !important; white-space: nowrap !important; }
+  .nav-ib {
+    padding: 1px 2px !important;
+    gap: 1px !important;
+    min-width: 30px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Boutons auth */
+  #top-band-btns {
+    flex-shrink: 0 !important;
+    gap: 2px !important;
+    margin-left: 2px !important;
+  }
   .btn-cx, .btn-ins, .top-btn {
-    padding: 4px 6px !important;
-    font-size: 0.58rem !important;
+    padding: 3px 5px !important;
+    font-size: 0.55rem !important;
     white-space: nowrap !important;
   }
-  #lang-select { font-size: 0.6rem !important; }
+  #lang-select { font-size: 0.58rem !important; }
   #nav-user-name {
-    font-size: 0.58rem !important;
-    max-width: 60px !important;
+    font-size: 0.55rem !important;
+    max-width: 55px !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
   }
 
-  /* Dropdown langue — position fixe */
+  /* Dropdown langue — au dessus de tout */
   #lang-dropdown {
     position: fixed !important;
-    top: 48px !important;
-    right: 6px !important;
+    top: 46px !important;
+    right: 4px !important;
     left: auto !important;
     z-index: 99999 !important;
   }
 
-  /* ══════════════════════════
-     HERO — colonne unique
-  ══════════════════════════ */
+  /* ══════════════════════════════════
+     HERO — réorganisation mobile
+  ══════════════════════════════════ */
   #hero {
-    grid-template-columns: 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
     min-height: auto !important;
+    position: relative !important;
   }
+
+  /* Carte de fond — visible mais moins haute */
+  #hero-map-preview {
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    right: 0 !important; bottom: 0 !important;
+    z-index: 0 !important;
+  }
+  .hero-map-overlay {
+    position: absolute !important;
+    top: 0 !important; left: 0 !important;
+    right: 0 !important; bottom: 0 !important;
+    z-index: 1 !important;
+  }
+
+  /* Texte hero — colonne pleine largeur */
   .hero-left {
-    padding: 24px 20px 16px !important;
-    background: var(--creme) !important;
+    width: 100% !important;
+    padding: 20px 16px 12px !important;
+    background: rgba(245,242,232,0.92) !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
-  .hero-right { display: none !important; }
+  .hero-eyebrow { font-size: 0.65rem !important; margin-bottom: 8px !important; }
+  .hero-title   { font-size: 1.5rem !important; margin-bottom: 10px !important; }
+  .hero-subtitle{ font-size: 0.82rem !important; margin-bottom: 16px !important; max-width: 100% !important; }
+  .hero-actions { flex-direction: column !important; gap: 6px !important; }
+  .hero-actions a, .hero-actions button { width: 100% !important; text-align: center !important; }
+  .hero-quote   { margin-top: 16px !important; font-size: 0.95rem !important; }
 
-  /* Masquer le diaporama sur mobile — évite clignotement */
-  #table-photos-inline { display: none !important; }
-
-  /* Textes hero adaptés */
-  .hero-eyebrow { font-size: 0.7rem !important; margin-bottom: 10px !important; }
-  .hero-title   { font-size: 1.6rem !important; margin-bottom: 12px !important; }
-  .hero-subtitle{ font-size: 0.9rem !important; margin-bottom: 20px !important; }
-  .hero-actions { flex-direction: column !important; gap: 8px !important; }
-  .hero-actions a, .hero-actions button {
-    width: 100% !important; text-align: center !important;
-  }
-  .hero-quote { margin-top: 20px !important; font-size: 1rem !important; }
-
-  /* ══════════════════════════
-     BANDEAU PHRASE
-  ══════════════════════════ */
-  #bandeau-phrase {
-    font-size: 0.85rem !important;
-    padding: 12px 16px !important;
+  /* hero-right — visible mais repositionné sous le texte */
+  .hero-right {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 220px !important;
+    overflow: visible !important;
+    z-index: 2 !important;
   }
 
-  /* ══════════════════════════
-     BOTTOM NAV
-  ══════════════════════════ */
+  /* Diaporama — centré, taille réduite */
+  #table-photos-inline {
+    position: relative !important;
+    top: auto !important; right: auto !important;
+    width: 220px !important;
+    margin: 8px auto !important;
+    z-index: 5 !important;
+  }
+  #tp-stack {
+    width: 210px !important;
+    height: 210px !important;
+  }
+
+  /* Maison + panneaux — taille réduite */
+  #logo-maison-wrap {
+    position: relative !important;
+    z-index: 3 !important;
+    transform: scale(0.7) !important;
+    transform-origin: center top !important;
+    margin-top: -20px !important;
+  }
+
+  /* Bottom nav */
   #bottom-nav { padding: 4px !important; }
-  #bottom-nav .nav-circle { width: 30px !important; height: 30px !important; }
-  #bottom-nav .nav-lbl { font-size: 0.42rem !important; }
-  body { padding-bottom: 65px !important; }
+  #bottom-nav .nav-circle { width: 28px !important; height: 28px !important; }
+  #bottom-nav .nav-lbl { font-size: 0.40rem !important; }
+  body { padding-bottom: 60px !important; }
 }
 </style>
 </head>
