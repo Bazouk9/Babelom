@@ -877,24 +877,6 @@ body{padding-bottom:70px!important;}
   <meta name="twitter:image" content="https://babelom.com/photos/photo1.jpg">
 
 <style id="mobile-responsive">
-/* ══════════════════════════════════════════
-   OPTIMISATION MOBILE — Navigation compacte
-   ══════════════════════════════════════════ */
-
-  /* ── Anti-clignotement diaporama ── */
-  #tp-stack {
-    will-change: contents !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-  }
-  #tp-stack img {
-    will-change: transform, opacity !important;
-    -webkit-backface-visibility: hidden !important;
-  }
-  #table-photos-inline {
-    /* Masquer le diaporama sur très petit écran pour éviter flash */
-    display: none !important;
-  }
 @media (max-width: 600px) {
 
   /* ── Top band compact ── */
@@ -903,24 +885,17 @@ body{padding-bottom:70px!important;}
     gap: 4px !important;
     flex-wrap: nowrap !important;
     overflow: visible !important;
-    -webkit-overflow-scrolling: touch !important;
   }
 
-  /* Nav icons scrollable sans couper le dropdown langue */
+  /* ── Nav icons scrollable ── */
   #nav-icons {
     overflow-x: auto !important;
     scrollbar-width: none !important;
+    flex-wrap: nowrap !important;
+    gap: 2px !important;
+    justify-content: flex-start !important;
   }
   #nav-icons::-webkit-scrollbar { display: none !important; }
-
-  /* Dropdown langue — toujours visible au dessus de tout */
-  #lang-dropdown {
-    position: fixed !important;
-    top: 52px !important;
-    right: 8px !important;
-    z-index: 99999 !important;
-    left: auto !important;
-  }
 
   /* ── Logo plus petit ── */
   #nav-logo {
@@ -929,27 +904,13 @@ body{padding-bottom:70px!important;}
     flex-shrink: 0 !important;
   }
 
-  /* ── Icônes nav plus petites ── */
-  #nav-icons {
-    flex-wrap: nowrap !important;
-    gap: 2px !important;
-    justify-content: flex-start !important;
-    overflow-x: auto !important;
-    scrollbar-width: none !important;
-  }
-  #nav-icons::-webkit-scrollbar { display: none !important; }
-
+  /* ── Icônes plus petites ── */
   .nav-circle {
     width: 30px !important;
     height: 30px !important;
   }
-  .nav-circle svg, .nav-circle img {
-    width: 14px !important;
-    height: 14px !important;
-  }
-  .nav-lbl {
-    font-size: 0.42rem !important;
-  }
+  .nav-circle svg { width: 14px !important; height: 14px !important; }
+  .nav-lbl { font-size: 0.42rem !important; }
   .nav-ib {
     padding: 1px 2px !important;
     gap: 1px !important;
@@ -957,10 +918,7 @@ body{padding-bottom:70px!important;}
   }
 
   /* ── Boutons auth ── */
-  #top-band-btns {
-    flex-shrink: 0 !important;
-    gap: 4px !important;
-  }
+  #top-band-btns { flex-shrink: 0 !important; gap: 4px !important; }
   .btn-cx, .btn-ins, .top-btn {
     padding: 5px 8px !important;
     font-size: 0.62rem !important;
@@ -968,12 +926,18 @@ body{padding-bottom:70px!important;}
   }
 
   /* ── Sélecteur langue ── */
-  #lang-select {
-    padding: 4px 6px !important;
-    font-size: 0.65rem !important;
+  #lang-select { padding: 4px 6px !important; font-size: 0.65rem !important; }
+
+  /* ── Dropdown langue — position fixe pour éviter coupure overflow ── */
+  #lang-dropdown {
+    position: fixed !important;
+    top: 52px !important;
+    right: 8px !important;
+    left: auto !important;
+    z-index: 99999 !important;
   }
 
-  /* ── Nom utilisateur connecté ── */
+  /* ── Nom utilisateur ── */
   #nav-user-name {
     font-size: 0.62rem !important;
     max-width: 70px !important;
@@ -983,18 +947,11 @@ body{padding-bottom:70px!important;}
   }
 
   /* ── Bottom nav ── */
-  #bottom-nav {
-    padding: 4px 4px !important;
-  }
-  #bottom-nav .nav-circle {
-    width: 32px !important;
-    height: 32px !important;
-  }
-  #bottom-nav .nav-lbl {
-    font-size: 0.44rem !important;
-  }
+  #bottom-nav { padding: 4px !important; }
+  #bottom-nav .nav-circle { width: 32px !important; height: 32px !important; }
+  #bottom-nav .nav-lbl { font-size: 0.44rem !important; }
 
-  /* ── Contenu général ── */
+  /* ── Contenu ── */
   body { padding-bottom: 70px !important; }
 }
 </style>
@@ -2050,7 +2007,8 @@ mettreAJourNav();
 
 
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
+  var navEl = document.getElementById('nav') || document.getElementById('top-band');
+    if (navEl) navEl.classList.toggle('scrolled', window.scrollY > 50);;
 });
 
 // ── HERO MAP (décoratif) ──
