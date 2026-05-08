@@ -538,7 +538,7 @@ async function chargerStats() {
 
     // ── Derniers témoignages ──
     var temosData = await sb.from('temoignages')
-      .select('lieudi, ville, pays, annee_de, annee_a, cree_le')
+      .select('lieudit, ville, pays, annee_de, annee_a, cree_le')
       .order('cree_le', {ascending: false})
       .limit(8);
 
@@ -549,7 +549,7 @@ async function chargerStats() {
         var periode = (t.annee_debut || '?') + ' – ' + (t.annee_fin || 'auj.');
         var periode = (t.annee_de || '?') + ' – ' + (t.annee_a || 'auj.');
         var date = new Date(t.cree_le).toLocaleDateString('fr-FR');
-      return '<tr><td>' + (t.lieudi||'—') + '</td><td>' + (t.ville||'—') +
+      return '<tr><td>' + (t.lieudit||'—') + '</td><td>' + (t.ville||'—') +
                '</td><td>' + (t.pays||'—') + '</td><td>' + periode +
                '</td><td>' + date + '</td></tr>';
       }).join('');
