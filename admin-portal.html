@@ -547,7 +547,9 @@ async function chargerStats() {
       tTemos.innerHTML = temosData.data.map(function(t) {
         var date = new Date(t.created_at).toLocaleDateString('fr-FR');
         var periode = (t.annee_debut || '?') + ' – ' + (t.annee_fin || 'auj.');
-        return '<tr><td>' + (t.nom_lieu||'—') + '</td><td>' + (t.ville||'—') +
+        var periode = (t.annee_de || '?') + ' – ' + (t.annee_a || 'auj.');
+        var date = new Date(t.cree_le).toLocaleDateString('fr-FR');
+      return '<tr><td>' + (t.lieudi||'—') + '</td><td>' + (t.ville||'—') +
                '</td><td>' + (t.pays||'—') + '</td><td>' + periode +
                '</td><td>' + date + '</td></tr>';
       }).join('');
