@@ -331,13 +331,19 @@ document.addEventListener('DOMContentLoaded',function(){
 // ═══════════════════════════════════════════════════════════════
 (function() {
   try {
+    // ── Exclure les admins du compteur ──
+    try {
+      var u = JSON.parse(localStorage.getItem('babelom-user') || 'null');
+      if (u && u.email === 'babelom9@gmail.com') return; // Admin = pas de comptage
+    } catch(e) {}
+
     var page = (window.location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
 
     // Anti-doublon : 1 visite max par page toutes les 30 minutes
     var storageKey = 'bv-' + page;
     var lastVisit = parseInt(localStorage.getItem(storageKey) || '0');
     var now = Date.now();
-    if (now - lastVisit < 30 * 60 * 1000) return; // Moins de 30 min = pas de doublon
+    if (now - lastVisit < 30 * 60 * 1000) return;
     localStorage.setItem(storageKey, now);
 
     // Enregistrer après 3 secondes (visiteur réel, pas un bot)
