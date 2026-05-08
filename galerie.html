@@ -509,7 +509,9 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 </div>
 
 <script>
-// ── Helper session ──
+// ── Helper session avec prolongation automatique (2h d'inactivité) ──
+var SESSION_DUREE = 2 * 60 * 60 * 1000; // 2h
+
 function babelomGetUser() {
   try {
     const raw = localStorage.getItem('babelom-user');
@@ -519,9 +521,29 @@ function babelomGetUser() {
       localStorage.removeItem('babelom-user');
       return null;
     }
+    // Prolonger : repousser l'expiration à maintenant + 2h
+    u.expires = Date.now() + SESSION_DUREE;
+    localStorage.setItem('babelom-user', JSON.stringify(u));
     return u;
   } catch(e) { return null; }
 }
+
+// Prolonger aussi sur chaque interaction utilisateur (clic, frappe, scroll)
+(function() {
+  function prolongerSession() {
+    try {
+      const raw = localStorage.getItem('babelom-user');
+      if (!raw) return;
+      const u = JSON.parse(raw);
+      if (!u.expires) return;
+      u.expires = Date.now() + SESSION_DUREE;
+      localStorage.setItem('babelom-user', JSON.stringify(u));
+    } catch(e) {}
+  }
+  ['click','keydown','scroll','touchstart'].forEach(function(ev) {
+    document.addEventListener(ev, prolongerSession, { passive: true });
+  });
+})();
 
 
 
@@ -536,6 +558,16 @@ document.addEventListener('contextmenu', function(e){ if(e.target.tagName==='IMG
 document.addEventListener('dragstart', function(e){ if(e.target.tagName==='IMG'){e.preventDefault();return false;} });
 
 var tousLesTemoignages = [];
+
+// ── Normalisation pays : casse titre + filtre email ──
+function normaliserPays(val) {
+  if (!val) return '';
+  // Filtrer les emails (contiennent @)
+  if (val.indexOf('@') !== -1) return '';
+  // Casse titre : première lettre maj, reste min
+  return val.trim().replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+
 var photosFlat = []; // [{url, lieu, dates, ville, pays, annee_de, annee_a}]
 var photosFiltrees = [];
 var lbIdx = 0;
@@ -570,7 +602,7 @@ async function chargerGalerie() {
     data.forEach(function(t) {
       photosFlat.push({
         url: t.url,
-        lieu: [t.ville, t.pays].filter(Boolean).join(', '),
+        lieu: [t.ville, normaliserPays(t.pays)].filter(Boolean).join(', '),
         ville: (t.ville || '').toLowerCase(),
         pays:  (t.pays  || '').toLowerCase(),
         annee_de: t.annee || 0,
@@ -831,7 +863,7 @@ function previewGaleriePhoto(input) {
 
 async function validerDepotPhoto() {
   var ville  = document.getElementById('g-depot-ville').value.trim();
-  var pays   = document.getElementById('g-depot-pays').value.trim();
+  var pays   = normaliserPays(document.getElementById('g-depot-pays').value.trim());
   var annee  = document.getElementById('g-depot-annee').value.trim();
   var input  = document.getElementById('g-photo-input');
   var msg    = document.getElementById('g-depot-msg');
