@@ -574,29 +574,30 @@ async function chargerStats() {
       document.getElementById('t-villes').innerHTML = '<tr><td colspan="3" style="color:rgba(200,216,176,0.4)">Aucune donnée</td></tr>';
     }
 
-    // ── Derniers utilisateurs (via témoignages) ──
-    var usersData = await sb.from('temoignages')
-      .select('utilisateur_id, prenom, created_at')
-      .order('created_at', {ascending: false})
-      .limit(8);
+    // ── Derniers utilisateurs (via table utilisateurs) ──
+var usersData = await sb.from('utilisateurs')
+  .select('email, prenom, cree_le, actif')
+  .order('cree_le', {ascending: false})
+  .limit(8);
 
-    var tUsers = document.getElementById('t-users');
-    if (usersData.data && usersData.data.length) {
-      // Dédupliquer par utilisateur_id
-      var seen = {};
-      var unique = usersData.data.filter(function(u) {
-        if (seen[u.utilisateur_id]) return false;
-        seen[u.utilisateur_id] = true;
-        return true;
-      });
-      tUsers.innerHTML = unique.map(function(u) {
-        var date = new Date(u.created_at).toLocaleDateString('fr-FR');
-        return '<tr><td>—</td><td>' + (u.prenom||'—') +
-               '</td><td>' + date + '</td><td><span class="badge-actif">Actif</span></td></tr>';
-      }).join('');
-    } else {
-      tUsers.innerHTML = '<tr><td colspan="4" style="color:rgba(200,216,176,0.4)">Aucun membre</td></tr>';
-    }
+// Compter aussi le total
+var usersTotal = await sb.from('utilisateurs')
+  .select('*', {count: 'exact', head: true});
+document.getElementById('s-users').textContent = usersTotal.count || '0';
+
+var tUsers = document.getElementById('t-users');
+if (usersData.data && usersData.data.length) {
+  tUsers.innerHTML = usersData.data.map(function(u) {
+    var date = new Date(u.cree_le).toLocaleDateString('fr-FR');
+    var badge = u.actif
+      ? '<span class="badge-actif">Actif</span>'
+      : '<span class="badge-inactif">Inactif</span>';
+    return '<tr><td>' + (u.email||'—') + '</td><td>' + (u.prenom||'—') +
+           '</td><td>' + date + '</td><td>' + badge + '</td></tr>';
+  }).join('');
+} else {
+  tUsers.innerHTML = '<tr><td colspan="4" style="color:rgba(200,216,176,0.4)">Aucun membre</td></tr>';
+}
 
   } catch(e) {
     console.error('Erreur stats:', e);
