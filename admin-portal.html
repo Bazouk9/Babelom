@@ -538,8 +538,8 @@ async function chargerStats() {
 
     // ── Derniers témoignages ──
     var temosData = await sb.from('temoignages')
-      .select('nom_lieu, ville, pays, annee_debut, annee_fin, created_at')
-      .order('created_at', {ascending: false})
+      .select('lieudi, ville, pays, annee_de, annee_a, cree_le')
+      .order('cree_le', {ascending: false})
       .limit(8);
 
     var tTemos = document.getElementById('t-temos');
