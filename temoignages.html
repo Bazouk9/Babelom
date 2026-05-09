@@ -769,13 +769,13 @@ function escHtml(str) {
 window.addEventListener('load', chargerTemoignages);
 
 // Nav active
-(function(){
+document.addEventListener('DOMContentLoaded', function(){
   var path = window.location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('.nav-ib').forEach(function(a){
     var href = (a.getAttribute('href')||'').split('?')[0];
     if(href===path){var c=a.querySelector('.nav-circle');if(c){c.style.outline='3px solid white';c.style.outlineOffset='2px';}}
   });
-})();
+});
 </script>
 
 <!-- MODALE CONTACT -->
