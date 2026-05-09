@@ -459,7 +459,7 @@ async function chargerStats() {
 
     // Pays distincts
     var paysRes = await sb.from('temoignages').select('pays');
-    var paysUniques = paysRes.data ? new Set(paysRes.data.map(function(t){ return t.pays; }).filter(Boolean)).size : 0;
+    var paysUniques = paysRes.data ? new Set(paysRes.data.map(function(t){ return t.pays ? t.pays.trim().toLowerCase() : null; }).filter(Boolean)).size : 0;
 
     document.getElementById('s-users').textContent = usersCount || '0';
     document.getElementById('s-temos').textContent = temos.count || '0';
