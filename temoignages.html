@@ -378,34 +378,34 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
     <!-- Par ville -->
     <div style="display:flex;flex-direction:column;gap:5px;">
       <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par ville</label>
-      <input type="text" id="f-ville" placeholder="Ex : Paris, Lyon…"
+      <input type="text" id="f-ville" autocomplete="new-password" placeholder="Ex : Paris, Lyon…"
         onkeydown="if(event.key==='Enter')lancerRecherche()"
         style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
                color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
                outline:none;width:190px;transition:border-color 0.2s;text-transform:uppercase;"
-        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" autocomplete="off">
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
     </div>
 
     <!-- Par rue -->
     <div style="display:flex;flex-direction:column;gap:5px;">
       <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par rue</label>
-      <input type="text" id="f-voie" placeholder="Ex : rue de la Paix…"
+      <input type="text" id="f-voie" autocomplete="new-password" placeholder="Ex : rue de la Paix…"
         onkeydown="if(event.key==='Enter')lancerRecherche()"
         style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
                color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
                outline:none;width:220px;transition:border-color 0.2s;"
-        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" autocomplete="off">
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
     </div>
 
     <!-- Par nom de famille -->
     <div style="display:flex;flex-direction:column;gap:5px;">
       <label style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.16em;color:rgba(255,255,255,0.45);font-family:'Nunito',sans-serif;">Par nom de famille</label>
-      <input type="text" id="f-nom" placeholder="Ex : DUPONT…"
+      <input type="text" id="f-nom" autocomplete="new-password" placeholder="Ex : DUPONT…"
         onkeydown="if(event.key==='Enter')lancerRecherche()"
         style="background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);border-radius:8px;
                color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;padding:9px 13px;
                outline:none;width:190px;transition:border-color 0.2s;text-transform:uppercase;"
-        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'" autocomplete="off">
+        onfocus="this.style.borderColor='#FF6B35'" onblur="this.style.borderColor='rgba(255,255,255,0.2)'">
     </div>
 
     <!-- Boutons -->
@@ -508,8 +508,8 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 <div id="modale-ins" class="modale-overlay" onclick="if(event.target===this)fermerModale('modale-ins')">
   <div class="modale-box">
     <h3>Créer un compte</h3>
-    <input id="ins-prenom" class="input-compte" type="text"     placeholder="Prénom *" autocomplete="off">
-    <input id="ins-nom"    class="input-compte" type="text"     placeholder="Nom *" autocomplete="off">
+    <input id="ins-prenom" autocomplete="new-password" class="input-compte" type="text"     placeholder="Prénom *">
+    <input id="ins-nom" autocomplete="new-password"    class="input-compte" type="text"     placeholder="Nom *">
     <input id="ins-email"  class="input-compte" type="email"    placeholder="Adresse e-mail *">
     <input id="ins-mdp"    class="input-compte" type="password" placeholder="Mot de passe *">
     <button class="btn-compte" style="background:#4ECDC4;color:#1A1A2E;" onclick="sInscrire()">Créer mon compte →</button>
@@ -782,7 +782,7 @@ window.addEventListener('load', chargerTemoignages);
 <div id="modale-contact" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9998;align-items:center;justify-content:center;" onclick="if(event.target===this)fermerContact()">
   <div style="background:#1e2d50;border:1px solid #3358a0;padding:36px;max-width:500px;width:92%;border-radius:14px;font-family:'Nunito',sans-serif;">
     <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:white;margin-bottom:20px;">Nous <em style="color:#FF6B35;">contacter</em></h3>
-    <input type="text" id="c-nom" placeholder="Nom & Prénom *" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;margin-bottom:10px;" autocomplete="off">
+    <input type="text" id="c-nom" autocomplete="new-password" placeholder="Nom & Prénom *" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;margin-bottom:10px;">
     <input type="email" id="c-email" placeholder="Email *" style="width:100%;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;margin-bottom:10px;">
     <select id="c-objet" style="width:100%;background:#2c4a8a;border:1.5px solid rgba(255,255,255,0.2);color:white;font-family:'Nunito',sans-serif;font-size:0.88rem;padding:10px 14px;outline:none;border-radius:8px;margin-bottom:10px;">
       <option value="">Objet *</option>
