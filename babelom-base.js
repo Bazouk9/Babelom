@@ -333,8 +333,13 @@ document.addEventListener('DOMContentLoaded',function(){
   try {
     // ── Exclure les admins du compteur ──
     try {
+      // Flag permanent posé manuellement dans le navigateur admin
+      if (localStorage.getItem('babelom-admin-mode') === '1') return;
+      // Si connecté avec le compte admin
       var u = JSON.parse(localStorage.getItem('babelom-user') || 'null');
-      if (u && u.email === 'babelom9@gmail.com') return; // Admin = pas de comptage
+      if (u && (u.email === 'babelom9@gmail.com' || u.role === 'admin')) return;
+      // Exclure localhost et développement
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
     } catch(e) {}
 
     var page = (window.location.pathname.split('/').pop() || 'index').replace('.html','') || 'index';
