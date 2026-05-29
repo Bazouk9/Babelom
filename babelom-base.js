@@ -572,3 +572,12 @@ document.addEventListener('DOMContentLoaded',function(){
   };
 
 })();
+
+// ── Cloudflare Web Analytics ──
+(function() {
+  var s = document.createElement('script');
+  s.defer = true;
+  s.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+  s.setAttribute('data-cf-beacon', '{"token": "7e932684379945fe9edd774b20ee8429"}');
+  document.head.appendChild(s);
+})();
