@@ -411,8 +411,17 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
   <div id="map-container" style="width:50%;height:600px;flex-shrink:0;position:relative;background:#d4e8f0;">
     <div id="map" style="width:100%;height:600px;"></div>
   </div>
-  <div id="form-container" style="width:50%;height:600px;overflow-y:auto;background:#f5f2e8;padding:24px 28px;color:#1e3a28;">
+  <div id="form-container" style="width:50%;height:600px;overflow-y:auto;background:#f5f2e8;padding:24px 28px;color:#1e3a28;position:relative;">
     
+    <div id="bandeau-libre" style="background:linear-gradient(135deg,#1e3a6e,#2a5298);border-radius:6px;padding:14px 18px;margin-bottom:16px;text-align:center;">
+      <p style="color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">🔓 On consulte librement</p>
+      <p style="color:rgba(255,255,255,0.75);font-family:'Nunito',sans-serif;font-size:0.78rem;margin:0;">On s'inscrit pour contribuer — <a href="javascript:void(0)" onclick="ouvrirModale('modale-ins')" style="color:#FFD93D;text-decoration:underline;">Créer un compte gratuit</a></p>
+    </div>
+    <div id="overlay-non-inscrit" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,242,232,0.85);z-index:10;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#1e3a28;text-align:center;padding:0 20px;">Inscrivez-vous pour déposer votre souvenir</p>
+      <button onclick="ouvrirModale('modale-ins')" style="background:#FF6B35;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-radius:4px;cursor:pointer;">Créer un compte gratuit</button>
+      <a href="javascript:void(0)" onclick="ouvrirModale('modale-cx')" style="color:#1e3a28;font-size:0.78rem;text-decoration:underline;">Déjà membre ? Se connecter</a>
+    </div>
     <div class="form-section-title-warn" style="border:2px solid #FF6B35;border-left:6px solid #FF6B35;background:#fff9f5;border-radius:4px;padding:14px 16px;color:#1e3a28;font-size:0.92rem;font-weight:600;line-height:1.5;margin-bottom:20px;">⚠️ Par mesure de confidentialité et de sécurité, n'enregistrez pas votre adresse actuelle mais uniquement vos anciennes adresses.</div>
 
     <div class="form-section-title" style="font-family:'Restweek',cursive !important;font-size:2.8rem;font-weight:900;color:#1e3a28;-webkit-text-stroke:0.5px #1e3a28;paint-order:stroke fill;"><span style="font-size:inherit;">C'</span><span style="font-size:0.82em;vertical-align:0.05em;">é</span><span style="font-size:inherit;">tait o</span><span style="font-size:0.82em;vertical-align:0.05em;">ù</span><span style="font-size:inherit;"> ?</span></div>
@@ -1336,6 +1345,7 @@ function rechercherMembres() {
 }
 
 function allerEtape2() {
+  if (!babelomGetUser()) { ouvrirModale('modale-ins'); return; }
   if (!latLng) { alert('Veuillez d\'abord placer un point sur la carte.'); return; }
   const de = parseInt(document.getElementById('f-de').value);
   const a  = parseInt(document.getElementById('f-a').value);
@@ -1396,6 +1406,17 @@ function nouveau() {
 </script>
 
 <script id="nav-active">
+(function(){
+  // Afficher overlay si non connecté
+  var user = (function(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}})();
+  if (!user) {
+    document.addEventListener('DOMContentLoaded', function(){
+      var ov = document.getElementById('overlay-non-inscrit');
+      if (ov) ov.style.display = 'flex';
+    });
+  }
+})();
+
 (function(){
   var path = window.location.pathname.split('/').pop() || 'index.html';
   if(path === '') path = 'index.html';
