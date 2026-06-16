@@ -2429,10 +2429,10 @@ function fermerLightbox() {
 </div>
 <script>
 function connexionGoogle() {
-  // Passer par Supabase — il gère l'échange OAuth et renvoie un token Supabase
+  // Flux implicit (pas PKCE) — évite l'erreur "Unable to exchange external code"
   var SUPABASE_URL = 'https://qbxshawdxqochjsmoodl.supabase.co';
   var redirectTo = encodeURIComponent('https://babelom.com/index.html');
-  window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo;
+  window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo + '&flow_type=implicit';
 }
 function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
 function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
