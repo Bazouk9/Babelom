@@ -1994,7 +1994,17 @@ document.getElementById('modale-reset').addEventListener('click', function(e) {
 });
 
 // ── CLIENT SUPABASE AUTH ──
-const sbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Instance unique Supabase — évite les conflits GoTrueClient
+if (!window._babelomSbAuth) {
+  window._babelomSbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    auth: {
+      storageKey: 'babelom-sb-auth',
+      persistSession: true,
+      autoRefreshToken: true
+    }
+  });
+}
+const sbAuth = window._babelomSbAuth;
 
 // ── COMPTE ──
 async function creerCompte() {
