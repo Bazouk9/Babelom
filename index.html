@@ -2803,5 +2803,42 @@ async function supprimerMonCompte() {
   </div>
 </div>
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+// ── Handler retour OAuth Google ──
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash.indexOf('access_token=') !== -1) {
+    var params = {};
+    hash.slice(1).split('&').forEach(function(p) {
+      var kv = p.split('=');
+      params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+    });
+    if (params.access_token) {
+      fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/user', {
+        headers: {
+          'apikey': SUPABASE_ANON,
+          'Authorization': 'Bearer ' + params.access_token
+        }
+      }).then(function(r){ return r.json(); }).then(function(u) {
+        var prenom = (u.user_metadata && (u.user_metadata.full_name || u.user_metadata.name)) || u.email.split('@')[0];
+        localStorage.setItem('babelom-user', JSON.stringify({
+          id: u.id,
+          email: u.email,
+          prenom: prenom,
+          token: params.access_token,
+          expires: Date.now() + 2 * 60 * 60 * 1000
+        }));
+        history.replaceState(null, '', window.location.pathname);
+        if (typeof mettreAJourNav === 'function') mettreAJourNav();
+        fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON},
+          body: JSON.stringify({ prenom: prenom, email: u.email })
+        }).catch(function(){});
+      }).catch(function(e){ console.error('OAuth error:', e); });
+    }
+  }
+})();
+</script>
 </body>
 </html>
