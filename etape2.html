@@ -803,18 +803,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 </head>
 <body>
 <script>
-// ── GARDE D'ACCÈS ──
-(function() {
-  if (!localStorage.getItem('babelom-user') && !new URLSearchParams(window.location.search).get('admin')) {
-    // Afficher la modale de connexion au lieu de rediriger
-    document.addEventListener('DOMContentLoaded', function() {
-      var modale = document.getElementById('modale-cx');
-      if (modale) {
-        modale.style.display = 'flex';
-      }
-    });
-  }
-})();
+// Consultation libre — pas de blocage à l'affichage
 </script>
 
 
@@ -1444,6 +1433,13 @@ function supprimerPhoto(idx, btn) {
 
 // ── VALIDATION & ENVOI SUPABASE ──
 async function valider() {
+  // Vérifier connexion pour contribuer
+  var user = (function(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}})();
+  if (!user) {
+    var m = document.getElementById('modale-ins');
+    if (m) m.style.display = 'flex';
+    return;
+  }
   const texte = document.getElementById('f-texte').value.trim();
   if (!texte) { alert('Veuillez écrire au moins quelques mots sur ce lieu.'); return; }
 
