@@ -2388,6 +2388,15 @@ function fermerLightbox() {
     <input type="email" id="cx-email" class="input-compte" data-i18n-ph="labelEmail" placeholder="Email">
     <input type="password" id="cx-mdp" class="input-compte" data-i18n-ph="labelMdpLogin" placeholder="Mot de passe">
     <button class="btn-compte" data-i18n="btnLogin" style="background:#FF6B35;color:white;" onclick="seConnecter()">Se connecter →</button>
+    <div style="margin:12px 0;display:flex;align-items:center;gap:8px;">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.15);"></div>
+      <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);">ou</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.15);"></div>
+    </div>
+    <button onclick="connexionGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:white;color:#3c4043;border:none;padding:10px 16px;border-radius:4px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;margin-bottom:4px;">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.1 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.6-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+      Continuer avec Google
+    </button>
     <div class="msg-compte" id="msg-cx"></div>
     <div style="margin-top:10px;text-align:center;font-size:0.72rem;color:rgba(255,255,255,0.5);">Pas encore ? <span style="color:#FF6B35;cursor:pointer;font-weight:700;" onclick="fermerModale('modale-cx');ouvrirModale('modale-ins')">S'inscrire</span></div>
     <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-cx')">Annuler</button>
@@ -2399,6 +2408,15 @@ function fermerLightbox() {
     <input type="email" id="ins-email" class="input-compte" data-i18n-ph="labelEmail" placeholder="Email">
     <input type="password" id="ins-mdp" class="input-compte" data-i18n-ph="placeholderMdp" placeholder="Mot de passe">
     <button class="btn-compte" data-i18n="btnCreate" style="background:#4ECDC4;color:#2c4a8a;" onclick="sInscrire()">S'inscrire →</button>
+    <div style="margin:12px 0;display:flex;align-items:center;gap:8px;">
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.15);"></div>
+      <span style="font-size:0.7rem;color:rgba(255,255,255,0.4);">ou</span>
+      <div style="flex:1;height:1px;background:rgba(255,255,255,0.15);"></div>
+    </div>
+    <button onclick="connexionGoogle()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:white;color:#3c4043;border:none;padding:10px 16px;border-radius:4px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;margin-bottom:4px;">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.1 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.6-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
+      Continuer avec Google
+    </button>
     <div class="msg-compte" id="msg-ins"></div>
     <button class="btn-cancel" style="width:100%;margin-top:8px;" onclick="fermerModale('modale-ins')">Annuler</button>
   </div>
@@ -2419,6 +2437,14 @@ function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)r
 function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='Bonjour '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
 function seDeconnecter(){localStorage.removeItem('babelom-user');mettreAJourNav();}
 async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+function connexionGoogle() {
+  var SUPABASE_URL = 'https://qbxshawdxqochjsmoodl.supabase.co';
+  var SUPABASE_ANON = document.querySelector('script[data-anon]') ? document.querySelector('script[data-anon]').dataset.anon : window.SUPABASE_ANON;
+  // Redirection OAuth Google via Supabase
+  var redirectTo = encodeURIComponent(window.location.origin + '/index.html');
+  window.location.href = SUPABASE_URL + '/auth/v1/authorize?provider=google&redirect_to=' + redirectTo;
+}
+
 async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecte!':'Verifiez votre email.';}fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},body:JSON.stringify({prenom:prenom,email:email})}).catch(function(){});if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 function validerAdmin() {
   // Accès admin via Supabase — plus de mot de passe en clair
