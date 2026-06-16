@@ -2831,36 +2831,76 @@ async function supprimerMonCompte() {
 })();
 
 (function() {
+  // ── Handler retour OAuth Google (token fragment) ──
   var hash = window.location.hash;
   if (hash && hash.indexOf('access_token=') !== -1) {
+    // Parser le fragment correctement (les valeurs peuvent contenir des = et des &)
     var params = {};
     hash.slice(1).split('&').forEach(function(p) {
-      var kv = p.split('=');
-      params[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+      var eqIdx = p.indexOf('=');
+      if (eqIdx === -1) return;
+      var key = p.slice(0, eqIdx);
+      var val = p.slice(eqIdx + 1);
+      try { params[decodeURIComponent(key)] = decodeURIComponent(val); } catch(e) { params[key] = val; }
     });
-    if (params.access_token) {
+
+    var accessToken = params['access_token'];
+    var supabaseToken = params['provider_token'] || accessToken; // Supabase met son propre token ici
+
+    if (accessToken) {
+      // Nettoyer l'URL immédiatement
+      history.replaceState(null, '', window.location.pathname);
+
+      // Récupérer le profil utilisateur via Supabase (le token dans le hash EST le token Supabase)
       fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/user', {
         headers: {
           'apikey': SUPABASE_ANON,
-          'Authorization': 'Bearer ' + params.access_token
+          'Authorization': 'Bearer ' + accessToken
         }
-      }).then(function(r){ return r.json(); }).then(function(u) {
-        var prenom = (u.user_metadata && (u.user_metadata.full_name || u.user_metadata.name)) || u.email.split('@')[0];
+      }).then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(u) {
+        if (!u || !u.email) throw new Error('Profil vide');
+        var meta = u.user_metadata || {};
+        var prenom = meta.full_name || meta.name || meta.prenom || u.email.split('@')[0];
+        // Garder seulement le prénom (pas le nom complet)
+        if (prenom.indexOf(' ') !== -1) prenom = prenom.split(' ')[0];
         localStorage.setItem('babelom-user', JSON.stringify({
           id: u.id,
           email: u.email,
           prenom: prenom,
-          token: params.access_token,
+          token: accessToken,
           expires: Date.now() + 2 * 60 * 60 * 1000
         }));
-        history.replaceState(null, '', window.location.pathname);
         if (typeof mettreAJourNav === 'function') mettreAJourNav();
-        fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON},
-          body: JSON.stringify({ prenom: prenom, email: u.email })
-        }).catch(function(){});
-      }).catch(function(e){ console.error('OAuth error:', e); });
+        // Notifier l'admin si nouveau compte (created_at récent)
+        var created = new Date(u.created_at).getTime();
+        if (Date.now() - created < 60000) {
+          fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON},
+            body: JSON.stringify({ prenom: prenom, email: u.email })
+          }).catch(function(){});
+        }
+      }).catch(function(e) {
+        console.warn('OAuth profil non récupéré:', e.message);
+        // Fallback : extraire l'email du token JWT si possible
+        try {
+          var payload = JSON.parse(atob(accessToken.split('.')[1]));
+          if (payload.email) {
+            var prenom = payload.email.split('@')[0];
+            localStorage.setItem('babelom-user', JSON.stringify({
+              id: payload.sub,
+              email: payload.email,
+              prenom: prenom,
+              token: accessToken,
+              expires: Date.now() + 2 * 60 * 60 * 1000
+            }));
+            if (typeof mettreAJourNav === 'function') mettreAJourNav();
+          }
+        } catch(je) { console.warn('JWT parse échoué:', je.message); }
+      });
     }
   }
 })();
