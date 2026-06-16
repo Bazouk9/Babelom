@@ -2482,13 +2482,21 @@ function babelomGetUser() {
 // Vérifier session Supabase au chargement
 (async function() {
   try {
-    const _sb = sbAuth;
-    const { data } = await _sb.auth.getSession();
-    if (data && data.session === null) {
-      // Session explicitement nulle (pas une erreur réseau) — déconnecter
-      localStorage.removeItem('babelom-user');
+    const { data } = await sbAuth.auth.getSession();
+    if (data && data.session && data.session.user) {
+      // Session Supabase active — synchroniser babelom-user
+      var u = data.session.user;
+      var meta = u.user_metadata || {};
+      var prenom = meta.full_name || meta.name || meta.prenom || u.email.split('@')[0];
+      if (prenom && prenom.indexOf(' ') !== -1) prenom = prenom.split(' ')[0];
+      localStorage.setItem('babelom-user', JSON.stringify({
+        id: u.id, email: u.email, prenom: prenom,
+        token: data.session.access_token,
+        expires: Date.now() + 2 * 60 * 60 * 1000
+      }));
+      if (typeof mettreAJourNav === 'function') mettreAJourNav();
     }
-    // Si erreur réseau : on garde l'utilisateur connecté
+    // Si session nulle ou erreur : ne pas effacer — l'utilisateur peut avoir une session custom
   } catch(e) {}
 })();
 
