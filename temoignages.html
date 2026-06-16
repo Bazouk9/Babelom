@@ -292,12 +292,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 <body>
 <script>
 (function() {
-  if (!localStorage.getItem('babelom-user') && !new URLSearchParams(window.location.search).get('admin')) {
-    document.addEventListener('DOMContentLoaded', function() {
-      var m = document.getElementById('modale-cx');
-      if (m) m.style.display = 'flex';
-    });
-  }
+  // Consultation libre — la modale s'affiche uniquement pour les actions de contribution
 })();
 </script>
 

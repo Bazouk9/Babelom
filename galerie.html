@@ -710,17 +710,9 @@ document.getElementById('babelom-lightbox').addEventListener('click', function(e
   if (e.target === this) fermerLightbox();
 });
 
-// Contrôle accès membres
+// Consultation libre — chargement sans vérification
 function lancerGalerie() {
-  var user = babelomGetUser();
-  if (!user) {
-    document.getElementById('galerie-loading').innerHTML =
-      '<div style="font-family:\'Cormorant Garamond\',serif;font-size:1.4rem;color:var(--terre);margin-bottom:12px;">Accès réservé aux membres</div>' +
-      '<p style="color:var(--muted);margin-bottom:16px;">Inscrivez-vous pour découvrir les photos déposées par la communauté BabelOm.</p>' +
-      '<a href="index.html#compte" style="background:var(--ocre);color:white;text-decoration:none;padding:10px 24px;font-family:\'Jost\',sans-serif;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;">Créer un compte</a>';
-  } else {
-    chargerGalerie();
-  }
+  chargerGalerie();
 }
 
 window.addEventListener('load', lancerGalerie);

@@ -632,13 +632,8 @@ function afficherErreur() {
   document.getElementById('page-erreur').style.display = 'block';
 }
 
-// Vérifier accès membre
-var user = localStorage.getItem('babelom-user');
-if (!user) {
-  window.location.replace('index.html#compte');
-} else {
-  chargerTemoignage();
-}
+// Consultation libre
+chargerTemoignage();
 
 window.addEventListener('scroll', function(){
   var _nb=document.getElementById('top-band');if(_nb)_nb.style.boxShadow=window.scrollY>30?'0 2px 12px rgba(0,0,0,0.25)':'';
