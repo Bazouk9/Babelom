@@ -89,7 +89,7 @@ const sb = {
   if (typeof supabase !== 'undefined' && supabase.createClient) {
     window._supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
       auth: {
-        flowType: 'pkce',
+        flowType: 'implicit',
         autoRefreshToken: true,
         detectSessionInUrl: true,
         persistSession: true
