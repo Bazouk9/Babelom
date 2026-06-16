@@ -17,7 +17,8 @@
   <meta name="twitter:title" content="Déposer mon souvenir — Localiser mon lieu | BabelOm">
   <meta name="twitter:description" content="Localisez le lieu de votre souvenir sur la carte BabelOm. Rue, ville, pays — retrouvez d'anciens habitants et partagez votre mémoire collective.">
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon-64x64.png">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -912,6 +913,12 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 <!-- CONTENU PRINCIPAL -->
 <div class="main-content">
 
+  <!-- BANDEAU CONSULTATION LIBRE -->
+  <div style="background:linear-gradient(135deg,#1e3a6e,#2a5298);border-radius:6px;padding:14px 18px;margin-bottom:20px;text-align:center;">
+    <p style="color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">🔓 On consulte librement</p>
+    <p style="color:rgba(255,255,255,0.75);font-family:'Nunito',sans-serif;font-size:0.78rem;margin:0;">On s'inscrit pour contribuer — <a href="javascript:void(0)" onclick="ouvrirModale('modale-ins')" style="color:#FFD93D;text-decoration:underline;">Créer un compte gratuit</a></p>
+  </div>
+
   <!-- SECTION IDENTITÉ -->
   <div class="form-section-title" style="margin-bottom:8px;font-family:'Restweek',cursive !important;font-size:3.2rem;font-weight:900;-webkit-text-stroke:0.6px var(--terre);paint-order:stroke fill;">Vous</div>
   <p class="form-section-sub">Ces informations permettent de relier votre témoignage à votre histoire personnelle.</p>
@@ -1080,7 +1087,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
   <!-- SECTION SOUVENIRS -->
 
-  <div class="form-section-title" data-i18n="e2SectionSouvenirs"><span style="font-family:'Restweek',cursive !important;font-size:3.2rem;font-weight:900;-webkit-text-stroke:0.6px var(--terre);paint-order:stroke fill;">C'<span style="font-size:0.82em;vertical-align:0.05em;">é</span>tait comment ?</span></div>
+  <div class="form-section-title" style="font-family:'Restweek',cursive !important;font-size:3.2rem;font-weight:900;-webkit-text-stroke:0.6px var(--terre);paint-order:stroke fill;" data-i18n="e2SectionSouvenirs">Vos souvenirs de ce lieu</div>
   <p class="form-section-sub">Prenez le temps d'écrire librement. Ce texte sera transmis tel quel à vos proches et aux générations futures.</p>
 
   <div class="champ">
