@@ -83,3 +83,17 @@ const sb = {
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
   }
 };
+
+// ── Initialisation du vrai SDK Supabase (pour OAuth Google) ──
+(function() {
+  if (typeof supabase !== 'undefined' && supabase.createClient) {
+    window._supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+      auth: {
+        flowType: 'pkce',
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        persistSession: true
+      }
+    });
+  }
+})();
