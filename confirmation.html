@@ -378,17 +378,46 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 </div>
 
 <script>
-const sbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+// Même instance que index.html — partage le code_verifier PKCE
+if (!window._babelomSbAuth) {
+  window._babelomSbAuth = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+    auth: { storageKey: 'babelom-sb-auth', persistSession: true, autoRefreshToken: true }
+  });
+}
+const sbAuth = window._babelomSbAuth;
 
 async function confirmer() {
-  // Supabase envoie le token dans le hash de l'URL
   const hash   = window.location.hash.substring(1);
   const params = new URLSearchParams(hash);
   const token  = params.get('access_token');
   const type   = params.get('type');
 
+  // Retour OAuth Google — laisser le SDK traiter, puis rediriger vers index.html
+  if (!type || type === 'oauth') {
+    sbAuth.auth.onAuthStateChange(function(event, session) {
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session && session.user) {
+        var u = session.user;
+        var meta = u.user_metadata || {};
+        var prenom = meta.full_name || meta.name || meta.prenom || u.email.split('@')[0];
+        if (prenom && prenom.indexOf(' ') !== -1) prenom = prenom.split(' ')[0];
+        localStorage.setItem('babelom-user', JSON.stringify({
+          id: u.id, email: u.email, prenom: prenom,
+          token: session.access_token,
+          expires: Date.now() + 2 * 60 * 60 * 1000
+        }));
+        window.location.replace('https://babelom.com/index.html');
+      }
+    });
+    // Timeout fallback si le SDK ne capte pas
+    setTimeout(function() {
+      if (window.location.href.indexOf('confirmation') !== -1) {
+        window.location.replace('https://babelom.com/index.html');
+      }
+    }, 3000);
+    return;
+  }
+
   if (!token) {
-    // Pas de token — peut-être déjà confirmé
     document.getElementById('carte-chargement').style.display = 'none';
     document.getElementById('carte-erreur').style.display = 'block';
     return;

@@ -2441,7 +2441,7 @@ function fermerLightbox() {
 function connexionGoogle() {
   sbAuth.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: 'https://babelom.com/index.html' }
+    options: { redirectTo: 'https://babelom.com/confirmation.html' }
   });
 }
 function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
@@ -2482,7 +2482,7 @@ function babelomGetUser() {
 // Vérifier session Supabase au chargement
 (async function() {
   try {
-    const _sb = window._sbAuthClient || window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const _sb = sbAuth;
     const { data } = await _sb.auth.getSession();
     if (data && data.session === null) {
       // Session explicitement nulle (pas une erreur réseau) — déconnecter
@@ -2530,7 +2530,7 @@ async function chargerLieuxMembre(user) {
     // Récupérer le token de session (nécessaire pour les politiques RLS Supabase)
     var token = SUPABASE_ANON;
     try {
-      var _sbL = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+      var _sbL = sbAuth;
       var sess = await _sbL.auth.getSession();
       if (sess.data && sess.data.session && sess.data.session.access_token) {
         token = sess.data.session.access_token;
@@ -2616,7 +2616,7 @@ async function supprimerLieu(id) {
   try {
     var token = SUPABASE_ANON;
     try {
-      var _sbD = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {auth:{persistSession:true}});
+      var _sbD = sbAuth;
       var sess = await _sbD.auth.getSession();
       if (sess.data && sess.data.session && sess.data.session.access_token) {
         token = sess.data.session.access_token;
@@ -2834,11 +2834,10 @@ async function supprimerMonCompte() {
   }
 })();
 
+// ── Handler retour OAuth Google via SDK Supabase ──
 (function() {
-  // ── Handler retour OAuth Google via SDK Supabase ──
-  (function() {
-    // Le SDK détecte automatiquement le code/token dans l'URL et échange
-    sbAuth.auth.onAuthStateChange(function(event, session) {
+  // Le SDK détecte automatiquement le code/token dans l'URL et échange
+  sbAuth.auth.onAuthStateChange(function(event, session) {
       if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session && session.user) {
         var u = session.user;
         var meta = u.user_metadata || {};
@@ -2864,7 +2863,6 @@ async function supprimerMonCompte() {
         }
       }
     });
-  })();
 })();
 </script>
 </body>
