@@ -2447,12 +2447,6 @@ function connexionGoogle() {
     window.location.href = 'https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/authorize?provider=google&redirect_to=https://babelom.com/index.html';
   }
 }
-    });
-  } else {
-    // Fallback direct
-    window.location.href = 'https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/authorize?provider=google&redirect_to=https://babelom.com/index.html';
-  }
-}
 
 async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecte!':'Verifiez votre email.';}fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},body:JSON.stringify({prenom:prenom,email:email})}).catch(function(){});if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 function validerAdmin() {
