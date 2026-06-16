@@ -2428,15 +2428,6 @@ function fermerLightbox() {
   </div>
 </div>
 <script>
-function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
-function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
-function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
-function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
-document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
-function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
-function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='Bonjour '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
-function seDeconnecter(){localStorage.removeItem('babelom-user');mettreAJourNav();}
-async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 function connexionGoogle() {
   // OAuth Google direct — sans passer par Supabase callback
   var clientId = '804398624056-59cdq2o1v85bbe7t1b6e8jd43s78a41m.apps.googleusercontent.com';
@@ -2449,6 +2440,15 @@ function connexionGoogle() {
     + '&scope=' + scope;
   window.location.href = url;
 }
+function ouvrirModale(id){var el=document.getElementById(id);if(el)el.style.display='flex';}
+function fermerModale(id){var el=document.getElementById(id);if(el)el.style.display='none';}
+function toggleLang(){var d=document.getElementById('lang-dropdown');if(d)d.style.display=d.style.display==='block'?'none':'block';}
+function setLang(code){var el=document.getElementById('lang-current');if(el)el.textContent=code;var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';if(typeof babelomApply==='function')babelomApply(code.toLowerCase());}
+document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
+function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
+function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='Bonjour '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
+function seDeconnecter(){localStorage.removeItem('babelom-user');mettreAJourNav();}
+async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
     });
   } else {
     window.location.href = 'https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/authorize?provider=google&redirect_to=https://babelom.com/index.html';
