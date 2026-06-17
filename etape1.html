@@ -417,7 +417,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       <p style="color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">🔓 On consulte librement</p>
       <p style="color:rgba(255,255,255,0.75);font-family:'Nunito',sans-serif;font-size:0.78rem;margin:0;">On s'inscrit pour contribuer — <a href="javascript:void(0)" onclick="ouvrirModale('modale-ins')" style="color:#FFD93D;text-decoration:underline;">Créer un compte gratuit</a></p>
     </div>
-    <div id="overlay-non-inscrit" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,242,232,0.85);z-index:10;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+    <div id="overlay-non-inscrit" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,242,232,0.85);z-index:10;border-radius:4px;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
       <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#1e3a28;text-align:center;padding:0 20px;">Inscrivez-vous pour déposer votre souvenir</p>
       <button onclick="ouvrirModale('modale-ins')" style="background:#FF6B35;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-radius:4px;cursor:pointer;">Créer un compte gratuit</button>
       <a href="javascript:void(0)" onclick="ouvrirModale('modale-cx')" style="color:#1e3a28;font-size:0.78rem;text-decoration:underline;">Déjà membre ? Se connecter</a>
@@ -1407,14 +1407,17 @@ function nouveau() {
 
 <script id="nav-active">
 (function(){
-  // Afficher overlay si non connecté
+  // Afficher overlay si non connecté, le cacher explicitement si connecté
   var user = (function(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}})();
-  if (!user) {
-    document.addEventListener('DOMContentLoaded', function(){
-      var ov = document.getElementById('overlay-non-inscrit');
+  document.addEventListener('DOMContentLoaded', function(){
+    var ov = document.getElementById('overlay-non-inscrit');
+    var bandeau = document.getElementById('bandeau-libre');
+    if (user) {
+      if (ov) ov.style.display = 'none';
+    } else {
       if (ov) ov.style.display = 'flex';
-    });
-  }
+    }
+  });
 })();
 
 (function(){
