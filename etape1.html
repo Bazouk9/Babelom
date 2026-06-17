@@ -415,49 +415,12 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
       <p style="color:white;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 4px;">🔓 On consulte librement</p>
       <p style="color:rgba(255,255,255,0.75);font-family:'Nunito',sans-serif;font-size:0.78rem;margin:0;">On s'inscrit pour contribuer — <a href="javascript:void(0)" onclick="ouvrirModale('modale-ins')" style="color:#FFD93D;text-decoration:underline;">Créer un compte gratuit</a></p>
     </div>
-    <div id="overlay-non-inscrit" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,242,232,0.96);z-index:10;border-radius:4px;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow-y:auto;padding:20px 0;">
-      <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:#1e3a28;text-align:center;padding:0 20px;margin:0;">Inscrivez-vous pour déposer votre souvenir</p>
-
-      <p style="font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:#d4880a;font-family:'Nunito',sans-serif;margin:6px 0 0;font-weight:700;">Voici à quoi il ressemblera</p>
-      <div style="background:#fff;border-radius:10px;box-shadow:0 6px 22px rgba(30,58,40,0.18);overflow:hidden;width:220px;">
-        <div style="padding:12px 14px 12px;">
-          <p style="font-size:0.85rem;font-weight:600;color:#1e3a28;margin:0 0 2px;font-family:'Jost',sans-serif;">Maison Bensaid</p>
-          <p style="font-size:0.68rem;color:#7a9a72;margin:0 0 8px;font-family:'Jost',sans-serif;">📍 Tlemcen, Algérie</p>
-          <div style="height:1px;background:#c8d8b0;margin-bottom:8px;"></div>
-          <p style="font-size:0.7rem;color:#4a7a52;line-height:1.5;margin:0;font-style:italic;font-family:'Jost',sans-serif;">« La cour intérieure sentait le jasmin en été… »</p>
-        </div>
-      </div>
-
-      <button onclick="ouvrirModale('modale-ins')" style="background:#FF6B35;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-radius:4px;cursor:pointer;margin-top:6px;">Créer un compte gratuit</button>
+    <div id="overlay-non-inscrit" style="display:none;position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(245,242,232,0.85);z-index:10;border-radius:4px;flex-direction:column;align-items:center;justify-content:center;gap:12px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#1e3a28;text-align:center;padding:0 20px;">Inscrivez-vous pour déposer votre souvenir</p>
+      <button onclick="ouvrirModale('modale-ins')" style="background:#FF6B35;color:white;border:none;padding:10px 24px;font-family:'Nunito',sans-serif;font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;border-radius:4px;cursor:pointer;">Créer un compte gratuit</button>
       <a href="javascript:void(0)" onclick="ouvrirModale('modale-cx')" style="color:#1e3a28;font-size:0.78rem;text-decoration:underline;">Déjà membre ? Se connecter</a>
     </div>
     <div class="form-section-title-warn" style="border:2px solid #FF6B35;border-left:6px solid #FF6B35;background:#fff9f5;border-radius:4px;padding:14px 16px;color:#1e3a28;font-size:0.92rem;font-weight:600;line-height:1.5;margin-bottom:20px;">⚠️ Par mesure de confidentialité et de sécurité, n'enregistrez pas votre adresse actuelle mais uniquement vos anciennes adresses.</div>
-
-    <!-- ══ APERÇU EXEMPLE : à quoi ressemblera le souvenir une fois publié ══ -->
-    <div id="apercu-exemple-souvenir" style="margin-bottom:24px;">
-      <p style="text-align:center;font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;color:#d4880a;font-family:'Nunito',sans-serif;margin:0 0 6px;font-weight:700;">Avant de commencer</p>
-      <p style="text-align:center;font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;color:#1e3a28;margin:0 0 4px;">Voici à quoi ressemblera votre souvenir, une fois publié</p>
-      <p style="text-align:center;font-size:0.72rem;color:#7a9a72;margin:0 0 16px;">Un exemple fictif — le vôtre sera unique</p>
-
-      <div style="display:flex;justify-content:center;">
-        <div style="background:#fff;border-radius:10px;box-shadow:0 6px 22px rgba(30,58,40,0.18);overflow:hidden;width:100%;max-width:280px;">
-          <div style="padding:16px 18px 14px;">
-            <p style="font-size:1rem;font-weight:600;color:#1e3a28;margin:0 0 2px;font-family:'Jost',sans-serif;">Maison Bensaid</p>
-            <p style="font-size:0.78rem;color:#7a9a72;margin:0 0 10px;font-family:'Jost',sans-serif;">📍 Tlemcen, Algérie</p>
-            <div style="height:1px;background:#c8d8b0;margin-bottom:10px;"></div>
-            <p style="font-size:0.82rem;color:#2e5a38;line-height:1.8;margin:0 0 8px;font-family:'Jost',sans-serif;">🏠 <strong>Type :</strong> Maison<br>📅 <strong>Années :</strong> 1968 – 1989</p>
-            <div style="display:flex;gap:6px;margin-bottom:10px;">
-              <div style="width:54px;height:54px;border-radius:2px;background:#d4c8a8;display:flex;align-items:center;justify-content:center;font-size:17px;">🏡</div>
-              <div style="width:54px;height:54px;border-radius:2px;background:#c8d4a8;display:flex;align-items:center;justify-content:center;font-size:17px;">🌳</div>
-              <div style="width:54px;height:54px;border-radius:2px;background:#d8c8b8;display:flex;align-items:center;justify-content:center;font-size:17px;">👨‍👩‍👧</div>
-            </div>
-            <p style="font-size:0.8rem;color:#4a7a52;line-height:1.6;margin:0 0 12px;font-style:italic;font-family:'Jost',sans-serif;">« La cour intérieure sentait le jasmin en été, et ma grand-mère y servait toujours le thé… »</p>
-            <div style="text-align:center;background:#1e3a28;color:#f5f2e8;padding:8px 14px;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;border-radius:2px;font-family:'Nunito',sans-serif;">Voir le témoignage complet →</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- ══ FIN APERÇU EXEMPLE ══ -->
 
     <div class="form-section-title" style="font-family:'Restweek',cursive !important;font-size:2.8rem;font-weight:900;color:#1e3a28;-webkit-text-stroke:0.5px #1e3a28;paint-order:stroke fill;"><span style="font-size:inherit;">C'</span><span style="font-size:0.82em;vertical-align:0.05em;">é</span><span style="font-size:inherit;">tait o</span><span style="font-size:0.82em;vertical-align:0.05em;">ù</span><span style="font-size:inherit;"> ?</span></div>
     <p class="form-section-sub">Quelques informations suffisent — le reste, c'est votre mémoire.</p>
@@ -1446,7 +1409,6 @@ function nouveau() {
   var user = (function(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}})();
   document.addEventListener('DOMContentLoaded', function(){
     var ov = document.getElementById('overlay-non-inscrit');
-    var bandeau = document.getElementById('bandeau-libre');
     if (user) {
       if (ov) ov.style.display = 'none';
     } else {
