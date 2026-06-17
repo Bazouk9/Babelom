@@ -1151,8 +1151,8 @@ body{padding-bottom:70px!important;}
           <div onclick="document.getElementById('menu-membre-dropdown').style.display='none';document.getElementById('modale-mdp').style.display='flex';" style="padding:9px 16px;font-size:0.8rem;color:white;cursor:pointer;display:flex;align-items:center;gap:8px;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background=''">🔑 Modifier le mot de passe</div>
           <div onclick="confirmerSuppressionCompte();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:8px;border-top:1px solid rgba(255,255,255,0.06);" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">🗑 Supprimer mon compte</div>
         </div>
-        <!-- Déconnexion --><!-- Déconnexion -->
-        <div onclick="localStorage.removeItem('babelom-user');location.reload();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">✕ Se déconnecter</div>
+        <!-- Déconnexion -->
+        <div onclick="babelomDeconnecterComplet();" style="padding:9px 16px;font-size:0.8rem;color:#FF8B94;cursor:pointer;display:flex;align-items:center;gap:6px;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background=''">✕ Se déconnecter</div>
       </div></div>
 
     <!-- Boutons Connexion/Inscrire (non connecté) -->
@@ -2108,10 +2108,7 @@ function mettreAJourNav() {
 }
 
 function seDeconnecter() {
-  sessionStorage.removeItem('babelom-user');
-  mettreAJourNav();
-  const badge = document.getElementById('nav-user-badge');
-  if (badge) badge.remove();
+  babelomDeconnecterComplet();
 }
 
 // Init nav au chargement
@@ -2451,7 +2448,8 @@ function setLang(code){var el=document.getElementById('lang-current');if(el)el.t
 document.addEventListener('click',function(e){var ls=document.getElementById('lang-select');if(ls&&!ls.contains(e.target)){var d=document.getElementById('lang-dropdown');if(d)d.style.display='none';}});
 function babelomGetUser(){try{var r=localStorage.getItem('babelom-user');if(!r)return null;var u=JSON.parse(r);if(u.expires&&Date.now()>u.expires){localStorage.removeItem('babelom-user');return null;}return u;}catch(e){return null;}}
 function mettreAJourNav(){var user=babelomGetUser();var navUser=document.getElementById('nav-user');var navName=document.getElementById('nav-user-name');var topBtns=document.getElementById('top-band-btns');if(user){if(navUser)navUser.style.display='flex';if(navName)navName.textContent='Bonjour '+user.prenom;if(topBtns)topBtns.style.display='none';}else{if(navUser)navUser.style.display='none';if(topBtns)topBtns.style.display='flex';}}
-function seDeconnecter(){localStorage.removeItem('babelom-user');mettreAJourNav();}
+function seDeconnecter(){localStorage.removeItem('babelom-user');if(typeof sbAuth!=='undefined'&&sbAuth.auth)sbAuth.auth.signOut().catch(function(){});mettreAJourNav();}
+async function babelomDeconnecterComplet(){localStorage.removeItem('babelom-user');try{await sbAuth.auth.signOut();}catch(e){}location.reload();}
 async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 
 async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecte!':'Verifiez votre email.';}fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},body:JSON.stringify({prenom:prenom,email:email})}).catch(function(){});if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
