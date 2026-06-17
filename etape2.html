@@ -2,6 +2,15 @@
 <!-- BabelOm v2 20260403-1003 -->
 <html lang="fr">
 <head>
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CD58WMZQB7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CD58WMZQB7');
+</script>
+
 <meta charset="UTF-8">
   <title>Déposer mon souvenir — Localiser mon lieu | BabelOm</title>
   <meta name="description" content="Localisez le lieu de votre souvenir sur la carte BabelOm. Rue, ville, pays — retrouvez d'anciens habitants et partagez votre mémoire collective.">
@@ -1583,6 +1592,7 @@ async function valider() {
     }
 
     // ── Succès ──
+    if (typeof gtag === 'function') gtag('event', 'soumission_temoignage', {page:'etape2'});
     document.getElementById('confirmation').classList.add('visible');
 
   } catch(e) {

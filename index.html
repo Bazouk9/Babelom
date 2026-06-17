@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CD58WMZQB7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CD58WMZQB7');
+</script>
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="512x512" href="favicon-512.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -1336,7 +1345,7 @@ body{padding-bottom:70px!important;}
     <div style="flex:1;min-width:220px;">
       <p style="color:#fff;font-size:1.1rem;font-weight:700;margin:0 0 6px;font-family:'Nunito',sans-serif;">Et vous, quelle maison garde votre trace ?</p>
       <p style="color:rgba(255,255,255,0.65);font-size:0.82rem;margin:0 0 18px;font-family:'Nunito',sans-serif;">Déposez votre souvenir en quelques minutes — c'est gratuit.</p>
-      <a href="etape1.html" style="background:#FF6B35;color:#fff;border:none;padding:13px 26px;border-radius:4px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;">Raconter mon souvenir →</a>
+      <a href="etape1.html" onclick="if(typeof gtag==='function')gtag('event','clic_raconter',{page:'accueil'});" style="background:#FF6B35;color:#fff;border:none;padding:13px 26px;border-radius:4px;font-family:'Nunito',sans-serif;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block;">Raconter mon souvenir →</a>
     </div>
 
     <div style="flex-shrink:0;">

@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CD58WMZQB7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CD58WMZQB7');
+</script>
+
   <meta charset="UTF-8">
   <title>Raconter mon souvenir — Déposer un témoignage | BabelOm</title>
   <meta name="description" content="Partagez le souvenir d'un lieu qui vous a marqué. Votre rue d'enfance, votre immeuble, votre quartier. Transmettez votre mémoire aux générations futures sur BabelOm.">
@@ -429,7 +438,7 @@ input::placeholder,textarea::placeholder { color:#7a9a72 !important; }
 
     <div class="champ">
       <label><span data-i18n="e1LabelPays">Pays *</span></label>
-      <input type="text" id="f-pays" placeholder="Ex : France, Algérie, Pologne…" data-i18n-ph="e1PhPays">
+      <input type="text" id="f-pays" placeholder="Ex : France, Algérie, Pologne…" data-i18n-ph="e1PhPays" onfocus="if(!window._babelomDebutTracked){window._babelomDebutTracked=true;if(typeof gtag==='function')gtag('event','debut_formulaire',{page:'etape1'});}">
     </div>
 
     <div class="champ champ-row">
@@ -1349,6 +1358,7 @@ function allerEtape2() {
   const a  = parseInt(document.getElementById('f-a').value);
   if (!de || !a) { alert('Veuillez indiquer les années d\'arrivée et de départ.'); return; }
   if (de > a) { alert('L\'année d\'arrivée doit précéder l\'année de départ.'); return; }
+  if (typeof gtag === 'function') gtag('event', 'etape1_validee', {page:'etape1'});
 
   const adresse = document.getElementById('f-nom').value.trim();
   const type    = document.getElementById('f-type').value;
