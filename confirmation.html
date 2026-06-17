@@ -433,8 +433,6 @@ async function confirmer() {
   const token  = params.get('access_token');
   const type   = params.get('type');
 
-  if (!type || type === 'oauth') {
-
   if (!token) {
     document.getElementById('carte-chargement').style.display = 'none';
     document.getElementById('carte-erreur').style.display = 'block';
