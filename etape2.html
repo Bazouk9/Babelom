@@ -1479,7 +1479,7 @@ async function valider() {
     const data1 = JSON.parse(localStorage.getItem('babelom-etape1') || '{}');
 
     // ── Récupérer le token Auth Supabase ──
-    let authToken = SUPABASE_ANON;
+    let authToken = null;
     try {
       const authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
         auth: { persistSession: true, storageKey: 'sb-' + SUPABASE_URL.split('//')[1].split('.')[0] + '-auth-token' }
@@ -1504,7 +1504,7 @@ async function valider() {
           method: 'POST',
           headers: {
             'apikey':        SUPABASE_ANON,
-            'Authorization': 'Bearer ' + authToken,
+            ...(authToken ? { 'Authorization': 'Bearer ' + authToken } : {}),
             'Content-Type':  file.type,
             'Cache-Control': '3600',
             'x-upsert':      'true',

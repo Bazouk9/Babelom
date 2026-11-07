@@ -2527,7 +2527,7 @@ function seDeconnecter(){localStorage.removeItem('babelom-user');if(typeof sbAut
 async function babelomDeconnecterComplet(){localStorage.removeItem('babelom-user');try{await sbAuth.auth.signOut();}catch(e){}location.reload();}
 async function seConnecter(){var email=document.getElementById('cx-email').value.trim();var mdp=document.getElementById('cx-mdp').value;var msg=document.getElementById('msg-cx');if(msg){msg.style.color='#4ECDC4';msg.textContent='Connexion...';}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');var prenom=data.user?.user_metadata?.prenom||email.split('@')[0];localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));if(msg){msg.style.color='#6BCB77';msg.textContent='Connecte!';}setTimeout(function(){mettreAJourNav();fermerModale('modale-cx');},800);}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 
-async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecte!':'Verifiez votre email.';}fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SUPABASE_ANON},body:JSON.stringify({prenom:prenom,email:email})}).catch(function(){});if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
+async function sInscrire(){var prenom=document.getElementById('ins-prenom').value.trim();var email=document.getElementById('ins-email').value.trim();var mdp=document.getElementById('ins-mdp').value;var msg=document.getElementById('msg-ins');if(!prenom||!email||!mdp){if(msg){msg.style.color='#FF8B94';msg.textContent='Champs requis.';}return;}try{var res=await fetch('https://qbxshawdxqochjsmoodl.supabase.co/auth/v1/signup',{method:'POST',headers:{'apikey':SUPABASE_ANON,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:mdp,data:{prenom:prenom}})});var data=await res.json();if(!res.ok)throw new Error(data.error_description||'Erreur');if(msg){msg.style.color='#6BCB77';msg.textContent=data.access_token?'Connecte!':'Verifiez votre email.';}fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription',{method:'POST',headers:Object.assign({'Content-Type':'application/json','apikey':SUPABASE_ANON},SUPABASE_ANON.indexOf('eyJ')===0?{'Authorization':'Bearer '+SUPABASE_ANON}:{}),body:JSON.stringify({prenom:prenom,email:email})}).catch(function(){});if(data.access_token){localStorage.setItem('babelom-user',JSON.stringify({id:data.user.id,email:email,prenom:prenom,expires:Date.now()+7200000}));setTimeout(function(){mettreAJourNav();fermerModale('modale-ins');},800);}}catch(e){if(msg){msg.style.color='#FF8B94';msg.textContent=e.message||'Erreur';}}}
 function validerAdmin() {
   // Accès admin via Supabase — plus de mot de passe en clair
   window.location.href = 'admin-portal.html';
@@ -2609,7 +2609,7 @@ async function chargerLieuxMembre(user) {
   var badge = document.getElementById('badge-nb-lieux');
   try {
     // Récupérer le token de session (nécessaire pour les politiques RLS Supabase)
-    var token = SUPABASE_ANON;
+    var token = null;
     try {
       var _sbL = sbAuth;
       var sess = await _sbL.auth.getSession();
@@ -2626,7 +2626,7 @@ async function chargerLieuxMembre(user) {
     var res = await fetch(url, {
       headers: {
         'apikey': SUPABASE_ANON,
-        'Authorization': 'Bearer ' + token,
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
         'Content-Type': 'application/json'
       }
     });
@@ -2695,7 +2695,7 @@ async function supprimerLieu(id) {
   var row = document.getElementById('lieu-row-' + id);
   if (row) { row.style.opacity = '0.4'; row.style.pointerEvents = 'none'; }
   try {
-    var token = SUPABASE_ANON;
+    var token = null;
     try {
       var _sbD = sbAuth;
       var sess = await _sbD.auth.getSession();
@@ -2707,7 +2707,7 @@ async function supprimerLieu(id) {
       method: 'DELETE',
       headers: {
         'apikey': SUPABASE_ANON,
-        'Authorization': 'Bearer ' + token,
+        ...(token ? { 'Authorization': 'Bearer ' + token } : {}),
         'Content-Type': 'application/json'
       }
     });
@@ -2938,7 +2938,7 @@ async function supprimerMonCompte() {
         if (Date.now() - created < 120000) {
           fetch('https://qbxshawdxqochjsmoodl.supabase.co/functions/v1/notify-inscription', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON},
+            headers: Object.assign({'Content-Type': 'application/json', 'apikey': SUPABASE_ANON}, SUPABASE_ANON.indexOf('eyJ') === 0 ? {'Authorization': 'Bearer ' + SUPABASE_ANON} : {}),
             body: JSON.stringify({ prenom: prenom, email: u.email })
           }).catch(function(){});
         }

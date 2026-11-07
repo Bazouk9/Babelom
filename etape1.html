@@ -1038,7 +1038,7 @@ async function chargerTemoignages() {
       '?select=id,lat,lng,ville,adresse,identite_prenom,identite_nom,annee_de,annee_a,type_logement,texte,statut' +
       '&order=id';
     var res = await fetch(url, {
-      headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON }
+      headers: { 'apikey': SUPABASE_ANON }
     });
     if (!res.ok) return;
     var data = await res.json();
@@ -1500,7 +1500,7 @@ async function chercherVoisinsSupabase() {
       + '&statut=eq.valide'
       + '&ville=eq.' + encodeURIComponent(ville)
       + '&adresse=ilike.' + encodeURIComponent('%' + adresse.split(' ').slice(-2).join(' ') + '%');
-    var res = await fetch(url, { headers: { 'apikey': SUPABASE_ANON, 'Authorization': 'Bearer ' + SUPABASE_ANON } });
+    var res = await fetch(url, { headers: { 'apikey': SUPABASE_ANON } });
     var data = await res.json();
     return Array.isArray(data) ? data : {};
   } catch(e) { return {}; }
