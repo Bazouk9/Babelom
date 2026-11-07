@@ -894,7 +894,7 @@ window.addEventListener('load', function() {
   });
 
   map = L.map('map', { preferCanvas: true }).setView([46, 10], 4);
-  currentTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  currentTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=cb1_547q_1_78cb62c7b2d73875842644fd', {
     attribution: '© CartoDB © OpenStreetMap', maxZoom: 19
   }).addTo(map);
   markersLayer = L.layerGroup().addTo(map);
